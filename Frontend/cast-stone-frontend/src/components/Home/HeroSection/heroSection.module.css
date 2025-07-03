@@ -1,0 +1,27 @@
+.heroSection {
+  @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.content {
+  @apply text-center;
+}
+
+.title {
+  @apply text-4xl md:text-6xl font-bold text-gray-900 mb-6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  @apply text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto;
+}
+
+.ctaButton {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105;
+}

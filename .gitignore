@@ -1,0 +1,57 @@
+# Ignore .NET build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Node.js dependencies
+Frontend/cast-stone-frontend/node_modules/
+
+# Build output
+Frontend/cast-stone-frontend/.next/
+Frontend/cast-stone-frontend/out/
+
+# Misc
+*.swp
+*.tmp
+
+# Ignore local settings
+Backend/Cast-Stone-api/appsettings.Development.json
+Backend/Cast-Stone-api/bin/
+Backend/Cast-Stone-api/obj/
+
+# Ignore compiled files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.db
+*.sqlite
+
+# Ignore coverage reports
+coverage/
+Frontend/cast-stone-frontend/coverage/
+
+# Ignore IDE folders
+.idea/
+.vs/
+*.vsidx
+*.v2
