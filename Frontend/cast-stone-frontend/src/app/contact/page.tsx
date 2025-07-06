@@ -60,7 +60,7 @@ const ContactPage: React.FC = () => {
         <div className={styles.heroContainer}>
           <h1 className={styles.heroTitle}>Contact Us</h1>
           <p className={styles.heroSubtitle}>
-            Ready to transform your space with our exquisite cast stone creations? Let's bring your vision to life.
+            Ready to transform your space with our exquisite cast stone creations? Let&apos;s bring your vision to life.
           </p>
         </div>
       </section>
@@ -75,7 +75,7 @@ const ContactPage: React.FC = () => {
               <div className={styles.formCard}>
                 <h2 className={styles.formTitle}>Start Your Project</h2>
                 <p className={styles.formSubtitle}>
-                  Tell us about your vision and we'll help you make it reality.
+                  Tell us about your vision and we&apos;ll help you make it reality.
                 </p>
 
                 <form onSubmit={handleSubmit} className={styles.contactForm}>
@@ -182,7 +182,7 @@ const ContactPage: React.FC = () => {
               <div className={styles.infoCard}>
                 <h2 className={styles.infoTitle}>Get In Touch</h2>
                 <p className={styles.infoSubtitle}>
-                  We're here to help bring your vision to life.
+                  We&apos;re here to help bring your vision to life.
                 </p>
 
                 <div className={styles.contactInfo}>
