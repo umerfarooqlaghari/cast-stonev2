@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -37,7 +38,15 @@ export default function OrdersPage() {
           { id: 5, statusName: 'Cancelled' },
         ] as Status[])
       ]);
-      setOrders(ordersData);
+      // Transform OrderSummary[] to Order[] with default values for missing fields
+      setOrders(
+        ordersData.map((order: any) => ({
+          ...order,
+          statusId: order.statusId ?? 1,
+          status: order.status ?? '',
+          orderItems: order.orderItems ?? [],
+        }))
+      );
       setStatuses(statusesData);
     } catch (error) {
       console.error('Error fetching data:', error);
