@@ -32,7 +32,7 @@ export default function CartPage() {
           </div>
           <h1 className={styles.emptyTitle}>Your Cart is Empty</h1>
           <p className={styles.emptyMessage}>
-            Looks like you haven't added any items to your cart yet. 
+            Looks like you haven&apos;t added any items to your cart yet. 
             Start shopping to fill it up!
           </p>
           <Link href="/products" className={styles.shopNowBtn}>

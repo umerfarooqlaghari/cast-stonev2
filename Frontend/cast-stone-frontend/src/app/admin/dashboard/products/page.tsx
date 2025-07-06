@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -58,7 +59,7 @@ export default function ProductsPage() {
   const handleDeleteProduct = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await productService.delete.deleteById(id);
+        await productService.delete.delete(id);
         await fetchData();
       } catch (error) {
         console.error('Error deleting product:', error);
@@ -190,7 +191,7 @@ export default function ProductsPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                 >
                   <option value="all">All Products</option>
-                  <option value="inStock">In Stock (>10)</option>
+                  <option value="inStock">In Stock (&gt; 10)</option>
                   <option value="lowStock">Low Stock (1-10)</option>
                   <option value="outOfStock">Out of Stock (0)</option>
                 </select>

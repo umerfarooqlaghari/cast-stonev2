@@ -25,13 +25,13 @@ export default function CheckoutSuccessPage() {
 
         {/* Order Details */}
         <div className={styles.orderDetails}>
-          <h2>What's Next?</h2>
+          <h2>What&apos;s Next?</h2>
           <div className={styles.nextSteps}>
             <div className={styles.step}>
               <div className={styles.stepIcon}>📧</div>
               <div className={styles.stepContent}>
                 <h3>Email Confirmation</h3>
-                <p>You'll receive an order confirmation email within the next few minutes.</p>
+                <p>You&apos;ll receive an order confirmation email within the next few minutes.</p>
               </div>
             </div>
             
@@ -39,7 +39,7 @@ export default function CheckoutSuccessPage() {
               <div className={styles.stepIcon}>📦</div>
               <div className={styles.stepContent}>
                 <h3>Order Processing</h3>
-                <p>We'll prepare your items for shipment within 1-2 business days.</p>
+                <p>We&apos;ll prepare your items for shipment within 1-2 business days.</p>
               </div>
             </div>
             

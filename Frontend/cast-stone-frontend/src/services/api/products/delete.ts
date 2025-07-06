@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseService } from '../../config/baseService';
 import { ApiEndpoints } from '../../config/apiConfig';
 

@@ -117,7 +117,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
             <div className={styles.testimonialText}>
               <p className={styles.testimonialContent}>
-                "{testimonials[activeTestimonial].content}"
+                &quot;{testimonials[activeTestimonial].content}&quot;
               </p>
               
               <div className={styles.rating}>
