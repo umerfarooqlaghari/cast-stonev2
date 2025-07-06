@@ -1,4 +1,5 @@
 import { BaseService } from '../../config/baseService';
+import { ApiEndpoints } from '../../config/apiConfig';
 import { Cart, AddToCartRequest } from '../../types/entities';
 
 export class CartPostService extends BaseService {
@@ -6,9 +7,10 @@ export class CartPostService extends BaseService {
    * Add item to cart
    */
   async addToCart(request: AddToCartRequest): Promise<Cart> {
-    this.logApiCall('POST', '/api/cart/add');
+    const endpoint = ApiEndpoints.Cart.Add;
+    this.logApiCall('POST', endpoint);
     return this.handleResponse(
-      this.client.post<Cart>('/api/cart/add', request)
+      this.client.post<Cart>(endpoint, request)
     );
   }
 }

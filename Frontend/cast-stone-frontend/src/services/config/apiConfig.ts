@@ -90,6 +90,23 @@ export const ApiEndpoints = {
     EmailExists: (email: string) => `/users/email-exists/${email}`,
     Filter: '/users/filter'
   },
+
+  // Cart
+  Cart: {
+    Base: '/cart',
+    ByUserId: (userId: number) => `/cart/user/${userId}`,
+    BySessionId: (sessionId: string) => `/cart/session/${sessionId}`,
+    SummaryByUserId: (userId: number) => `/cart/summary/user/${userId}`,
+    SummaryBySessionId: (sessionId: string) => `/cart/summary/session/${sessionId}`,
+    Add: '/cart/add',
+    UpdateItem: (cartId: number, productId: number) => `/cart/${cartId}/items/${productId}`,
+    RemoveItem: (cartId: number, productId: number) => `/cart/${cartId}/items/${productId}`,
+    RemoveCartItem: (cartItemId: number) => `/cart/items/${cartItemId}`,
+    Clear: (cartId: number) => `/cart/${cartId}/clear`,
+    ClearByUserId: (userId: number) => `/cart/user/${userId}/clear`,
+    ClearBySessionId: (sessionId: string) => `/cart/session/${sessionId}/clear`,
+    GetOrCreate: '/cart/get-or-create'
+  },
   
   // Seeding
   Seed: {

@@ -7,10 +7,11 @@ export class CartGetService extends BaseService {
    * Get cart by user ID
    */
   async getByUserId(userId: number): Promise<Cart | null> {
-    this.logApiCall('GET', `/api/cart/user/${userId}`);
+    const endpoint = ApiEndpoints.Cart.ByUserId(userId);
+    this.logApiCall('GET', endpoint);
     try {
       return this.handleResponse(
-        this.client.get<Cart>(`/api/cart/user/${userId}`)
+        this.client.get<Cart>(endpoint)
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
@@ -24,10 +25,11 @@ export class CartGetService extends BaseService {
    * Get cart by session ID
    */
   async getBySessionId(sessionId: string): Promise<Cart | null> {
-    this.logApiCall('GET', `/api/cart/session/${sessionId}`);
+    const endpoint = ApiEndpoints.Cart.BySessionId(sessionId);
+    this.logApiCall('GET', endpoint);
     try {
       return this.handleResponse(
-        this.client.get<Cart>(`/api/cart/session/${sessionId}`)
+        this.client.get<Cart>(endpoint)
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
@@ -41,10 +43,11 @@ export class CartGetService extends BaseService {
    * Get cart summary by user ID
    */
   async getSummaryByUserId(userId: number): Promise<CartSummary | null> {
-    this.logApiCall('GET', `/api/cart/summary/user/${userId}`);
+    const endpoint = ApiEndpoints.Cart.SummaryByUserId(userId);
+    this.logApiCall('GET', endpoint);
     try {
       return this.handleResponse(
-        this.client.get<CartSummary>(`/api/cart/summary/user/${userId}`)
+        this.client.get<CartSummary>(endpoint)
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
@@ -58,10 +61,11 @@ export class CartGetService extends BaseService {
    * Get cart summary by session ID
    */
   async getSummaryBySessionId(sessionId: string): Promise<CartSummary | null> {
-    this.logApiCall('GET', `/api/cart/summary/session/${sessionId}`);
+    const endpoint = ApiEndpoints.Cart.SummaryBySessionId(sessionId);
+    this.logApiCall('GET', endpoint);
     try {
       return this.handleResponse(
-        this.client.get<CartSummary>(`/api/cart/summary/session/${sessionId}`)
+        this.client.get<CartSummary>(endpoint)
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
@@ -75,14 +79,14 @@ export class CartGetService extends BaseService {
    * Get or create cart
    */
   async getOrCreate(userId?: number, sessionId?: string): Promise<Cart> {
-    const params = new URLSearchParams();
-    if (userId) params.append('userId', userId.toString());
-    if (sessionId) params.append('sessionId', sessionId);
-    
-    const url = `/api/cart/get-or-create?${params.toString()}`;
-    this.logApiCall('POST', url);
+    const params: Record<string, any> = {};
+    if (userId) params.userId = userId;
+    if (sessionId) params.sessionId = sessionId;
+
+    const endpoint = ApiEndpoints.Cart.GetOrCreate;
+    this.logApiCall('POST', endpoint);
     return this.handleResponse(
-      this.client.post<Cart>(url)
+      this.client.post<Cart>(endpoint, null, { params })
     );
   }
 }

@@ -19,11 +19,10 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
 }) => {
   return (
     <main className={styles.homeComponent}>
-      {/* Hero Section with Video Background */}
+      {/* Hero Section with Image Carousel */}
       <HeroSection
         title={title}
         subtitle={subtitle}
-        videoSrc="/videos/hero-background.mp4"
       />
 
       {/* Categories Grid Section */}

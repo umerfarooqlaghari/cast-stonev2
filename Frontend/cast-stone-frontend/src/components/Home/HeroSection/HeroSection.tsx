@@ -1,52 +1,68 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './heroSection.module.css';
 
 interface HeroSectionProps {
   title?: string;
   subtitle?: string;
-  videoSrc?: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
-  title = "Timeless Elegance in Cast Stone",
-  subtitle = "Discover our exquisite collection of handcrafted cast stone interiors, fireplaces, and decorative elements that transform spaces into works of art.",
-  videoSrc = "/videos/hero-background.mp4" // Default video path
+  subtitle = "Discover our exquisite collection of handcrafted cast stone interiors, fireplaces, and decorative elements that transform spaces into works of art."
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // Array of hero images
+  const heroImages = [
+    '/heroSection/BANNER IMAGES/IMG_0930.jpg',
+    '/heroSection/BANNER IMAGES/IMG_1194.jpg',
+    '/heroSection/BANNER IMAGES/IMG_1206.jpg',
+    '/heroSection/BANNER IMAGES/IMG_1263.jpg',
+    '/heroSection/BANNER IMAGES/IMG_1686.JPG',
+    '/heroSection/BANNER IMAGES/IMG_2231.jpg',
+    '/heroSection/BANNER IMAGES/IMG_3920.jpg',
+    '/heroSection/BANNER IMAGES/IMG_8272.jpg'
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    // Ensure video plays automatically and loops
-    if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.log('Video autoplay failed:', error);
-      });
-    }
-  }, []);
+    // Change image every 3 seconds
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex + 1) % heroImages.length
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
 
   return (
     <section className={styles.hero}>
-      {/* Video Background */}
-      <div className={styles.videoContainer}>
-        <video
-          ref={videoRef}
-          className={styles.backgroundVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/images/hero-poster.jpg" // Fallback image
-        >
-          <source src={videoSrc} type="video/mp4" />
-          <source src="/videos/hero-background.webm" type="video/webm" />
-          {/* Fallback for browsers that don't support video */}
-          Your browser does not support the video tag.
-        </video>
+      {/* Image Background Carousel */}
+      <div className={styles.imageContainer}>
+        {heroImages.map((imageSrc, index) => (
+          <div
+            key={index}
+            className={`${styles.imageSlide} ${
+              index === currentImageIndex ? styles.active : ''
+            }`}
+          >
+            <Image
+              src={imageSrc}
+              alt={`Hero background ${index + 1}`}
+              fill
+              className={styles.backgroundImage}
+              sizes="100vw"
+              priority={index === 0} // Prioritize loading the first image
+              quality={90}
+            />
+          </div>
+        ))}
 
-        {/* Video Overlay */}
-        <div className={styles.videoOverlay}></div>
+        {/* Image Overlay */}
+        <div className={styles.imageOverlay}></div>
       </div>
 
       {/* Content */}

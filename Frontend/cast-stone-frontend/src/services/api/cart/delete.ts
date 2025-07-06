@@ -1,13 +1,15 @@
 import { BaseService } from '../../config/baseService';
+import { ApiEndpoints } from '../../config/apiConfig';
 
 export class CartDeleteService extends BaseService {
   /**
    * Remove item from cart
    */
   async removeFromCart(cartId: number, productId: number): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/cart/${cartId}/items/${productId}`);
+    const endpoint = ApiEndpoints.Cart.RemoveItem(cartId, productId);
+    this.logApiCall('DELETE', endpoint);
     return this.handleResponse(
-      this.client.delete<boolean>(`/api/cart/${cartId}/items/${productId}`)
+      this.client.delete<boolean>(endpoint)
     );
   }
 
@@ -15,9 +17,10 @@ export class CartDeleteService extends BaseService {
    * Remove cart item by ID
    */
   async removeCartItem(cartItemId: number): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/cart/items/${cartItemId}`);
+    const endpoint = ApiEndpoints.Cart.RemoveCartItem(cartItemId);
+    this.logApiCall('DELETE', endpoint);
     return this.handleResponse(
-      this.client.delete<boolean>(`/api/cart/items/${cartItemId}`)
+      this.client.delete<boolean>(endpoint)
     );
   }
 
@@ -25,9 +28,10 @@ export class CartDeleteService extends BaseService {
    * Clear entire cart
    */
   async clearCart(cartId: number): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/cart/${cartId}/clear`);
+    const endpoint = ApiEndpoints.Cart.Clear(cartId);
+    this.logApiCall('DELETE', endpoint);
     return this.handleResponse(
-      this.client.delete<boolean>(`/api/cart/${cartId}/clear`)
+      this.client.delete<boolean>(endpoint)
     );
   }
 
@@ -35,9 +39,10 @@ export class CartDeleteService extends BaseService {
    * Clear cart by user ID
    */
   async clearCartByUserId(userId: number): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/cart/user/${userId}/clear`);
+    const endpoint = ApiEndpoints.Cart.ClearByUserId(userId);
+    this.logApiCall('DELETE', endpoint);
     return this.handleResponse(
-      this.client.delete<boolean>(`/api/cart/user/${userId}/clear`)
+      this.client.delete<boolean>(endpoint)
     );
   }
 
@@ -45,9 +50,10 @@ export class CartDeleteService extends BaseService {
    * Clear cart by session ID
    */
   async clearCartBySessionId(sessionId: string): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/cart/session/${sessionId}/clear`);
+    const endpoint = ApiEndpoints.Cart.ClearBySessionId(sessionId);
+    this.logApiCall('DELETE', endpoint);
     return this.handleResponse(
-      this.client.delete<boolean>(`/api/cart/session/${sessionId}/clear`)
+      this.client.delete<boolean>(endpoint)
     );
   }
 }
