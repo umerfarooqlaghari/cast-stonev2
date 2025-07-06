@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Cast_Stone_api.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Cast_Stone_api.Data;
 
@@ -29,6 +30,14 @@ public class ApplicationDbContext : DbContext
             .WithMany()
             .HasForeignKey(c => c.ParentCollectionId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Collection>()
+         .Property(c => c.Tags)
+         .HasColumnType("jsonb")
+         .HasConversion(
+        v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+        v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+    );
 
         modelBuilder.Entity<Collection>()
             .HasOne(c => c.ChildCollection)

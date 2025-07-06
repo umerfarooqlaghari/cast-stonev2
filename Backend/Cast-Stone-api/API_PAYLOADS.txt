@@ -37,6 +37,7 @@ Content-Type: application/json
   "updatedBy": "admin"
 }
 
+
 3. GET /api/collections/filter - Filtered Collections (Query Parameters)
 ?name=stone
 &level=1
