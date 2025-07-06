@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Cast_Stone_api.Domain.Models;
 
@@ -34,10 +35,12 @@ public class Product
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     public DateTime? UpdatedAt { get; set; }
-    
+
     // Navigation properties
+    [JsonIgnore]
     [ForeignKey(nameof(CollectionId))]
     public virtual Collection Collection { get; set; } = null!;
-    
+
+    [JsonIgnore]
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

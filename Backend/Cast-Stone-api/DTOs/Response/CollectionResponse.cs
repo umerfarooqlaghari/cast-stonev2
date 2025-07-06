@@ -18,7 +18,7 @@ public class CollectionResponse
     // Navigation properties
     public CollectionResponse? ParentCollection { get; set; }
     public CollectionResponse? ChildCollection { get; set; }
-    public List<ProductResponse> Products { get; set; } = new List<ProductResponse>();
+    //public List<ProductResponse> Products { get; set; } = new List<ProductResponse>();
 }
 
 public class CollectionHierarchyResponse

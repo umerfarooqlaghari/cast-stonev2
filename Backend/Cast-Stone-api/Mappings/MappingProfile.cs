@@ -10,9 +10,12 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Collection mappings
+        //CreateMap<Collection, CollectionResponse>()
+        //    .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
         CreateMap<Collection, CollectionResponse>()
-            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
-        
+           .ForMember(dest => dest.ParentCollection, opt => opt.Ignore())
+           .ForMember(dest => dest.ChildCollection, opt => opt.Ignore());
+
         CreateMap<CreateCollectionRequest, Collection>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())

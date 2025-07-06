@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Cast_Stone_api.Domain.Models;
 
@@ -45,6 +46,7 @@ public class Collection
     
     [ForeignKey(nameof(ChildCollectionId))]
     public virtual Collection? ChildCollection { get; set; }
-    
+
+    [JsonIgnore]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }
