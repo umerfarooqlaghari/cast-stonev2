@@ -106,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
             <li className={styles.navItem}>
               <div
                 className={styles.dropdownContainer}
-                ref={el => dropdownRefs.current['company'] = el}
+                ref={el => { dropdownRefs.current['company'] = el; }}
               >
                 <button
                   className={`${styles.navButton} ${activeDropdown === 'company' ? styles.active : ''}`}
@@ -147,7 +147,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
             <li className={styles.navItem}>
               <div
                 className={styles.dropdownContainer}
-                ref={el => dropdownRefs.current['collections'] = el}
+                ref={el => {dropdownRefs.current['collections'] = el}}
               >
                 <button
                   className={`${styles.navButton} ${activeDropdown === 'collections' ? styles.active : ''}`}
@@ -211,7 +211,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
             <li className={styles.navItem}>
               <div
                 className={styles.dropdownContainer}
-                ref={el => dropdownRefs.current['discover'] = el}
+                ref={el => {dropdownRefs.current['discover'] = el}}
               >
                 <button
                   className={`${styles.navButton} ${activeDropdown === 'discover' ? styles.active : ''}`}
