@@ -12,9 +12,6 @@ public class UpdateUserRequest
     public string? PhoneNumber { get; set; }
 
     [MaxLength(100)]
-    public string? Name { get; set; }
-
-    [MaxLength(100)]
     public string? Country { get; set; }
 
     [MaxLength(100)]

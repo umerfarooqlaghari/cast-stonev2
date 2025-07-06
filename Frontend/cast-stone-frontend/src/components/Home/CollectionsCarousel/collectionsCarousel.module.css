@@ -1,0 +1,347 @@
+/* Collections Carousel Styles */
+.collectionsSection {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #ffffff 0%, #faf9f7 100%);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #4a3728;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1.125rem;
+  color: #8b7355;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 600px;
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  border: 2px solid rgba(74, 55, 40, 0.1);
+  border-radius: 50%;
+  color: #4a3728;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.1);
+}
+
+.navButton:hover {
+  background: #4a3728;
+  color: #ffffff;
+  border-color: #4a3728;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74, 55, 40, 0.2);
+}
+
+/* Carousel Container */
+.carouselContainer {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.carousel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Collection Card */
+.collectionCard {
+  flex: 0 0 320px;
+  height: 400px;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 8px 32px rgba(74, 55, 40, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collectionCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(74, 55, 40, 0.15);
+}
+
+.cardLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Image Styles */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.collectionImage {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collectionCard:hover .collectionImage {
+  transform: scale(1.05);
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(74, 55, 40, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* Card Content */
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  color: #ffffff;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    transparent 100%
+  );
+}
+
+.productCount {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #d4af8c;
+  margin-bottom: 0.5rem;
+}
+
+.collectionName {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.collectionDescription {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #d4af8c;
+  transition: all 0.3s ease;
+}
+
+.collectionCard:hover .cardAction {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.actionText {
+  transition: transform 0.3s ease;
+}
+
+/* View All Button */
+.viewAllContainer {
+  text-align: center;
+}
+
+.viewAllButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: transparent;
+  color: #4a3728;
+  text-decoration: none;
+  border: 2px solid #4a3728;
+  border-radius: 50px;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.viewAllButton:hover {
+  background: #4a3728;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 55, 40, 0.3);
+}
+
+/* Loading and Error States */
+.loadingContainer,
+.errorContainer {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #8b7355;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(74, 55, 40, 0.1);
+  border-top: 3px solid #4a3728;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .collectionsSection {
+    padding: 4rem 0;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .collectionCard {
+    flex: 0 0 280px;
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .navigation {
+    align-self: flex-end;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .collectionCard {
+    flex: 0 0 260px;
+    height: 320px;
+  }
+  
+  .cardContent {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+  
+  .navigation {
+    display: none;
+  }
+  
+  .collectionCard {
+    flex: 0 0 240px;
+    height: 300px;
+  }
+  
+  .cardContent {
+    padding: 1.25rem;
+  }
+  
+  .collectionName {
+    font-size: 1.25rem;
+  }
+}

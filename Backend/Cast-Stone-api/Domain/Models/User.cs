@@ -23,9 +23,6 @@ public class User
     public string? PasswordHash { get; set; } // nullable for guests
 
     [MaxLength(100)]
-    public string? Name { get; set; }
-
-    [MaxLength(100)]
     public string? Country { get; set; }
     
     [MaxLength(100)]

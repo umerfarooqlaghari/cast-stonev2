@@ -31,6 +31,17 @@ export interface NavItem {
   icon?: string;
 }
 
+export interface DropdownItem {
+  label: string;
+  href: string;
+  children?: DropdownItem[];
+}
+
+export interface NavigationState {
+  activeDropdown: string | null;
+  isLoading: boolean;
+}
+
 // Feature Types
 export interface Feature {
   id: string;

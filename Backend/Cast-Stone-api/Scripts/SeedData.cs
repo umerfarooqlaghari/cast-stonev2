@@ -71,7 +71,6 @@ public static class SeedData
             Email = adminEmail,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("132Trent@!"),
             Role = "admin",
-            Name = "umer farooq",
             PhoneNumber = "+92 3009243063",
             Country = "Pakistan",
             City = "karachi",

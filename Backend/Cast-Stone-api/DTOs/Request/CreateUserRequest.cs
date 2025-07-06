@@ -20,8 +20,6 @@ public class CreateUserRequest
     [MinLength(6)]
     public string Password { get; set; } = string.Empty;
 
-    [MaxLength(100)]
-    public string? Name { get; set; }
 
     [MaxLength(100)]
     public string? Country { get; set; }

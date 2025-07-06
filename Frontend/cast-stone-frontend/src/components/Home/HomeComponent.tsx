@@ -2,30 +2,42 @@
 
 import React from 'react';
 import HeroSection from './HeroSection/HeroSection';
-import FeaturesSection from './FeaturesSection/FeaturesSection';
+import CategoriesSection from './CategoriesSection/CategoriesSection';
+import CatalogBanner from './CatalogBanner/CatalogBanner';
+import CollectionsCarousel from './CollectionsCarousel/CollectionsCarousel';
+import TestimonialsSection from './TestimonialsSection/TestimonialsSection';
 import styles from './homeComponent.module.css';
 
-const HomeComponent: React.FC = () => {
-  const handleGetStarted = () => {
-    // Navigate to getting started page or scroll to features
-    const featuresSection = document.getElementById('features');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+interface HomeComponentProps {
+  title?: string;
+  subtitle?: string;
+}
 
+const HomeComponent: React.FC<HomeComponentProps> = ({
+  title = "Timeless Elegance in Cast Stone",
+  subtitle = "Discover our exquisite collection of handcrafted cast stone interiors, fireplaces, and decorative elements that transform spaces into works of art."
+}) => {
   return (
-    <div className={styles.homeComponent}>
-      <HeroSection 
-        title="Welcome to Cast Stone"
-        subtitle="Building the future with modern technology and innovative solutions"
-        ctaText="Explore Features"
-        onCtaClick={handleGetStarted}
+    <main className={styles.homeComponent}>
+      {/* Hero Section with Video Background */}
+      <HeroSection
+        title={title}
+        subtitle={subtitle}
+        videoSrc="/videos/hero-background.mp4"
       />
-      <div id="features">
-        <FeaturesSection />
-      </div>
-    </div>
+
+      {/* Categories Grid Section */}
+      <CategoriesSection />
+
+      {/* Catalog Banner */}
+      <CatalogBanner />
+
+      {/* Collections Carousel */}
+      <CollectionsCarousel />
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
+    </main>
   );
 };
 

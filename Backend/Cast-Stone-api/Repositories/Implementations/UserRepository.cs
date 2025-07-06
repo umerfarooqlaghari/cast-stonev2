@@ -98,11 +98,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             query = query.Where(u => u.City != null && u.City.ToLower().Contains(filter.City.ToLower()));
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Name))
-        {
-            query = query.Where(u => u.Name != null && u.Name.ToLower().Contains(filter.Name.ToLower()));
-        }
-
         if (filter.CreatedAfter.HasValue)
         {
             query = query.Where(u => u.CreatedAt >= filter.CreatedAfter.Value);
@@ -122,9 +117,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             "email" => filter.SortDirection?.ToLower() == "asc"
                 ? query.OrderBy(u => u.Email)
                 : query.OrderByDescending(u => u.Email),
-            "name" => filter.SortDirection?.ToLower() == "asc"
-                ? query.OrderBy(u => u.Name)
-                : query.OrderByDescending(u => u.Name),
             "role" => filter.SortDirection?.ToLower() == "asc"
                 ? query.OrderBy(u => u.Role)
                 : query.OrderByDescending(u => u.Role),
