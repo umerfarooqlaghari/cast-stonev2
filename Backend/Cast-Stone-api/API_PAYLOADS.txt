@@ -1,0 +1,383 @@
+===============================================================================
+                    CAST STONE API - REQUEST PAYLOADS DOCUMENTATION
+===============================================================================
+
+This file contains all POST and PUT request payloads for the Cast Stone API.
+All endpoints return responses wrapped in ApiResponse<T> format.
+
+===============================================================================
+                                COLLECTIONS API
+===============================================================================
+
+1. POST /api/collections - Create Collection
+Content-Type: application/json
+
+{
+  "name": "Natural Stone Collection",
+  "description": "Premium natural stone products for construction",
+  "level": 1,
+  "parentCollectionId": null,
+  "childCollectionId": null,
+  "tags": ["natural", "stone", "premium"],
+  "published": true,
+  "createdBy": "admin"
+}
+
+2. PUT /api/collections/{id} - Update Collection
+Content-Type: application/json
+
+{
+  "name": "Updated Natural Stone Collection",
+  "description": "Updated premium natural stone products",
+  "level": 1,
+  "parentCollectionId": null,
+  "childCollectionId": null,
+  "tags": ["natural", "stone", "premium", "updated"],
+  "published": true,
+  "updatedBy": "admin"
+}
+
+3. GET /api/collections/filter - Filtered Collections (Query Parameters)
+?name=stone
+&level=1
+&parentCollectionId=1
+&published=true
+&createdBy=admin
+&createdAfter=2024-01-01T00:00:00Z
+&createdBefore=2024-12-31T23:59:59Z
+&updatedAfter=2024-01-01T00:00:00Z
+&updatedBefore=2024-12-31T23:59:59Z
+&tag=premium
+&pageNumber=1
+&pageSize=10
+&sortBy=createdAt
+&sortDirection=desc
+
+===============================================================================
+                                PRODUCTS API
+===============================================================================
+
+1. POST /api/products - Create Product
+Content-Type: application/json
+
+{
+  "name": "Carrara White Marble Slab",
+  "description": "Premium Carrara white marble slab, perfect for countertops",
+  "price": 89.99,
+  "stock": 25,
+  "collectionId": 1,
+  "images": ["carrara-white-1.jpg", "carrara-white-2.jpg"],
+  "tags": ["white", "marble", "slab", "premium"]
+}
+
+2. PUT /api/products/{id} - Update Product
+Content-Type: application/json
+
+{
+  "name": "Updated Carrara White Marble Slab",
+  "description": "Updated premium Carrara white marble slab",
+  "price": 95.99,
+  "stock": 30,
+  "collectionId": 1,
+  "images": ["carrara-white-1.jpg", "carrara-white-2.jpg", "carrara-white-3.jpg"],
+  "tags": ["white", "marble", "slab", "premium", "updated"]
+}
+
+3. PATCH /api/products/{id}/stock - Update Stock
+Content-Type: application/json
+
+50
+
+4. GET /api/products/filter - Filtered Products (Query Parameters)
+?name=marble
+&collectionId=1
+&minPrice=50.00
+&maxPrice=200.00
+&minStock=10
+&maxStock=100
+&inStock=true
+&createdAfter=2024-01-01T00:00:00Z
+&createdBefore=2024-12-31T23:59:59Z
+&updatedAfter=2024-01-01T00:00:00Z
+&updatedBefore=2024-12-31T23:59:59Z
+&tag=premium
+&pageNumber=1
+&pageSize=10
+&sortBy=price
+&sortDirection=asc
+
+===============================================================================
+                                ORDERS API
+===============================================================================
+
+1. POST /api/orders - Create Order
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "email": "customer@example.com",
+  "phoneNumber": "+1234567890",
+  "country": "USA",
+  "city": "New York",
+  "zipCode": "10001",
+  "paymentMethod": "Credit Card",
+  "orderItems": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+2. POST /api/orders - Create Guest Order (without userId)
+Content-Type: application/json
+
+{
+  "userId": null,
+  "email": "guest@example.com",
+  "phoneNumber": "+1234567890",
+  "country": "USA",
+  "city": "Los Angeles",
+  "zipCode": "90210",
+  "paymentMethod": "PayPal",
+  "orderItems": [
+    {
+      "productId": 3,
+      "quantity": 1
+    }
+  ]
+}
+
+3. PATCH /api/orders/{id}/status - Update Order Status
+Content-Type: application/json
+
+{
+  "statusId": 2
+}
+
+4. GET /api/orders/filter - Filtered Orders (Query Parameters)
+?userId=1
+&email=customer@example.com
+&statusId=1
+&minAmount=100.00
+&maxAmount=1000.00
+&paymentMethod=Credit Card
+&country=USA
+&city=New York
+&createdAfter=2024-01-01T00:00:00Z
+&createdBefore=2024-12-31T23:59:59Z
+&pageNumber=1
+&pageSize=10
+&sortBy=totalAmount
+&sortDirection=desc
+
+===============================================================================
+                                USERS API
+===============================================================================
+
+1. POST /api/users - Create User
+Content-Type: application/json
+
+{
+  "role": "customer",
+  "email": "newuser@example.com",
+  "phoneNumber": "+1234567890",
+  "password": "SecurePassword123!",
+  "name": "John Doe",
+  "country": "USA",
+  "city": "Chicago",
+  "zipCode": "60601",
+  "active": true
+}
+
+2. POST /api/users - Create Admin User
+Content-Type: application/json
+
+{
+  "role": "admin",
+  "email": "admin@example.com",
+  "phoneNumber": "+1234567890",
+  "password": "AdminPassword123!",
+  "name": "Admin User",
+  "country": "USA",
+  "city": "Washington",
+  "zipCode": "20001",
+  "active": true
+}
+
+3. PUT /api/users/{id} - Update User
+Content-Type: application/json
+
+{
+  "role": "customer",
+  "phoneNumber": "+1987654321",
+  "name": "John Updated Doe",
+  "country": "Canada",
+  "city": "Toronto",
+  "zipCode": "M5V 3A8",
+  "active": true
+}
+
+4. GET /api/users/filter - Filtered Users (Query Parameters)
+?email=john@example.com
+&role=customer
+&active=true
+&country=USA
+&city=Chicago
+&name=John
+&createdAfter=2024-01-01T00:00:00Z
+&createdBefore=2024-12-31T23:59:59Z
+&pageNumber=1
+&pageSize=10
+&sortBy=createdAt
+&sortDirection=desc
+
+===============================================================================
+                                SEEDING API
+===============================================================================
+
+1. POST /api/seed/all - Seed All Data
+Content-Type: application/json
+(No body required)
+
+2. POST /api/seed/statuses - Seed Status Data
+Content-Type: application/json
+(No body required)
+
+3. POST /api/seed/admin-user - Seed Admin User
+Content-Type: application/json
+(No body required)
+
+4. POST /api/seed/collections - Seed Sample Collections
+Content-Type: application/json
+(No body required)
+
+5. POST /api/seed/products - Seed Sample Products
+Content-Type: application/json
+(No body required)
+
+===============================================================================
+                            STATUS REFERENCE
+===============================================================================
+
+Order Statuses:
+1 - Pending
+2 - Confirmed  
+3 - Processing
+4 - Shipped
+5 - Delivered
+6 - Cancelled
+7 - Returned
+8 - Refunded
+
+Payment Statuses:
+9 - Payment Pending
+10 - Payment Completed
+11 - Payment Failed
+12 - Payment Refunded
+13 - Payment Partially Refunded
+
+Inventory Statuses:
+14 - In Stock
+15 - Out of Stock
+16 - Low Stock
+17 - Discontinued
+18 - Pre-Order
+19 - Back Order
+
+Activity Statuses:
+20 - Active
+21 - Inactive
+22 - Suspended
+23 - Archived
+24 - Draft
+25 - Published
+
+===============================================================================
+                            COLLECTION HIERARCHY
+===============================================================================
+
+Level 1: Root Collections (parentCollectionId: null)
+- Natural Stone
+- Engineered Stone
+
+Level 2: Categories (parentCollectionId: Level 1 ID)
+- Marble (parent: Natural Stone)
+- Granite (parent: Natural Stone)
+- Quartz (parent: Engineered Stone)
+
+Level 3: Subcategories (parentCollectionId: Level 2 ID)
+- Carrara Marble (parent: Marble)
+- Black Granite (parent: Granite)
+
+===============================================================================
+                            RESPONSE FORMAT
+===============================================================================
+
+All API responses follow this format:
+
+Success Response:
+{
+  "success": true,
+  "message": "Operation successful",
+  "data": { ... },
+  "errors": null
+}
+
+Error Response:
+{
+  "success": false,
+  "message": "Error message",
+  "data": null,
+  "errors": ["Detailed error 1", "Detailed error 2"]
+}
+
+Paginated Response:
+{
+  "success": true,
+  "message": "Operation successful",
+  "data": {
+    "data": [...],
+    "pageNumber": 1,
+    "pageSize": 10,
+    "totalRecords": 100,
+    "totalPages": 10,
+    "hasNextPage": true,
+    "hasPreviousPage": false
+  },
+  "errors": null
+}
+
+===============================================================================
+                            VALIDATION RULES
+===============================================================================
+
+Collections:
+- Name: Required, max 200 characters
+- Level: Required, 1-3
+- ParentCollectionId: Required for levels 2-3, null for level 1
+- CreatedBy/UpdatedBy: Required, max 100 characters
+
+Products:
+- Name: Required, max 200 characters
+- Price: Required, > 0
+- Stock: Required, >= 0
+- CollectionId: Required, must exist
+
+Orders:
+- Email: Required, valid email format
+- OrderItems: Required, at least 1 item
+- Quantity: Required, >= 1
+
+Users:
+- Email: Required, valid email format, unique
+- Password: Required, min 6 characters (for creation)
+- Role: Required, valid values: admin, customer, guest
+
+===============================================================================
+                                END OF FILE
+===============================================================================

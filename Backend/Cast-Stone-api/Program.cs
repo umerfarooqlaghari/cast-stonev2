@@ -1,4 +1,9 @@
 using Cast_Stone_api.Data;
+using Cast_Stone_api.Repositories.Interfaces;
+using Cast_Stone_api.Repositories.Implementations;
+using Cast_Stone_api.Services.Interfaces;
+using Cast_Stone_api.Services.Implementations;
+using Cast_Stone_api.Mappings;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -10,7 +15,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register repositories and services will be added here as needed
+// Configure AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Register Repositories
+builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Register Services
+builder.Services.AddScoped<ICollectionService, CollectionService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 
