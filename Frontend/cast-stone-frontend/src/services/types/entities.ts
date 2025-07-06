@@ -150,6 +150,7 @@ export interface Order {
 }
 
 export interface OrderSummary {
+  statusId: number;
   id: number;
   email: string;
   totalAmount: number;
