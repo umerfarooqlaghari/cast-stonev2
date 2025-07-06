@@ -1,5 +1,5 @@
 // API Configuration
-export const BaseApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5090/api';
+export const BaseApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7069/api';
 
 // API Response Types
 export interface ApiResponse<T> {
