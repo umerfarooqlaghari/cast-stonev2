@@ -44,7 +44,7 @@ export default function CollectionsPage() {
   const handleDeleteCollection = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this collection?')) {
       try {
-        await collectionService.delete.deleteById(id);
+        await collectionService.delete.delete(id);
         await fetchCollections();
       } catch (error) {
         console.error('Error deleting collection:', error);
