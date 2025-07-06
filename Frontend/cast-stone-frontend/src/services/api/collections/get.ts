@@ -1,10 +1,10 @@
 import { BaseService, ServiceUtils } from '../../config/baseService';
-import { ApiEndpoints } from '../../config/apiConfig';
+import { ApiEndpoints, PaginatedResponse } from '../../config/apiConfig';
 import { 
   Collection, 
   CollectionHierarchy, 
   CollectionFilterRequest,
-  PaginatedResponse 
+   
 } from '../../types/entities';
 
 export class CollectionGetService extends BaseService {
