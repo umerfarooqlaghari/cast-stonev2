@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseService, ServiceUtils } from '../../config/baseService';
 import { ApiEndpoints } from '../../config/apiConfig';
 import { Order, CreateOrderRequest, CreateOrderItemRequest } from '../../types/entities';
