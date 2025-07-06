@@ -146,7 +146,7 @@ const OurStoryPage: React.FC = () => {
                   <h3 className={styles.timelineTitle}>Legacy Continues</h3>
                   <p className={styles.timelineText}>
                     Now in our third generation of family ownership, we continue to push the 
-                    boundaries of what's possible in cast stone artistry.
+                    boundaries of what&apos;s possible in cast stone artistry.
                   </p>
                 </div>
               </div>
@@ -168,7 +168,7 @@ const OurStoryPage: React.FC = () => {
               <div className={styles.valueCard}>
                 <h3 className={styles.valueTitle}>Sustainable Practices</h3>
                 <p className={styles.valueText}>
-                  We're committed to environmental responsibility, using eco-friendly materials 
+                  We&apos;re committed to environmental responsibility, using eco-friendly materials 
                   and processes that minimize our ecological footprint.
                 </p>
               </div>
@@ -196,7 +196,7 @@ const OurStoryPage: React.FC = () => {
             <div className={styles.ctaContent}>
               <h2 className={styles.ctaTitle}>Ready to Create Something Extraordinary?</h2>
               <p className={styles.ctaText}>
-                Let's discuss how our expertise and passion can bring your vision to life.
+                Let&apos;s discuss how our expertise and passion can bring your vision to life.
               </p>
               <div className={styles.ctaButtons}>
                 <a href="/contact" className={styles.primaryButton}>
