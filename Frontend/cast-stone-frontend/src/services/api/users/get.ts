@@ -300,6 +300,31 @@ export class UserGetService extends BaseService {
       };
     }
   }
+
+  /**
+   * Validate admin credentials
+   */
+  async validateAdminCredentials(email: string, password: string): Promise<User | null> {
+    try {
+      // First get the user by email
+      const user = await this.getByEmail(email);
+
+      // Check if user exists and is an admin
+      if (!user || user.role !== 'admin' || !user.active) {
+        return null;
+      }
+
+      // For now, we'll use a simple validation approach
+      // In a real application, you'd want to implement proper JWT authentication
+      // Since the backend doesn't have a login endpoint, we'll validate against known admin
+      const isValidAdmin = email === 'mumerfarooqlaghari@gmail.com' && password === '132Trent@!';
+
+      return isValidAdmin ? user : null;
+    } catch (error) {
+      console.error('Error validating admin credentials:', error);
+      return null;
+    }
+  }
 }
 
 // Export singleton instance
