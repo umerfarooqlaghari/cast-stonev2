@@ -1,0 +1,271 @@
+/* Checkout Success Page Styles - Magazine/Editorial Theme */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Success Icon */
+.successIcon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 2rem;
+  color: #059669;
+  background: #ecfdf5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successIcon svg {
+  width: 60px;
+  height: 60px;
+  stroke-width: 2;
+}
+
+/* Success Message */
+.title {
+  color: #4a3728;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.message {
+  color: #6b5b4d;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 3rem 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Order Details */
+.orderDetails {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.orderDetails h2 {
+  color: #4a3728;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.nextSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #8b7355;
+}
+
+.stepIcon {
+  font-size: 2rem;
+  width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepContent h3 {
+  color: #4a3728;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.stepContent p {
+  color: #6b5b4d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.continueShoppingBtn,
+.homeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.continueShoppingBtn {
+  background: #8b7355;
+  color: white;
+}
+
+.continueShoppingBtn:hover {
+  background: #6d5a47;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+}
+
+.homeBtn {
+  background: transparent;
+  color: #6b5b4d;
+  border: 2px solid #e5e7eb;
+}
+
+.homeBtn:hover {
+  border-color: #8b7355;
+  color: #8b7355;
+}
+
+.shopIcon,
+.homeIcon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+/* Support Information */
+.supportInfo {
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.supportInfo h3 {
+  color: #4a3728;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.supportInfo p {
+  color: #6b5b4d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contactLink {
+  color: #8b7355;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .successCard {
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .successIcon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+  }
+
+  .successIcon svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .continueShoppingBtn,
+  .homeBtn {
+    width: 100%;
+    justify-content: center;
+    max-width: 300px;
+  }
+
+  .step {
+    padding: 1rem;
+  }
+
+  .stepIcon {
+    font-size: 1.5rem;
+    width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .successCard {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .orderDetails h2 {
+    font-size: 1.25rem;
+  }
+
+  .step {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stepIcon {
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .stepContent {
+    text-align: center;
+  }
+}

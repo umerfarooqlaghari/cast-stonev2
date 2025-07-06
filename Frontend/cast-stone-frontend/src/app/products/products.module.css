@@ -1,0 +1,286 @@
+/* Products Page Styles - Magazine/Editorial Theme */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 80vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  color: #4a3728;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: #6b5b4d;
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #8b7355;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterToggle:hover {
+  background: #6d5a47;
+}
+
+.filterIcon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.resultsCount {
+  color: #6b5b4d;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Content Layout */
+.content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+}
+
+/* Filters Sidebar */
+.filtersSidebar {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.filtersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filtersHeader h3 {
+  color: #4a3728;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.clearFilters {
+  color: #dc2626;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.clearFilters:hover {
+  color: #b91c1c;
+}
+
+/* Filter Groups */
+.filterGroup {
+  margin-bottom: 2rem;
+}
+
+.filterGroup label {
+  display: block;
+  color: #4a3728;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.searchInput,
+.filterSelect,
+.priceInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus,
+.filterSelect:focus,
+.priceInput:focus {
+  outline: none;
+  border-color: #8b7355;
+}
+
+.priceRange {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priceRange span {
+  color: #6b5b4d;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.priceInput {
+  flex: 1;
+}
+
+.checkboxLabel {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #8b7355;
+}
+
+/* Products Section */
+.productsSection {
+  min-width: 0; /* Allow content to shrink */
+}
+
+/* Mobile Filters */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .filtersSidebar {
+    position: static;
+    display: none;
+    order: -1;
+  }
+
+  .filtersSidebar.showFilters {
+    display: block;
+  }
+
+  .filterToggle {
+    display: flex;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .filtersSidebar {
+    padding: 1.5rem;
+  }
+
+  .content {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .filterToggle {
+    justify-content: center;
+  }
+
+  .resultsCount {
+    text-align: center;
+  }
+
+  .filtersSidebar {
+    padding: 1rem;
+  }
+
+  .filtersHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .priceRange {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .priceRange span {
+    text-align: center;
+  }
+}

@@ -101,5 +101,20 @@ public class MappingProfile : Profile
 
         // Status mappings
         CreateMap<Status, StatusResponse>();
+
+        // Cart mappings
+        CreateMap<Cart, CartResponse>()
+            .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+            .ForMember(dest => dest.TotalItems, opt => opt.Ignore());
+
+        CreateMap<CartItem, CartItemResponse>()
+            .ForMember(dest => dest.ItemTotal, opt => opt.MapFrom(src => src.Quantity * (src.Product != null ? src.Product.Price : 0)));
+
+        CreateMap<AddToCartRequest, Cart>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.User, opt => opt.Ignore())
+            .ForMember(dest => dest.CartItems, opt => opt.Ignore());
     }
 }

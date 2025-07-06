@@ -260,3 +260,44 @@ export interface Status {
   id: number;
   statusName: string;
 }
+
+// Cart Types
+export interface Cart {
+  id: number;
+  userId?: number;
+  sessionId?: string;
+  createdAt: string;
+  updatedAt: string;
+  cartItems: CartItem[];
+  totalAmount: number;
+  totalItems: number;
+}
+
+export interface CartItem {
+  id: number;
+  cartId: number;
+  productId: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  product?: Product;
+  itemTotal: number;
+}
+
+export interface CartSummary {
+  id: number;
+  totalItems: number;
+  totalAmount: number;
+  updatedAt: string;
+}
+
+export interface AddToCartRequest {
+  productId: number;
+  quantity: number;
+  userId?: number;
+  sessionId?: string;
+}
+
+export interface UpdateCartItemRequest {
+  quantity: number;
+}

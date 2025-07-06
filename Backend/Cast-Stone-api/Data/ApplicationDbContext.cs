@@ -16,6 +16,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
     public DbSet<ContactFormSubmission> ContactFormSubmissions { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Status> Statuses { get; set; }
@@ -94,6 +96,26 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Configure Cart relationships
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure CartItem relationships
+        modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.Cart)
+            .WithMany(c => c.CartItems)
+            .HasForeignKey(ci => ci.CartId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.Product)
+            .WithMany()
+            .HasForeignKey(ci => ci.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         // Configure indexes for better performance
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
@@ -108,6 +130,19 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Subscription>()
             .HasIndex(s => s.Email)
             .IsUnique();
+
+        // Cart indexes for performance
+        modelBuilder.Entity<Cart>()
+            .HasIndex(c => c.UserId);
+
+        modelBuilder.Entity<Cart>()
+            .HasIndex(c => c.SessionId);
+
+        modelBuilder.Entity<CartItem>()
+            .HasIndex(ci => ci.CartId);
+
+        modelBuilder.Entity<CartItem>()
+            .HasIndex(ci => ci.ProductId);
 
         // Seed comprehensive Status data for eCommerce
         modelBuilder.Entity<Status>().HasData(
