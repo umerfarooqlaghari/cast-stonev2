@@ -1,10 +1,10 @@
 import { BaseService, ServiceUtils } from '../../config/baseService';
-import { ApiEndpoints } from '../../config/apiConfig';
+import { ApiEndpoints, PaginatedResponse } from '../../config/apiConfig';
 import { 
   Product, 
   ProductSummary, 
   ProductFilterRequest,
-  PaginatedResponse 
+   
 } from '../../types/entities';
 
 export class ProductGetService extends BaseService {

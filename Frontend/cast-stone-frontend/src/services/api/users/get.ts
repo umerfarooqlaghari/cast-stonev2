@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiEndpoints } from '@/services/config/apiConfig';
+import { ApiEndpoints, PaginatedResponse } from '@/services/config/apiConfig';
 import { BaseService, ServiceUtils } from '../../config/baseService';
 // import { ApiEndpoints } from '../../config/apiConfig';
 import { 
   User, 
   UserFilterRequest,
-  PaginatedResponse 
+   
 } from '../../types/entities';
 
 export class UserGetService extends BaseService {

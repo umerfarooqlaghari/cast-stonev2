@@ -1,10 +1,10 @@
 import { BaseService, ServiceUtils } from '../../config/baseService';
-import { ApiEndpoints } from '../../config/apiConfig';
+import { ApiEndpoints, PaginatedResponse } from '../../config/apiConfig';
 import { 
   Order, 
   OrderSummary, 
   OrderFilterRequest,
-  PaginatedResponse 
+   
 } from '../../types/entities';
 
 export class OrderGetService extends BaseService {
