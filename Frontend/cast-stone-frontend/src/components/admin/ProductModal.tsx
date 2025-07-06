@@ -84,7 +84,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
       if (product) {
         // Update existing product
         const updateData: UpdateProductRequest = formData;
-        await productService.update.updateById(product.id, updateData);
+        await productService.update.update(product.id, updateData);
       } else {
         // Create new product
         const createData: CreateProductRequest = formData;

@@ -109,13 +109,17 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         // Update existing collection
         const updateData: UpdateCollectionRequest = {
           ...formData,
+          parentCollectionId: formData.parentCollectionId ?? undefined,
+          childCollectionId: formData.childCollectionId ?? undefined,
           updatedBy: admin?.email || 'admin',
         };
-        await collectionService.update.updateById(collection.id, updateData);
+        await collectionService.update.update(collection.id, updateData);
       } else {
         // Create new collection
         const createData: CreateCollectionRequest = {
           ...formData,
+          parentCollectionId: formData.parentCollectionId ?? undefined,
+          childCollectionId: formData.childCollectionId ?? undefined,
           createdBy: admin?.email || 'admin',
         };
         await collectionService.post.create(createData);
