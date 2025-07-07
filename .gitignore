@@ -38,6 +38,9 @@ Backend/Cast-Stone-api/appsettings.Development.json
 Backend/Cast-Stone-api/bin/
 Backend/Cast-Stone-api/obj/
 
+# Keep production settings for Railway deployment
+# Backend/Cast-Stone-api/appsettings.Production.json - DO NOT IGNORE
+
 # Ignore compiled files
 *.dll
 *.exe
