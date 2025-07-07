@@ -29,7 +29,7 @@ public class SeedController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Seeding failed", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Seeding failed", new List<string> { ex.ToString() }));
         }
     }
 
@@ -46,7 +46,7 @@ public class SeedController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Status seeding failed", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Status seeding failed", new List<string> { ex.ToString() }));
         }
     }
 
@@ -63,7 +63,7 @@ public class SeedController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Admin user seeding failed", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Admin user seeding failed", new List<string> { ex.ToString() }));
         }
     }
 
@@ -80,7 +80,7 @@ public class SeedController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Collections seeding failed", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Collections seeding failed", new List<string> { ex.ToString() }));
         }
     }
 
@@ -97,7 +97,7 @@ public class SeedController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Products seeding failed", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Products seeding failed", new List<string> { ex.ToString() }));
         }
     }
 }

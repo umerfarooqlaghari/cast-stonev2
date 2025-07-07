@@ -32,7 +32,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -52,7 +52,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -72,7 +72,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartSummaryResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartSummaryResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -92,7 +92,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartSummaryResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartSummaryResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -115,11 +115,11 @@ public class CartController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ApiResponse<CartResponse>.ErrorResponse(ex.Message));
+            return BadRequest(ApiResponse<CartResponse>.ErrorResponse(ex.ToString()));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -145,11 +145,11 @@ public class CartController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ApiResponse<CartResponse>.ErrorResponse(ex.Message));
+            return BadRequest(ApiResponse<CartResponse>.ErrorResponse(ex.ToString()));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -166,7 +166,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -183,7 +183,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -200,7 +200,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -217,7 +217,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -234,7 +234,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<bool>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -256,7 +256,7 @@ public class CartController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<CartResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 }

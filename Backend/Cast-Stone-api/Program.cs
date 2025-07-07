@@ -1,4 +1,4 @@
-using Cast_Stone_api.Data;
+﻿using Cast_Stone_api.Data;
 using Cast_Stone_api.Repositories.Interfaces;
 using Cast_Stone_api.Repositories.Implementations;
 using Cast_Stone_api.Services.Interfaces;
@@ -9,6 +9,8 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine("🧪 ENVIRONMENT: " + builder.Environment.EnvironmentName);
+Console.WriteLine("🧪 DefaultConnection: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 // Add services to the container.
 
 // Configure Entity Framework with PostgreSQL
@@ -103,8 +105,6 @@ try
 }
 catch(Exception ex)
 {
-    Console.WriteLine("FATAL ERROR");
-    Console.WriteLine(ex.Message);
-    Console.WriteLine(ex.StackTrace);
-    throw;
+    Console.WriteLine("❌ Unhandled Exception");
+    Console.WriteLine(ex.ToString());
 }

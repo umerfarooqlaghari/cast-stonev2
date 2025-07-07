@@ -29,7 +29,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -49,7 +49,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -76,7 +76,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -106,7 +106,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<ProductResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -126,7 +126,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -143,7 +143,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -160,7 +160,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -177,7 +177,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductSummaryResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductSummaryResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -194,7 +194,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductSummaryResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductSummaryResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -214,7 +214,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -234,7 +234,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<IEnumerable<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -254,7 +254,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
@@ -271,7 +271,7 @@ public class ProductsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<PaginatedResponse<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.Message }));
+            return StatusCode(500, ApiResponse<PaginatedResponse<ProductResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 }
