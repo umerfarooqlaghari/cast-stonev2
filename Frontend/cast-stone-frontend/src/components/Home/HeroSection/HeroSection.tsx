@@ -28,12 +28,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    // Change image every 3 seconds
+    // Change image every 5 seconds for smoother transitions
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
         (prevIndex + 1) % heroImages.length
       );
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [heroImages.length]);

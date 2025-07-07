@@ -17,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
   const [collections, setCollections] = useState<CollectionHierarchy[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Company dropdown items
@@ -35,6 +36,16 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     { label: 'Technical Info', href: '/technical-info' },
     { label: 'FAQ', href: '/faq' }
   ];
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Fetch collections on component mount
   useEffect(() => {
@@ -89,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
   const collectionItems = collectionsToDropdownItems(collections);
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         {/* Logo */}
         <div className={styles.logo}>

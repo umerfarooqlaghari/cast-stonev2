@@ -9,6 +9,12 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//var port = Environment.GetEnvironmentVariable("Port") ?? "7069";
+//builder.WebHost.UseUrls($"http://*:{port}");
+
+builder.Services.AddHealthChecks();
+
+
 Console.WriteLine("🧪 ENVIRONMENT: " + builder.Environment.EnvironmentName);
 Console.WriteLine("🧪 DefaultConnection: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 // Add services to the container.
@@ -92,11 +98,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     });
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
+
+app.UseHealthChecks("/health");
 
 app.MapControllers();
 try
