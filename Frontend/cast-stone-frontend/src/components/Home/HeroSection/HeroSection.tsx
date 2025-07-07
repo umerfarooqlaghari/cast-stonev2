@@ -28,7 +28,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    // Change image every 5 seconds for smoother transitions
+    // Change image every 5 seconds to match the zoom animation duration
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
         (prevIndex + 1) % heroImages.length
@@ -38,13 +38,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
+  // Navigation functions
+  const goToPrevious = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? heroImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prevIndex) =>
+      (prevIndex + 1) % heroImages.length
+    );
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
     <section className={styles.hero}>
       {/* Image Background Carousel */}
       <div className={styles.imageContainer}>
         {heroImages.map((imageSrc, index) => (
           <div
-            key={index}
+            key={`${imageSrc}-${index}`}
             className={`${styles.imageSlide} ${
               index === currentImageIndex ? styles.active : ''
             }`}
@@ -64,6 +81,27 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Image Overlay */}
         <div className={styles.imageOverlay}></div>
       </div>
+
+      {/* Navigation Arrows */}
+      <button
+        className={`${styles.navArrow} ${styles.navArrowLeft}`}
+        onClick={goToPrevious}
+        aria-label="Previous image"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+
+      <button
+        className={`${styles.navArrow} ${styles.navArrowRight}`}
+        onClick={goToNext}
+        aria-label="Next image"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
 
       {/* Content */}
       <div className={styles.container}>
@@ -87,6 +125,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <span className={styles.buttonText}>WATCH OUR STORY</span>
               <div className={styles.buttonRipple}></div>
             </Link>
+          </div>
+
+          {/* Indicator Dots */}
+          <div className={styles.indicators}>
+            {heroImages.map((_, index) => (
+              <button
+                key={index}
+                className={`${styles.indicator} ${
+                  index === currentImageIndex ? styles.indicatorActive : ''
+                }`}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to image ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
