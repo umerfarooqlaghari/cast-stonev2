@@ -12,9 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Configure Entity Framework with PostgreSQL
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+try
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+catch(Exception ex)
+{
+    throw new Exception("DB Context failed to register: " + ex.Message);
+}
 // Configure AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -74,7 +80,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -84,12 +90,21 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.Run();
+try
+{
+    app.Run();
+}
+catch(Exception ex)
+{
+    Console.WriteLine("FATAL ERROR");
+    Console.WriteLine(ex.Message);
+    Console.WriteLine(ex.StackTrace);
+    throw;
+}
