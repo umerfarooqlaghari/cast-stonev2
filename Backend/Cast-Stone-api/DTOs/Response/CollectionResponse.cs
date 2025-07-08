@@ -9,6 +9,7 @@ public class CollectionResponse
     public int? ParentCollectionId { get; set; }
     public int? ChildCollectionId { get; set; }
     public List<string> Tags { get; set; } = new List<string>();
+    public List<string> Images { get; set; } = new List<string>();
     public bool Published { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

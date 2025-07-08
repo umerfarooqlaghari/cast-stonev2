@@ -26,7 +26,10 @@ public class Collection
     
     [Column(TypeName = "jsonb")]
     public List<string> Tags { get; set; } = new List<string>();
-    
+
+    [Column(TypeName = "jsonb")]
+    public List<string> Images { get; set; } = new List<string>();
+
     public bool Published { get; set; } = false;
     
     [Required]
