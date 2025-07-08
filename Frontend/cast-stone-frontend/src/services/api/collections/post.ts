@@ -35,7 +35,8 @@ export class CollectionPostService extends BaseService {
       childCollectionId: undefined,
       tags,
       published,
-      createdBy
+      createdBy,
+      images: []
     };
 
     return this.create(data);
@@ -61,7 +62,8 @@ export class CollectionPostService extends BaseService {
       childCollectionId: undefined,
       tags,
       published,
-      createdBy
+      createdBy,
+      images: []
     };
 
     return this.create(data);
