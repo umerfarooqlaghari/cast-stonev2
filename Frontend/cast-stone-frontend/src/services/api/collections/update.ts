@@ -43,7 +43,8 @@ export class CollectionUpdateService extends BaseService {
       childCollectionId: currentCollection.data.childCollectionId,
       tags: currentCollection.data.tags,
       published: currentCollection.data.published,
-      updatedBy
+      updatedBy,
+      images: []
     };
 
     return this.update(id, data);
@@ -73,7 +74,8 @@ export class CollectionUpdateService extends BaseService {
       childCollectionId: currentCollection.data.childCollectionId,
       tags,
       published: currentCollection.data.published,
-      updatedBy
+      updatedBy,
+      images: []
     };
 
     return this.update(id, data);
@@ -103,7 +105,8 @@ export class CollectionUpdateService extends BaseService {
       childCollectionId: currentCollection.data.childCollectionId,
       tags: currentCollection.data.tags,
       published,
-      updatedBy
+      updatedBy,
+      images: []
     };
 
     return this.update(id, data);
@@ -134,7 +137,8 @@ export class CollectionUpdateService extends BaseService {
       childCollectionId: currentCollection.data.childCollectionId,
       tags: currentCollection.data.tags,
       published: currentCollection.data.published,
-      updatedBy
+      updatedBy,
+      images: []
     };
 
     return this.update(id, data);
