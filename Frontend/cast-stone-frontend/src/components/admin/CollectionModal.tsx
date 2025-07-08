@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { collectionService } from '@/services';
 import { Collection, CreateCollectionRequest, UpdateCollectionRequest } from '@/services/types/entities';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { cloudinaryService, CloudinaryImageInfo } from '@/services/api/cloudinary/cloudinaryService';
 
 interface CollectionModalProps {
   collection?: Collection | null;
@@ -16,7 +17,9 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [allCollections, setAllCollections] = useState<Collection[]>([]);
-  
+  const [uploadedImages, setUploadedImages] = useState<CloudinaryImageInfo[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -24,14 +27,17 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     parentCollectionId: null as number | null,
     childCollectionId: null as number | null,
     tags: [] as string[],
+    images: [] as string[],
     published: false,
   });
 
   const [tagInput, setTagInput] = useState('');
+  const [imageInput, setImageInput] = useState('');
 
   useEffect(() => {
     fetchAllCollections();
-    
+    fetchUploadedImages();
+
     if (collection) {
       setFormData({
         name: collection.name,
@@ -40,10 +46,23 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         parentCollectionId: collection.parentCollectionId || null,
         childCollectionId: collection.childCollectionId || null,
         tags: collection.tags || [],
+        images: collection.images || [],
         published: collection.published,
       });
     }
   }, [collection]);
+
+  const fetchUploadedImages = async () => {
+    try {
+      setIsLoadingImages(true);
+      const images = await cloudinaryService.getAllImages();
+      setUploadedImages(images);
+    } catch (error) {
+      console.error('Error fetching uploaded images:', error);
+    } finally {
+      setIsLoadingImages(false);
+    }
+  };
 
   const fetchAllCollections = async () => {
     try {
@@ -149,6 +168,59 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
     }));
+  };
+
+  const handleAddImage = async () => {
+    if (imageInput.trim() && !formData.images.includes(imageInput.trim())) {
+      // Validate if the URL exists in uploaded images or is a valid URL
+      const isValidUrl = await validateImageUrl(imageInput.trim());
+      if (isValidUrl) {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, imageInput.trim()]
+        }));
+        setImageInput('');
+        setErrors(prev => ({ ...prev, imageInput: '' }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          imageInput: 'Invalid image URL or image not found in uploaded images'
+        }));
+      }
+    }
+  };
+
+  const handleAddImageFromDropdown = (imageUrl: string) => {
+    if (!formData.images.includes(imageUrl)) {
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, imageUrl]
+      }));
+    }
+  };
+
+  const handleRemoveImage = (imageToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter(image => image !== imageToRemove)
+    }));
+  };
+
+  const validateImageUrl = async (url: string): Promise<boolean> => {
+    // Check if URL exists in uploaded images
+    const existsInUploaded = uploadedImages.some(img => img.secureUrl === url);
+    if (existsInUploaded) return true;
+
+    // Check if it's a valid image URL by trying to load it
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+
+      // Timeout after 5 seconds
+      setTimeout(() => resolve(false), 5000);
+    });
   };
 
   const getAvailableParentCollections = () => {
@@ -333,7 +405,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                 type="text"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
                 className="flex-1 px-4 py-3 border border-amber-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900 placeholder-amber-400"
                 placeholder="Add a tag"
               />
@@ -344,6 +416,108 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               >
                 Add
               </button>
+            </div>
+          </div>
+
+          {/* Images */}
+          <div>
+            <label className="block text-sm font-semibold text-amber-900 mb-2">
+              Images
+            </label>
+            <div className="space-y-3 mb-4">
+              {formData.images.map((image, index) => (
+                <div key={index} className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+                  <img
+                    src={image}
+                    alt={`Collection image ${index + 1}`}
+                    className="w-16 h-16 object-cover rounded-md border border-gray-200"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg0NFY0NEgyMFYyMFoiIHN0cm9rZT0iIzlDQTNBRiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjI4IiBjeT0iMjgiIHI9IjMiIGZpbGw9IiM5Q0EzQUYiLz4KPHBhdGggZD0iTTIwIDM2TDI4IDI4TDM2IDM2TDQ0IDI4VjQ0SDIwVjM2WiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
+                    }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">Image {index + 1}</p>
+                    <p className="text-xs text-gray-500 truncate" title={image}>{image}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(image)}
+                    className="flex-shrink-0 p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
+                    title="Remove image"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Uploaded Images Dropdown */}
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Choose from uploaded images:
+              </label>
+              <select
+                onChange={(e) => e.target.value && handleAddImageFromDropdown(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                disabled={isLoadingImages}
+                value=""
+              >
+                <option value="">
+                  {isLoadingImages ? 'Loading images...' : 'Select an uploaded image'}
+                </option>
+                {uploadedImages.map((image) => (
+                  <option key={image.publicId} value={image.secureUrl}>
+                    {image.fileName}
+                  </option>
+                ))}
+              </select>
+              {uploadedImages.length === 0 && !isLoadingImages && (
+                <p className="text-sm text-gray-500 mt-1">
+                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Upload images here</a>
+                </p>
+              )}
+            </div>
+
+            {/* Manual URL Input */}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Or enter image URL manually:
+              </label>
+              <div className="flex">
+                <input
+                  type="url"
+                  value={imageInput}
+                  onChange={(e) => {
+                    setImageInput(e.target.value);
+                    // Clear error when user starts typing
+                    if (errors.imageInput) {
+                      setErrors(prev => ({ ...prev, imageInput: '' }));
+                    }
+                  }}
+                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
+                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                    errors.imageInput ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Paste image URL here or copy from Images section"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddImage}
+                  className="px-4 py-2 bg-amber-900 text-white rounded-r-md hover:bg-amber-800 disabled:opacity-50"
+                  disabled={!imageInput.trim()}
+                >
+                  Add
+                </button>
+              </div>
+              {errors.imageInput && (
+                <p className="mt-1 text-sm text-red-600">{errors.imageInput}</p>
+              )}
+              <p className="mt-1 text-xs text-gray-500">
+                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Images section</a>
+              </p>
             </div>
           </div>
 

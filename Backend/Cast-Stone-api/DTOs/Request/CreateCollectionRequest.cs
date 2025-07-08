@@ -21,6 +21,8 @@ public class CreateCollectionRequest
 
     public List<string> Tags { get; set; } = new List<string>();
 
+    public List<string> Images { get; set; } = new List<string>();
+
     public bool Published { get; set; } = false;
 
     [Required]

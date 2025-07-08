@@ -7,6 +7,7 @@ export interface Collection {
   parentCollectionId?: number;
   childCollectionId?: number;
   tags: string[];
+  images: string[];
   published: boolean;
   createdBy: string;
   createdAt: string;
@@ -35,6 +36,7 @@ export interface CreateCollectionRequest {
   parentCollectionId?: number;
   childCollectionId?: number;
   tags: string[];
+  images: string[];
   published: boolean;
   createdBy: string;
 }
@@ -46,6 +48,7 @@ export interface UpdateCollectionRequest {
   parentCollectionId?: number;
   childCollectionId?: number;
   tags: string[];
+  images: string[];
   published: boolean;
   updatedBy: string;
 }

@@ -10,8 +10,8 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Railway deployment configuration
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+//builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Local development configuration (commented for Railway deployment)
 //var port = Environment.GetEnvironmentVariable("Port") ?? "7069";
@@ -50,6 +50,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<CloudinaryService>();
 
 builder.Services.AddControllers();
 
@@ -86,17 +87,11 @@ builder.Services.AddCors(options =>
         // Production frontend URLs (update these with your actual frontend domain)
         policy.WithOrigins(
                 "https://cast-stonev2.vercel.app/", // Replace with your actual frontend URL
-                "https://your-custom-domain.com", "http://localhost:3000", "https://localhost:3000", "http://localhost:3001", "https://localhost:3001" // Replace with your actual frontend URL
+                 "http://localhost:3000", "https://localhost:3000", "http://localhost:3001", "https://localhost:3001" // Replace with your actual frontend URL
               )
               .AllowAnyHeader()
               .AllowAnyMethod();
               //.AllowCredentials();
-
-        // Local development URLs (commented for production deployment)
-        //policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:3001", "https://localhost:3001")
-        //      .AllowAnyHeader()
-        //      .AllowAnyMethod();
-        //      //.AllowCredentials();
     });
 });
 
