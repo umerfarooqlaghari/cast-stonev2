@@ -1,4 +1,4 @@
-/* Home Component Styles */
+/* Home Component Styles - Navy Blue Theme */
 .homeComponent {
   min-height: 100vh;
   background: #ffffff;
@@ -34,6 +34,6 @@
 @media print {
   .homeComponent {
     background: white;
-    color: black;
+    color: #1e3a8a;
   }
 }

@@ -1,12 +1,13 @@
-/* Magazine/Editorial Theme Variables */
+/* Navy Blue and White Theme Variables */
 .Headerroot {
-  --cast-stone-brown: #4a3728;
-  --cast-stone-light-brown: #6b4e3d;
-  --cast-stone-cream: #faf9f7;
-  --cast-stone-white: #ffffff;
-  --cast-stone-gray: #8b7355;
-  --cast-stone-shadow: rgba(74, 55, 40, 0.1);
-  --cast-stone-shadow-hover: rgba(74, 55, 40, 0.15);
+  --navy-primary: #1e3a8a;
+  --navy-secondary: #3b82f6;
+  --navy-light: #dbeafe;
+  --white-primary: #ffffff;
+  --white-secondary: #f8fafc;
+  --gray-medium: #64748b;
+  --navy-shadow: rgba(30, 58, 138, 0.1);
+  --navy-shadow-hover: rgba(30, 58, 138, 0.15);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -81,7 +82,7 @@
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--cast-stone-gray);
+  color: var(--gray-medium);
   margin-top: 2px;
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
 }
@@ -207,10 +208,10 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--cast-stone-white);
-  border: 1px solid rgba(74, 55, 40, 0.1);
+  background: var(--white-primary);
+  border: 1px solid rgba(30, 58, 138, 0.1);
   border-radius: 8px;
-  box-shadow: 0 8px 32px var(--cast-stone-shadow-hover);
+  box-shadow: 0 8px 32px var(--navy-shadow-hover);
   min-width: 220px;
   z-index: 1001;
   opacity: 0;
@@ -247,7 +248,7 @@
 .dropdownLink {
   display: block;
   padding: 0.75rem 1.25rem;
-  color: var(--cast-stone-brown);
+  color: var(--navy-primary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 400;
@@ -256,9 +257,9 @@
 }
 
 .dropdownLink:hover {
-  background: rgba(74, 55, 40, 0.04);
-  color: var(--cast-stone-light-brown);
-  border-left-color: var(--cast-stone-brown);
+  background: rgba(30, 58, 138, 0.04);
+  color: var(--navy-secondary);
+  border-left-color: var(--navy-primary);
   transform: translateX(2px);
 }
 
@@ -267,8 +268,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: rgba(74, 55, 40, 0.02);
-  border-top: 1px solid rgba(74, 55, 40, 0.08);
+  background: rgba(30, 58, 138, 0.02);
+  border-top: 1px solid rgba(30, 58, 138, 0.08);
 }
 
 .subDropdownItem {
@@ -321,7 +322,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  color: var(--cast-stone-brown);
+  color: var(--navy-primary);
   text-decoration: none;
   border-radius: 8px;
   transition: var(--transition-smooth);
@@ -329,8 +330,8 @@
 }
 
 .cartLink:hover {
-  background: rgba(74, 55, 40, 0.06);
-  color: var(--cast-stone-light-brown);
+  background: rgba(30, 58, 138, 0.06);
+  color: var(--navy-secondary);
   transform: translateY(-1px);
 }
 

@@ -20,7 +20,7 @@
 .loadingCard {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
   overflow: hidden;
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -116,14 +116,14 @@
 }
 
 .emptyTitle {
-  color: #4a3728;
+  color: #000000;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
 }
 
 .emptyMessage {
-  color: #6b5b4d;
+  color: #000000;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;

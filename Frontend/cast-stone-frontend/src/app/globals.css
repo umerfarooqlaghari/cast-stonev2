@@ -1,8 +1,46 @@
 @import "tailwindcss";
 
 :root {
+  /* Navy Blue and White Theme Variables */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1e3a8a;
+
+  /* Navy Blue Color Palette */
+  --navy-primary: #1e3a8a;        /* Primary navy blue */
+  --navy-secondary: #3b82f6;      /* Lighter navy blue */
+  --navy-dark: #1e40af;           /* Darker navy blue */
+  --navy-light: #dbeafe;          /* Very light navy blue */
+  --navy-accent: #60a5fa;         /* Accent navy blue */
+
+  /* White and Gray Palette */
+  --white-primary: #ffffff;       /* Pure white */
+  --white-secondary: #f8fafc;     /* Off white */
+  --gray-light: #f1f5f9;          /* Light gray */
+  --gray-medium: #64748b;         /* Medium gray */
+  --gray-dark: #334155;           /* Dark gray */
+
+  /* Text Colors */
+  --text-primary: #1e3a8a;        /* Navy blue text */
+  --text-secondary: #64748b;      /* Gray text */
+  --text-light: #ffffff;          /* White text */
+  --text-accent: #3b82f6;         /* Accent text */
+
+  /* Background Colors */
+  --bg-primary: #ffffff;          /* White background */
+  --bg-secondary: #f8fafc;        /* Light background */
+  --bg-navy: #1e3a8a;             /* Navy background */
+  --bg-navy-light: #dbeafe;       /* Light navy background */
+
+  /* Border and Shadow */
+  --border-light: #e2e8f0;        /* Light border */
+  --border-navy: #1e3a8a;         /* Navy border */
+  --shadow-light: rgba(30, 58, 138, 0.1);
+  --shadow-medium: rgba(30, 58, 138, 0.15);
+  --shadow-dark: rgba(30, 58, 138, 0.25);
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -14,13 +52,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #000000;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #ffffff;
+  color: #000000;
   font-family: Arial, Helvetica, sans-serif;
 }

@@ -1,4 +1,4 @@
-/* Cart Page Styles - Magazine/Editorial Theme */
+/* Cart Page Styles - Navy Blue Theme */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -11,11 +11,11 @@
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid #f3f4f6;
+  border-bottom: 2px solid #dbeafe;
 }
 
 .title {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
@@ -23,7 +23,7 @@
 }
 
 .subtitle {
-  color: #6b5b4d;
+  color: #64748b;
   font-size: 1.1rem;
   margin: 0;
 }
@@ -35,14 +35,14 @@
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  color: #6b5b4d;
+  color: #64748b;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #8b7355;
+  border-top: 3px solid #1e3a8a;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;

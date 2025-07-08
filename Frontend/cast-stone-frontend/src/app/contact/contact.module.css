@@ -1,12 +1,13 @@
-/* Contact Page Styles - Magazine/Editorial Theme */
+/* Contact Page Styles - Navy Blue Theme */
 .Contactroot {
-  --cast-stone-brown: #4a3728;
-  --cast-stone-light-brown: #6b4e3d;
-  --cast-stone-cream: #faf9f7;
-  --cast-stone-white: #ffffff;
-  --cast-stone-gray: #8b7355;
-  --cast-stone-shadow: rgba(74, 55, 40, 0.1);
-  --cast-stone-shadow-hover: rgba(74, 55, 40, 0.15);
+  --navy-primary: #1e3a8a;
+  --navy-secondary: #3b82f6;
+  --navy-light: #dbeafe;
+  --white-primary: #ffffff;
+  --white-secondary: #f8fafc;
+  --gray-medium: #64748b;
+  --navy-shadow: rgba(30, 58, 138, 0.1);
+  --navy-shadow-hover: rgba(30, 58, 138, 0.15);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -14,12 +15,12 @@
 /* Page Container */
 .contactPage {
   min-height: 100vh;
-  background-color: var(--cast-stone-white);
+  background-color: var(--white-primary);
 }
 
 /* Hero Section */
 .heroSection {
-  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
   padding: 8rem 0 6rem;
   position: relative;
   overflow: hidden;

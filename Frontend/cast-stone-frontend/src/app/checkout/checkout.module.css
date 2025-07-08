@@ -1,4 +1,4 @@
-/* Checkout Page Styles - Magazine/Editorial Theme */
+/* Checkout Page Styles - Navy Blue Theme */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -11,11 +11,11 @@
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid #f3f4f6;
+  border-bottom: 2px solid #dbeafe;
 }
 
 .title {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 2rem 0;
@@ -238,15 +238,15 @@
 }
 
 .backBtn:hover {
-  border-color: #8b7355;
-  color: #8b7355;
+  border-color: #64748b;
+  color: #64748b;
 }
 
 /* Order Summary */
 .orderSummary {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
   padding: 2rem;
   height: fit-content;
   position: sticky;
@@ -254,7 +254,7 @@
 }
 
 .summaryTitle {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;

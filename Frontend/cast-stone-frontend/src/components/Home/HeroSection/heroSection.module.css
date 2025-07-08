@@ -1,4 +1,4 @@
-/* Hero Section Styles */
+/* Hero Section Styles - Navy Blue Theme */
 .hero {
   position: relative;
   height: 100vh;
@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #1a1a1a; /* Fallback color */
+  background-color: #1e3a8a; /* Navy blue fallback color */
 }
 
 /* Image Background Carousel */
@@ -236,7 +236,7 @@
 }
 
 .scrollArrow:hover {
-  color: #d4af8c;
+  color: #60a5fa;
 }
 
 /* Animations */

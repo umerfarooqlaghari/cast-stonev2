@@ -1,8 +1,8 @@
-/* Cart Summary Styles - Magazine/Editorial Theme */
+/* Cart Summary Styles - Navy Blue Theme */
 .cartSummary {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
   padding: 2rem;
   position: sticky;
   top: 2rem;
@@ -10,12 +10,12 @@
 }
 
 .title {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
   text-align: center;
-  border-bottom: 2px solid #f3f4f6;
+  border-bottom: 2px solid #dbeafe;
   padding-bottom: 1rem;
 }
 
@@ -32,13 +32,13 @@
 }
 
 .label {
-  color: #6b5b4d;
+  color: #64748b;
   font-size: 1rem;
   font-weight: 500;
 }
 
 .value {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 1rem;
   font-weight: 600;
 }

@@ -1,4 +1,4 @@
-/* Checkout Success Page Styles - Magazine/Editorial Theme */
+/* Checkout Success Page Styles - Navy Blue Theme */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -12,7 +12,7 @@
 .successCard {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
   padding: 3rem;
   text-align: center;
   width: 100%;
@@ -39,7 +39,7 @@
 
 /* Success Message */
 .title {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;

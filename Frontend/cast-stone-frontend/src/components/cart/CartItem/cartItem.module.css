@@ -1,4 +1,4 @@
-/* Cart Item Styles - Magazine/Editorial Theme */
+/* Cart Item Styles - Navy Blue Theme */
 .cartItem {
   display: grid;
   grid-template-columns: 120px 1fr auto auto auto;
@@ -6,13 +6,13 @@
   padding: 1.5rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
   align-items: start;
   transition: box-shadow 0.3s ease;
 }
 
 .cartItem:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(30, 58, 138, 0.15);
 }
 
 /* Product Image */
@@ -36,7 +36,7 @@
 }
 
 .productName {
-  color: #4a3728;
+  color: #1e3a8a;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
