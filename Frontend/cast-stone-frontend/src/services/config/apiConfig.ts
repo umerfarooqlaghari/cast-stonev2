@@ -108,6 +108,9 @@ export const ApiEndpoints = {
     ClearBySessionId: (sessionId: string) => `/cart/session/${sessionId}/clear`,
     GetOrCreate: '/cart/get-or-create'
   },
+
+  // Payments
+  Payments: '/payments',
   
   // Seeding
   Seed: {

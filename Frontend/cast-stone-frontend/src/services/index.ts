@@ -12,6 +12,7 @@ export * from './api/products';
 export * from './api/orders';
 export * from './api/users';
 export * from './api/cart';
+export * from './api/payments';
 export * from './api/seed';
 
 // Combined API Service
@@ -20,6 +21,7 @@ import { productService } from './api/products';
 import { orderService } from './api/orders';
 import { userService } from './api/users';
 import { cartService } from './api/cart';
+import { paymentService } from './api/payments';
 import { seedService } from './api/seed';
 
 export class ApiService {
@@ -28,6 +30,7 @@ export class ApiService {
   orders = orderService;
   users = userService;
   cart = cartService;
+  payments = paymentService;
   seed = seedService;
 }
 
@@ -44,6 +47,7 @@ export {
   orderService,
   userService,
   cartService,
+  paymentService,
   seedService
 };
 
