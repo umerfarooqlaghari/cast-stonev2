@@ -59,7 +59,8 @@ export const collectionExamples = {
         level: 1,
         tags: ['natural', 'premium'],
         published: true,
-        createdBy: 'admin'
+        createdBy: 'admin',
+        images: []
       });
       
       console.log('Created collection:', newCollection);
@@ -79,7 +80,8 @@ export const collectionExamples = {
         level: 1,
         tags: ['natural', 'premium', 'updated'],
         published: true,
-        updatedBy: 'admin'
+        updatedBy: 'admin',
+        images: []
       });
       
       console.log('Updated collection:', updatedCollection);
