@@ -1,10 +1,13 @@
 ﻿using Cast_Stone_api.Data;
-using Cast_Stone_api.Repositories.Interfaces;
-using Cast_Stone_api.Repositories.Implementations;
-using Cast_Stone_api.Services.Interfaces;
-using Cast_Stone_api.Services.Implementations;
+using Cast_Stone_api.Domain.Models.PaymentGatewaySettings;
 using Cast_Stone_api.Mappings;
+using Cast_Stone_api.Repositories.Implementations;
+using Cast_Stone_api.Repositories.Interfaces;
+using Cast_Stone_api.Services;
+using Cast_Stone_api.Services.Implementations;
+using Cast_Stone_api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,11 +49,27 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 // Register Services
 builder.Services.AddScoped<ICollectionService, CollectionService>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, Cast_Stone_api.Services.Implementations.ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<CloudinaryService>();
+builder.Services.AddScoped<StripeService>();
+builder.Services.AddScoped<PayPalService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<StripeSettings>(
+builder.Configuration.GetSection("Stripe"));
+
+builder.Services.Configure<PayPalSettings>(
+builder.Configuration.GetSection("PayPal"));
+
+builder.Services.Configure<SmtpSettings>(
+builder.Configuration.GetSection("SmtpSettings"));
+
+builder.Services.Configure<ApplePaySettings>(
+builder.Configuration.GetSection("ApplePay"));
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 builder.Services.AddControllers();
 
@@ -73,7 +92,7 @@ builder.Services.AddSwaggerGen(c =>
     // Include XML comments
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
+    if (System.IO.File.Exists(xmlPath))
     {
         c.IncludeXmlComments(xmlPath);
     }

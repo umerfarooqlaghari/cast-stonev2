@@ -39,8 +39,15 @@ public class ApplicationDbContext : DbContext
          .HasConversion(
         v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
         v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-    );
+          );
 
+        modelBuilder.Entity<Collection>()
+       .Property(c => c.Images)
+       .HasColumnType("jsonb")
+       .HasConversion(
+      v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+      v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+  );
         modelBuilder.Entity<Product>()
        .Property(c => c.Tags)
        .HasColumnType("jsonb")

@@ -13,17 +13,23 @@ public class OrderService : IOrderService
     private readonly IProductRepository _productRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<OrderService> _logger;
 
     public OrderService(
-        IOrderRepository orderRepository, 
+        IOrderRepository orderRepository,
         IProductRepository productRepository,
         IUserRepository userRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IEmailService emailService,
+        ILogger<OrderService> logger)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _userRepository = userRepository;
         _mapper = mapper;
+        _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<OrderResponse?> GetByIdAsync(int id)
@@ -221,5 +227,34 @@ public class OrderService : IOrderService
             HasNextPage = filter.PageNumber < totalPages,
             HasPreviousPage = filter.PageNumber > 1
         };
+    }
+
+    public async Task<EmailNotificationResponse> SendOrderConfirmationEmailAsync(int orderId, PaymentConfirmationResponse payment)
+    {
+        try
+        {
+            var order = await GetWithDetailsAsync(orderId);
+            if (order == null)
+            {
+                return new EmailNotificationResponse
+                {
+                    Success = false,
+                    Message = "Order not found",
+                    SentAt = DateTime.UtcNow
+                };
+            }
+
+            return await _emailService.SendOrderConfirmationToAdminAsync(order, payment);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error sending order confirmation email for order {OrderId}", orderId);
+            return new EmailNotificationResponse
+            {
+                Success = false,
+                Message = $"Failed to send order confirmation email: {ex.Message}",
+                SentAt = DateTime.UtcNow
+            };
+        }
     }
 }

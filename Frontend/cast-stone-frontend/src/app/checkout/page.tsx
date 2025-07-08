@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
+import { paymentService } from '@/services';
 import styles from './checkout.module.css';
 
 interface ShippingInfo {
@@ -24,32 +27,24 @@ interface PaymentMethod {
   icon: string;
 }
 
-const paymentMethods: PaymentMethod[] = [
-  {
-    id: 'paypal',
-    name: 'PayPal',
-    description: 'Pay securely with your PayPal account',
-    icon: '💳'
-  },
-  {
-    id: 'stripe',
-    name: 'Credit Card',
-    description: 'Visa, Mastercard, American Express',
-    icon: '💳'
-  },
-  {
-    id: 'brevo',
-    name: 'Bank Transfer',
-    description: 'Direct bank transfer via Brevo',
-    icon: '🏦'
-  }
-];
+// Get available payment methods from service
+const getAvailablePaymentMethods = (): PaymentMethod[] => {
+  const methods = paymentService.getAvailablePaymentMethods();
+  return methods.map(method => ({
+    id: method.method,
+    name: method.name,
+    description: method.description,
+    icon: method.icon
+  }));
+};
 
 export default function CheckoutPage() {
   const { state, clearCart } = useCart();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [paymentError, setPaymentError] = useState<string>('');
   
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     firstName: '',
@@ -64,6 +59,11 @@ export default function CheckoutPage() {
   });
   
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('stripe');
+
+  // Initialize payment methods
+  useEffect(() => {
+    setPaymentMethods(getAvailablePaymentMethods());
+  }, []);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -104,19 +104,87 @@ export default function CheckoutPage() {
     if (!state.cart) return;
 
     setIsProcessing(true);
-    
+    setPaymentError('');
+
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      // Validate payment amount
+      const validation = paymentService.validatePaymentAmount(total);
+      if (!validation.valid) {
+        setPaymentError(validation.errors.join(', '));
+        return;
+      }
+
+      // Create order first (this would be a real API call)
+      const orderData = {
+        email: shippingInfo.email,
+        phoneNumber: shippingInfo.phone,
+        country: shippingInfo.country,
+        city: shippingInfo.city,
+        zipCode: shippingInfo.zipCode,
+        paymentMethod: selectedPaymentMethod,
+        orderItems: state.cart.cartItems.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity
+        }))
+      };
+
+      // For demo purposes, we'll simulate order creation
+      const mockOrderId = Math.floor(Math.random() * 10000);
+
+      // Process payment based on selected method
+      const paymentResult = await paymentService.processPayment(
+        selectedPaymentMethod as 'stripe' | 'paypal' | 'apple_pay' | 'affirm',
+        total,
+        'USD',
+        mockOrderId,
+        {
+          description: `Cast Stone Order #${mockOrderId}`,
+          customer_email: shippingInfo.email
+        }
+      );
+
+      if (!paymentResult.success) {
+        setPaymentError(paymentResult.message || 'Payment processing failed');
+        return;
+      }
+
+      // For demo purposes, simulate payment completion
+      if (selectedPaymentMethod === 'paypal' && 'approvalUrl' in paymentResult) {
+        // For PayPal, redirect to approval URL
+        if (typeof paymentResult.approvalUrl === 'string') {
+          window.location.href = paymentResult.approvalUrl;
+        } else {
+          setPaymentError('Invalid approval URL received from payment service.');
+          return;
+        }
+        return;
+      }
+
+      // For other payment methods, complete the payment
+      if ('paymentIntentId' in paymentResult && paymentResult.paymentIntentId) {
+        const completionResult = await paymentService.completePayment(
+          selectedPaymentMethod as 'stripe' | 'paypal' | 'apple_pay' | 'affirm',
+          paymentResult.paymentIntentId,
+          mockOrderId
+        );
+
+        if (!completionResult.payment.success) {
+          setPaymentError(completionResult.payment.message || 'Payment completion failed');
+          return;
+        }
+
+        console.log('Payment completed:', completionResult);
+      }
+
       // Clear cart after successful order
       await clearCart();
-      
+
       // Redirect to success page
       router.push('/checkout/success');
     } catch (error) {
       console.error('Error placing order:', error);
-      alert('There was an error processing your order. Please try again.');
+      const errorInfo = paymentService.handlePaymentError(error, selectedPaymentMethod);
+      setPaymentError(errorInfo.userMessage);
     } finally {
       setIsProcessing(false);
     }
@@ -310,7 +378,13 @@ export default function CheckoutPage() {
                   </div>
                 ))}
               </div>
-              
+
+              {paymentError && (
+                <div className={styles.errorMessage}>
+                  <p>{paymentError}</p>
+                </div>
+              )}
+
               <div className={styles.stepActions}>
                 <button
                   onClick={() => setCurrentStep(1)}

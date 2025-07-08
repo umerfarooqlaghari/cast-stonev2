@@ -22,4 +22,5 @@ public interface IOrderService
     Task<IEnumerable<OrderResponse>> GetPendingOrdersAsync();
     Task<bool> CancelOrderAsync(int id);
     Task<PaginatedResponse<OrderResponse>> GetFilteredAsync(OrderFilterRequest filter);
+    Task<EmailNotificationResponse> SendOrderConfirmationEmailAsync(int orderId, PaymentConfirmationResponse payment);
 }
