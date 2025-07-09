@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { collectionService, productService, orderService, userService } from '@/services';
+import { collectionService, productService, orderService, userService, contactFormService } from '@/services';
 
 interface DashboardStats {
   totalCollections: number;
   totalProducts: number;
   totalOrders: number;
   totalUsers: number;
+  totalContactSubmissions: number;
   lowStockProducts: number;
   pendingOrders: number;
 }
@@ -20,6 +21,7 @@ export default function AdminDashboardPage() {
     totalProducts: 0,
     totalOrders: 0,
     totalUsers: 0,
+    totalContactSubmissions: 0,
     lowStockProducts: 0,
     pendingOrders: 0,
   });
@@ -28,11 +30,12 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
-        const [collections, products, orders, users] = await Promise.all([
+        const [collections, products, orders, users, contactSubmissions] = await Promise.all([
           collectionService.get.getAll(),
           productService.get.getAll(),
           orderService.get.getAll(),
           userService.get.getAll(),
+          (await contactFormService.get()).getAll(),
         ]);
 
         // Calculate low stock products (stock < 10)
@@ -46,6 +49,7 @@ export default function AdminDashboardPage() {
           totalProducts: products.length,
           totalOrders: orders.length,
           totalUsers: users.length,
+          totalContactSubmissions: contactSubmissions.length,
           lowStockProducts,
           pendingOrders,
         });
@@ -124,6 +128,17 @@ export default function AdminDashboardPage() {
       ),
       bgColor: 'bg-orange-50',
       href: '/admin/dashboard/orders?filter=pending',
+    },
+    {
+      title: 'Contact Submissions',
+      value: stats.totalContactSubmissions,
+      icon: (
+        <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      bgColor: 'bg-purple-50',
+      href: '/admin/dashboard/contact-submissions',
     },
   ];
 

@@ -116,5 +116,30 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.User, opt => opt.Ignore())
             .ForMember(dest => dest.CartItems, opt => opt.Ignore());
+
+        // Contact Form mappings
+        CreateMap<ContactFormSubmission, ContactFormSubmissionResponse>()
+            .ForMember(dest => dest.InquiryDisplayName, opt => opt.MapFrom(src => GetInquiryDisplayName(src.Inquiry)));
+
+        CreateMap<CreateContactFormSubmissionRequest, ContactFormSubmission>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+    }
+
+    private static string GetInquiryDisplayName(InquiryType inquiry)
+    {
+        return inquiry switch
+        {
+            InquiryType.ProductInquiry => "Product Inquiry",
+            InquiryType.RequestDesignConsultation => "Request a Design Consultation",
+            InquiryType.CustomOrders => "Custom Orders",
+            InquiryType.TradePartnerships => "Trade Partnerships",
+            InquiryType.InstallationSupport => "Installation Support",
+            InquiryType.ShippingAndLeadTimes => "Shipping & Lead Times",
+            InquiryType.RequestCatalogPriceList => "Request a Catalog / Price List",
+            InquiryType.MediaPressInquiry => "Media / Press Inquiry",
+            InquiryType.GeneralQuestions => "General Questions",
+            _ => inquiry.ToString()
+        };
     }
 }
