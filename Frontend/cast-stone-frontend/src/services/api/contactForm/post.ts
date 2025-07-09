@@ -7,6 +7,7 @@ export class ContactFormPostService extends BaseService {
   /**
    * Submit a new contact form
    */
+  
   async create(data: CreateContactFormSubmissionRequest): Promise<ContactFormSubmission> {
     this.logApiCall('POST', '/api/contactform', data);
     
