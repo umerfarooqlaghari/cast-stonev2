@@ -1,6 +1,6 @@
 // API Configuration
 // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7069/api';
-const API_BASE_URL = 'https://gracious-acceptance-production.up.railway.app';
+const API_BASE_URL = 'https://gracious-acceptance-production.up.railway.app/api';
 
 // API Response Types
 export interface ApiResponse<T> {
