@@ -305,3 +305,39 @@ export interface AddToCartRequest {
 export interface UpdateCartItemRequest {
   quantity: number;
 }
+
+// Contact Form Types
+export enum InquiryType {
+  ProductInquiry = 1,
+  RequestDesignConsultation = 2,
+  CustomOrders = 3,
+  TradePartnerships = 4,
+  InstallationSupport = 5,
+  ShippingAndLeadTimes = 6,
+  RequestCatalogPriceList = 7,
+  MediaPressInquiry = 8,
+  GeneralQuestions = 9
+}
+
+export interface ContactFormSubmission {
+  id: number;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  company?: string;
+  state: string;
+  inquiry: InquiryType;
+  inquiryDisplayName: string;
+  message: string;
+  createdAt: string;
+}
+
+export interface CreateContactFormSubmissionRequest {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  company?: string;
+  state: string;
+  inquiry: InquiryType;
+  message: string;
+}

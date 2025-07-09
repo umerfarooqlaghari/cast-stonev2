@@ -14,6 +14,7 @@ export * from './api/users';
 export * from './api/cart';
 export * from './api/payments';
 export * from './api/seed';
+export * from './api/contactForm';
 
 // Combined API Service
 import { collectionService } from './api/collections';
@@ -23,6 +24,7 @@ import { userService } from './api/users';
 import { cartService } from './api/cart';
 import { paymentService } from './api/payments';
 import { seedService } from './api/seed';
+import { contactFormService } from './api/contactForm';
 
 export class ApiService {
   collections = collectionService;
@@ -32,6 +34,7 @@ export class ApiService {
   cart = cartService;
   payments = paymentService;
   seed = seedService;
+  contactForm = contactFormService;
 }
 
 // Export singleton instance
@@ -48,7 +51,8 @@ export {
   userService,
   cartService,
   paymentService,
-  seedService
+  seedService,
+  contactFormService
 };
 
 // Utility exports

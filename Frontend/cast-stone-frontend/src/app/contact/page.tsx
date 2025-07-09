@@ -2,55 +2,97 @@
 
 import React, { useState } from 'react';
 import styles from './contact.module.css';
+import { contactFormPostService } from '@/services/api/contactForm/post';
+import { InquiryType } from '@/services/types/entities';
 
 interface FormData {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  phone: string;
-  projectType: string;
+  phoneNumber: string;
+  company: string;
+  state: string;
+  inquiry: InquiryType | '';
   message: string;
 }
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
-    phone: '',
-    projectType: '',
+    phoneNumber: '',
+    company: '',
+    state: '',
+    inquiry: '',
     message: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const inquiryOptions = [
+    { value: InquiryType.ProductInquiry, label: 'Product Inquiry' },
+    { value: InquiryType.RequestDesignConsultation, label: 'Request a Design Consultation' },
+    { value: InquiryType.CustomOrders, label: 'Custom Orders' },
+    { value: InquiryType.TradePartnerships, label: 'Trade Partnerships' },
+    { value: InquiryType.InstallationSupport, label: 'Installation Support' },
+    { value: InquiryType.ShippingAndLeadTimes, label: 'Shipping & Lead Times' },
+    { value: InquiryType.RequestCatalogPriceList, label: 'Request a Catalog / Price List' },
+    { value: InquiryType.MediaPressInquiry, label: 'Media / Press Inquiry' },
+    { value: InquiryType.GeneralQuestions, label: 'General Questions' }
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'inquiry' ? (value === '' ? '' : parseInt(value) as InquiryType) : value
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage(null);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      if (formData.inquiry === '') {
+        throw new Error('Please select an inquiry type');
+      }
 
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      projectType: '',
-      message: ''
-    });
+      await contactFormPostService.submit({
+        name: formData.name,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        company: formData.company || undefined,
+        state: formData.state,
+        inquiry: formData.inquiry,
+        message: formData.message
+      });
 
-    setIsSubmitting(false);
-    alert('Thank you for your message! We will get back to you soon.');
+      // Reset form on success
+      setFormData({
+        name: '',
+        email: '',
+        phoneNumber: '',
+        company: '',
+        state: '',
+        inquiry: '',
+        message: ''
+      });
+
+      setSubmitMessage({
+        type: 'success',
+        text: 'Thank you for your message! We will get back to you soon.'
+      });
+
+    } catch (error) {
+      setSubmitMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'An error occurred. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -78,37 +120,30 @@ const ContactPage: React.FC = () => {
                   Tell us about your vision and we&apos;ll help you make it reality.
                 </p>
 
+                {submitMessage && (
+                  <div className={`${styles.submitMessage} ${styles[submitMessage.type]}`}>
+                    {submitMessage.text}
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className={styles.contactForm}>
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="firstName" className={styles.label}>First Name</label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        className={styles.input}
-                        required
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="lastName" className={styles.label}>Last Name</label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        className={styles.input}
-                        required
-                      />
-                    </div>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="name" className={styles.label}>Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className={styles.input}
+                      required
+                      placeholder="Enter your full name"
+                    />
                   </div>
 
                   <div className={styles.formRow}>
                     <div className={styles.formGroup}>
-                      <label htmlFor="email" className={styles.label}>Email Address</label>
+                      <label htmlFor="email" className={styles.label}>Email *</label>
                       <input
                         type="email"
                         id="email"
@@ -117,43 +152,73 @@ const ContactPage: React.FC = () => {
                         onChange={handleInputChange}
                         className={styles.input}
                         required
+                        placeholder="your.email@example.com"
                       />
                     </div>
                     <div className={styles.formGroup}>
-                      <label htmlFor="phone" className={styles.label}>Phone Number</label>
+                      <label htmlFor="phoneNumber" className={styles.label}>Phone Number *</label>
                       <input
                         type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
                         onChange={handleInputChange}
                         className={styles.input}
+                        required
+                        placeholder="+1 (555) 123-4567"
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="company" className={styles.label}>Company (if applicable)</label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className={styles.input}
+                        placeholder="Your company name"
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="state" className={styles.label}>State *</label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className={styles.input}
+                        required
+                        placeholder="e.g., California, New York"
                       />
                     </div>
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label htmlFor="projectType" className={styles.label}>Project Type</label>
+                    <label htmlFor="inquiry" className={styles.label}>Inquiry *</label>
                     <select
-                      id="projectType"
-                      name="projectType"
-                      value={formData.projectType}
+                      id="inquiry"
+                      name="inquiry"
+                      value={formData.inquiry}
                       onChange={handleInputChange}
                       className={styles.select}
                       required
                     >
-                      <option value="">Select a project type</option>
-                      <option value="fireplace">Fireplace & Mantel</option>
-                      <option value="architectural">Architectural Elements</option>
-                      <option value="decorative">Decorative Pieces</option>
-                      <option value="custom">Custom Design</option>
-                      <option value="restoration">Restoration Project</option>
-                      <option value="other">Other</option>
+                      <option value="">Select an inquiry type</option>
+                      {inquiryOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label htmlFor="message" className={styles.label}>Project Details</label>
+                    <label htmlFor="message" className={styles.label}>Message *</label>
                     <textarea
                       id="message"
                       name="message"
@@ -163,7 +228,12 @@ const ContactPage: React.FC = () => {
                       rows={5}
                       placeholder="Tell us about your project, timeline, and any specific requirements..."
                       required
+                      minLength={10}
+                      maxLength={2000}
                     />
+                    <div className={styles.charCount}>
+                      {formData.message.length}/2000 characters
+                    </div>
                   </div>
 
                   <button

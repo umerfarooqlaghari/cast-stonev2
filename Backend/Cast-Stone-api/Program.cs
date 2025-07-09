@@ -46,6 +46,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IContactFormSubmissionRepository, ContactFormSubmissionRepository>();
 
 // Register Services
 builder.Services.AddScoped<ICollectionService, CollectionService>();
@@ -53,6 +54,7 @@ builder.Services.AddScoped<IProductService, Cast_Stone_api.Services.Implementati
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IContactFormSubmissionService, ContactFormSubmissionService>();
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<StripeService>();
 builder.Services.AddScoped<PayPalService>();
