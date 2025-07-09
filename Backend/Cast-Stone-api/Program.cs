@@ -13,8 +13,8 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Railway deployment configuration
-//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-//builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Local development configuration (commented for Railway deployment)
 //var port = Environment.GetEnvironmentVariable("Port") ?? "7069";
@@ -105,7 +105,7 @@ builder.Services.AddCors(options =>
     {
         // Production frontend URLs (update these with your actual frontend domain)
         policy.WithOrigins(
-                "https://cast-stonev2.vercel.app/", // Replace with your actual frontend URL
+                "https://cast-stonev2.vercel.app", "http://cast-stonev2.vercel.app",
                  "http://localhost:3000", "https://localhost:3000", "http://localhost:3001", "https://localhost:3001" // Replace with your actual frontend URL
               )
               .AllowAnyHeader()
