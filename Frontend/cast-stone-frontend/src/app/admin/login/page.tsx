@@ -45,19 +45,19 @@ export default function AdminLoginPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-900 mx-auto"></div>
-          <p className="mt-4 text-amber-900">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto"></div>
+          <p className="mt-4 text-black">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-50">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg border border-amber-200">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-amber-900 mb-2">Cast Stone</h1>
-          <h2 className="text-2xl font-semibold text-amber-800">Admin Portal</h2>
+          <h2 className="text-2xl font-semibold text-black-800">Admin Portal</h2>
           <p className="mt-3 text-sm text-amber-700">
             Sign in to access the admin dashboard
           </p>

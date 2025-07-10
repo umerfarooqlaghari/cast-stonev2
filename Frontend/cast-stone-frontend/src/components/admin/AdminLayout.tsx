@@ -77,10 +77,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-amber-50">
+    <div className="flex h-screen bg-black">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-amber-200`}>
-        <div className="flex items-center justify-center h-16 px-4 bg-amber-900">
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-white`}>
+        <div className="flex items-center justify-center h-16 px-4 bg-black">
           <h1 className="text-xl font-bold text-white">Cast Stone Admin</h1>
         </div>
 
@@ -110,29 +110,29 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main content */}
       <div className={`lg:pl flex flex-col flex-1 h-full`}>
         {/* Top header */}
-        <header className="bg-white shadow-sm border-b border-amber-200">
+        <header className="bg-white shadow-sm border-b border-black">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center">
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-2 rounded-md text-amber-600 hover:text-amber-800 hover:bg-amber-50"
+                className="lg:hidden p-2 rounded-md text-black hover:text-black hover:bg-black"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <h2 className="ml-4 text-2xl font-bold text-amber-900">
+              <h2 className="ml-4 text-2xl font-bold text-black">
                 {navigation.find(item => item.href === pathname)?.name || 'Dashboard'}
               </h2>
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-amber-800">
-                Welcome, <span className="font-semibold text-amber-900">{admin?.email}</span>
+              <div className="text-sm text-black">
+                Welcome, <span className="font-semibold text-black">{admin?.email}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-white bg-amber-900 rounded-md hover:bg-amber-800 transition-colors shadow-sm"
+                className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black-800 transition-colors shadow-sm"
               >
                 Logout
               </button>
@@ -141,7 +141,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6 bg-amber-50">
+        <main className="flex-1 p-6 bg-white">
           {children}
         </main>
       </div>
@@ -149,7 +149,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-amber-900 bg-opacity-75 lg:hidden"
+          className="fixed inset-0 z-40 bg-white bg-opacity-75 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

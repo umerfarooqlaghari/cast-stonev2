@@ -101,11 +101,11 @@ export default function AdminDashboardPage() {
       title: 'Total Users',
       value: stats.totalUsers,
       icon: (
-        <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
         </svg>
       ),
-      bgColor: 'bg-amber-50',
+      bgColor: 'bg-white',
     },
     {
       title: 'Low Stock Products',
@@ -147,9 +147,9 @@ export default function AdminDashboardPage() {
       <AdminLayout>
         <div className="space-y-6">
           {/* Welcome Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-amber-200 p-8">
-            <h1 className="text-3xl font-bold text-amber-900 mb-3">Welcome to Cast Stone Admin</h1>
-            <p className="text-amber-700 text-lg">
+          <div className="bg-white rounded-lg shadow-sm border border-black p-8">
+            <h1 className="text-3xl font-bold text-black mb-3">Welcome to Cast Stone Admin</h1>
+            <p className="text-black text-lg">
               Manage your collections, products, and orders from this comprehensive dashboard.
             </p>
           </div>
@@ -159,15 +159,15 @@ export default function AdminDashboardPage() {
             {statCards.map((card, index) => (
               <div
                 key={index}
-                className={`${card.bgColor} rounded-lg border border-amber-200 p-6 hover:shadow-lg transition-all duration-200 ${card.href ? 'cursor-pointer hover:scale-105' : ''}`}
+                className={`${card.bgColor} rounded-lg border border-black p-6 hover:shadow-lg transition-all duration-200 ${card.href ? 'cursor-pointer hover:scale-105' : ''}`}
                 onClick={() => card.href && (window.location.href = card.href)}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-amber-800">{card.title}</p>
-                    <p className="text-3xl font-bold text-amber-900 mt-2">
+                    <p className="text-sm font-semibold text-black">{card.title}</p>
+                    <p className="text-3xl font-bold text-black mt-2">
                       {isLoading ? (
-                        <div className="animate-pulse bg-amber-300 h-8 w-16 rounded"></div>
+                        <div className="animate-pulse bg-black h-8 w-16 rounded"></div>
                       ) : (
                         card.value
                       )}
@@ -182,37 +182,37 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-lg shadow-sm border border-amber-200 p-6">
-            <h2 className="text-xl font-bold text-amber-900 mb-6">Quick Actions</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-black p-6">
+            <h2 className="text-xl font-bold text-black mb-6">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <a
                 href="/admin/dashboard/collections"
-                className="flex items-center p-6 bg-amber-50 rounded-lg hover:bg-amber-100 transition-all duration-200 border border-amber-200 hover:shadow-md"
+                className="flex items-center p-6 bg-white rounded-lg hover:bg-blue transition-all duration-200 border border-black hover:shadow-md"
               >
-                <svg className="w-8 h-8 text-amber-700 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-black mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                <span className="font-semibold text-amber-900">Add Collection</span>
+                <span className="font-semibold text-black">Add Collection</span>
               </a>
 
               <a
                 href="/admin/dashboard/products"
-                className="flex items-center p-6 bg-amber-50 rounded-lg hover:bg-amber-100 transition-all duration-200 border border-amber-200 hover:shadow-md"
+                className="flex items-center p-6 bg-white rounded-lg hover:bg-blue transition-all duration-200 border border-black hover:shadow-md"
               >
-                <svg className="w-8 h-8 text-amber-700 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-black mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                <span className="font-semibold text-amber-900">Add Product</span>
+                <span className="font-semibold text-black">Add Product</span>
               </a>
 
               <a
                 href="/admin/dashboard/orders"
-                className="flex items-center p-6 bg-amber-50 rounded-lg hover:bg-amber-100 transition-all duration-200 border border-amber-200 hover:shadow-md"
+                className="flex items-center p-6 bg-white rounded-lg hover:bg-gray transition-all duration-200 border border-black hover:shadow-md"
               >
-                <svg className="w-8 h-8 text-amber-700 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-black mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
-                <span className="font-semibold text-amber-900">Manage Orders</span>
+                <span className="font-semibold text-black">Manage Orders</span>
               </a>
             </div>
           </div>
