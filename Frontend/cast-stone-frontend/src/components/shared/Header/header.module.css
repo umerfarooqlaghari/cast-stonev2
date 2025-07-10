@@ -211,7 +211,7 @@
   border: 1px solid rgba(74, 55, 40, 0.1);
   border-radius: 8px;
   box-shadow: 0 8px 32px var(--cast-stone-shadow-hover);
-  min-width: 220px;
+  min-width: 280px;
   z-index: 1001;
   opacity: 0;
   visibility: hidden;
@@ -288,9 +288,9 @@
 }
 
 .subDropdownLink::before {
-  content: '→';
+  content: '→  ';
   position: absolute;
-  left: 1.5rem;
+  left: 0.75rem;
   color: var(--cast-stone-gray);
   font-size: 0.7rem;
   transition: var(--transition-fast);
@@ -304,6 +304,52 @@
 }
 
 .subDropdownLink:hover::before {
+  color: var(--cast-stone-brown);
+  transform: translateX(2px);
+}
+
+/* Sub-sub-dropdown Styles (Level 3) */
+.subSubDropdownList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(74, 55, 40, 0.04);
+  border-top: 1px solid rgba(74, 55, 40, 0.12);
+}
+
+.subSubDropdownItem {
+  position: relative;
+}
+
+.subSubDropdownLink {
+  display: block;
+  padding: 0.5rem 1.25rem 0.5rem 2.5rem;
+  color: var(--cast-stone-gray);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 400;
+  transition: var(--transition-fast);
+  border-left: 6px solid transparent;
+  position: relative;
+}
+
+.subSubDropdownLink::before {
+  content: '⤷  ';
+  position: absolute;
+  left: 1.5rem;
+  color: var(--cast-stone-gray);
+  font-size: 0.65rem;
+  transition: var(--transition-fast);
+}
+
+.subSubDropdownLink:hover {
+  background: rgba(74, 55, 40, 0.08);
+  color: var(--cast-stone-brown);
+  border-left-color: var(--cast-stone-light-brown);
+  transform: translateX(2px);
+}
+
+.subSubDropdownLink:hover::before {
   color: var(--cast-stone-brown);
   transform: translateX(2px);
 }

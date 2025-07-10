@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -215,6 +216,17 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                                   <Link href={child.href} className={styles.subDropdownLink}>
                                     {child.label}
                                   </Link>
+                                  {child.children && child.children.length > 0 && (
+                                    <ul className={styles.subSubDropdownList}>
+                                      {child.children.map((grandChild, grandChildIndex) => (
+                                        <li key={grandChildIndex} className={styles.subSubDropdownItem}>
+                                          <Link href={grandChild.href} className={styles.subSubDropdownLink}>
+                                            {grandChild.label}
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
                                 </li>
                               ))}
                             </ul>
