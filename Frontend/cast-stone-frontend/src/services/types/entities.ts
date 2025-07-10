@@ -8,11 +8,13 @@ export interface Collection {
   childCollectionId?: number;
   tags: string[];
   images: string[];
+  productIds?: number[];
   published: boolean;
   createdBy: string;
   createdAt: string;
   updatedBy?: string;
   updatedAt?: string;
+  productCount: number;
   parentCollection?: Collection;
   childCollection?: Collection;
   products: Product[];
@@ -37,6 +39,7 @@ export interface CreateCollectionRequest {
   childCollectionId?: number;
   tags: string[];
   images: string[];
+  productIds?: number[];
   published: boolean;
   createdBy: string;
 }
@@ -49,6 +52,7 @@ export interface UpdateCollectionRequest {
   childCollectionId?: number;
   tags: string[];
   images: string[];
+  productIds?: number[];
   published: boolean;
   updatedBy: string;
 }

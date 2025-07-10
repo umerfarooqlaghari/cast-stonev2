@@ -3,6 +3,7 @@ using System;
 using Cast_Stone_api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cast_Stone_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250710175040_UpdateCollectionImageIds")]
+    partial class UpdateCollectionImageIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,8 +110,7 @@ namespace Cast_Stone_api.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<string>("Images")
-                        .IsRequired()
+                    b.Property<string>("ImageIds")
                         .HasColumnType("jsonb");
 
                     b.Property<int>("Level")
@@ -121,9 +123,6 @@ namespace Cast_Stone_api.Migrations
 
                     b.Property<int?>("ParentCollectionId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ProductIds")
-                        .HasColumnType("jsonb");
 
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");

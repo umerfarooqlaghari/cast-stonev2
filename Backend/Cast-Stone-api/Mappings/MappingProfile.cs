@@ -14,7 +14,8 @@ public class MappingProfile : Profile
         //    .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
         CreateMap<Collection, CollectionResponse>()
            .ForMember(dest => dest.ParentCollection, opt => opt.Ignore())
-           .ForMember(dest => dest.ChildCollection, opt => opt.Ignore());
+           .ForMember(dest => dest.ChildCollection, opt => opt.Ignore())
+           .ForMember(dest => dest.ProductCount, opt => opt.MapFrom(src => src.Products.Count));
 
         CreateMap<CreateCollectionRequest, Collection>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

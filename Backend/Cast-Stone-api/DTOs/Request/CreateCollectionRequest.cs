@@ -23,6 +23,8 @@ public class CreateCollectionRequest
 
     public List<string> Images { get; set; } = new List<string>();
 
+    public List<int>? ProductIds { get; set; }
+
     public bool Published { get; set; } = false;
 
     [Required]

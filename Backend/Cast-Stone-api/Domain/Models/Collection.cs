@@ -30,6 +30,9 @@ public class Collection
     [Column(TypeName = "jsonb")]
     public List<string> Images { get; set; } = new List<string>();
 
+    [Column(TypeName = "jsonb")]
+    public List<int>? ProductIds { get; set; }
+
     public bool Published { get; set; } = false;
     
     [Required]

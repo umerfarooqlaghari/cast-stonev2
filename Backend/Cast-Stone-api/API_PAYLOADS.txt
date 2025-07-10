@@ -19,6 +19,8 @@ Content-Type: application/json
   "parentCollectionId": null,
   "childCollectionId": null,
   "tags": ["natural", "stone", "premium"],
+  "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+  "productIds": [1, 2, 3],
   "published": true,
   "createdBy": "admin"
 }
@@ -33,6 +35,8 @@ Content-Type: application/json
   "parentCollectionId": null,
   "childCollectionId": null,
   "tags": ["natural", "stone", "premium", "updated"],
+  "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+  "productIds": [1, 2, 3, 4],
   "published": true,
   "updatedBy": "admin"
 }
