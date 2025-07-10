@@ -124,7 +124,7 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
               ) : (
                 <p className={styles.description}>
                   This premium cast stone piece combines durability with elegant design. 
-                  Crafted with attention to detail, it's perfect for both indoor and outdoor use. 
+                  Crafted with attention to detail, it&apos;s perfect for both indoor and outdoor use. 
                   Each piece is individually cast and finished to ensure the highest quality.
                 </p>
               )}

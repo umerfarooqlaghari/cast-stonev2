@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -126,31 +127,7 @@ export default function ProductPage() {
                 </span>
               </div>
               
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Pieces:</span>
-                <span className={styles.infoValue}>Individual Item</span>
-              </div>
-              
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Material:</span>
-                <span className={styles.infoValue}>Cast Stone</span>
-              </div>
-              
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Total Weight:</span>
-                <span className={styles.infoValue}>333 lbs</span>
-              </div>
-              
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Photographed In:</span>
-                <span className={styles.infoValue}>Alpine Stone</span>
-              </div>
-              
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Base Dimensions:</span>
-                <span className={styles.infoValue}>16.5" W</span>
-              </div>
-            </div>
+                         </div>
 
             {/* Price */}
             <div className={styles.priceSection}>

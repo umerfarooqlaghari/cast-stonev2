@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './ourStory.module.css';
+import Link from 'next/link';
 
 const OurStoryPage: React.FC = () => {
   return (
@@ -202,9 +203,9 @@ const OurStoryPage: React.FC = () => {
                 <a href="/contact" className={styles.primaryButton}>
                   Start Your Project
                 </a>
-                <a href="/collections" className={styles.secondaryButton}>
+                <Link href="/collections" className={styles.secondaryButton}>
                   View Our Work
-                </a>
+                </Link>
               </div>
             </div>
           </div>
