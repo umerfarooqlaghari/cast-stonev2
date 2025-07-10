@@ -1,6 +1,9 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import styles from './footer.module.css';
+import { usePathname } from 'next/navigation';
 
 interface FooterProps {
   companyName?: string;
@@ -8,6 +11,12 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ companyName = "Cast Stone" }) => {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  
+  
+    if (pathname.startsWith('/admin')) {
+      return null;
+    }
 
   return (
     <footer className={styles.footer}>

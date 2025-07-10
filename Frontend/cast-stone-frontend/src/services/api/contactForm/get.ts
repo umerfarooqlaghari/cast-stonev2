@@ -8,10 +8,10 @@ export class ContactFormGetService extends BaseService {
    * Get all contact form submissions (Admin only)
    */
   async getAll(): Promise<ContactFormSubmission[]> {
-    this.logApiCall('GET', '/api/contactform');
+    this.logApiCall('GET', '/contactform');
     
     return this.handleResponse(
-      this.client.get<ContactFormSubmission[]>('/api/contactform')
+      this.client.get<ContactFormSubmission[]>('/contactform')
     );
   }
 
@@ -19,14 +19,14 @@ export class ContactFormGetService extends BaseService {
    * Get contact form submission by ID
    */
   async getById(id: number): Promise<ContactFormSubmission> {
-    this.logApiCall('GET', `/api/contactform/${id}`);
+    this.logApiCall('GET', `/contactform/${id}`);
     
     if (!id || id <= 0) {
       throw new Error('Valid submission ID is required');
     }
     
     return this.handleResponse(
-      this.client.get<ContactFormSubmission>(`/api/contactform/${id}`)
+      this.client.get<ContactFormSubmission>(`/contactform/${id}`)
     );
   }
 
@@ -41,7 +41,7 @@ export class ContactFormGetService extends BaseService {
     }
     
     return this.handleResponse(
-      this.client.get<ContactFormSubmission[]>(`/api/contactform/recent?count=${count}`)
+      this.client.get<ContactFormSubmission[]>(`/contactform/recent?count=${count}`)
     );
   }
 
@@ -49,10 +49,10 @@ export class ContactFormGetService extends BaseService {
    * Get contact form submissions by inquiry type
    */
   async getByInquiryType(inquiryType: InquiryType): Promise<ContactFormSubmission[]> {
-    this.logApiCall('GET', `/api/contactform/inquiry/${inquiryType}`);
+    this.logApiCall('GET', `/contactform/inquiry/${inquiryType}`);
     
     return this.handleResponse(
-      this.client.get<ContactFormSubmission[]>(`/api/contactform/inquiry/${inquiryType}`)
+      this.client.get<ContactFormSubmission[]>(`/contactform/inquiry/${inquiryType}`)
     );
   }
 
@@ -63,14 +63,14 @@ export class ContactFormGetService extends BaseService {
     const start = startDate.toISOString();
     const end = endDate.toISOString();
     
-    this.logApiCall('GET', `/api/contactform/date-range?startDate=${start}&endDate=${end}`);
+    this.logApiCall('GET', `/contactform/date-range?startDate=${start}&endDate=${end}`);
     
     if (startDate > endDate) {
       throw new Error('Start date must be before end date');
     }
     
     return this.handleResponse(
-      this.client.get<ContactFormSubmission[]>(`/api/contactform/date-range?startDate=${start}&endDate=${end}`)
+      this.client.get<ContactFormSubmission[]>(`/contactform/date-range?startDate=${start}&endDate=${end}`)
     );
   }
 
@@ -83,7 +83,7 @@ export class ContactFormGetService extends BaseService {
     currentPage: number;
     totalPages: number;
   }> {
-    this.logApiCall('GET', `/api/contactform?page=${page}&pageSize=${pageSize}`);
+    this.logApiCall('GET', `/contactform?page=${page}&pageSize=${pageSize}`);
     
     if (page <= 0) {
       throw new Error('Page must be greater than 0');
@@ -112,7 +112,7 @@ export class ContactFormGetService extends BaseService {
    * Search contact form submissions
    */
   async search(query: string): Promise<ContactFormSubmission[]> {
-    this.logApiCall('GET', `/api/contactform/search?q=${encodeURIComponent(query)}`);
+    this.logApiCall('GET', `/contactform/search?q=${encodeURIComponent(query)}`);
     
     if (!query || query.trim().length === 0) {
       throw new Error('Search query is required');

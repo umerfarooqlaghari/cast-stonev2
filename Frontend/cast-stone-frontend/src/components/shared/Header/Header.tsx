@@ -7,19 +7,33 @@ import { collectionGetService } from '../../../services/api/collections';
 import { CollectionHierarchy } from '../../../services/types/entities';
 import { DropdownItem } from '../../../types';
 import styles from './header.module.css';
+import { usePathname } from 'next/navigation';
+
 
 interface HeaderProps {
   title?: string;
 }
 
+
 const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
+  
   const { getCartSummary } = useCart();
   const [collections, setCollections] = useState<CollectionHierarchy[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const pathname = usePathname();
 
+
+     if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
+
+  // Hide header on admin dashboard routes
+ 
+  
   // Company dropdown items
   const companyItems: DropdownItem[] = [
     { label: 'Contact Us', href: '/contact' },
@@ -37,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     { label: 'FAQ', href: '/faq' }
   ];
 
+  
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +59,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

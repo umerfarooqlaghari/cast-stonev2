@@ -77,7 +77,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-amber-50">
+    <div className="flex h-screen bg-amber-50">
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-amber-200`}>
         <div className="flex items-center justify-center h-16 px-4 bg-amber-900">
@@ -108,7 +108,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className={`lg:pl-64 flex flex-col flex-1`}>
+      <div className={`lg:pl flex flex-col flex-1 h-full`}>
         {/* Top header */}
         <header className="bg-white shadow-sm border-b border-amber-200">
           <div className="flex items-center justify-between px-6 py-4">
