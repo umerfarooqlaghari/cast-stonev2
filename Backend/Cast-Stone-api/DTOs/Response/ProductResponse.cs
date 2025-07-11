@@ -4,6 +4,7 @@ public class ProductResponse
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string? ProductCode { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
@@ -12,9 +13,14 @@ public class ProductResponse
     public List<string> Tags { get; set; } = new List<string>();
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    
+
     // Navigation properties
     public CollectionResponse? Collection { get; set; }
+
+    // Related entities
+    public ProductSpecificationsResponse? ProductSpecifications { get; set; }
+    public ProductDetailsResponse? ProductDetails { get; set; }
+    public DownloadableContentResponse? DownloadableContent { get; set; }
 }
 
 public class ProductSummaryResponse

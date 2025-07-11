@@ -43,6 +43,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Register Repositories
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductSpecificationsRepository, ProductSpecificationsRepository>();
+builder.Services.AddScoped<IProductDetailsRepository, ProductDetailsRepository>();
+builder.Services.AddScoped<IDownloadableContentRepository, DownloadableContentRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -51,6 +54,9 @@ builder.Services.AddScoped<IContactFormSubmissionRepository, ContactFormSubmissi
 // Register Services
 builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddScoped<IProductService, Cast_Stone_api.Services.Implementations.ProductService>();
+builder.Services.AddScoped<IProductSpecificationsService, ProductSpecificationsService>();
+builder.Services.AddScoped<IProductDetailsService, ProductDetailsService>();
+builder.Services.AddScoped<IDownloadableContentService, DownloadableContentService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICartService, CartService>();

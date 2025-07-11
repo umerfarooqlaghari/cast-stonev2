@@ -57,6 +57,27 @@ export const ApiEndpoints = {
     UpdateStock: (id: number) => `/products/${id}/stock`,
     Filter: '/products/filter'
   },
+
+  // Product Specifications
+  ProductSpecifications: {
+    Base: '/productspecifications',
+    ById: (id: number) => `/productspecifications/${id}`,
+    ByProduct: (productId: number) => `/productspecifications/product/${productId}`
+  },
+
+  // Product Details
+  ProductDetails: {
+    Base: '/productdetails',
+    ById: (id: number) => `/productdetails/${id}`,
+    ByProduct: (productId: number) => `/productdetails/product/${productId}`
+  },
+
+  // Downloadable Content
+  DownloadableContent: {
+    Base: '/downloadablecontent',
+    ById: (id: number) => `/downloadablecontent/${id}`,
+    ByProduct: (productId: number) => `/downloadablecontent/product/${productId}`
+  },
   
   // Orders
   Orders: {

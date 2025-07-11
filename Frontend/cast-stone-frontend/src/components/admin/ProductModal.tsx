@@ -20,12 +20,43 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
 
   const [formData, setFormData] = useState({
     name: '',
+    productCode: '',
     description: '',
     price: 0,
     stock: 0,
     collectionId: 0,
     images: [] as string[],
     tags: [] as string[],
+  });
+
+  const [specificationsData, setSpecificationsData] = useState({
+    material: '',
+    dimensions: '',
+    totalWeight: '',
+    weightWithWater: '',
+    waterVolume: '',
+  });
+
+  const [detailsData, setDetailsData] = useState({
+    upc: '',
+    indoorUseOnly: '',
+    assemblyRequired: '',
+    easeOfAssembly: '',
+    assistanceRequired: '',
+    splashLevel: '',
+    soundLevel: '',
+    soundType: '',
+    replacementPumpKit: '',
+    electricalCordLength: '',
+    pumpSize: '',
+    shipMethod: '',
+    catalogPage: '',
+  });
+
+  const [downloadableData, setDownloadableData] = useState({
+    care: '',
+    productInstructions: '',
+    cad: '',
   });
 
   const [tagInput, setTagInput] = useState('');
@@ -35,6 +66,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     if (product) {
       setFormData({
         name: product.name,
+        productCode: product.productCode || '',
         description: product.description || '',
         price: product.price,
         stock: product.stock,
@@ -42,6 +74,45 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
         images: product.images || [],
         tags: product.tags || [],
       });
+
+      // Populate specifications data
+      if (product.productSpecifications) {
+        setSpecificationsData({
+          material: product.productSpecifications.material || '',
+          dimensions: product.productSpecifications.dimensions || '',
+          totalWeight: product.productSpecifications.totalWeight || '',
+          weightWithWater: product.productSpecifications.weightWithWater || '',
+          waterVolume: product.productSpecifications.waterVolume || '',
+        });
+      }
+
+      // Populate details data
+      if (product.productDetails) {
+        setDetailsData({
+          upc: product.productDetails.upc || '',
+          indoorUseOnly: product.productDetails.indoorUseOnly || '',
+          assemblyRequired: product.productDetails.assemblyRequired || '',
+          easeOfAssembly: product.productDetails.easeOfAssembly || '',
+          assistanceRequired: product.productDetails.assistanceRequired || '',
+          splashLevel: product.productDetails.splashLevel || '',
+          soundLevel: product.productDetails.soundLevel || '',
+          soundType: product.productDetails.soundType || '',
+          replacementPumpKit: product.productDetails.replacementPumpKit || '',
+          electricalCordLength: product.productDetails.electricalCordLength || '',
+          pumpSize: product.productDetails.pumpSize || '',
+          shipMethod: product.productDetails.shipMethod || '',
+          catalogPage: product.productDetails.catalogPage || '',
+        });
+      }
+
+      // Populate downloadable content data
+      if (product.downloadableContent) {
+        setDownloadableData({
+          care: product.downloadableContent.care || '',
+          productInstructions: product.downloadableContent.productInstructions || '',
+          cad: product.downloadableContent.cad || '',
+        });
+      }
     }
     // Fetch uploaded images when modal opens
     fetchUploadedImages();
@@ -68,6 +139,10 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
       newErrors.name = 'Name must be less than 200 characters';
     }
 
+    if (formData.productCode && formData.productCode.length > 50) {
+      newErrors.productCode = 'Product code must be less than 50 characters';
+    }
+
     if (formData.description && formData.description.length > 1000) {
       newErrors.description = 'Description must be less than 1000 characters';
     }
@@ -88,6 +163,18 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     return Object.keys(newErrors).length === 0;
   };
 
+  const hasSpecificationsData = (): boolean => {
+    return Object.values(specificationsData).some(value => value.trim() !== '');
+  };
+
+  const hasDetailsData = (): boolean => {
+    return Object.values(detailsData).some(value => value.trim() !== '');
+  };
+
+  const hasDownloadableData = (): boolean => {
+    return Object.values(downloadableData).some(value => value.trim() !== '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -100,11 +187,21 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     try {
       if (product) {
         // Update existing product
-        const updateData: UpdateProductRequest = formData;
+        const updateData: UpdateProductRequest = {
+          ...formData,
+          productSpecifications: hasSpecificationsData() ? specificationsData : undefined,
+          productDetails: hasDetailsData() ? detailsData : undefined,
+          downloadableContent: hasDownloadableData() ? downloadableData : undefined,
+        };
         await productService.update.update(product.id, updateData);
       } else {
         // Create new product
-        const createData: CreateProductRequest = formData;
+        const createData: CreateProductRequest = {
+          ...formData,
+          productSpecifications: hasSpecificationsData() ? { ...specificationsData, productId: 0 } : undefined,
+          productDetails: hasDetailsData() ? { ...detailsData, productId: 0 } : undefined,
+          downloadableContent: hasDownloadableData() ? { ...downloadableData, productId: 0 } : undefined,
+        };
         await productService.post.create(createData);
       }
       
@@ -221,6 +318,24 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               placeholder="Enter product name"
             />
             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+          </div>
+
+          {/* Product Code */}
+          <div>
+            <label htmlFor="productCode" className="block text-sm font-medium text-gray-700 mb-1">
+              Product Code
+            </label>
+            <input
+              type="text"
+              id="productCode"
+              value={formData.productCode}
+              onChange={(e) => setFormData(prev => ({ ...prev, productCode: e.target.value }))}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                errors.productCode ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="Enter product code"
+            />
+            {errors.productCode && <p className="mt-1 text-sm text-red-600">{errors.productCode}</p>}
           </div>
 
           {/* Description */}
@@ -444,6 +559,151 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               >
                 Add
               </button>
+            </div>
+          </div>
+
+          {/* Product Specifications Section */}
+          <div className="border-t pt-4">
+            <h4 className="text-md font-medium text-gray-900 mb-3">Product Specifications (Optional)</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                <input
+                  type="text"
+                  value={specificationsData.material}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, material: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Cast Stone"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Dimensions</label>
+                <input
+                  type="text"
+                  value={specificationsData.dimensions}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, dimensions: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Total Weight</label>
+                <input
+                  type="text"
+                  value={specificationsData.totalWeight}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, totalWeight: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 150 lbs"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Weight With Water</label>
+                <input
+                  type="text"
+                  value={specificationsData.weightWithWater}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, weightWithWater: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 200 lbs"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Water Volume</label>
+                <input
+                  type="text"
+                  value={specificationsData.waterVolume}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, waterVolume: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 50 gallons"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Product Details Section */}
+          <div className="border-t pt-4">
+            <h4 className="text-md font-medium text-gray-900 mb-3">Product Details (Optional)</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">UPC</label>
+                <input
+                  type="text"
+                  value={detailsData.upc}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, upc: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 615973253195"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Indoor Use Only</label>
+                <select
+                  value={detailsData.indoorUseOnly}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, indoorUseOnly: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                >
+                  <option value="">Select...</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assembly Required</label>
+                <select
+                  value={detailsData.assemblyRequired}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, assemblyRequired: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                >
+                  <option value="">Select...</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ease of Assembly</label>
+                <input
+                  type="text"
+                  value={detailsData.easeOfAssembly}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, easeOfAssembly: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Downloadable Content Section */}
+          <div className="border-t pt-4">
+            <h4 className="text-md font-medium text-gray-900 mb-3">Downloadable Content (Optional)</h4>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Care Instructions URL</label>
+                <input
+                  type="url"
+                  value={downloadableData.care}
+                  onChange={(e) => setDownloadableData(prev => ({ ...prev, care: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="https://example.com/care-instructions.pdf"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product Instructions URL</label>
+                <input
+                  type="url"
+                  value={downloadableData.productInstructions}
+                  onChange={(e) => setDownloadableData(prev => ({ ...prev, productInstructions: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="https://example.com/product-instructions.pdf"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">CAD Files URL</label>
+                <input
+                  type="url"
+                  value={downloadableData.cad}
+                  onChange={(e) => setDownloadableData(prev => ({ ...prev, cad: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="https://example.com/cad-files.zip"
+                />
+              </div>
             </div>
           </div>
 

@@ -16,6 +16,9 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         return await _dbSet
             .Include(p => p.Collection)
+            .Include(p => p.ProductSpecifications)
+            .Include(p => p.ProductDetails)
+            .Include(p => p.DownloadableContent)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
@@ -23,6 +26,9 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         return await _dbSet
             .Include(p => p.Collection)
+            .Include(p => p.ProductSpecifications)
+            .Include(p => p.ProductDetails)
+            .Include(p => p.DownloadableContent)
             .ToListAsync();
     }
 
@@ -30,6 +36,9 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         return await _dbSet
             .Include(p => p.Collection)
+            .Include(p => p.ProductSpecifications)
+            .Include(p => p.ProductDetails)
+            .Include(p => p.DownloadableContent)
             .Where(p => p.CollectionId == collectionId)
             .ToListAsync();
     }

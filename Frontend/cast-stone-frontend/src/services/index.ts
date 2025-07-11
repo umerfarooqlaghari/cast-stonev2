@@ -9,6 +9,9 @@ export * from './types/entities';
 // Individual Service Exports
 export * from './api/collections';
 export * from './api/products';
+export * from './api/productSpecifications';
+export * from './api/productDetails';
+export * from './api/downloadableContent';
 export * from './api/orders';
 export * from './api/users';
 export * from './api/cart';
@@ -19,6 +22,9 @@ export * from './api/contactForm';
 // Combined API Service
 import { collectionService } from './api/collections';
 import { productService } from './api/products';
+import { productSpecificationsService } from './api/productSpecifications';
+import { productDetailsService } from './api/productDetails';
+import { downloadableContentService } from './api/downloadableContent';
 import { orderService } from './api/orders';
 import { userService } from './api/users';
 import { cartService } from './api/cart';
@@ -29,6 +35,9 @@ import { contactFormService } from './api/contactForm';
 export class ApiService {
   collections = collectionService;
   products = productService;
+  productSpecifications = productSpecificationsService;
+  productDetails = productDetailsService;
+  downloadableContent = downloadableContentService;
   orders = orderService;
   users = userService;
   cart = cartService;

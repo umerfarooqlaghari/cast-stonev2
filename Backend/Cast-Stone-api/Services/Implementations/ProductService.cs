@@ -11,12 +11,24 @@ public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly ICollectionRepository _collectionRepository;
+    private readonly IProductSpecificationsRepository _productSpecificationsRepository;
+    private readonly IProductDetailsRepository _productDetailsRepository;
+    private readonly IDownloadableContentRepository _downloadableContentRepository;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productRepository, ICollectionRepository collectionRepository, IMapper mapper)
+    public ProductService(
+        IProductRepository productRepository,
+        ICollectionRepository collectionRepository,
+        IProductSpecificationsRepository productSpecificationsRepository,
+        IProductDetailsRepository productDetailsRepository,
+        IDownloadableContentRepository downloadableContentRepository,
+        IMapper mapper)
     {
         _productRepository = productRepository;
         _collectionRepository = collectionRepository;
+        _productSpecificationsRepository = productSpecificationsRepository;
+        _productDetailsRepository = productDetailsRepository;
+        _downloadableContentRepository = downloadableContentRepository;
         _mapper = mapper;
     }
 
@@ -45,10 +57,34 @@ public class ProductService : IProductService
 
         var createdProduct = await _productRepository.AddAsync(product);
 
+        // Create related entities if provided
+        if (request.ProductSpecifications != null)
+        {
+            var specifications = _mapper.Map<ProductSpecifications>(request.ProductSpecifications);
+            specifications.ProductId = createdProduct.Id;
+            await _productSpecificationsRepository.AddAsync(specifications);
+        }
+
+        if (request.ProductDetails != null)
+        {
+            var details = _mapper.Map<ProductDetails>(request.ProductDetails);
+            details.ProductId = createdProduct.Id;
+            await _productDetailsRepository.AddAsync(details);
+        }
+
+        if (request.DownloadableContent != null)
+        {
+            var downloadableContent = _mapper.Map<DownloadableContent>(request.DownloadableContent);
+            downloadableContent.ProductId = createdProduct.Id;
+            await _downloadableContentRepository.AddAsync(downloadableContent);
+        }
+
         // Update collection's ProductIds
         await UpdateCollectionProductIds(request.CollectionId);
 
-        return _mapper.Map<ProductResponse>(createdProduct);
+        // Fetch the complete product with all related entities
+        var completeProduct = await _productRepository.GetByIdAsync(createdProduct.Id);
+        return _mapper.Map<ProductResponse>(completeProduct);
     }
 
     public async Task<ProductResponse?> UpdateAsync(int id, UpdateProductRequest request)
@@ -70,6 +106,11 @@ public class ProductService : IProductService
 
         var updatedProduct = await _productRepository.UpdateAsync(existingProduct);
 
+        // Update or create related entities
+        await UpdateProductSpecifications(id, request.ProductSpecifications);
+        await UpdateProductDetails(id, request.ProductDetails);
+        await UpdateDownloadableContent(id, request.DownloadableContent);
+
         // Update collection ProductIds if collection changed
         if (oldCollectionId != request.CollectionId)
         {
@@ -81,7 +122,9 @@ public class ProductService : IProductService
             await UpdateCollectionProductIds(request.CollectionId);
         }
 
-        return _mapper.Map<ProductResponse>(updatedProduct);
+        // Fetch the complete product with all related entities
+        var completeProduct = await _productRepository.GetByIdAsync(id);
+        return _mapper.Map<ProductResponse>(completeProduct);
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -218,5 +261,75 @@ public class ProductService : IProductService
 
         collection.ProductIds = productIds.Any() ? productIds : null;
         await _collectionRepository.UpdateAsync(collection);
+    }
+
+    private async Task UpdateProductSpecifications(int productId, UpdateProductSpecificationsRequest? request)
+    {
+        var existing = await _productSpecificationsRepository.GetByProductIdAsync(productId);
+
+        if (request == null)
+        {
+            // If no request data and existing entity exists, optionally delete it
+            // For now, we'll keep existing data
+            return;
+        }
+
+        if (existing != null)
+        {
+            // Update existing
+            _mapper.Map(request, existing);
+            await _productSpecificationsRepository.UpdateAsync(existing);
+        }
+        else
+        {
+            // Create new
+            var newEntity = _mapper.Map<ProductSpecifications>(request);
+            newEntity.ProductId = productId;
+            await _productSpecificationsRepository.AddAsync(newEntity);
+        }
+    }
+
+    private async Task UpdateProductDetails(int productId, UpdateProductDetailsRequest? request)
+    {
+        var existing = await _productDetailsRepository.GetByProductIdAsync(productId);
+
+        if (request == null)
+        {
+            return;
+        }
+
+        if (existing != null)
+        {
+            _mapper.Map(request, existing);
+            await _productDetailsRepository.UpdateAsync(existing);
+        }
+        else
+        {
+            var newEntity = _mapper.Map<ProductDetails>(request);
+            newEntity.ProductId = productId;
+            await _productDetailsRepository.AddAsync(newEntity);
+        }
+    }
+
+    private async Task UpdateDownloadableContent(int productId, UpdateDownloadableContentRequest? request)
+    {
+        var existing = await _downloadableContentRepository.GetByProductIdAsync(productId);
+
+        if (request == null)
+        {
+            return;
+        }
+
+        if (existing != null)
+        {
+            _mapper.Map(request, existing);
+            await _downloadableContentRepository.UpdateAsync(existing);
+        }
+        else
+        {
+            var newEntity = _mapper.Map<DownloadableContent>(request);
+            newEntity.ProductId = productId;
+            await _downloadableContentRepository.AddAsync(newEntity);
+        }
     }
 }

@@ -15,16 +15,14 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
     setActiveSection(activeSection === section ? null : section);
   };
 
-  const formatDimensions = () => {
-    // This would typically come from product data
-    // For now, using placeholder data based on the reference design
-    return "40\" W x 31.5\" H";
-  };
+  const hasSpecifications = product.productSpecifications &&
+    Object.values(product.productSpecifications).some(value => value && value.trim() !== '');
 
-  const formatWeight = () => {
-    // This would typically come from product data
-    return "333 lbs";
-  };
+  const hasDetails = product.productDetails &&
+    Object.values(product.productDetails).some(value => value && value.trim() !== '');
+
+  const hasDownloadableContent = product.downloadableContent &&
+    Object.values(product.downloadableContent).some(value => value && value.trim() !== '');
 
   return (
     <div className={styles.specificationsContainer}>
@@ -42,35 +40,55 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
           </span>
         </button>
         
-        {activeSection === 'specifications' && (
+        {activeSection === 'specifications' && hasSpecifications && (
           <div className={styles.sectionContent}>
             <div className={styles.specGrid}>
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Material:</span>
-                <span className={styles.specValue}>Cast Stone</span>
-              </div>
-              
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Dimensions:</span>
-                <span className={styles.specValue}>{formatDimensions()}</span>
-              </div>
-              
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Total Weight:</span>
-                <span className={styles.specValue}>{formatWeight()}</span>
-              </div>
-              
+              {product.productSpecifications?.material && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Material:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.material}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.dimensions && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Dimensions:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.dimensions}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.totalWeight && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Total Weight:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.totalWeight}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.weightWithWater && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Weight With Water:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.weightWithWater}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.waterVolume && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Water Volume:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.waterVolume}</span>
+                </div>
+              )}
+
               <div className={styles.specRow}>
                 <span className={styles.specLabel}>Collection:</span>
                 <span className={styles.specValue}>
                   {product.collection?.name || 'Not specified'}
                 </span>
               </div>
-              
+
               <div className={styles.specRow}>
                 <span className={styles.specLabel}>Product Code:</span>
                 <span className={styles.specValue}>
-                  P-{product.id.toString().padStart(3, '0')}-AS
+                  {product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
                 </span>
               </div>
               
@@ -119,26 +137,104 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
         {activeSection === 'details' && (
           <div className={styles.sectionContent}>
             <div className={styles.detailsContent}>
-              {product.description ? (
+              {product.description && (
                 <p className={styles.description}>{product.description}</p>
-              ) : (
-                <p className={styles.description}>
-                  This premium cast stone piece combines durability with elegant design. 
-                  Crafted with attention to detail, it&apos;s perfect for both indoor and outdoor use. 
-                  Each piece is individually cast and finished to ensure the highest quality.
-                </p>
               )}
-              
-              <div className={styles.featureList}>
-                <h4>Key Features:</h4>
-                <ul>
-                  <li>Premium cast stone construction</li>
-                  <li>Weather-resistant finish</li>
-                  <li>Handcrafted quality</li>
-                  <li>Multiple patina options available</li>
-                  <li>Suitable for indoor and outdoor use</li>
-                </ul>
-              </div>
+
+              {hasDetails && (
+                <div className={styles.specGrid}>
+                  {product.productDetails?.upc && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>UPC:</span>
+                      <span className={styles.specValue}>{product.productDetails.upc}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.indoorUseOnly && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Indoor Use Only:</span>
+                      <span className={styles.specValue}>{product.productDetails.indoorUseOnly}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.assemblyRequired && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Assembly Required:</span>
+                      <span className={styles.specValue}>{product.productDetails.assemblyRequired}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.easeOfAssembly && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Ease of Assembly:</span>
+                      <span className={styles.specValue}>{product.productDetails.easeOfAssembly}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.assistanceRequired && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Assistance Required:</span>
+                      <span className={styles.specValue}>{product.productDetails.assistanceRequired}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.splashLevel && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Splash Level:</span>
+                      <span className={styles.specValue}>{product.productDetails.splashLevel}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.soundLevel && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Sound Level:</span>
+                      <span className={styles.specValue}>{product.productDetails.soundLevel}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.soundType && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Sound Type:</span>
+                      <span className={styles.specValue}>{product.productDetails.soundType}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.replacementPumpKit && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Replacement Pump Kit:</span>
+                      <span className={styles.specValue}>{product.productDetails.replacementPumpKit}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.electricalCordLength && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Electrical Cord Length:</span>
+                      <span className={styles.specValue}>{product.productDetails.electricalCordLength}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.pumpSize && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Pump Size:</span>
+                      <span className={styles.specValue}>{product.productDetails.pumpSize}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.shipMethod && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Ship Method:</span>
+                      <span className={styles.specValue}>{product.productDetails.shipMethod}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.catalogPage && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Catalog Page:</span>
+                      <span className={styles.specValue}>{product.productDetails.catalogPage}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -161,16 +257,58 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
         {activeSection === 'care' && (
           <div className={styles.sectionContent}>
             <div className={styles.careContent}>
-              <div className={styles.careSection}>
-                <h4>Care Instructions:</h4>
-                <ul>
-                  <li>Clean with mild soap and water</li>
-                  <li>Avoid harsh chemicals or abrasive cleaners</li>
-                  <li>For outdoor pieces, periodic sealing is recommended</li>
-                  <li>Store indoors during extreme weather conditions</li>
-                </ul>
-              </div>
-              
+              {hasDownloadableContent && (
+                <div className={styles.downloadSection}>
+                  <h4>Downloadable Content:</h4>
+                  <div className={styles.downloadLinks}>
+                    {product.downloadableContent?.care && (
+                      <a
+                        href={product.downloadableContent.care}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.downloadLink}
+                      >
+                        📄 Care Instructions
+                      </a>
+                    )}
+
+                    {product.downloadableContent?.productInstructions && (
+                      <a
+                        href={product.downloadableContent.productInstructions}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.downloadLink}
+                      >
+                        📋 Product Instructions
+                      </a>
+                    )}
+
+                    {product.downloadableContent?.cad && (
+                      <a
+                        href={product.downloadableContent.cad}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.downloadLink}
+                      >
+                        📐 CAD Files
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {!hasDownloadableContent && (
+                <div className={styles.careSection}>
+                  <h4>Care Instructions:</h4>
+                  <ul>
+                    <li>Clean with mild soap and water</li>
+                    <li>Avoid harsh chemicals or abrasive cleaners</li>
+                    <li>For outdoor pieces, periodic sealing is recommended</li>
+                    <li>Store indoors during extreme weather conditions</li>
+                  </ul>
+                </div>
+              )}
+
               <div className={styles.downloadSection}>
                 <h4>Downloadable Resources:</h4>
                 <div className={styles.downloadLinks}>
