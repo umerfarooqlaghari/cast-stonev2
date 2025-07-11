@@ -26,19 +26,14 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure Collection relationships
-        modelBuilder.Entity<Collection>()
-            .HasOne(c => c.ParentCollection)
-            .WithMany()
-            .HasForeignKey(c => c.ParentCollectionId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Configure Collection JSON properties
 
         modelBuilder.Entity<Collection>()
          .Property(c => c.Tags)
          .HasColumnType("jsonb")
          .HasConversion(
         v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-        v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+        v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
           );
 
         modelBuilder.Entity<Collection>()
@@ -46,7 +41,7 @@ public class ApplicationDbContext : DbContext
        .HasColumnType("jsonb")
        .HasConversion(
       v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-      v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+      v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
   );
 
         modelBuilder.Entity<Collection>()
@@ -54,14 +49,22 @@ public class ApplicationDbContext : DbContext
        .HasColumnType("jsonb")
        .HasConversion(
       v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : null,
-      v => v != null ? JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions)null) : null
+      v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions)null)
+  );
+
+        modelBuilder.Entity<Collection>()
+       .Property(c => c.ChildCollectionIds)
+       .HasColumnType("jsonb")
+       .HasConversion(
+      v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : null,
+      v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions)null)
   );
         modelBuilder.Entity<Product>()
        .Property(c => c.Tags)
        .HasColumnType("jsonb")
        .HasConversion(
       v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-      v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+      v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
   );
 
         modelBuilder.Entity<Product>()
@@ -69,13 +72,14 @@ public class ApplicationDbContext : DbContext
    .HasColumnType("jsonb")
    .HasConversion(
   v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-  v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+  v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
 );
 
+        // Configure Collection parent-child relationships
         modelBuilder.Entity<Collection>()
-            .HasOne(c => c.ChildCollection)
-            .WithMany()
-            .HasForeignKey(c => c.ChildCollectionId)
+            .HasOne(c => c.ParentCollection)
+            .WithMany(c => c.ChildCollections)
+            .HasForeignKey(c => c.ParentCollectionId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Configure Product relationships

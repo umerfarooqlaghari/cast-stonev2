@@ -21,8 +21,9 @@ public class Collection
     public int Level { get; set; }
     
     public int? ParentCollectionId { get; set; }
-    
-    public int? ChildCollectionId { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public List<int>? ChildCollectionIds { get; set; }
     
     [Column(TypeName = "jsonb")]
     public List<string> Tags { get; set; } = new List<string>();
@@ -49,9 +50,8 @@ public class Collection
     // Navigation properties
     [ForeignKey(nameof(ParentCollectionId))]
     public virtual Collection? ParentCollection { get; set; }
-    
-    [ForeignKey(nameof(ChildCollectionId))]
-    public virtual Collection? ChildCollection { get; set; }
+
+    public virtual ICollection<Collection> ChildCollections { get; set; } = new List<Collection>();
 
     [JsonIgnore]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();

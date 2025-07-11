@@ -16,7 +16,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
     {
         return await _dbSet
             .Include(c => c.ParentCollection)
-            .Include(c => c.ChildCollection)
+            .Include(c => c.ChildCollections)
             .Include(c => c.Products)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
@@ -25,7 +25,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
     {
         return await _dbSet
             .Include(c => c.ParentCollection)
-            .Include(c => c.ChildCollection)
+            .Include(c => c.ChildCollections)
             .Include(c => c.Products)
             .ToListAsync();
     }
@@ -34,7 +34,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
     {
         return await _dbSet
             .Include(c => c.ParentCollection)
-            .Include(c => c.ChildCollection)
+            .Include(c => c.ChildCollections)
             .Where(c => c.Level == level)
             .ToListAsync();
     }
@@ -66,7 +66,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
     {
         return await _dbSet
             .Include(c => c.ParentCollection)
-            .Include(c => c.ChildCollection)
+            .Include(c => c.ChildCollections)
             .Include(c => c.Products)
             .OrderBy(c => c.Level)
             .ThenBy(c => c.Name)
@@ -111,7 +111,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
     {
         var query = _dbSet
             .Include(c => c.ParentCollection)
-            .Include(c => c.ChildCollection)
+            .Include(c => c.ChildCollections)
             .Include(c => c.Products)
             .AsQueryable();
 

@@ -17,7 +17,7 @@ public class CreateCollectionRequest
 
     public int? ParentCollectionId { get; set; }
 
-    public int? ChildCollectionId { get; set; }
+    public List<int>? ChildCollectionIds { get; set; }
 
     public List<string> Tags { get; set; } = new List<string>();
 

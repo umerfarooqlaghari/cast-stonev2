@@ -118,6 +118,20 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Fix JSON data if requested
+if (app.Environment.IsDevelopment() && args.Contains("--fix-json"))
+{
+    await Cast_Stone_api.Scripts.FixJsonDataRunner.FixJsonData();
+    return;
+}
+
+// Test API endpoints if in development mode
+if (app.Environment.IsDevelopment() && args.Contains("--test"))
+{
+    await Cast_Stone_api.TestApiEndpoints.TestCollectionsAndProducts();
+    return;
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {

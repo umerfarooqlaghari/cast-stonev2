@@ -5,7 +5,7 @@ export interface Collection {
   description?: string;
   level: number;
   parentCollectionId?: number;
-  childCollectionId?: number;
+  childCollectionIds?: number[];
   tags: string[];
   images: string[];
   productIds?: number[];
@@ -16,7 +16,7 @@ export interface Collection {
   updatedAt?: string;
   productCount: number;
   parentCollection?: Collection;
-  childCollection?: Collection;
+  childCollections: Collection[];
   products: Product[];
 }
 
@@ -36,7 +36,7 @@ export interface CreateCollectionRequest {
   description?: string;
   level: number;
   parentCollectionId?: number;
-  childCollectionId?: number;
+  childCollectionIds?: number[];
   tags: string[];
   images: string[];
   productIds?: number[];
@@ -49,7 +49,7 @@ export interface UpdateCollectionRequest {
   description?: string;
   level: number;
   parentCollectionId?: number;
-  childCollectionId?: number;
+  childCollectionIds?: number[];
   tags: string[];
   images: string[];
   productIds?: number[];

@@ -16,7 +16,7 @@ public interface ICollectionService : IBaseService<Domain.Models.Collection, Col
     Task<IEnumerable<CollectionResponse>> SearchByNameAsync(string name);
     Task<IEnumerable<CollectionResponse>> GetByTagAsync(string tag);
     Task<bool> CanDeleteAsync(int id);
-    Task<bool> ValidateHierarchyAsync(int? parentId, int? childId, int level);
+    Task<bool> ValidateHierarchyAsync(int? parentId, List<int>? childIds, int level);
     Task<PaginatedResponse<CollectionResponse>> GetFilteredAsync(CollectionFilterRequest filter);
     Task<int> RefreshAllParentChildRelationshipsAsync();
 }

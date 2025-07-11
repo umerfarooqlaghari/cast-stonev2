@@ -7,7 +7,7 @@ public class CollectionResponse
     public string? Description { get; set; }
     public int Level { get; set; }
     public int? ParentCollectionId { get; set; }
-    public int? ChildCollectionId { get; set; }
+    public List<int>? ChildCollectionIds { get; set; }
     public List<string> Tags { get; set; } = new List<string>();
     public List<string> Images { get; set; } = new List<string>();
     public List<int>? ProductIds { get; set; }
@@ -20,7 +20,7 @@ public class CollectionResponse
 
     // Navigation properties
     public CollectionResponse? ParentCollection { get; set; }
-    public CollectionResponse? ChildCollection { get; set; }
+    public List<CollectionResponse> ChildCollections { get; set; } = new List<CollectionResponse>();
     //public List<ProductResponse> Products { get; set; } = new List<ProductResponse>();
 }
 

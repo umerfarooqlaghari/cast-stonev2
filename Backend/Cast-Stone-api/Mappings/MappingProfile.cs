@@ -14,7 +14,7 @@ public class MappingProfile : Profile
         //    .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
         CreateMap<Collection, CollectionResponse>()
            .ForMember(dest => dest.ParentCollection, opt => opt.Ignore())
-           .ForMember(dest => dest.ChildCollection, opt => opt.Ignore())
+           .ForMember(dest => dest.ChildCollections, opt => opt.Ignore())
            .ForMember(dest => dest.ProductCount, opt => opt.MapFrom(src => src.Products.Count));
 
         CreateMap<CreateCollectionRequest, Collection>()
@@ -23,7 +23,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
             .ForMember(dest => dest.ParentCollection, opt => opt.Ignore())
-            .ForMember(dest => dest.ChildCollection, opt => opt.Ignore())
+            .ForMember(dest => dest.ChildCollections, opt => opt.Ignore())
             .ForMember(dest => dest.Products, opt => opt.Ignore());
         
         CreateMap<UpdateCollectionRequest, Collection>()
@@ -31,7 +31,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
             .ForMember(dest => dest.ParentCollection, opt => opt.Ignore())
-            .ForMember(dest => dest.ChildCollection, opt => opt.Ignore())
+            .ForMember(dest => dest.ChildCollections, opt => opt.Ignore())
             .ForMember(dest => dest.Products, opt => opt.Ignore());
 
         CreateMap<Collection, CollectionHierarchyResponse>()

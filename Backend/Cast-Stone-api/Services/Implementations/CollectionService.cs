@@ -33,7 +33,7 @@ public class CollectionService : ICollectionService
     public async Task<CollectionResponse> CreateAsync(CreateCollectionRequest request)
     {
         // Validate hierarchy
-        if (!await ValidateHierarchyAsync(request.ParentCollectionId, request.ChildCollectionId, request.Level))
+        if (!await ValidateHierarchyAsync(request.ParentCollectionId, request.ChildCollectionIds, request.Level))
         {
             throw new ArgumentException("Invalid collection hierarchy");
         }
@@ -56,7 +56,7 @@ public class CollectionService : ICollectionService
             return null;
 
         // Validate hierarchy
-        if (!await ValidateHierarchyAsync(request.ParentCollectionId, request.ChildCollectionId, request.Level))
+        if (!await ValidateHierarchyAsync(request.ParentCollectionId, request.ChildCollectionIds, request.Level))
         {
             throw new ArgumentException("Invalid collection hierarchy");
         }
@@ -172,7 +172,7 @@ public class CollectionService : ICollectionService
         return !await HasChildrenAsync(id) && !await HasProductsAsync(id);
     }
 
-    public async Task<bool> ValidateHierarchyAsync(int? parentId, int? childId, int level)
+    public async Task<bool> ValidateHierarchyAsync(int? parentId, List<int>? childIds, int level)
     {
         // Level 1 collections should not have parents
         if (level == 1 && parentId.HasValue)
@@ -194,12 +194,15 @@ public class CollectionService : ICollectionService
                 return false;
         }
 
-        // Child collection validation (if specified)
-        if (childId.HasValue)
+        // Child collections validation (if specified)
+        if (childIds != null && childIds.Any())
         {
-            var child = await _collectionRepository.GetByIdAsync(childId.Value);
-            if (child == null || child.Level != level + 1)
-                return false;
+            foreach (var childId in childIds)
+            {
+                var child = await _collectionRepository.GetByIdAsync(childId);
+                if (child == null || child.Level != level + 1)
+                    return false;
+            }
         }
 
         return true;
@@ -229,26 +232,32 @@ public class CollectionService : ICollectionService
     /// </summary>
     private async Task UpdateParentChildRelationshipsAsync(Collection collection)
     {
-        // If this collection has a parent, update the parent's childCollectionId if not already set
+        // If this collection has a parent, update the parent's ChildCollectionIds if not already included
         if (collection.ParentCollectionId.HasValue)
         {
             var parent = await _collectionRepository.GetByIdAsync(collection.ParentCollectionId.Value);
-            if (parent != null && !parent.ChildCollectionId.HasValue)
+            if (parent != null)
             {
-                parent.ChildCollectionId = collection.Id;
-                await _collectionRepository.UpdateAsync(parent);
+                if (parent.ChildCollectionIds == null)
+                    parent.ChildCollectionIds = new List<int>();
+
+                if (!parent.ChildCollectionIds.Contains(collection.Id))
+                {
+                    parent.ChildCollectionIds.Add(collection.Id);
+                    await _collectionRepository.UpdateAsync(parent);
+                }
             }
         }
 
-        // If this is a level 1 or 2 collection, check for existing children and update childCollectionId
+        // If this is a level 1 or 2 collection, update ChildCollectionIds based on actual children
         if (collection.Level < 3)
         {
             var children = await _collectionRepository.GetChildrenAsync(collection.Id);
-            var firstChild = children.FirstOrDefault();
+            var childIds = children.Select(c => c.Id).ToList();
 
-            if (firstChild != null && !collection.ChildCollectionId.HasValue)
+            if (childIds.Any())
             {
-                collection.ChildCollectionId = firstChild.Id;
+                collection.ChildCollectionIds = childIds;
                 await _collectionRepository.UpdateAsync(collection);
             }
         }
@@ -264,23 +273,16 @@ public class CollectionService : ICollectionService
 
         foreach (var collection in allCollections)
         {
-            var originalChildId = collection.ChildCollectionId;
+            var originalChildIds = collection.ChildCollectionIds?.ToList() ?? new List<int>();
 
-            // Find the first child for this collection
+            // Find all children for this collection
             var children = await _collectionRepository.GetChildrenAsync(collection.Id);
-            var firstChild = children.FirstOrDefault();
+            var currentChildIds = children.Select(c => c.Id).ToList();
 
-            // Update childCollectionId if needed
-            if (firstChild != null && collection.ChildCollectionId != firstChild.Id)
+            // Update ChildCollectionIds if needed
+            if (!originalChildIds.SequenceEqual(currentChildIds))
             {
-                collection.ChildCollectionId = firstChild.Id;
-                await _collectionRepository.UpdateAsync(collection);
-                updatedCount++;
-            }
-            else if (firstChild == null && collection.ChildCollectionId.HasValue)
-            {
-                // Clear childCollectionId if no children exist
-                collection.ChildCollectionId = null;
+                collection.ChildCollectionIds = currentChildIds.Any() ? currentChildIds : null;
                 await _collectionRepository.UpdateAsync(collection);
                 updatedCount++;
             }
