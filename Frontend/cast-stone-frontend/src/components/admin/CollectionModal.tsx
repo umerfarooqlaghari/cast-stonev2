@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -44,7 +45,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         description: collection.description || '',
         level: collection.level,
         parentCollectionId: collection.parentCollectionId || null,
-        childCollectionId: collection.childCollectionId || null,
+        childCollectionId: collection.childCollectionIds && collection.childCollectionIds.length > 0 ? collection.childCollectionIds[0] : null,
         tags: collection.tags || [],
         images: collection.images || [],
         published: collection.published,
@@ -129,7 +130,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         const updateData: UpdateCollectionRequest = {
           ...formData,
           parentCollectionId: formData.parentCollectionId ?? undefined,
-          childCollectionId: formData.childCollectionId ?? undefined,
+          childCollectionIds: formData.childCollectionId ? [formData.childCollectionId] : [],
           updatedBy: admin?.email || 'admin',
         };
         await collectionService.update.update(collection.id, updateData);
@@ -138,7 +139,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         const createData: CreateCollectionRequest = {
           ...formData,
           parentCollectionId: formData.parentCollectionId ?? undefined,
-          childCollectionId: formData.childCollectionId ?? undefined,
+          childCollectionIds: formData.childCollectionId ?  [formData.childCollectionId] : [],
           createdBy: admin?.email || 'admin',
         };
         await collectionService.post.create(createData);
