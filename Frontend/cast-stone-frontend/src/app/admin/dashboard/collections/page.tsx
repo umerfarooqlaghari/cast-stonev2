@@ -209,7 +209,7 @@ export default function CollectionsPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-black">
-                          {collection.products?.length || 0}
+                          {collection.productCount ?? 0}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
                           {new Date(collection.createdAt).toLocaleDateString()}
