@@ -24,7 +24,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 3rem;
   font-weight: 700;
-  color: #4a3728;
+  color: #1e3a8a;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
@@ -32,7 +32,7 @@
 .sectionSubtitle {
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1.125rem;
-  color: #8b7355;
+  color:rgb(54, 76, 137);
   line-height: 1.6;
   font-weight: 400;
 }
@@ -44,6 +44,82 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Loading States */
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loadingCard {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loadingImage {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.loadingContent {
+  padding: 2rem;
+}
+
+.loadingText {
+  height: 1rem;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.loadingText:nth-child(1) {
+  width: 60%;
+}
+
+.loadingText:nth-child(2) {
+  width: 80%;
+}
+
+.loadingText:nth-child(3) {
+  width: 40%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Error State */
+.errorMessage {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+  font-size: 1.125rem;
 }
 
 /* Category Card Styles */
@@ -59,7 +135,7 @@
 
 .categoryCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(74, 55, 40, 0.15);
+  box-shadow: 0 20px 60px rgba(110, 104, 99, 0.15);
 }
 
 .cardLink {
@@ -95,11 +171,28 @@
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(74, 55, 40, 0.4) 100%
+rgba(25, 35, 65, 0.4) 0%,
+    rgba(20, 30, 60, 0.35) 50%,
+    rgba(30, 40, 70, 0.4) 100%
   );
   z-index: 1;
+}
+
+.noImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e0bac 0%, #4a3728 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noImageText {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* Card Content */
@@ -128,7 +221,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 2rem;
   font-weight: 700;
-  color: #4a3728;
+  color: #1e3a8a;
   line-height: 1;
 }
 
@@ -136,7 +229,7 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #8b7355;
+  color: #1e3a8a;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -145,7 +238,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #4a3728;
+  color: #1e3a8a;
   margin: 0.25rem 0;
   line-height: 1.2;
 }
@@ -154,7 +247,7 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #8b7355;
+  color:rgb(48, 69, 126);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin: 0;
@@ -163,7 +256,7 @@
 .categoryDescription {
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 0.9rem;
-  color: #6b4e3d;
+  color: #1e3a8a;
   line-height: 1.5;
   margin-bottom: 1rem;
   flex-grow: 1;
@@ -193,26 +286,26 @@
 }
 
 .actionButton {
-  background: #4a3728;
+  background: #1e3a8a;
   color: #ffffff;
   padding: 0.5rem 1rem;
 }
 
 .actionButton:hover {
-  background: #6b4e3d;
+  background: #1e3a8a;
   transform: translateY(-1px);
 }
 
 .secondaryButton {
   background: transparent;
-  color: #8b7355;
+  color:rgb(51, 73, 134);
   padding: 0.5rem 0.75rem;
-  border: 1px solid rgba(139, 115, 85, 0.3);
+  border: 1px solid rgba(105, 120, 161, 0.3);
 }
 
 .secondaryButton:hover {
-  background: rgba(139, 115, 85, 0.1);
-  color: #4a3728;
+  background: rgba(69, 66, 153, 0.1);
+  color: #1e3a8a;
 }
 
 /* Hover Effect */

@@ -29,6 +29,7 @@ export interface CollectionHierarchy {
   published: boolean;
   children: CollectionHierarchy[];
   productCount: number;
+  images?: string[]; 
 }
 
 export interface CreateCollectionRequest {

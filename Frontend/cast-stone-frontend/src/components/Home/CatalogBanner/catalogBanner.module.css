@@ -2,7 +2,7 @@
 .catalogBanner {
   position: relative;
   padding: 8rem 0;
-  background: #4a3728;
+  background: #1e3a8a;
   overflow: hidden;
   margin: 4rem 0;
 }
@@ -30,9 +30,9 @@
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(74, 55, 40, 0.85) 0%,
-    rgba(74, 55, 40, 0.7) 50%,
-    rgba(107, 78, 61, 0.8) 100%
+rgba(25, 35, 65, 0.4) 0%,
+    rgba(20, 30, 60, 0.35) 50%,
+    rgba(30, 40, 70, 0.4) 100%
   );
   z-index: 2;
 }
@@ -65,7 +65,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #d4af8c;
+  color: #white;
   margin-bottom: 1rem;
   display: block;
 }
@@ -114,7 +114,7 @@
   height: 40px;
   background: rgba(212, 175, 140, 0.2);
   border-radius: 50%;
-  color: #d4af8c;
+  color: #white;
   flex-shrink: 0;
 }
 
@@ -132,8 +132,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 2.5rem;
-  background: linear-gradient(135deg, #d4af8c, #c19a6b);
-  color: #4a3728;
+  background: linear-gradient(135deg, #white,rgb(245, 244, 243));
+  color: #white;
   text-decoration: none;
   border-radius: 50px;
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
@@ -143,13 +143,13 @@
   letter-spacing: 0.05em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(212, 175, 140, 0.3);
+  box-shadow: 0 8px 32px rgba(142, 139, 137, 0.3);
 }
 
 .ctaButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 40px rgba(212, 175, 140, 0.4);
-  background: linear-gradient(135deg, #c19a6b, #d4af8c);
+  background: linear-gradient(135deg, #white, #white);
 }
 
 .ctaText {
@@ -199,7 +199,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #d4af8c;
+  color: #white;
   line-height: 1;
   margin-bottom: 0.25rem;
 }
