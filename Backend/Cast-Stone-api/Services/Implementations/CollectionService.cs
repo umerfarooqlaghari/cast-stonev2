@@ -290,4 +290,31 @@ public class CollectionService : ICollectionService
 
         return updatedCount;
     }
+
+    /// <summary>
+    /// Refresh ProductIds for all collections based on their actual products
+    /// </summary>
+    public async Task<int> RefreshAllProductIdsAsync()
+    {
+        var allCollections = await _collectionRepository.GetAllAsync();
+        int updatedCount = 0;
+
+        foreach (var collection in allCollections)
+        {
+            var originalProductIds = collection.ProductIds?.ToList() ?? new List<int>();
+
+            // Get all products for this collection
+            var products = collection.Products?.Select(p => p.Id).ToList() ?? new List<int>();
+
+            // Update ProductIds if needed
+            if (!originalProductIds.SequenceEqual(products))
+            {
+                collection.ProductIds = products.Any() ? products : null;
+                await _collectionRepository.UpdateAsync(collection);
+                updatedCount++;
+            }
+        }
+
+        return updatedCount;
+    }
 }

@@ -44,6 +44,10 @@ public class ProductService : IProductService
         product.CreatedAt = DateTime.UtcNow;
 
         var createdProduct = await _productRepository.AddAsync(product);
+
+        // Update collection's ProductIds
+        await UpdateCollectionProductIds(request.CollectionId);
+
         return _mapper.Map<ProductResponse>(createdProduct);
     }
 
@@ -52,6 +56,8 @@ public class ProductService : IProductService
         var existingProduct = await _productRepository.GetByIdAsync(id);
         if (existingProduct == null)
             return null;
+
+        var oldCollectionId = existingProduct.CollectionId;
 
         // Validate collection exists
         if (!await _collectionRepository.ExistsAsync(request.CollectionId))
@@ -63,6 +69,18 @@ public class ProductService : IProductService
         existingProduct.UpdatedAt = DateTime.UtcNow;
 
         var updatedProduct = await _productRepository.UpdateAsync(existingProduct);
+
+        // Update collection ProductIds if collection changed
+        if (oldCollectionId != request.CollectionId)
+        {
+            await UpdateCollectionProductIds(oldCollectionId);
+            await UpdateCollectionProductIds(request.CollectionId);
+        }
+        else
+        {
+            await UpdateCollectionProductIds(request.CollectionId);
+        }
+
         return _mapper.Map<ProductResponse>(updatedProduct);
     }
 
@@ -72,7 +90,12 @@ public class ProductService : IProductService
         if (product == null)
             return false;
 
+        var collectionId = product.CollectionId;
         await _productRepository.DeleteAsync(id);
+
+        // Update collection's ProductIds after deletion
+        await UpdateCollectionProductIds(collectionId);
+
         return true;
     }
 
@@ -180,5 +203,20 @@ public class ProductService : IProductService
             HasNextPage = filter.PageNumber < totalPages,
             HasPreviousPage = filter.PageNumber > 1
         };
+    }
+
+    /// <summary>
+    /// Update the ProductIds array in a collection based on its actual products
+    /// </summary>
+    private async Task UpdateCollectionProductIds(int collectionId)
+    {
+        var collection = await _collectionRepository.GetByIdAsync(collectionId);
+        if (collection == null) return;
+
+        var products = await _productRepository.GetByCollectionIdAsync(collectionId);
+        var productIds = products.Select(p => p.Id).ToList();
+
+        collection.ProductIds = productIds.Any() ? productIds : null;
+        await _collectionRepository.UpdateAsync(collection);
     }
 }

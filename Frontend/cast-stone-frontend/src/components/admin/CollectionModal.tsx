@@ -26,7 +26,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     description: '',
     level: 1,
     parentCollectionId: null as number | null,
-    childCollectionId: null as number | null,
+    childCollectionIds: [] as number[],
     tags: [] as string[],
     images: [] as string[],
     published: false,
@@ -45,7 +45,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         description: collection.description || '',
         level: collection.level,
         parentCollectionId: collection.parentCollectionId || null,
-        childCollectionId: collection.childCollectionIds && collection.childCollectionIds.length > 0 ? collection.childCollectionIds[0] : null,
+        childCollectionIds: collection.childCollectionIds || [],
         tags: collection.tags || [],
         images: collection.images || [],
         published: collection.published,
@@ -130,7 +130,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         const updateData: UpdateCollectionRequest = {
           ...formData,
           parentCollectionId: formData.parentCollectionId ?? undefined,
-          childCollectionIds: formData.childCollectionId ? [formData.childCollectionId] : [],
+          childCollectionIds: formData.childCollectionIds,
           updatedBy: admin?.email || 'admin',
         };
         await collectionService.update.update(collection.id, updateData);
@@ -139,7 +139,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         const createData: CreateCollectionRequest = {
           ...formData,
           parentCollectionId: formData.parentCollectionId ?? undefined,
-          childCollectionIds: formData.childCollectionId ?  [formData.childCollectionId] : [],
+          childCollectionIds: formData.childCollectionIds,
           createdBy: admin?.email || 'admin',
         };
         await collectionService.post.create(createData);
@@ -309,7 +309,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                   ...prev,
                   level: newLevel,
                   parentCollectionId: newLevel === 1 ? null : prev.parentCollectionId,
-                  childCollectionId: newLevel === 3 ? null : prev.childCollectionId
+                  childCollectionIds: newLevel === 3 ? [] : prev.childCollectionIds
                 }));
               }}
               className="w-full px-4 py-3 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900"
@@ -350,30 +350,40 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               </div>
             )}
 
-            {/* Child Collection */}
+            {/* Child Collections */}
             {formData.level < 3 && (
               <div>
-                <label htmlFor="childCollection" className="block text-sm font-semibold text-amber-900 mb-2">
-                  Child Collection (Optional)
+                <label className="block text-sm font-semibold text-amber-900 mb-2">
+                  Child Collections (Optional)
                 </label>
-                <select
-                  id="childCollection"
-                  value={formData.childCollectionId || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    childCollectionId: e.target.value ? Number(e.target.value) : null
-                  }))}
-                  className="w-full px-4 py-3 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900"
-                >
-                  <option value="" className="text-amber-600">Select child collection (optional)</option>
-                  {getAvailableChildCollections().map(childCollection => (
-                    <option key={childCollection.id} value={childCollection.id} className="text-amber-900">
-                      {childCollection.name} (Level {childCollection.level})
-                    </option>
-                  ))}
-                </select>
+                <div className="space-y-2 max-h-40 overflow-y-auto border border-amber-300 rounded-lg p-3">
+                  {getAvailableChildCollections().length === 0 ? (
+                    <p className="text-amber-600 text-sm">No available child collections</p>
+                  ) : (
+                    getAvailableChildCollections().map(childCollection => (
+                      <label key={childCollection.id} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={formData.childCollectionIds.includes(childCollection.id)}
+                          onChange={(e) => {
+                            setFormData(prev => ({
+                              ...prev,
+                              childCollectionIds: e.target.checked
+                                ? [...prev.childCollectionIds, childCollection.id]
+                                : prev.childCollectionIds.filter(id => id !== childCollection.id)
+                            }));
+                          }}
+                          className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                        />
+                        <span className="text-amber-900 text-sm">
+                          {childCollection.name} (Level {childCollection.level})
+                        </span>
+                      </label>
+                    ))
+                  )}
+                </div>
                 <p className="mt-1 text-xs text-amber-700">
-                  Link an existing child collection to this collection
+                  Select multiple child collections to link to this collection
                 </p>
               </div>
             )}

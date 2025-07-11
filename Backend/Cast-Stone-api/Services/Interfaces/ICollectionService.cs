@@ -19,4 +19,5 @@ public interface ICollectionService : IBaseService<Domain.Models.Collection, Col
     Task<bool> ValidateHierarchyAsync(int? parentId, List<int>? childIds, int level);
     Task<PaginatedResponse<CollectionResponse>> GetFilteredAsync(CollectionFilterRequest filter);
     Task<int> RefreshAllParentChildRelationshipsAsync();
+    Task<int> RefreshAllProductIdsAsync();
 }

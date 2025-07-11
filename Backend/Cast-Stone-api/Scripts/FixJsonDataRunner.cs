@@ -65,6 +65,10 @@ public class FixJsonDataRunner
             await command2.ExecuteNonQueryAsync();
             
             Console.WriteLine("✅ JSON data fixed successfully!");
+
+            // Now refresh ProductIds for all collections
+            Console.WriteLine("🔄 Refreshing ProductIds for all collections...");
+            await RefreshProductIds(connectionString);
             
             // Verify the fix
             Console.WriteLine("🔍 Verifying data...");
@@ -97,6 +101,38 @@ public class FixJsonDataRunner
         {
             Console.WriteLine($"❌ Error fixing JSON data: {ex.Message}");
             Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        }
+    }
+
+    private static async Task RefreshProductIds(string connectionString)
+    {
+        try
+        {
+            using var connection = new NpgsqlConnection(connectionString);
+            await connection.OpenAsync();
+
+            // Get all collections and their products
+            var sql = @"
+                UPDATE ""Collections""
+                SET ""ProductIds"" = (
+                    SELECT CASE
+                        WHEN COUNT(p.""Id"") > 0 THEN
+                            jsonb_agg(p.""Id"" ORDER BY p.""Id"")
+                        ELSE NULL
+                    END
+                    FROM ""Products"" p
+                    WHERE p.""CollectionId"" = ""Collections"".""Id""
+                )
+            ";
+
+            using var command = new NpgsqlCommand(sql, connection);
+            var rowsAffected = await command.ExecuteNonQueryAsync();
+
+            Console.WriteLine($"✅ Updated ProductIds for {rowsAffected} collections");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error refreshing ProductIds: {ex.Message}");
         }
     }
 }
