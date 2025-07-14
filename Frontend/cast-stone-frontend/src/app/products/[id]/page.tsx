@@ -112,7 +112,7 @@ export default function ProductPage() {
             
             {/* Product Code */}
             <div className={styles.productCode}>
-              Product Code: P-{product.id.toString().padStart(3, '0')}-AS
+              Product Code: {product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
             </div>
 
             {/* Product Info Grid */}

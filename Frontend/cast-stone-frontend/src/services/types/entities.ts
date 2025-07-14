@@ -75,10 +75,113 @@ export interface CollectionFilterRequest {
   sortDirection?: 'asc' | 'desc';
 }
 
+// Product Specifications Types
+export interface ProductSpecifications {
+  id: number;
+  material?: string;
+  dimensions?: string;
+  totalWeight?: string;
+  weightWithWater?: string;
+  waterVolume?: string;
+  productId: number;
+}
+
+export interface CreateProductSpecificationsRequest {
+  material?: string;
+  dimensions?: string;
+  totalWeight?: string;
+  weightWithWater?: string;
+  waterVolume?: string;
+  productId: number;
+}
+
+export interface UpdateProductSpecificationsRequest {
+  material?: string;
+  dimensions?: string;
+  totalWeight?: string;
+  weightWithWater?: string;
+  waterVolume?: string;
+}
+
+// Product Details Types
+export interface ProductDetails {
+  id: number;
+  upc?: string;
+  indoorUseOnly?: string;
+  assemblyRequired?: string;
+  easeOfAssembly?: string;
+  assistanceRequired?: string;
+  splashLevel?: string;
+  soundLevel?: string;
+  soundType?: string;
+  replacementPumpKit?: string;
+  electricalCordLength?: string;
+  pumpSize?: string;
+  shipMethod?: string;
+  catalogPage?: string;
+  productId: number;
+}
+
+export interface CreateProductDetailsRequest {
+  upc?: string;
+  indoorUseOnly?: string;
+  assemblyRequired?: string;
+  easeOfAssembly?: string;
+  assistanceRequired?: string;
+  splashLevel?: string;
+  soundLevel?: string;
+  soundType?: string;
+  replacementPumpKit?: string;
+  electricalCordLength?: string;
+  pumpSize?: string;
+  shipMethod?: string;
+  catalogPage?: string;
+  productId: number;
+}
+
+export interface UpdateProductDetailsRequest {
+  upc?: string;
+  indoorUseOnly?: string;
+  assemblyRequired?: string;
+  easeOfAssembly?: string;
+  assistanceRequired?: string;
+  splashLevel?: string;
+  soundLevel?: string;
+  soundType?: string;
+  replacementPumpKit?: string;
+  electricalCordLength?: string;
+  pumpSize?: string;
+  shipMethod?: string;
+  catalogPage?: string;
+}
+
+// Downloadable Content Types
+export interface DownloadableContent {
+  id: number;
+  care?: string;
+  productInstructions?: string;
+  cad?: string;
+  productId: number;
+}
+
+export interface CreateDownloadableContentRequest {
+  care?: string;
+  productInstructions?: string;
+  cad?: string;
+  productId: number;
+}
+
+export interface UpdateDownloadableContentRequest {
+  care?: string;
+  productInstructions?: string;
+  cad?: string;
+}
+
 // Product Types
 export interface Product {
   id: number;
   name: string;
+  productCode?: string;
   description?: string;
   price: number;
   stock: number;
@@ -88,6 +191,9 @@ export interface Product {
   createdAt: string;
   updatedAt?: string;
   collection?: Collection;
+  productSpecifications?: ProductSpecifications;
+  productDetails?: ProductDetails;
+  downloadableContent?: DownloadableContent;
 }
 
 export interface ProductSummary {
@@ -102,22 +208,30 @@ export interface ProductSummary {
 
 export interface CreateProductRequest {
   name: string;
+  productCode?: string;
   description?: string;
   price: number;
   stock: number;
   collectionId: number;
   images: string[];
   tags: string[];
+  productSpecifications?: CreateProductSpecificationsRequest;
+  productDetails?: CreateProductDetailsRequest;
+  downloadableContent?: CreateDownloadableContentRequest;
 }
 
 export interface UpdateProductRequest {
   name: string;
+  productCode?: string;
   description?: string;
   price: number;
   stock: number;
   collectionId: number;
   images: string[];
   tags: string[];
+  productSpecifications?: UpdateProductSpecificationsRequest;
+  productDetails?: UpdateProductDetailsRequest;
+  downloadableContent?: UpdateDownloadableContentRequest;
 }
 
 export interface ProductFilterRequest {

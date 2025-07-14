@@ -13,6 +13,9 @@ public class ApplicationDbContext : DbContext
     // DbSets for all domain models
     public DbSet<Collection> Collections { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductSpecifications> ProductSpecifications { get; set; }
+    public DbSet<ProductDetails> ProductDetails { get; set; }
+    public DbSet<DownloadableContent> DownloadableContents { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
@@ -88,6 +91,27 @@ public class ApplicationDbContext : DbContext
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CollectionId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Configure Product-ProductSpecifications relationship (1:1)
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.ProductSpecifications)
+            .WithOne(ps => ps.Product)
+            .HasForeignKey<ProductSpecifications>(ps => ps.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure Product-ProductDetails relationship (1:1)
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.ProductDetails)
+            .WithOne(pd => pd.Product)
+            .HasForeignKey<ProductDetails>(pd => pd.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure Product-DownloadableContent relationship (1:1)
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.DownloadableContent)
+            .WithOne(dc => dc.Product)
+            .HasForeignKey<DownloadableContent>(dc => dc.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Configure Order relationships
         modelBuilder.Entity<Order>()

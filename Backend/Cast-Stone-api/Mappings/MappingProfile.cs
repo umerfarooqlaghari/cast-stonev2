@@ -46,17 +46,53 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Collection, opt => opt.Ignore())
-            .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
+            .ForMember(dest => dest.OrderItems, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductSpecifications, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductDetails, opt => opt.Ignore())
+            .ForMember(dest => dest.DownloadableContent, opt => opt.Ignore());
         
         CreateMap<UpdateProductRequest, Product>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Collection, opt => opt.Ignore())
-            .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
+            .ForMember(dest => dest.OrderItems, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductSpecifications, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductDetails, opt => opt.Ignore())
+            .ForMember(dest => dest.DownloadableContent, opt => opt.Ignore());
 
         CreateMap<Product, ProductSummaryResponse>()
             .ForMember(dest => dest.MainImage, opt => opt.MapFrom(src => src.Images.FirstOrDefault()))
             .ForMember(dest => dest.CollectionName, opt => opt.MapFrom(src => src.Collection != null ? src.Collection.Name : string.Empty));
+
+        // ProductSpecifications mappings
+        CreateMap<ProductSpecifications, ProductSpecificationsResponse>();
+        CreateMap<CreateProductSpecificationsRequest, ProductSpecifications>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<UpdateProductSpecificationsRequest, ProductSpecifications>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+
+        // ProductDetails mappings
+        CreateMap<ProductDetails, ProductDetailsResponse>();
+        CreateMap<CreateProductDetailsRequest, ProductDetails>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<UpdateProductDetailsRequest, ProductDetails>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+
+        // DownloadableContent mappings
+        CreateMap<DownloadableContent, DownloadableContentResponse>();
+        CreateMap<CreateDownloadableContentRequest, DownloadableContent>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<UpdateDownloadableContentRequest, DownloadableContent>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
 
         // Order mappings
         CreateMap<Order, OrderResponse>();

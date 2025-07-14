@@ -38,8 +38,11 @@ public class TestApiEndpoints
             // Setup repositories and services
             var collectionRepo = new CollectionRepository(context);
             var productRepo = new ProductRepository(context);
+            var productSpecRepo = new ProductSpecificationsRepository(context);
+            var productDetailsRepo = new ProductDetailsRepository(context);
+            var downloadableContentRepo = new DownloadableContentRepository(context);
             var collectionService = new CollectionService(collectionRepo, mapper);
-            var productService = new ProductService(productRepo, collectionRepo, mapper);
+            var productService = new ProductService(productRepo, collectionRepo, productSpecRepo, productDetailsRepo, downloadableContentRepo, mapper);
             
             // Test Collections API
             Console.WriteLine("📦 Testing Collections GetAll...");
