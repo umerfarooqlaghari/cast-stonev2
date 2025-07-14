@@ -15,14 +15,21 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ product }
     setActiveSection(activeSection === section ? null : section);
   };
 
-  const hasSpecifications = product.productSpecifications &&
-    Object.values(product.productSpecifications).some(value => value && value.trim() !== '');
+const hasSpecifications = product.productSpecifications &&
+  Object.values(product.productSpecifications).some(
+    value => typeof value === 'string' ? value.trim() !== '' : value !== null && value !== undefined
+  );
 
-  const hasDetails = product.productDetails &&
-    Object.values(product.productDetails).some(value => value && value.trim() !== '');
+const hasDetails = product.productDetails &&
+  Object.values(product.productDetails).some(
+    value => typeof value === 'string' ? value.trim() !== '' : value !== null && value !== undefined
+  );
 
-  const hasDownloadableContent = product.downloadableContent &&
-    Object.values(product.downloadableContent).some(value => value && value.trim() !== '');
+const hasDownloadableContent = product.downloadableContent &&
+  Object.values(product.downloadableContent).some(
+    value => typeof value === 'string' ? value.trim() !== '' : value !== null && value !== undefined
+  );
+
 
   return (
     <div className={styles.specificationsContainer}>

@@ -23,9 +23,9 @@ class HttpClient {
   ): Promise<ApiResponse<T>> {
     const { params, ...requestConfig } = config;
     
-    // Build URL with query parameters for GET requests
+    // Build URL with query parameters
     let url = `${this.baseUrl}${endpoint}`;
-    if (method === HttpMethod.GET && params) {
+    if (params) {
       url += buildQueryString(params);
     }
 

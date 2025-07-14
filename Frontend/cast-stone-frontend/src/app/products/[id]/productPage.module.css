@@ -1,5 +1,6 @@
 /* Product Page Styles - Sharp Rectangular Design */
 .productPage {
+  padding-top: 4rem;
   min-height: 100vh;
   background: #ffffff;
 }
@@ -17,14 +18,14 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #4a3728;
+  border-top: 3px solid #1e40af;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -38,7 +39,7 @@
 .errorContainer {
   text-align: center;
   padding: 4rem 2rem;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .errorContainer h1 {
@@ -78,7 +79,7 @@
   padding: 0.75rem 1rem;
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
-  color: #4a3728;
+  color:rgb(0, 0, 0);
   margin-bottom: 2rem;
   border-radius: 0; /* Sharp corners */
 }
@@ -97,7 +98,7 @@
 
 .infoLabel {
   font-weight: 600;
-  color: #4a3728;
+  color:rgb(0, 0, 0);
   font-size: 0.9rem;
 }
 
@@ -110,15 +111,15 @@
 .priceSection {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: #f8f8f8;
-  border: 2px solid #4a3728;
+  background:rgb(255, 255, 255);
+  border: 2px solidrgb(0, 0, 0);
   border-radius: 0; /* Sharp corners */
 }
 
 .price {
   font-size: 2rem;
   font-weight: 700;
-  color: #4a3728;
+  color:rgb(0, 0, 0);
 }
 
 /* Purchase Section */
@@ -137,19 +138,19 @@
 
 .quantitySelector label {
   font-weight: 600;
-  color: #4a3728;
+  color:rgb(0, 0, 0);
 }
 
 .quantityControls {
   display: flex;
   align-items: center;
-  border: 2px solid #4a3728;
+  border: 2px solidrgb(0, 0, 0);
   border-radius: 0; /* Sharp corners */
   overflow: hidden;
 }
 
 .quantityBtn {
-  background: #4a3728;
+  background:rgb(55, 54, 54);
   color: white;
   border: none;
   padding: 0.75rem 1rem;
@@ -160,7 +161,7 @@
 }
 
 .quantityBtn:hover:not(:disabled) {
-  background: #6b4e3d;
+  background: #1e40af;
 }
 
 .quantityBtn:disabled {
@@ -180,9 +181,9 @@
 }
 
 .addToCartBtn {
-  background: #4a3728;
+  background: #1e40af;
   color: white;
-  border: 2px solid #4a3728;
+  border: 2px solid #1e40af;
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
@@ -195,7 +196,7 @@
 
 .addToCartBtn:hover:not(:disabled) {
   background: white;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .addToCartBtn:disabled {
@@ -235,7 +236,7 @@
     bottom: 0;
     background: white;
     padding: 1rem;
-    border-top: 2px solid #4a3728;
+    border-top: 2px solid #1e40af;
     margin: 2rem -1rem 0;
   }
   

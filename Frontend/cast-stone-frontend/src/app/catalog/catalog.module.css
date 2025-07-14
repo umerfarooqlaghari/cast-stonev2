@@ -1,0 +1,148 @@
+.container {
+  min-height: 100vh;
+  background: #1a1a2e;
+  color: white;
+  padding: 2rem 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.catalogOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.catalogCard {
+  background: #2a2a3e;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  border: 2px solid #3a3a4e;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.catalogCard:hover {
+  transform: translateY(-5px);
+  border-color: #4a90e2;
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.2);
+}
+
+.cardIcon {
+  color: #4a90e2;
+  margin-bottom: 1.5rem;
+}
+
+.catalogCard h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.catalogCard p {
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.cardAction {
+  color: #4a90e2;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.features {
+  background: #2a2a3e;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  border: 2px solid #3a3a4e;
+}
+
+.features h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature {
+  background: #3a3a4e;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #4a4a5e;
+}
+
+.feature h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4a90e2;
+}
+
+.feature p {
+  color: #b0b0b0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .catalogOptions {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+  
+  .catalogCard {
+    padding: 2rem 1rem;
+  }
+  
+  .features {
+    padding: 2rem 1rem;
+  }
+}
