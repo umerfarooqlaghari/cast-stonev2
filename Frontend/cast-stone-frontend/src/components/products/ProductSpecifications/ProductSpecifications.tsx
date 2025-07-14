@@ -77,7 +77,29 @@ const hasDownloadableContent = product.downloadableContent &&
                   <span className={styles.specValue}>{product.productSpecifications.weightWithWater}</span>
                 </div>
               )}
+{/* ---- -------------------------------------------------------------------------------------------------- */}
 
+              {product.productSpecifications?.Base_Dimensions && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Base Dimensions:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.Base_Dimensions}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.Photographed_In && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Photographed In:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.Photographed_In}</span>
+                </div>
+              )}
+
+              {product.productSpecifications?.Pieces && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Pieces:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.Pieces}</span>
+                </div>
+              )}
+{/* ------------------------------------------------------------------------------------------------------  */}
               {product.productSpecifications?.waterVolume && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Water Volume:</span>
@@ -233,7 +255,43 @@ const hasDownloadableContent = product.downloadableContent &&
                       <span className={styles.specValue}>{product.productDetails.shipMethod}</span>
                     </div>
                   )}
+                  {/* ------------------------------------------------------------------------------------------------------  */}
+                                   {product.productDetails?.Drainage_Info && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Drainage Info:</span>
+                      <span className={styles.specValue}>{product.productDetails.Drainage_Info}</span>
+                    </div>
+                  )}
 
+                  {product.productDetails?.Inside_Top && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Inside Top:</span>
+                      <span className={styles.specValue}>{product.productDetails.Inside_Top}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.Inside_Bottom && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Inside Bottom:</span>
+                      <span className={styles.specValue}>{product.productDetails.Inside_Bottom}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.Inside_Height && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Inside Height:</span>
+                      <span className={styles.specValue}>{product.productDetails.Inside_Height}</span>
+                    </div>
+                  )}
+
+                  {product.productDetails?.Factory_Code && (
+                    <div className={styles.specRow}>
+                      <span className={styles.specLabel}>Factory Code:</span>
+                      <span className={styles.specValue}>{product.productDetails.Factory_Code}</span>
+                    </div>
+                  )}
+
+{/*  ----- */}
                   {product.productDetails?.catalogPage && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Catalog Page:</span>
