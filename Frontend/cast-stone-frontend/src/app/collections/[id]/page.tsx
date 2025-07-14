@@ -162,16 +162,7 @@ export default function CollectionPage() {
         <div className={styles.collectionHeader}>
           <div className={styles.headerContent}>
             <h1 className={styles.collectionTitle}>{collection.name}</h1>
-            {collection.description && (
-              <p className={styles.collectionDescription}>{collection.description}</p>
-            )}
             <div className={styles.collectionMeta}>
-              <span className={styles.productCount}>
-                {filteredProducts.length} of {products.length} products
-              </span>
-              <span className={styles.collectionLevel}>
-                Level {collection.level} Collection
-              </span>
             </div>
           </div>
         </div>

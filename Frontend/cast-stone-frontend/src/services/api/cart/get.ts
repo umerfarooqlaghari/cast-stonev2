@@ -85,7 +85,7 @@ export class CartGetService extends BaseService {
     if (sessionId) params.sessionId = sessionId;
 
     const endpoint = ApiEndpoints.Cart.GetOrCreate;
-    this.logApiCall('POST', endpoint);
+    this.logApiCall('POST', endpoint, params);
     return this.handleResponse(
       this.client.post<Cart>(endpoint, null, { params })
     );

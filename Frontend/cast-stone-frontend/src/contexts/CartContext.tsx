@@ -127,17 +127,21 @@ export function CartProvider({ children }: CartProviderProps) {
 
   // Initialize session ID on mount
   useEffect(() => {
-    let sessionId = localStorage.getItem('cart_session_id');
-    if (!sessionId) {
-      sessionId = generateSessionId();
-      localStorage.setItem('cart_session_id', sessionId);
-    }
-    dispatch({ type: 'SET_SESSION_ID', payload: sessionId });
+    const initializeSession = () => {
+      let sessionId = localStorage.getItem('cart_session_id');
+      if (!sessionId) {
+        sessionId = generateSessionId();
+        localStorage.setItem('cart_session_id', sessionId);
+      }
+      dispatch({ type: 'SET_SESSION_ID', payload: sessionId });
+    };
+
+    initializeSession();
   }, []);
 
   // Load cart on session ID change
   useEffect(() => {
-    if (state.sessionId) {
+    if (state.sessionId && state.sessionId.length > 0) {
       loadCart();
     }
   }, [state.sessionId]);
@@ -149,21 +153,29 @@ export function CartProvider({ children }: CartProviderProps) {
 
       if (userId) {
         cart = await cartService.get.getByUserId(userId);
-      } else if (state.sessionId) {
-        cart = await cartService.get.getBySessionId(state.sessionId);
+      } else if (state.sessionId && state.sessionId.length > 0) {
+        // Use getOrCreate to avoid 404 errors for new sessions
+        cart = await cartService.get.getOrCreate(undefined, state.sessionId);
       }
 
       dispatch({ type: 'SET_CART', payload: cart });
     } catch (error) {
       console.error('Error loading cart:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Failed to load cart' });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
   const addToCart = async (productId: number, quantity: number, userId?: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
+      // Ensure we have either userId or sessionId
+      if (!userId && (!state.sessionId || state.sessionId.length === 0)) {
+        throw new Error('No user ID or session ID available for cart operation');
+      }
+
       const request: AddToCartRequest = {
         productId,
         quantity,
@@ -176,6 +188,8 @@ export function CartProvider({ children }: CartProviderProps) {
     } catch (error: any) {
       console.error('Error adding to cart:', error);
       dispatch({ type: 'SET_ERROR', payload: error.message || 'Failed to add item to cart' });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 

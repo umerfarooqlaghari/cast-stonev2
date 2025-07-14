@@ -17,14 +17,14 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #4a3728;
+  border-top: 3px solid #1e40af;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -38,7 +38,7 @@
 .errorContainer {
   text-align: center;
   padding: 4rem 2rem;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .errorContainer h1 {
@@ -62,7 +62,7 @@
 .collectionTitle {
   font-size: 3rem;
   font-weight: 700;
-  color: #4a3728;
+  color: #1e40af;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
@@ -86,10 +86,10 @@
 
 .productCount {
   font-weight: 600;
-  color: #4a3728;
+  color: #1e40af;
   background: white;
   padding: 0.5rem 1rem;
-  border: 2px solid #4a3728;
+  border: 2px solid #1e40af;
   border-radius: 0; /* Sharp corners */
 }
 
@@ -146,13 +146,13 @@
 
 .searchField:focus {
   outline: none;
-  border-color: #4a3728;
+  border-color: #1e40af;
 }
 
 .filterToggle {
-  background: #4a3728;
+  background: #1e40af;
   color: white;
-  border: 2px solid #4a3728;
+  border: 2px solid #1e40af;
   padding: 1rem 1.5rem;
   cursor: pointer;
   display: flex;
@@ -165,7 +165,7 @@
 
 .filterToggle:hover {
   background: white;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .filterToggle.active {
@@ -194,7 +194,7 @@
 
 .filterLabel {
   font-weight: 600;
-  color: #4a3728;
+  color: #1e40af;
   font-size: 0.9rem;
 }
 
@@ -214,7 +214,7 @@
 
 .priceInput:focus {
   outline: none;
-  border-color: #4a3728;
+  border-color: #1e40af;
 }
 
 .checkboxLabel {
@@ -222,14 +222,14 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  color: #4a3728;
+  color: #1e40af;
   cursor: pointer;
 }
 
 .checkbox {
   width: 18px;
   height: 18px;
-  accent-color: #4a3728;
+  accent-color: #1e40af;
 }
 
 .sortControls {
@@ -248,13 +248,13 @@
 
 .sortSelect:focus {
   outline: none;
-  border-color: #4a3728;
+  border-color: #1e40af;
 }
 
 .sortDirection {
-  background: #4a3728;
+  background: #1e40af;
   color: white;
-  border: 2px solid #4a3728;
+  border: 2px solid #1e40af;
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -267,7 +267,7 @@
 
 .sortDirection:hover {
   background: white;
-  color: #4a3728;
+  color: #1e40af;
 }
 
 .sortDirection.desc {

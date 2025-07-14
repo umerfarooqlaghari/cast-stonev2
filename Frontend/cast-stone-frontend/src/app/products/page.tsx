@@ -72,7 +72,9 @@ export default function ProductsPage() {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchLower) ||
         product.description?.toLowerCase().includes(searchLower) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchLower))
+        (product.tags && Array.isArray(product.tags) && product.tags.some(tag =>
+          typeof tag === 'string' && tag.toLowerCase().includes(searchLower)
+        ))
       );
     }
 
