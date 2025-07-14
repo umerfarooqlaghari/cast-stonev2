@@ -128,12 +128,12 @@ export interface ProductDetails {
   electricalCordLength?: string;
   pumpSize?: string;
   shipMethod?: string;
-  Drainage_Info?: string;
-  Inside_Top?: string;
-  Inside_Bottom?: string;
-  Inside_Height?: string;
+  drainage_Info?: string;
+  inside_Top?: string;
+  inside_Bottom?: string;
+  inside_Height?: string;
   catalogPage?: string;
-  Factory_Code?: string;
+  factory_Code?: string;
   productId: number;
 }
 
@@ -150,12 +150,12 @@ export interface CreateProductDetailsRequest {
   electricalCordLength?: string;
   pumpSize?: string;
   shipMethod?: string;
-  Drainage_Info?: string;
-  Inside_Top?: string;
-  Inside_Bottom?: string;
-  Inside_Height?: string;
+  drainage_Info?: string;
+  inside_Top?: string;
+  inside_Bottom?: string;
+  inside_Height?: string;
   catalogPage?: string;
-  Factory_Code?: string;
+  factory_Code?: string;
   productId: number;
 }
 

@@ -55,11 +55,11 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     pumpSize: '',
     shipMethod: '',
     catalogPage: '',
-    Factory_Code: '',
-    Drainage_Info: '',
-    Inside_Top: '',
-    Inside_Bottom: '',
-    Inside_Height: '',
+    factory_Code: '',
+    drainage_Info: '',
+    inside_Top: '',
+    inside_Bottom: '',
+    inside_Height: '',
   });
 
   const [downloadableData, setDownloadableData] = useState({
@@ -114,11 +114,11 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
           pumpSize: product.productDetails.pumpSize || '',
           shipMethod: product.productDetails.shipMethod || '',
           catalogPage: product.productDetails.catalogPage || '',
-          Factory_Code: product.productDetails.Factory_Code || '',
-          Drainage_Info: product.productDetails.Drainage_Info || '',
-          Inside_Top: product.productDetails.Inside_Top || '',
-          Inside_Bottom: product.productDetails.Inside_Bottom || '',
-          Inside_Height: product.productDetails.Inside_Height || '',
+          factory_Code: product.productDetails.factory_Code || '',
+          drainage_Info: product.productDetails.drainage_Info || '',
+          inside_Top: product.productDetails.inside_Top || '',
+          inside_Bottom: product.productDetails.inside_Bottom || '',
+          inside_Height: product.productDetails.inside_Height || '',
         });
       }
 
@@ -807,8 +807,8 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <label className="block text-sm font-medium text-gray-700 mb-1">Drainage Info</label>
                 <input
                   type="text"
-                  value={detailsData.Drainage_Info}
-                  onChange={(e) => setDetailsData(prev => ({ ...prev, Drainage_Info: e.target.value }))}
+                  value={detailsData.drainage_Info}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, drainage_Info: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., Difficult assembly"
                 />
@@ -818,8 +818,8 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <label className="block text-sm font-medium text-gray-700 mb-1">Inside Top</label>
                 <input
                   type="text"
-                  value={detailsData.Inside_Top}
-                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Top: e.target.value }))}
+                  value={detailsData.inside_Top}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Top: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., Difficult assembly"
                 />
@@ -829,8 +829,8 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <label className="block text-sm font-medium text-gray-700 mb-1">Inside Bottom</label>
                 <input
                   type="text"
-                  value={detailsData.Inside_Bottom}
-                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Bottom: e.target.value }))}
+                  value={detailsData.inside_Bottom}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Bottom: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., Difficult assembly"
                 />
@@ -840,8 +840,8 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <label className="block text-sm font-medium text-gray-700 mb-1">Inside Height</label>
                 <input
                   type="text"
-                  value={detailsData.Inside_Height}
-                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Height: e.target.value }))}
+                  value={detailsData.inside_Height}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Height: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., Difficult assembly"
                 />
@@ -857,18 +857,17 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
-{/* ------------------------------------------------------------------------------------------------------  */}
      <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Factory Code</label>
                 <input
                   type="text"
-                  value={detailsData.Factory_Code}
-                  onChange={(e) => setDetailsData(prev => ({ ...prev, Factory_Code: e.target.value }))}
+                  value={detailsData.factory_Code}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, factory_Code: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
-{/* ------------------------------------------------------------------------------------------------------  */}
+
             </div>
           </div>
 

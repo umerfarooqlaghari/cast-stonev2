@@ -99,7 +99,6 @@ const hasDownloadableContent = product.downloadableContent &&
                   <span className={styles.specValue}>{product.productSpecifications.Pieces}</span>
                 </div>
               )}
-{/* ------------------------------------------------------------------------------------------------------  */}
               {product.productSpecifications?.waterVolume && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Water Volume:</span>
@@ -255,43 +254,40 @@ const hasDownloadableContent = product.downloadableContent &&
                       <span className={styles.specValue}>{product.productDetails.shipMethod}</span>
                     </div>
                   )}
-                  {/* ------------------------------------------------------------------------------------------------------  */}
-                                   {product.productDetails?.Drainage_Info && (
+                  {product.productDetails?.drainage_Info && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Drainage Info:</span>
-                      <span className={styles.specValue}>{product.productDetails.Drainage_Info}</span>
+                      <span className={styles.specValue}>{product.productDetails.drainage_Info}</span>
                     </div>
                   )}
 
-                  {product.productDetails?.Inside_Top && (
+                  {product.productDetails?.inside_Top && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Inside Top:</span>
-                      <span className={styles.specValue}>{product.productDetails.Inside_Top}</span>
+                      <span className={styles.specValue}>{product.productDetails.inside_Top}</span>
                     </div>
                   )}
 
-                  {product.productDetails?.Inside_Bottom && (
+                  {product.productDetails?.inside_Bottom && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Inside Bottom:</span>
-                      <span className={styles.specValue}>{product.productDetails.Inside_Bottom}</span>
+                      <span className={styles.specValue}>{product.productDetails.inside_Bottom}</span>
                     </div>
                   )}
 
-                  {product.productDetails?.Inside_Height && (
+                  {product.productDetails?.inside_Height && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Inside Height:</span>
-                      <span className={styles.specValue}>{product.productDetails.Inside_Height}</span>
+                      <span className={styles.specValue}>{product.productDetails.inside_Height}</span>
                     </div>
                   )}
 
-                  {product.productDetails?.Factory_Code && (
+                  {product.productDetails?.factory_Code && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Factory Code:</span>
-                      <span className={styles.specValue}>{product.productDetails.Factory_Code}</span>
+                      <span className={styles.specValue}>{product.productDetails.factory_Code}</span>
                     </div>
                   )}
-
-{/*  ----- */}
                   {product.productDetails?.catalogPage && (
                     <div className={styles.specRow}>
                       <span className={styles.specLabel}>Catalog Page:</span>
@@ -360,51 +356,7 @@ const hasDownloadableContent = product.downloadableContent &&
                     )}
                   </div>
                 </div>
-              )}
-
-              {!hasDownloadableContent && (
-                <div className={styles.careSection}>
-                  <h4>Care Instructions:</h4>
-                  <ul>
-                    <li>Clean with mild soap and water</li>
-                    <li>Avoid harsh chemicals or abrasive cleaners</li>
-                    <li>For outdoor pieces, periodic sealing is recommended</li>
-                    <li>Store indoors during extreme weather conditions</li>
-                  </ul>
-                </div>
-              )}
-
-              <div className={styles.downloadSection}>
-                <h4>Downloadable Resources:</h4>
-                <div className={styles.downloadLinks}>
-                  <a href="#" className={styles.downloadLink}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                    Product Specification Sheet (PDF)
-                  </a>
-                  
-                  <a href="#" className={styles.downloadLink}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                    Care & Maintenance Guide (PDF)
-                  </a>
-                  
-                  <a href="#" className={styles.downloadLink}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                    Installation Instructions (PDF)
-                  </a>
-                </div>
-              </div>
+              )}              
             </div>
           </div>
         )}
