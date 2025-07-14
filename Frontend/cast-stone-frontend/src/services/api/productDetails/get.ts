@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseService } from '../../config/baseService';
 import { ApiEndpoints } from '../../config/apiConfig';
 import { ProductDetails } from '../../types/entities';
