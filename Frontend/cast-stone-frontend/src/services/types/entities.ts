@@ -80,6 +80,9 @@ export interface ProductSpecifications {
   id: number;
   material?: string;
   dimensions?: string;
+  Base_Dimensions?: string;
+  Photographed_In?: string;
+  Pieces?: string;
   totalWeight?: string;
   weightWithWater?: string;
   waterVolume?: string;
@@ -93,6 +96,9 @@ export interface CreateProductSpecificationsRequest {
   weightWithWater?: string;
   waterVolume?: string;
   productId: number;
+  Base_Dimensions?: string;
+  Photographed_In?: string;
+  Pieces?: string;
 }
 
 export interface UpdateProductSpecificationsRequest {
@@ -101,6 +107,10 @@ export interface UpdateProductSpecificationsRequest {
   totalWeight?: string;
   weightWithWater?: string;
   waterVolume?: string;
+  Base_Dimensions?: string;
+  Photographed_In?: string;
+  Pieces?: string;
+
 }
 
 // Product Details Types
@@ -118,7 +128,12 @@ export interface ProductDetails {
   electricalCordLength?: string;
   pumpSize?: string;
   shipMethod?: string;
+  Drainage_Info?: string;
+  Inside_Top?: string;
+  Inside_Bottom?: string;
+  Inside_Height?: string;
   catalogPage?: string;
+  Factory_Code?: string;
   productId: number;
 }
 
@@ -135,7 +150,12 @@ export interface CreateProductDetailsRequest {
   electricalCordLength?: string;
   pumpSize?: string;
   shipMethod?: string;
+  Drainage_Info?: string;
+  Inside_Top?: string;
+  Inside_Bottom?: string;
+  Inside_Height?: string;
   catalogPage?: string;
+  Factory_Code?: string;
   productId: number;
 }
 
@@ -153,6 +173,11 @@ export interface UpdateProductDetailsRequest {
   pumpSize?: string;
   shipMethod?: string;
   catalogPage?: string;
+  Factory_Code?: string;
+  Drainage_Info?: string;
+  Inside_Top?: string;
+  Inside_Bottom?: string;
+  Inside_Height?: string;
 }
 
 // Downloadable Content Types

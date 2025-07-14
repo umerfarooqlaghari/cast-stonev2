@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -35,6 +36,9 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     totalWeight: '',
     weightWithWater: '',
     waterVolume: '',
+    Base_Dimensions: '',
+    Photographed_In: '',
+    Pieces: '',
   });
 
   const [detailsData, setDetailsData] = useState({
@@ -51,6 +55,11 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     pumpSize: '',
     shipMethod: '',
     catalogPage: '',
+    Factory_Code: '',
+    Drainage_Info: '',
+    Inside_Top: '',
+    Inside_Bottom: '',
+    Inside_Height: '',
   });
 
   const [downloadableData, setDownloadableData] = useState({
@@ -83,6 +92,9 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
           totalWeight: product.productSpecifications.totalWeight || '',
           weightWithWater: product.productSpecifications.weightWithWater || '',
           waterVolume: product.productSpecifications.waterVolume || '',
+          Base_Dimensions: product.productSpecifications.Base_Dimensions || '',
+          Photographed_In: product.productSpecifications.Photographed_In || '',
+          Pieces: product.productSpecifications.Pieces || '',
         });
       }
 
@@ -102,6 +114,11 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
           pumpSize: product.productDetails.pumpSize || '',
           shipMethod: product.productDetails.shipMethod || '',
           catalogPage: product.productDetails.catalogPage || '',
+          Factory_Code: product.productDetails.Factory_Code || '',
+          Drainage_Info: product.productDetails.Drainage_Info || '',
+          Inside_Top: product.productDetails.Inside_Top || '',
+          Inside_Bottom: product.productDetails.Inside_Bottom || '',
+          Inside_Height: product.productDetails.Inside_Height || '',
         });
       }
 
@@ -587,6 +604,36 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 />
               </div>
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Base Dimensions</label>
+                <input
+                  type="text"
+                  value={specificationsData.Base_Dimensions}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, Base_Dimensions: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Photographed In</label>
+                <input
+                  type="text"
+                  value={specificationsData.Photographed_In}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, Photographed_In: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pieces</label>
+                <input
+                  type="text"
+                  value={specificationsData.Pieces}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, Pieces: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Total Weight</label>
                 <input
                   type="text"
@@ -667,6 +714,161 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assistance Required</label>
+                <input
+                  type="text"
+                  value={detailsData.assistanceRequired}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, assistanceRequired: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Splash level</label>
+                <input
+                  type="text"
+                  value={detailsData.splashLevel}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, splashLevel: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sound level</label>
+                <input
+                  type="text"
+                  value={detailsData.soundLevel}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, soundLevel: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sound Type</label>
+                <input
+                  type="text"
+                  value={detailsData.soundType}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, soundType: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Replacement Pump kit</label>
+                <input
+                  type="text"
+                  value={detailsData.replacementPumpKit}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, replacementPumpKit: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Electrical Cord Length</label>
+                <input
+                  type="text"
+                  value={detailsData.electricalCordLength}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, electricalCordLength: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pump Size</label>
+                <input
+                  type="text"
+                  value={detailsData.pumpSize}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, pumpSize: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ship Method</label>
+                <input
+                  type="text"
+                  value={detailsData.shipMethod}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, shipMethod: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Drainage Info</label>
+                <input
+                  type="text"
+                  value={detailsData.Drainage_Info}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, Drainage_Info: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+     <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Inside Top</label>
+                <input
+                  type="text"
+                  value={detailsData.Inside_Top}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Top: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+     <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Inside Bottom</label>
+                <input
+                  type="text"
+                  value={detailsData.Inside_Bottom}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Bottom: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+     <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Inside Height</label>
+                <input
+                  type="text"
+                  value={detailsData.Inside_Height}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, Inside_Height: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+     <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Catalog Page</label>
+                <input
+                  type="text"
+                  value={detailsData.catalogPage}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, catalogPage: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
+     <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Factory Code</label>
+                <input
+                  type="text"
+                  value={detailsData.Factory_Code}
+                  onChange={(e) => setDetailsData(prev => ({ ...prev, Factory_Code: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="e.g., Difficult assembly"
+                />
+              </div>
+{/* ------------------------------------------------------------------------------------------------------  */}
             </div>
           </div>
 
