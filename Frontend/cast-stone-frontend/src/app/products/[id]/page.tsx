@@ -183,11 +183,11 @@ export default function ProductPage() {
                 </button>
               </div>
             )}
-          </div>
-        </div>
 
         {/* Product Specifications */}
         <ProductSpecifications product={product} />
+          </div>
+        </div>
 
         {/* Related Products */}
         <RelatedProducts products={relatedProducts} />
