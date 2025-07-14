@@ -14,7 +14,16 @@ public class ProductSpecifications
     
     [MaxLength(200)]
     public string? Dimensions { get; set; }
-    
+
+    [MaxLength(200)]
+    public string? Base_Dimensions { get; set; }
+
+    [MaxLength(200)]
+    public string? Photographed_In { get; set; }
+
+    [MaxLength(300)]
+    public string? Pieces { get; set; }
+
     [MaxLength(200)]
     public string? TotalWeight { get; set; }
     

@@ -15,6 +15,11 @@ public class ProductDetailsResponse
     public string? ElectricalCordLength { get; set; }
     public string? PumpSize { get; set; }
     public string? ShipMethod { get; set; }
+    public string? Drainage_Info { get; set; }
+    public string? Inside_Top { get; set; }
+    public string? Inside_Bottom { get; set; }
+    public string? Inside_Height { get; set; }
     public string? CatalogPage { get; set; }
+    public string? Factory_Code { get; set; }
     public int ProductId { get; set; }
 }

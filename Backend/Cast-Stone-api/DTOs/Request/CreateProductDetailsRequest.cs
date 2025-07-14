@@ -39,10 +39,24 @@ public class CreateProductDetailsRequest
     
     [MaxLength(100)]
     public string? ShipMethod { get; set; }
-    
+
+    [MaxLength(100)]
+    public string? Drainage_Info { get; set; }
+
+    [MaxLength(100)]
+    public string? Inside_Top { get; set; }
+
+    [MaxLength(100)]
+    public string? Inside_Bottom { get; set; }
+    [MaxLength(100)]
+    public string? Inside_Height { get; set; }
+
     [MaxLength(100)]
     public string? CatalogPage { get; set; }
     
+    [MaxLength(100)]
+    public string? Factory_Code { get; set; }
+
     [Required]
     public int ProductId { get; set; }
 }
