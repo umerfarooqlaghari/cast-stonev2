@@ -37,7 +37,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
     weightWithWater: '',
     waterVolume: '',
     Base_Dimensions: '',
-    Photographed_In: '',
+    photographed_In: '',
     Pieces: '',
   });
 
@@ -92,9 +92,9 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
           totalWeight: product.productSpecifications.totalWeight || '',
           weightWithWater: product.productSpecifications.weightWithWater || '',
           waterVolume: product.productSpecifications.waterVolume || '',
-          Base_Dimensions: product.productSpecifications.Base_Dimensions || '',
-          Photographed_In: product.productSpecifications.Photographed_In || '',
-          Pieces: product.productSpecifications.Pieces || '',
+          Base_Dimensions: product.productSpecifications.base_Dimensions || '',
+          photographed_In: product.productSpecifications.photographed_In || '',
+          Pieces: product.productSpecifications.pieces || '',
         });
       }
 
@@ -617,8 +617,8 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <label className="block text-sm font-medium text-gray-700 mb-1">Photographed In</label>
                 <input
                   type="text"
-                  value={specificationsData.Photographed_In}
-                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, Photographed_In: e.target.value }))}
+                  value={specificationsData.photographed_In}
+                  onChange={(e) => setSpecificationsData(prev => ({ ...prev, photographed_In: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                   placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
                 />

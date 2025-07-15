@@ -15,7 +15,7 @@
 
 /* Section Styles */
 .section {
-  border: 2px solid #ddd;
+  border: 0px solid #ddd;
   border-radius: 0; /* Sharp corners */
   margin-bottom: 1rem;
   background: white;
@@ -44,8 +44,9 @@
 }
 
 .sectionHeader.active {
-  background: #1e40af;
-  color: white;
+    /* background: #f5f5f5; */
+  background: #f5f5f5;
+  color: black;
 }
 
 .toggleIcon {

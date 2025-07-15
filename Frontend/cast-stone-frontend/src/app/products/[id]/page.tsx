@@ -115,34 +115,76 @@ export default function ProductPage() {
               Product Code: {product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
             </div>
 
+            {/* Key Specifications - Styled Table Look */}
+            {product.productSpecifications && (
+              <>{console.log("Full productSpecifications object:", product.productSpecifications)}
+              <div className={styles.keySpecsTable}>
+                {product.productSpecifications.pieces && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Pieces:</span>
+                    <span className={styles.value}>{product.productSpecifications.pieces}</span>
+                  </div>
+                )}
+                {product.productSpecifications.material && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Material:</span>
+                    <span className={styles.value}>{product.productSpecifications.material}</span>
+                  </div>
+                )}
+                {product.productSpecifications.dimensions && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Dimensions:</span>
+                    <span className={styles.value}>{product.productSpecifications.dimensions}</span>
+                  </div>
+                )}
+                {product.productSpecifications.totalWeight && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Total Weight:</span>
+                    <span className={styles.value}>{product.productSpecifications.totalWeight}</span>
+                  </div>
+                )}
+                {product.productSpecifications.photographed_In && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Photographed In:</span>
+                    <span className={styles.value}>{product.productSpecifications.photographed_In}</span>
+                  </div>
+                )}
+                {product.productSpecifications.base_Dimensions && (
+                  <div className={styles.specRow}>
+                    <span className={styles.label}>Base Dimensions:</span>
+                    <span className={styles.value}>{product.productSpecifications.base_Dimensions}</span>
+                  </div>
+                )}
+              </div>
+              </>
+            )}
+
             {/* Product Info Grid */}
-            <div className={styles.productInfo}>
+             <div className={styles.productInfo}>
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Availability:</span>
                 <span className={styles.infoValue}>
                   {isInStock ? 
-                    `In Stock (Typically ships within 3 weeks of order placement)` : 
+                    `In Stock` : 
                     'Out of Stock'
                   }
                 </span>
+              </div> 
               </div>
-              
-                         </div>
+               
+                         
 
-            {/* Price */}
+
             <div className={styles.priceSection}>
-              <span className={styles.price}>{formatPrice(product.price)}</span>
-            </div>
-
-            {/* Patina Selector */}
-            {/* <PatinaSelector 
-              selectedPatina={selectedPatina}
-              onPatinaChange={setSelectedPatina}
-            /> */}
+                <div className={styles.priceRow}>
+    
+              <span className={styles.price}>
+                {formatPrice(product.price)}</span>
+            
 
             {/* Quantity and Add to Cart */}
-            {isInStock && (
-              <div className={styles.purchaseSection}>
+              {/* <div className={styles.purchaseSection}> */}
+              <span><span></span></span>
                 <div className={styles.quantitySelector}>
                   <label htmlFor="quantity">Quantity:</label>
                   <div className={styles.quantityControls}>
@@ -173,7 +215,10 @@ export default function ProductPage() {
                     </button>
                   </div>
                 </div>
-
+                
+              <div className={styles.addToCartRow}>
+                <div className={styles.addToCartLabel}> 
+                
                 <button
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
@@ -182,7 +227,11 @@ export default function ProductPage() {
                   {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                 </button>
               </div>
-            )}
+            </div>
+            </div>
+
+            
+            </div>
 
         {/* Product Specifications */}
         <ProductSpecifications product={product} />

@@ -48,6 +48,7 @@ const hasDownloadableContent = product.downloadableContent &&
         </button>
         
         {activeSection === 'specifications' && hasSpecifications && (
+        
           <div className={styles.sectionContent}>
             <div className={styles.specGrid}>
               {product.productSpecifications?.material && (
@@ -56,7 +57,7 @@ const hasDownloadableContent = product.downloadableContent &&
                   <span className={styles.specValue}>{product.productSpecifications.material}</span>
                 </div>
               )}
-
+ 
               {product.productSpecifications?.dimensions && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Dimensions:</span>
@@ -79,26 +80,26 @@ const hasDownloadableContent = product.downloadableContent &&
               )}
 {/* ---- -------------------------------------------------------------------------------------------------- */}
 
-              {product.productSpecifications?.Base_Dimensions && (
+              {/* {product.productSpecifications?.base_Dimensions && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Base Dimensions:</span>
-                  <span className={styles.specValue}>{product.productSpecifications.Base_Dimensions}</span>
+                  <span className={styles.specValue}>{product.productSpecifications.base_Dimensions}</span>
                 </div>
-              )}
+              )} */}
 
-              {product.productSpecifications?.Photographed_In && (
+              {/* {product.productSpecifications?.photographed_In && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Photographed In:</span>
-                  <span className={styles.specValue}>{product.productSpecifications.Photographed_In}</span>
+                  <span className={styles.specValue}>{product.productSpecifications.photographed_In}</span>
                 </div>
-              )}
+              )} */}
 
-              {product.productSpecifications?.Pieces && (
+              {/* {product.productSpecifications?.pieces && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Pieces:</span>
-                  <span className={styles.specValue}>{product.productSpecifications.Pieces}</span>
+                  <span className={styles.specValue}>{product.productSpecifications.pieces}</span>
                 </div>
-              )}
+              )} */}
               {product.productSpecifications?.waterVolume && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Water Volume:</span>
@@ -106,28 +107,28 @@ const hasDownloadableContent = product.downloadableContent &&
                 </div>
               )}
 
-              <div className={styles.specRow}>
+              {/* <div className={styles.specRow}>
                 <span className={styles.specLabel}>Collection:</span>
                 <span className={styles.specValue}>
                   {product.collection?.name || 'Not specified'}
                 </span>
-              </div>
+              </div> */}
 
-              <div className={styles.specRow}>
+              {/* <div className={styles.specRow}>
                 <span className={styles.specLabel}>Product Code:</span>
                 <span className={styles.specValue}>
                   {product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
                 </span>
-              </div>
+              </div> */}
               
-              <div className={styles.specRow}>
+              {/* <div className={styles.specRow}>
                 <span className={styles.specLabel}>Stock Status:</span>
                 <span className={`${styles.specValue} ${
                   product.stock > 0 ? styles.inStock : styles.outOfStock
                 }`}>
                   {product.stock > 0 ? `In Stock (${product.stock} available)` : 'Out of Stock'}
                 </span>
-              </div>
+              </div> */}
               
               {product.tags && product.tags.length > 0 && (
                 <div className={styles.specRow}>
