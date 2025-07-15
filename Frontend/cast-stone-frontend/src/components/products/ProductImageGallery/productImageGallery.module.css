@@ -87,7 +87,7 @@
 }
 
 /* Thumbnail Container */
-.thumbnailContainer {
+/* .thumbnailContainer {
   margin-top: 1rem;
 }
 
@@ -102,12 +102,52 @@
 .thumbnail {
   background: none;
   border: 2px solid #ddd;
-  border-radius: 0; /* Sharp corners */
+  border-radius: 0;
   padding: 0;
   cursor: pointer;
   transition: all 0.3s ease;
   aspect-ratio: 1;
   overflow: hidden;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+.thumbnailContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: 8px 0;
+}
+
+.thumbnailGrid {
+  display: flex;
+  gap: 8px;
+}
+
+.thumbnail {
+  display: inline-block;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.thumbnailImage {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: border 0.3s;
+}
+
+.activeThumbnail .thumbnailImage {
+  border-color: #0070f3; /* Highlight active */
 }
 
 .thumbnail:hover {
@@ -119,11 +159,7 @@
   border-width: 3px;
 }
 
-.thumbnailImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 
 /* Zoom Overlay */
 .zoomOverlay {
