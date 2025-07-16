@@ -11,20 +11,53 @@ public class ContactFormSubmissionService : IContactFormSubmissionService
 {
     private readonly IContactFormSubmissionRepository _repository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<ContactFormSubmissionService> _logger;
 
-    public ContactFormSubmissionService(IContactFormSubmissionRepository repository, IMapper mapper)
+    public ContactFormSubmissionService(
+        IContactFormSubmissionRepository repository,
+        IMapper mapper,
+        IEmailService emailService,
+        ILogger<ContactFormSubmissionService> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<ContactFormSubmissionResponse> CreateAsync(CreateContactFormSubmissionRequest request)
     {
         var submission = _mapper.Map<ContactFormSubmission>(request);
         submission.CreatedAt = DateTime.UtcNow;
-        
+
         var createdSubmission = await _repository.AddAsync(submission);
-        return _mapper.Map<ContactFormSubmissionResponse>(createdSubmission);
+        var response = _mapper.Map<ContactFormSubmissionResponse>(createdSubmission);
+
+        // Send auto-reply email to the user
+        try
+        {
+            await _emailService.SendContactFormAutoReplyAsync(
+                request.Email,
+                request.Name,
+                request.Inquiry.ToString(),
+                request.Message,
+                request.Company,
+                request.State,
+                request.PhoneNumber
+            );
+
+            _logger.LogInformation("Auto-reply email sent successfully to {Email} for contact form submission {Id}",
+                request.Email, createdSubmission.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send auto-reply email to {Email} for contact form submission {Id}",
+                request.Email, createdSubmission.Id);
+            // Don't fail the entire operation if email fails
+        }
+
+        return response;
     }
 
     public async Task<IEnumerable<ContactFormSubmissionResponse>> GetAllAsync()

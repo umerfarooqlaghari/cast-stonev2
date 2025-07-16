@@ -107,7 +107,54 @@ public class OrderService : IOrderService
             }
         }
 
-        return _mapper.Map<OrderResponse>(createdOrder);
+        var orderResponse = _mapper.Map<OrderResponse>(createdOrder);
+
+        // Send order confirmation email to customer
+        try
+        {
+            // Get product details for email
+            var orderItemDetails = new List<OrderItemDetail>();
+            foreach (var item in orderItems)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product != null)
+                {
+                    orderItemDetails.Add(new OrderItemDetail
+                    {
+                        ProductName = product.Name,
+                        Quantity = item.Quantity,
+                        Price = item.PriceAtPurchaseTime,
+                        Total = item.PriceAtPurchaseTime * item.Quantity,
+                        ProductDescription = product.Description
+                    });
+                }
+            }
+
+            var shippingAddress = $"{order.Country}, {order.City}";
+            if (!string.IsNullOrEmpty(order.ZipCode))
+                shippingAddress += $", {order.ZipCode}";
+
+            await _emailService.SendOrderConfirmationToCustomerAsync(
+                order.Email,
+                order.Email, // Using email as name since we don't have customer name in order
+                createdOrder.Id,
+                totalAmount,
+                orderItemDetails,
+                order.PaymentMethod ?? "Unknown",
+                shippingAddress
+            );
+
+            _logger.LogInformation("Order confirmation email sent successfully to {Email} for order {OrderId}",
+                order.Email, createdOrder.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send order confirmation email to {Email} for order {OrderId}",
+                order.Email, createdOrder.Id);
+            // Don't fail the entire operation if email fails
+        }
+
+        return orderResponse;
     }
 
     public async Task<bool> UpdateStatusAsync(int id, UpdateOrderStatusRequest request)

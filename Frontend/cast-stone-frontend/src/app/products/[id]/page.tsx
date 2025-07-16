@@ -8,7 +8,7 @@ import { productService } from '@/services';
 import { useCart } from '@/contexts/CartContext';
 import ProductImageGallery from '@/components/products/ProductImageGallery/ProductImageGallery';
 import ProductSpecifications from '@/components/products/ProductSpecifications/ProductSpecifications';
-// import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
+import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
 import RelatedProducts from '@/components/products/RelatedProducts/RelatedProducts';
 import styles from './productPage.module.css';
 
@@ -22,7 +22,7 @@ export default function ProductPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  // const [selectedPatina, setSelectedPatina] = useState<string>('Alpine Stone');
+  const [selectedPatina, setSelectedPatina] = useState<string>('Alpine Stone');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
@@ -228,10 +228,14 @@ export default function ProductPage() {
                 </button>
               </div>
             </div>
+            </div>     
             </div>
 
-            
-            </div>
+              <PatinaSelector 
+              selectedPatina={selectedPatina}
+              onPatinaChange={setSelectedPatina}
+            />
+
 
         {/* Product Specifications */}
         <ProductSpecifications product={product} />
