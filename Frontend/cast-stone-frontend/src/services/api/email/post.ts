@@ -54,7 +54,7 @@ export class EmailPostService extends BaseService {
     this.validateEmailRequest(data);
     
     return this.handleResponse(
-      this.client.post<EmailResponse>('/api/email/send', data)
+      this.client.post<EmailResponse>('/email/send', data)
     );
   }
 
@@ -68,7 +68,7 @@ export class EmailPostService extends BaseService {
     this.validateContactFormAutoReplyRequest(data);
     
     return this.handleResponse(
-      this.client.post<EmailResponse>('/api/email/contact-form-reply', data)
+      this.client.post<EmailResponse>('/email/contact-form-reply', data)
     );
   }
 
@@ -82,7 +82,7 @@ export class EmailPostService extends BaseService {
     this.validateOrderConfirmationRequest(data);
     
     return this.handleResponse(
-      this.client.post<EmailResponse>('/api/email/order-confirmation', data)
+      this.client.post<EmailResponse>('/email/order-confirmation', data)
     );
   }
 
