@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // utils/sendEmail.ts (frontend)
 import { BaseApiUrl } from '../services/config/apiConfig';
 
