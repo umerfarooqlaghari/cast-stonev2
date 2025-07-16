@@ -34,7 +34,7 @@ export class ContactFormGetService extends BaseService {
    * Get recent contact form submissions
    */
   async getRecent(count: number = 10): Promise<ContactFormSubmission[]> {
-    this.logApiCall('GET', `/api/contactform/recent?count=${count}`);
+    this.logApiCall('GET', `/contactform/recent?count=${count}`);
     
     if (count <= 0 || count > 100) {
       throw new Error('Count must be between 1 and 100');
