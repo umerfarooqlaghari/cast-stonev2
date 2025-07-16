@@ -15,7 +15,7 @@ export class ContactFormPostService extends BaseService {
     this.validateCreateRequest(data);
     
     return this.handleResponse(
-      this.client.post<ContactFormSubmission>('/api/contactform', data)
+      this.client.post<ContactFormSubmission>('/contactform', data)
     );
   }
 
