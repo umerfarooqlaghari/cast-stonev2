@@ -91,23 +91,27 @@
 }
 
 .infoRow {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap; /* Optional: allow wrapping if space gets too tight */
 }
 
 .infoLabel {
   font-weight: 600;
-  color:rgb(0, 0, 0);
-  font-size: 0.9rem;
+  min-width: 100px;
+  color: #000;
+  font-size: 0.95rem;
 }
 
 .infoValue {
+  font-size: 0.95rem;
   color: #333;
-  font-size: 0.9rem;
+  font-weight: 500;
 }
-
 /* Price Section */
 .priceSection {
   margin: 2rem 0;
@@ -262,6 +266,27 @@ width: 400%;
   .productTitle {
     font-size: 2rem;
   }
+  .rightSection {
+    gap: 2rem;
+  }
+
+  .specRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.label {
+  font-weight: 700;
+  flex: 1;
+}
+
+.value {
+  flex: 1;
+  text-align: right;
+  color: #222;
+}
 }
 
 @media (max-width: 768px) {
@@ -292,7 +317,6 @@ width: 400%;
   .quantityControls {
     justify-content: center;
   }
-}
 
 .rightSection {
   display: flex;
@@ -310,33 +334,14 @@ width: 400%;
   color: #111;
 }
 
-.specRow {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #ccc;
-}
-
-.label {
-  font-weight: 700;
-  flex: 1;
-}
-
-.value {
-  flex: 1;
-  text-align: right;
-  color: #222;
-}
-
-
-@media (max-width: 1024px) {
-  .rightSection {
-    gap: 2rem;
+  .infoLabel {
+    min-width: 80px;
+    font-size: 0.9rem;
   }
-}
 
-
-@media (max-width: 480px) {
+  .infoValue {
+    font-size: 0.9rem;
+  }
   .productTitle {
     font-size: 1.5rem;
   }
@@ -350,12 +355,24 @@ width: 400%;
     padding: 0.5rem;
   }
   .specRow {
-    flex-direction: column;
+    flex-direction: row !important;
     align-items: flex-start;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+  }
+
+.label {
+    flex: 0 0 auto;
+    font-weight: 600;
+    font-size: 0.85rem;
   }
 
   .value {
+    flex: 1 1 auto;
     text-align: left;
-    margin-top: 4px;
+    margin-top: 0 !important;
+    font-size: 0.85rem;
+    word-break: break-word;
   }
 }
