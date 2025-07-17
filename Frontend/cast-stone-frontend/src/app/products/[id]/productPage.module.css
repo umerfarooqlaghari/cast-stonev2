@@ -270,6 +270,7 @@ width: 400%;
     gap: 2rem;
   }
 
+  
   .specRow {
   display: flex;
   justify-content: space-between;
