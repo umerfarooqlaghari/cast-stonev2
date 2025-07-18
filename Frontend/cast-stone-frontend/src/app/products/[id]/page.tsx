@@ -119,6 +119,16 @@ export default function ProductPage() {
             {product.productSpecifications && (
               <>{console.log("Full productSpecifications object:", product.productSpecifications)}
               <div className={styles.keySpecsTable}>
+              <div className={styles.specRow}>
+                <span className={styles.label}>Availability:</span>
+                <span className={styles.value}>
+                  {isInStock ? 
+                    `In Stock` : 
+                    'Out of Stock'
+                  }
+                </span>
+              </div> 
+
                 {product.productSpecifications.pieces && (
                   <div className={styles.specRow}>
                     <span className={styles.label}>Pieces:</span>
@@ -160,17 +170,7 @@ export default function ProductPage() {
             )}
 
             {/* Product Info Grid */}
-             <div className={styles.productInfo}>
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Availability:</span>
-                <span className={styles.infoValue}>
-                  {isInStock ? 
-                    `In Stock` : 
-                    'Out of Stock'
-                  }
-                </span>
-              </div> 
-              </div>
+             
                
                          
 

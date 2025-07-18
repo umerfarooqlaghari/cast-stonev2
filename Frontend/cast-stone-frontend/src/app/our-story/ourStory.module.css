@@ -60,8 +60,8 @@
 .heroSubtitle {
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1.25rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.9);
+  font-weight: 10;
+  color: rgba(0, 0, 0, 0.9);
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;

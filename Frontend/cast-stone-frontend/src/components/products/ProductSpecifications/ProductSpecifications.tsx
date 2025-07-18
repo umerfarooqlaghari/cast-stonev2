@@ -62,11 +62,12 @@ const hasDownloadableContent = product.downloadableContent &&
                 </span>
               </div>
 
-              {/* Pieces */}
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Pieces:</span>
-                <span className={styles.specValue}>Multiple Piece Item</span>
-              </div>
+               {product.productSpecifications?.pieces && (
+                <div className={styles.specRow}>
+                  <span className={styles.specLabel}>Pieces:</span>
+                  <span className={styles.specValue}>{product.productSpecifications.pieces}</span>
+                </div>
+              )} 
 
               {product.productSpecifications?.material && (
                 <div className={styles.specRow}>
@@ -89,18 +90,6 @@ const hasDownloadableContent = product.downloadableContent &&
                 </div>
               )}
 
-              {/* Photographed In */}
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Photographed In:</span>
-                <span className={styles.specValue}>Nero Nuovo</span>
-              </div>
-
-              {/* Base Dimensions */}
-              <div className={styles.specRow}>
-                <span className={styles.specLabel}>Base Dimensions:</span>
-                <span className={styles.specValue}>83" W</span>
-              </div>
-
               {product.productSpecifications?.weightWithWater && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Weight With Water:</span>
@@ -109,26 +98,21 @@ const hasDownloadableContent = product.downloadableContent &&
               )}
 {/* ---- -------------------------------------------------------------------------------------------------- */}
 
-              {/* {product.productSpecifications?.base_Dimensions && (
+               {product.productSpecifications?.base_Dimensions && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Base Dimensions:</span>
                   <span className={styles.specValue}>{product.productSpecifications.base_Dimensions}</span>
                 </div>
-              )} */}
+              )} 
 
-              {/* {product.productSpecifications?.photographed_In && (
+               {product.productSpecifications?.photographed_In && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Photographed In:</span>
                   <span className={styles.specValue}>{product.productSpecifications.photographed_In}</span>
                 </div>
-              )} */}
+              )} 
 
-              {/* {product.productSpecifications?.pieces && (
-                <div className={styles.specRow}>
-                  <span className={styles.specLabel}>Pieces:</span>
-                  <span className={styles.specValue}>{product.productSpecifications.pieces}</span>
-                </div>
-              )} */}
+
               {product.productSpecifications?.waterVolume && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Water Volume:</span>
