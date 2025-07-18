@@ -2,7 +2,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 8rem 1rem 2rem;
   min-height: 80vh;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .title {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 2rem 0;
@@ -51,18 +51,18 @@
 }
 
 .step.active span {
-  background: #8b7355;
+  background: #2563eb;
   color: white;
 }
 
 .step label {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .step.active label {
-  color: #4a3728;
+  color: #1f2937;
 }
 
 .stepConnector {
@@ -87,7 +87,7 @@
 }
 
 .sectionTitle {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 2rem 0;
@@ -113,7 +113,7 @@
 }
 
 .formGroup label {
-  color: #4a3728;
+  color: #1f2937;
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
@@ -131,7 +131,7 @@
 .formGroup input:focus,
 .formGroup select:focus {
   outline: none;
-  border-color: #8b7355;
+  border-color: #2563eb;
 }
 
 /* Payment Methods */
@@ -154,12 +154,12 @@
 }
 
 .paymentMethod:hover {
-  border-color: #8b7355;
+  border-color: #2563eb;
 }
 
 .paymentMethod.selected {
-  border-color: #8b7355;
-  background: #f8f7f5;
+  border-color: #2563eb;
+  background: #eff6ff;
 }
 
 .paymentIcon {
@@ -173,14 +173,14 @@
 }
 
 .paymentInfo h3 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.25rem 0;
 }
 
 .paymentInfo p {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
   margin: 0;
 }
@@ -188,7 +188,7 @@
 .radioButton input {
   width: 20px;
   height: 20px;
-  accent-color: #8b7355;
+  accent-color: #2563eb;
 }
 
 /* Step Actions */
@@ -203,7 +203,7 @@
 .nextBtn,
 .placeOrderBtn {
   padding: 1rem 2rem;
-  background: #8b7355;
+  background: #2563eb;
   color: white;
   border: none;
   border-radius: 6px;
@@ -215,7 +215,7 @@
 
 .nextBtn:hover,
 .placeOrderBtn:hover:not(:disabled) {
-  background: #6d5a47;
+  background: #1d4ed8;
   transform: translateY(-2px);
 }
 
@@ -228,7 +228,7 @@
 .backBtn {
   padding: 1rem 2rem;
   background: transparent;
-  color: #6b5b4d;
+  color: #4b5563;
   border: 2px solid #e5e7eb;
   border-radius: 6px;
   font-weight: 600;
@@ -238,8 +238,8 @@
 }
 
 .backBtn:hover {
-  border-color: #8b7355;
-  color: #8b7355;
+  border-color: #2563eb;
+  color: #2563eb;
 }
 
 /* Order Summary */
@@ -254,7 +254,7 @@
 }
 
 .summaryTitle {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
@@ -292,7 +292,7 @@
 }
 
 .itemDetails h4 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 0.9rem;
   font-weight: 600;
   margin: 0 0 0.25rem 0;
@@ -300,13 +300,13 @@
 }
 
 .itemDetails p {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.8rem;
   margin: 0;
 }
 
 .itemPrice {
-  color: #4a3728;
+  color: #1f2937;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -325,12 +325,12 @@
 }
 
 .summaryRow span:first-child {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
 }
 
 .summaryRow span:last-child {
-  color: #4a3728;
+  color: #1f2937;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -340,18 +340,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-top: 2px solid #4a3728;
+  border-top: 2px solid #2563eb;
   margin-top: 1rem;
 }
 
 .totalRow span:first-child {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.1rem;
   font-weight: 700;
 }
 
 .totalRow span:last-child {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.25rem;
   font-weight: 700;
 }
@@ -416,7 +416,7 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 0.5rem;
+    padding: 6rem 0.5rem 0.5rem;
   }
 
   .title {

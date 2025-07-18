@@ -48,16 +48,33 @@ const hasDownloadableContent = product.downloadableContent &&
         </button>
         
         {activeSection === 'specifications' && hasSpecifications && (
-        
+
           <div className={styles.sectionContent}>
             <div className={styles.specGrid}>
+              {/* Availability - Show stock status */}
+              <div className={styles.specRow}>
+                <span className={styles.specLabel}>Availability:</span>
+                <span className={styles.specValue}>
+                  {product.stock > 0
+                    ? `Limited Inventory. (Ships within 13 weeks of order placement.)`
+                    : 'Out of Stock'
+                  }
+                </span>
+              </div>
+
+              {/* Pieces */}
+              <div className={styles.specRow}>
+                <span className={styles.specLabel}>Pieces:</span>
+                <span className={styles.specValue}>Multiple Piece Item</span>
+              </div>
+
               {product.productSpecifications?.material && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Material:</span>
                   <span className={styles.specValue}>{product.productSpecifications.material}</span>
                 </div>
               )}
- 
+
               {product.productSpecifications?.dimensions && (
                 <div className={styles.specRow}>
                   <span className={styles.specLabel}>Dimensions:</span>
@@ -71,6 +88,18 @@ const hasDownloadableContent = product.downloadableContent &&
                   <span className={styles.specValue}>{product.productSpecifications.totalWeight}</span>
                 </div>
               )}
+
+              {/* Photographed In */}
+              <div className={styles.specRow}>
+                <span className={styles.specLabel}>Photographed In:</span>
+                <span className={styles.specValue}>Nero Nuovo</span>
+              </div>
+
+              {/* Base Dimensions */}
+              <div className={styles.specRow}>
+                <span className={styles.specLabel}>Base Dimensions:</span>
+                <span className={styles.specValue}>83" W</span>
+              </div>
 
               {product.productSpecifications?.weightWithWater && (
                 <div className={styles.specRow}>

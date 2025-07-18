@@ -77,10 +77,10 @@ The component uses CSS modules with custom properties for theming:
 
 ```css
 :root {
-  --cast-stone-brown: #4a3728;
-  --cast-stone-light-brown: #6b4e3d;
+  --cast-stone-blue: #2563eb;
+  --cast-stone-light-blue: #3b82f6;
   --cast-stone-white: #ffffff;
-  --cast-stone-gray: #8b7355;
+  --cast-stone-dark-text: #1f2937;
 }
 ```
 

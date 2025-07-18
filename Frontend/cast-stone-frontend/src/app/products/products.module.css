@@ -1,8 +1,8 @@
-/* Products Page Styles - Magazine/Editorial Theme */
+/* Products Page Styles - Blue and White Theme */
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 6rem 1rem 2rem;
   min-height: 80vh;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .title {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
@@ -29,7 +29,7 @@
 }
 
 .subtitle {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 1.1rem;
   margin: 0;
   line-height: 1.5;
@@ -46,7 +46,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #8b7355;
+  background: #2563eb;
   color: white;
   border: none;
   border-radius: 6px;
@@ -56,7 +56,7 @@
 }
 
 .filterToggle:hover {
-  background: #6d5a47;
+  background: #1d4ed8;
 }
 
 .filterIcon {
@@ -66,7 +66,7 @@
 }
 
 .resultsCount {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
@@ -100,7 +100,7 @@
 }
 
 .filtersHeader h3 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
@@ -127,7 +127,7 @@
 
 .filterGroup label {
   display: block;
-  color: #4a3728;
+  color: #1f2937;
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 0.9rem;
@@ -148,7 +148,7 @@
 .filterSelect:focus,
 .priceInput:focus {
   outline: none;
-  border-color: #8b7355;
+  border-color: #2563eb;
 }
 
 .priceRange {
@@ -158,7 +158,7 @@
 }
 
 .priceRange span {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -178,7 +178,7 @@
 .checkboxLabel input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #8b7355;
+  accent-color: #2563eb;
 }
 
 /* Products Section */

@@ -2,7 +2,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 8rem 1rem 2rem;
   min-height: 80vh;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .title {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
@@ -23,7 +23,7 @@
 }
 
 .subtitle {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 1.1rem;
   margin: 0;
 }
@@ -35,14 +35,14 @@
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  color: #6b5b4d;
+  color: #4b5563;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #8b7355;
+  border-top: 3px solid #2563eb;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -78,14 +78,14 @@
 }
 
 .emptyTitle {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 2rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
 }
 
 .emptyMessage {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0 0 2rem 0;
@@ -97,7 +97,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
-  background: #8b7355;
+  background: #2563eb;
   color: white;
   border-radius: 6px;
   text-decoration: none;
@@ -107,9 +107,9 @@
 }
 
 .shopNowBtn:hover {
-  background: #6d5a47;
+  background: #1d4ed8;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .shopIcon {
@@ -161,21 +161,21 @@
 }
 
 .itemsHeader h2 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
 }
 
 .continueShoppingLink {
-  color: #8b7355;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .continueShoppingLink:hover {
-  color: #6d5a47;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
@@ -208,20 +208,20 @@
 
 .helpSection h3,
 .shippingInfo h3 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
 }
 
 .helpSection p {
-  color: #6b5b4d;
+  color: #4b5563;
   line-height: 1.6;
   margin: 0;
 }
 
 .contactLink {
-  color: #8b7355;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 600;
 }
@@ -237,7 +237,7 @@
 }
 
 .shippingInfo li {
-  color: #6b5b4d;
+  color: #4b5563;
   padding: 0.5rem 0;
   border-bottom: 1px solid #e5e7eb;
   position: relative;
@@ -312,7 +312,7 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 0.5rem;
+    padding: 6rem 0.5rem 0.5rem;
   }
 
   .title {

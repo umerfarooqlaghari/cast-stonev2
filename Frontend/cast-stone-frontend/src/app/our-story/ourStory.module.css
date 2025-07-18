@@ -1,12 +1,13 @@
-/* Our Story Page Styles - Magazine/Editorial Theme */
+/* Our Story Page Styles - Blue and White Theme */
 .OurStoryroot {
-  --cast-stone-brown: #4a3728;
-  --cast-stone-light-brown: #6b4e3d;
-  --cast-stone-cream: #faf9f7;
+  --cast-stone-blue: #2563eb;
+  --cast-stone-light-blue: #3b82f6;
+  --cast-stone-blue-50: #eff6ff;
   --cast-stone-white: #ffffff;
-  --cast-stone-gray: #8b7355;
-  --cast-stone-shadow: rgba(74, 55, 40, 0.1);
-  --cast-stone-shadow-hover: rgba(74, 55, 40, 0.15);
+  --cast-stone-dark-text: #1f2937;
+  --cast-stone-gray-text: #4b5563;
+  --cast-stone-shadow: rgba(37, 99, 235, 0.1);
+  --cast-stone-shadow-hover: rgba(37, 99, 235, 0.15);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -19,7 +20,7 @@
 
 /* Hero Section */
 .heroSection {
-  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
+  background: linear-gradient(135deg, var(--cast-stone-blue) 0%, var(--cast-stone-light-blue) 50%, var(--cast-stone-blue) 100%);
   padding: 8rem 0 6rem;
   position: relative;
   overflow: hidden;
@@ -87,7 +88,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   text-align: center;
   margin-bottom: 3rem;
   letter-spacing: -0.01em;
@@ -102,7 +103,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 3px;
-  background: linear-gradient(90deg, var(--cast-stone-brown), var(--cast-stone-light-brown));
+  background: linear-gradient(90deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
   border-radius: 2px;
 }
 
@@ -126,7 +127,7 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1.1rem;
   line-height: 1.8;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
   text-align: justify;
 }
 
@@ -137,12 +138,12 @@
 .imagePlaceholder {
   width: 100%;
   height: 400px;
-  background: linear-gradient(135deg, var(--cast-stone-cream), #f0ede8);
+  background: linear-gradient(135deg, var(--cast-stone-blue-50), #f8fafc);
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(74, 55, 40, 0.1);
+  border: 2px solid rgba(37, 99, 235, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -154,13 +155,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="texture" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="rgba(74,55,40,0.02)"/><circle cx="10" cy="10" r="1" fill="rgba(74,55,40,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23texture)"/></svg>');
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="texture" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="rgba(37,99,235,0.02)"/><circle cx="10" cy="10" r="1" fill="rgba(37,99,235,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23texture)"/></svg>');
 }
 
 .imageText {
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.2rem;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   font-weight: 600;
   position: relative;
   z-index: 2;
@@ -170,7 +171,7 @@
 .heritageSection {
   margin-bottom: 6rem;
   padding: 4rem 0;
-  background: var(--cast-stone-cream);
+  background: var(--cast-stone-blue-50);
   border-radius: 24px;
 }
 
@@ -188,7 +189,7 @@
   text-align: center;
   box-shadow: 0 8px 24px var(--cast-stone-shadow);
   transition: var(--transition-smooth);
-  border: 1px solid rgba(74, 55, 40, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .heritageCard:hover {
@@ -199,7 +200,7 @@
 .heritageIcon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--cast-stone-brown), var(--cast-stone-light-brown));
+  background: linear-gradient(135deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -212,7 +213,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   margin-bottom: 1rem;
 }
 
@@ -220,7 +221,7 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
 }
 
 /* Timeline Section */
@@ -242,7 +243,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: linear-gradient(180deg, var(--cast-stone-brown), var(--cast-stone-light-brown));
+  background: linear-gradient(180deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
   transform: translateX(-50%);
 }
 
@@ -266,7 +267,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--cast-stone-white);
-  background: linear-gradient(135deg, var(--cast-stone-brown), var(--cast-stone-light-brown));
+  background: linear-gradient(135deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
   padding: 1rem 1.5rem;
   border-radius: 50px;
   min-width: 100px;
@@ -283,14 +284,14 @@
   border-radius: 16px;
   margin: 0 2rem;
   box-shadow: 0 8px 24px var(--cast-stone-shadow);
-  border: 1px solid rgba(74, 55, 40, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .timelineTitle {
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   margin-bottom: 0.5rem;
 }
 
@@ -298,14 +299,14 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
 }
 
 /* Values Section */
 .valuesSection {
   margin-bottom: 6rem;
   padding: 4rem 0;
-  background: var(--cast-stone-cream);
+  background: var(--cast-stone-blue-50);
   border-radius: 24px;
 }
 
@@ -322,7 +323,7 @@
   border-radius: 16px;
   box-shadow: 0 8px 24px var(--cast-stone-shadow);
   transition: var(--transition-smooth);
-  border: 1px solid rgba(74, 55, 40, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .valueCard:hover {
@@ -334,7 +335,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   margin-bottom: 1rem;
 }
 
@@ -342,14 +343,14 @@
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
 }
 
 /* Call to Action Section */
 .ctaSection {
   text-align: center;
   padding: 4rem 0;
-  background: linear-gradient(135deg, var(--cast-stone-brown), var(--cast-stone-light-brown));
+  background: linear-gradient(135deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
   border-radius: 24px;
   color: var(--cast-stone-white);
   position: relative;
@@ -414,7 +415,7 @@
 
 .primaryButton {
   background: var(--cast-stone-white);
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-blue);
   border: 2px solid var(--cast-stone-white);
 }
 
@@ -433,7 +434,7 @@
 
 .secondaryButton:hover {
   background: var(--cast-stone-white);
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-blue);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
 }

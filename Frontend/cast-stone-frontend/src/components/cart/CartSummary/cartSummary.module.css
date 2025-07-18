@@ -10,7 +10,7 @@
 }
 
 .title {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
@@ -32,13 +32,13 @@
 }
 
 .label {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 1rem;
   font-weight: 500;
 }
 
 .value {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -60,18 +60,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-top: 2px solid #4a3728;
+  border-top: 2px solid #2563eb;
   margin-top: 1rem;
 }
 
 .totalLabel {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.25rem;
   font-weight: 700;
 }
 
 .totalValue {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -110,7 +110,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 1.5rem;
-  background: #8b7355;
+  background: #2563eb;
   color: white;
   border: none;
   border-radius: 6px;
@@ -122,9 +122,9 @@
 }
 
 .checkoutBtn:hover {
-  background: #6d5a47;
+  background: #1d4ed8;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .checkoutIcon {
