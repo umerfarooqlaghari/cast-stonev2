@@ -36,7 +36,7 @@
 }
 
 .productName {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
@@ -44,7 +44,7 @@
 }
 
 .productDescription {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0 0 0.75rem 0;
@@ -58,13 +58,13 @@
 }
 
 .unitPrice {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1rem;
   font-weight: 600;
 }
 
 .collection {
-  color: #8b7355;
+  color: #2563eb;
   font-size: 0.85rem;
   font-style: italic;
 }
@@ -95,7 +95,7 @@
 }
 
 .quantityLabel {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 0.85rem;
   font-weight: 600;
   text-align: center;
@@ -115,7 +115,7 @@
   height: 32px;
   border: 1px solid #d1d5db;
   background: white;
-  color: #4a3728;
+  color: #1f2937;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -126,9 +126,9 @@
 }
 
 .quantityBtn:hover:not(:disabled) {
-  background: #8b7355;
+  background: #2563eb;
   color: white;
-  border-color: #8b7355;
+  border-color: #2563eb;
 }
 
 .quantityBtn:disabled {
@@ -140,12 +140,12 @@
   min-width: 40px;
   text-align: center;
   font-weight: 600;
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1rem;
 }
 
 .updating {
-  color: #8b7355;
+  color: #2563eb;
   font-size: 0.75rem;
   font-style: italic;
 }
@@ -160,13 +160,13 @@
 }
 
 .itemTotal {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .priceBreakdown {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.85rem;
 }
 

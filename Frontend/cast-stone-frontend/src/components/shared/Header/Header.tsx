@@ -116,8 +116,11 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   const collectionItems = collectionsToDropdownItems(collections);
 
+  // Check if we're on the home page
+  const isHomePage = pathname === '/';
+
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${!isHomePage ? styles.nonHomePage : ''}`}>
       <div className={styles.container}>
         {/* Logo */}
         <div className={styles.logo}>

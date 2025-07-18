@@ -7,7 +7,7 @@
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 6rem 2rem 2rem;
 }
 
 /* Loading States */
@@ -169,7 +169,7 @@
 }
 
 .filterToggle.active {
-  background: #6b4e3d;
+  background: #1d4ed8;
 }
 
 /* Advanced Filters */

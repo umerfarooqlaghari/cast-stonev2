@@ -2,7 +2,7 @@
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 8rem 1rem 2rem;
   min-height: 80vh;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
 
 /* Success Message */
 .title {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
@@ -47,7 +47,7 @@
 }
 
 .message {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0 0 3rem 0;
@@ -63,7 +63,7 @@
 }
 
 .orderDetails h2 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 2rem 0;
@@ -83,7 +83,7 @@
   padding: 1.5rem;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 4px solid #8b7355;
+  border-left: 4px solid #2563eb;
 }
 
 .stepIcon {
@@ -98,14 +98,14 @@
 }
 
 .stepContent h3 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
 }
 
 .stepContent p {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
@@ -133,25 +133,25 @@
 }
 
 .continueShoppingBtn {
-  background: #8b7355;
+  background: #2563eb;
   color: white;
 }
 
 .continueShoppingBtn:hover {
-  background: #6d5a47;
+  background: #1d4ed8;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .homeBtn {
   background: transparent;
-  color: #6b5b4d;
+  color: #4b5563;
   border: 2px solid #e5e7eb;
 }
 
 .homeBtn:hover {
-  border-color: #8b7355;
-  color: #8b7355;
+  border-color: #2563eb;
+  color: #2563eb;
 }
 
 .shopIcon,
@@ -168,21 +168,21 @@
 }
 
 .supportInfo h3 {
-  color: #4a3728;
+  color: #1f2937;
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.75rem 0;
 }
 
 .supportInfo p {
-  color: #6b5b4d;
+  color: #4b5563;
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
 }
 
 .contactLink {
-  color: #8b7355;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 600;
 }
@@ -243,6 +243,10 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 6rem 0.5rem 1rem;
+  }
+
   .successCard {
     padding: 1.5rem;
   }

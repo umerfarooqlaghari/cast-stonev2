@@ -1,12 +1,13 @@
-/* Magazine/Editorial Theme Variables */
+/* Blue and White Theme Variables */
 .Headerroot {
-  --cast-stone-brown: #4a3728;
-  --cast-stone-light-brown: #6b4e3d;
-  --cast-stone-cream: #faf9f7;
+  --cast-stone-blue: #2563eb;
+  --cast-stone-light-blue: #3b82f6;
+  --cast-stone-blue-50: #eff6ff;
   --cast-stone-white: #ffffff;
-  --cast-stone-gray: #8b7355;
-  --cast-stone-shadow: rgba(74, 55, 40, 0.1);
-  --cast-stone-shadow-hover: rgba(74, 55, 40, 0.15);
+  --cast-stone-dark-text: #1f2937;
+  --cast-stone-gray-text: #4b5563;
+  --cast-stone-shadow: rgba(37, 99, 235, 0.1);
+  --cast-stone-shadow-hover: rgba(37, 99, 235, 0.15);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -29,6 +30,23 @@
 .header.scrolled {
   background: transparent;
   backdrop-filter: none;
+}
+
+/* Header for non-home pages - blue background with white text */
+.header.nonHomePage {
+  background: linear-gradient(135deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
+  backdrop-filter: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.1);
+}
+
+.header.nonHomePage.scrolled {
+  background: linear-gradient(135deg, var(--cast-stone-blue), var(--cast-stone-light-blue));
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
 }
 
 .container {
@@ -63,6 +81,11 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
+.nonHomePage .logoLink {
+  color: var(--cast-stone-white);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .logoLink:hover {
   transform: translateY(-1px);
 }
@@ -81,9 +104,13 @@
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--cast-stone-gray);
+  color: rgba(255, 255, 255, 0.8);
   margin-top: 2px;
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
+}
+
+.nonHomePage .logoSubtext {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Navigation Styles */
@@ -134,6 +161,12 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
+.nonHomePage .navLink,
+.nonHomePage .navButton {
+  color: var(--cast-stone-white);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .navLink:hover,
 .navButton:hover {
   color: rgba(255, 255, 255, 1);
@@ -145,6 +178,12 @@
 .scrolled .navButton:hover {
   color: rgba(255, 255, 255, 1);
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.nonHomePage .navLink:hover,
+.nonHomePage .navButton:hover {
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .navLink::after,
@@ -165,6 +204,12 @@
 .scrolled .navButton::after {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.nonHomePage .navLink::after,
+.nonHomePage .navButton::after {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .navLink:hover::after,
@@ -192,6 +237,14 @@
 .dropdownIcon.rotated {
   transform: rotate(180deg);
   color: rgba(255, 255, 255, 0.9);
+}
+
+.nonHomePage .dropdownIcon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.nonHomePage .dropdownIcon.rotated {
+  color: var(--cast-stone-white);
 }
 
 .loadingIcon {
@@ -247,7 +300,7 @@
 .dropdownLink {
   display: block;
   padding: 0.75rem 1.25rem;
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-dark-text);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 400;
@@ -256,9 +309,9 @@
 }
 
 .dropdownLink:hover {
-  background: rgba(74, 55, 40, 0.04);
-  color: var(--cast-stone-light-brown);
-  border-left-color: var(--cast-stone-brown);
+  background: rgba(37, 99, 235, 0.04);
+  color: var(--cast-stone-blue);
+  border-left-color: var(--cast-stone-blue);
   transform: translateX(2px);
 }
 
@@ -267,8 +320,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: rgba(74, 55, 40, 0.02);
-  border-top: 1px solid rgba(74, 55, 40, 0.08);
+  background: rgba(37, 99, 235, 0.02);
+  border-top: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .subDropdownItem {
@@ -278,7 +331,7 @@
 .subDropdownLink {
   display: block;
   padding: 0.6rem 1.25rem 0.6rem 2rem;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 400;
@@ -291,20 +344,20 @@
   content: '→  ';
   position: absolute;
   left: 0.75rem;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
   font-size: 0.7rem;
   transition: var(--transition-fast);
 }
 
 .subDropdownLink:hover {
-  background: rgba(74, 55, 40, 0.06);
-  color: var(--cast-stone-brown);
-  border-left-color: var(--cast-stone-light-brown);
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--cast-stone-blue);
+  border-left-color: var(--cast-stone-light-blue);
   transform: translateX(2px);
 }
 
 .subDropdownLink:hover::before {
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-blue);
   transform: translateX(2px);
 }
 
@@ -313,8 +366,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: rgba(74, 55, 40, 0.04);
-  border-top: 1px solid rgba(74, 55, 40, 0.12);
+  background: rgba(37, 99, 235, 0.04);
+  border-top: 1px solid rgba(37, 99, 235, 0.12);
 }
 
 .subSubDropdownItem {
@@ -324,7 +377,7 @@
 .subSubDropdownLink {
   display: block;
   padding: 0.5rem 1.25rem 0.5rem 2.5rem;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 400;
@@ -337,20 +390,20 @@
   content: '⤷  ';
   position: absolute;
   left: 1.5rem;
-  color: var(--cast-stone-gray);
+  color: var(--cast-stone-gray-text);
   font-size: 0.65rem;
   transition: var(--transition-fast);
 }
 
 .subSubDropdownLink:hover {
-  background: rgba(74, 55, 40, 0.08);
-  color: var(--cast-stone-brown);
-  border-left-color: var(--cast-stone-light-brown);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--cast-stone-blue);
+  border-left-color: var(--cast-stone-light-blue);
   transform: translateX(2px);
 }
 
 .subSubDropdownLink:hover::before {
-  color: var(--cast-stone-brown);
+  color: var(--cast-stone-blue);
   transform: translateX(2px);
 }
 
@@ -367,17 +420,26 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  color: var(--cast-stone-brown);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   border-radius: 8px;
   transition: var(--transition-smooth);
   position: relative;
 }
 
+.nonHomePage .cartLink {
+  color: var(--cast-stone-white);
+}
+
 .cartLink:hover {
-  background: rgba(74, 55, 40, 0.06);
-  color: var(--cast-stone-light-brown);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
   transform: translateY(-1px);
+}
+
+.nonHomePage .cartLink:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--cast-stone-white);
 }
 
 .cartIconWrapper {

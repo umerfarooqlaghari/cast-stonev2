@@ -76,7 +76,7 @@
   top: 15px;
   right: 15px;
   background: rgba(255, 255, 255, 0.9);
-  color: #4a3728;
+  color: #1f2937;
   padding: 0.5rem;
   font-size: 0.8rem;
   display: flex;
@@ -147,15 +147,15 @@
 }
 
 .activeThumbnail .thumbnailImage {
-  border-color: #0070f3; /* Highlight active */
+  border-color: #2563eb; /* Highlight active */
 }
 
 .thumbnail:hover {
-  border-color: #4a3728;
+  border-color: #2563eb;
 }
 
 .thumbnail.activeThumbnail {
-  border-color: #4a3728;
+  border-color: #2563eb;
   border-width: 3px;
 }
 
@@ -193,7 +193,7 @@
   top: -50px;
   right: 0;
   background: rgba(255, 255, 255, 0.9);
-  color: #4a3728;
+  color: #1f2937;
   border: none;
   width: 40px;
   height: 40px;

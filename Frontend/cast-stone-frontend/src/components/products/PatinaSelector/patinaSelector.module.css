@@ -12,23 +12,23 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #4a3728;
+  border-bottom: 1px solid #2563eb;
 }
 
 .selectorTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #4a3728;
+  color: #1f2937;
   margin: 0;
 }
 
 .selectedPatina {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #4a3728;
+  color: #2563eb;
   background: white;
   padding: 0.4rem 0.75rem;
-  border: 1px solid #4a3728;
+  border: 1px solid #2563eb;
 }
 
 /* Patina Grid */
@@ -54,16 +54,16 @@
 }
 
 .patinaOption:hover {
-  border-color: #4a3728;
+  border-color: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(74, 55, 40, 0.1);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
 }
 
 .patinaOption.selected {
-  border-color: #4a3728;
+  border-color: #2563eb;
   border-width: 2px;
-  background: #f8f6f3;
-  box-shadow: 0 2px 8px rgba(74, 55, 40, 0.15);
+  background: #eff6ff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
 }
 
 .patinaColor {
@@ -76,7 +76,7 @@
 .patinaName {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #4a3728;
+  color: #1f2937;
   line-height: 1.1;
 }
 
