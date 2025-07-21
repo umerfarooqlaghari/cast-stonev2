@@ -1,4 +1,4 @@
-@Cast_Stone_api_HostAddress = https://gracious-acceptance-production.up.railway.app
+@Cast_Stone_api_HostAddress = https://cast-stonev2.onrender.com/
 
 GET {{Cast_Stone_api_HostAddress}}/weatherforecast/
 Accept: application/json

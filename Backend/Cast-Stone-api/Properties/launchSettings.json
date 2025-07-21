@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://gracious-acceptance-production.up.railway.app",
+      "applicationUrl": "https://cast-stonev2.onrender.com/",
 
     },
     "https": {
@@ -19,7 +19,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://gracious-acceptance-production.up.railway.app",
+      "applicationUrl": "https://cast-stonev2.onrender.com/",
     },
     "IIS Express": {
       "commandName": "IISExpress",
