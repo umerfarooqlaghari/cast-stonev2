@@ -29,7 +29,7 @@ export const WholesaleUserMenu: React.FC = () => {
         <div className={styles.userInfo}>
           <span className={styles.wholesaleLabel}>Wholesale</span>
           <span className={styles.userName}>
-            {user.firstName} {user.lastName}
+            {user.name}
           </span>
         </div>
         <svg 
