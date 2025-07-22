@@ -161,6 +161,22 @@ public class MappingProfile : Profile
         CreateMap<CreateContactFormSubmissionRequest, ContactFormSubmission>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+
+        // WholesaleBuyer mappings
+        CreateMap<WholesaleBuyer, WholesaleBuyerResponse>();
+
+        CreateMap<CreateWholesaleBuyerRequest, WholesaleBuyer>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
+            .ForMember(dest => dest.AdminNotes, opt => opt.Ignore())
+            .ForMember(dest => dest.ApprovedBy, opt => opt.Ignore())
+            .ForMember(dest => dest.ApprovedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.User, opt => opt.Ignore())
+            .ForMember(dest => dest.ApprovedByUser, opt => opt.Ignore());
+
+        CreateMap<WholesaleBuyer, WholesaleBuyerSummaryResponse>();
     }
 
     private static string GetInquiryDisplayName(InquiryType inquiry)

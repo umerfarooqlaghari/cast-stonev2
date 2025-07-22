@@ -14,6 +14,7 @@ public class ProductService : IProductService
     private readonly IProductSpecificationsRepository _productSpecificationsRepository;
     private readonly IProductDetailsRepository _productDetailsRepository;
     private readonly IDownloadableContentRepository _downloadableContentRepository;
+    private readonly IAuthenticationService _authenticationService;
     private readonly IMapper _mapper;
 
     public ProductService(
@@ -22,6 +23,7 @@ public class ProductService : IProductService
         IProductSpecificationsRepository productSpecificationsRepository,
         IProductDetailsRepository productDetailsRepository,
         IDownloadableContentRepository downloadableContentRepository,
+        IAuthenticationService authenticationService,
         IMapper mapper)
     {
         _productRepository = productRepository;
@@ -29,6 +31,7 @@ public class ProductService : IProductService
         _productSpecificationsRepository = productSpecificationsRepository;
         _productDetailsRepository = productDetailsRepository;
         _downloadableContentRepository = downloadableContentRepository;
+        _authenticationService = authenticationService;
         _mapper = mapper;
     }
 
@@ -330,6 +333,86 @@ public class ProductService : IProductService
             var newEntity = _mapper.Map<DownloadableContent>(request);
             newEntity.ProductId = productId;
             await _downloadableContentRepository.AddAsync(newEntity);
+        }
+    }
+
+    // Wholesale pricing methods
+    public async Task<ProductResponse?> GetByIdWithPricingAsync(int id, string? userEmail = null)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+        if (product == null) return null;
+
+        var productResponse = _mapper.Map<ProductResponse>(product);
+        await ApplyWholesalePricingAsync(new[] { productResponse }, userEmail);
+        return productResponse;
+    }
+
+    public async Task<IEnumerable<ProductResponse>> GetAllWithPricingAsync(string? userEmail = null)
+    {
+        var products = await _productRepository.GetAllAsync();
+        var productResponses = _mapper.Map<IEnumerable<ProductResponse>>(products);
+        await ApplyWholesalePricingAsync(productResponses, userEmail);
+        return productResponses;
+    }
+
+    public async Task<IEnumerable<ProductResponse>> GetByCollectionIdWithPricingAsync(int collectionId, string? userEmail = null)
+    {
+        var products = await _productRepository.GetByCollectionIdAsync(collectionId);
+        var productResponses = _mapper.Map<IEnumerable<ProductResponse>>(products);
+        await ApplyWholesalePricingAsync(productResponses, userEmail);
+        return productResponses;
+    }
+
+    public async Task<IEnumerable<ProductSummaryResponse>> GetFeaturedWithPricingAsync(int count = 10, string? userEmail = null)
+    {
+        var products = await _productRepository.GetFeaturedAsync(count);
+        var productResponses = _mapper.Map<IEnumerable<ProductSummaryResponse>>(products);
+        await ApplyWholesalePricingToSummaryAsync(productResponses, userEmail);
+        return productResponses;
+    }
+
+    public async Task<IEnumerable<ProductSummaryResponse>> GetLatestWithPricingAsync(int count = 10, string? userEmail = null)
+    {
+        var products = await _productRepository.GetLatestAsync(count);
+        var productResponses = _mapper.Map<IEnumerable<ProductSummaryResponse>>(products);
+        await ApplyWholesalePricingToSummaryAsync(productResponses, userEmail);
+        return productResponses;
+    }
+
+    private async Task ApplyWholesalePricingAsync(IEnumerable<ProductResponse> products, string? userEmail)
+    {
+        if (string.IsNullOrEmpty(userEmail)) return;
+
+        var isApprovedWholesaleBuyer = await _authenticationService.IsUserApprovedWholesaleBuyerAsync(userEmail);
+        if (!isApprovedWholesaleBuyer) return;
+
+        foreach (var product in products)
+        {
+            if (product.WholeSalePrice > 0)
+            {
+                product.Price = product.WholeSalePrice;
+            }
+        }
+    }
+
+    private async Task ApplyWholesalePricingToSummaryAsync(IEnumerable<ProductSummaryResponse> products, string? userEmail)
+    {
+        if (string.IsNullOrEmpty(userEmail)) return;
+
+        var isApprovedWholesaleBuyer = await _authenticationService.IsUserApprovedWholesaleBuyerAsync(userEmail);
+        if (!isApprovedWholesaleBuyer) return;
+
+        // For summary responses, we need to get the full product data to access wholesale prices
+        var productIds = products.Select(p => p.Id).ToList();
+        var fullProducts = await _productRepository.FindAsync(p => productIds.Contains(p.Id));
+        var productDict = fullProducts.ToDictionary(p => p.Id, p => p);
+
+        foreach (var product in products)
+        {
+            if (productDict.TryGetValue(product.Id, out var fullProduct) && fullProduct.WholeSalePrice.HasValue && fullProduct.WholeSalePrice > 0)
+            {
+                product.Price = fullProduct.WholeSalePrice.Value;
+            }
         }
     }
 }

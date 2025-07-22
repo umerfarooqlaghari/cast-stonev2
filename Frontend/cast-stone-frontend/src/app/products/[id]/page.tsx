@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { Product } from '@/services/types/entities';
 import { productService } from '@/services';
 import { useCart } from '@/contexts/CartContext';
+import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
 import ProductImageGallery from '@/components/products/ProductImageGallery/ProductImageGallery';
 import ProductSpecifications from '@/components/products/ProductSpecifications/ProductSpecifications';
 import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
@@ -16,6 +17,7 @@ export default function ProductPage() {
   const params = useParams();
   const productId = parseInt(params.id as string);
   const { addToCart } = useCart();
+  const { isApprovedWholesaleBuyer } = useWholesaleAuth();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -72,6 +74,13 @@ export default function ProductPage() {
       currency: 'USD'
     }).format(price);
   };
+
+  // Determine which price to display
+  const displayPrice = isApprovedWholesaleBuyer && product?.wholeSalePrice
+    ? product.wholeSalePrice
+    : product?.price || 0;
+
+  const showWholesaleLabel = isApprovedWholesaleBuyer && product?.wholeSalePrice;
 
   if (isLoading) {
     return (
@@ -177,9 +186,19 @@ export default function ProductPage() {
 
             <div className={styles.priceSection}>
                 <div className={styles.priceRow}>
-    
-              <span className={styles.price}>
-                {formatPrice(product.price)}</span>
+                  <div className={styles.priceDisplay}>
+                    <span className={styles.price}>
+                      {formatPrice(displayPrice)}
+                    </span>
+                    {showWholesaleLabel && (
+                      <span className={styles.wholesaleLabel}>Wholesale Price</span>
+                    )}
+                    {isApprovedWholesaleBuyer && product.wholeSalePrice && (
+                      <span className={styles.retailPrice}>
+                        Retail: {formatPrice(product.price)}
+                      </span>
+                    )}
+                  </div>
             
 
             {/* Quantity and Add to Cart */}

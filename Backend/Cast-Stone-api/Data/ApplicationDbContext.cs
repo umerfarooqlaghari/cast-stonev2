@@ -24,6 +24,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ContactFormSubmission> ContactFormSubmissions { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Status> Statuses { get; set; }
+    public DbSet<WholesaleBuyer> WholesaleBuyers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -186,6 +187,40 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<CartItem>()
             .HasIndex(ci => ci.ProductId);
+
+        // Configure WholesaleBuyer relationships
+        modelBuilder.Entity<WholesaleBuyer>()
+            .HasOne(wb => wb.User)
+            .WithOne(u => u.WholesaleBuyer)
+            .HasForeignKey<WholesaleBuyer>(wb => wb.Email)
+            .HasPrincipalKey<User>(u => u.Email)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<WholesaleBuyer>()
+            .HasOne(wb => wb.ApprovedByUser)
+            .WithMany()
+            .HasForeignKey(wb => wb.ApprovedBy)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // Configure WholesaleBuyer JSON properties
+        modelBuilder.Entity<WholesaleBuyer>()
+            .Property(wb => wb.HowDidYouHear)
+            .HasColumnType("jsonb")
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
+            );
+
+        // Configure WholesaleBuyer indexes
+        modelBuilder.Entity<WholesaleBuyer>()
+            .HasIndex(wb => wb.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<WholesaleBuyer>()
+            .HasIndex(wb => wb.Status);
+
+        modelBuilder.Entity<WholesaleBuyer>()
+            .HasIndex(wb => wb.CreatedAt);
 
         // Seed comprehensive Status data for eCommerce
         modelBuilder.Entity<Status>().HasData(

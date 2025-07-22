@@ -17,6 +17,9 @@ public class UpdateProductRequest
     [Required]
     [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
     public decimal Price { get; set; }
+    
+    [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
+    public decimal WholeSalePrice { get; set; }
 
     [Required]
     [Range(0, int.MaxValue, ErrorMessage = "Stock cannot be negative")]

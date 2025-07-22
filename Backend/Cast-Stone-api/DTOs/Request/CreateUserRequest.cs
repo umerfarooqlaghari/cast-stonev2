@@ -6,7 +6,7 @@ public class CreateUserRequest
 {
     [Required]
     [MaxLength(20)]
-    public string Role { get; set; } = "customer"; // admin, customer, guest
+    public string Role { get; set; } = "customer"; // admin, customer, guest, WholesaleBuyer
 
     [Required]
     [MaxLength(255)]
@@ -31,4 +31,6 @@ public class CreateUserRequest
     public string? ZipCode { get; set; }
 
     public bool Active { get; set; } = true;
+
+    public bool IsApproved { get; set; } = false;
 }

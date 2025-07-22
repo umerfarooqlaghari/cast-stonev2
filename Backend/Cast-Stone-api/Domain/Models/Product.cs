@@ -22,6 +22,9 @@ public class Product
     [Required]
     [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; }
+    
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal? WholeSalePrice { get; set; }
 
     [Required]
     public int Stock { get; set; }

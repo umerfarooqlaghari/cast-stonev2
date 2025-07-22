@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/services/types/entities';
 import { useCart } from '@/contexts/CartContext';
+import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
 import styles from './productCard.module.css';
 
 interface ProductCardProps {
@@ -19,6 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   showViewDetails = true,
 }) => {
   const { addToCart, state } = useCart();
+  const { isApprovedWholesaleBuyer } = useWholesaleAuth();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -41,6 +43,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
       currency: 'USD',
     }).format(price);
   };
+
+  // Determine which price to display
+  const displayPrice = isApprovedWholesaleBuyer && product.wholeSalePrice
+    ? product.wholeSalePrice
+    : product.price;
+
+  const showWholesaleLabel = isApprovedWholesaleBuyer && product.wholeSalePrice;
 
   const mainImage = product.images && product.images.length > 0 
     ? product.images[0] 
@@ -77,7 +86,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         <div className={styles.priceContainer}>
-          <span className={styles.price}>{formatPrice(product.price)}</span>
+          <div className={styles.priceSection}>
+            <span className={styles.price}>{formatPrice(displayPrice)}</span>
+            {showWholesaleLabel && (
+              <span className={styles.wholesaleLabel}>Wholesale Price</span>
+            )}
+            {isApprovedWholesaleBuyer && product.wholeSalePrice && (
+              <span className={styles.retailPrice}>
+                Retail: {formatPrice(product.price)}
+              </span>
+            )}
+          </div>
           {product.collection && (
             <span className={styles.collection}>{product.collection.name}</span>
           )}
