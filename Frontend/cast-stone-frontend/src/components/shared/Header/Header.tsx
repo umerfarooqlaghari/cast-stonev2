@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import { WholesaleUserMenu } from '../../wholesale/WholesaleUserMenu';
 import { collectionGetService } from '../../../services/api/collections';
 import { CollectionHierarchy } from '../../../services/types/entities';
 import { DropdownItem } from '../../../types';
@@ -284,6 +285,9 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
             </li>
           </ul>
         </nav>
+
+        {/* Wholesale User Menu */}
+        <WholesaleUserMenu />
 
         {/* Cart Icon */}
         <div className={styles.cartContainer}>

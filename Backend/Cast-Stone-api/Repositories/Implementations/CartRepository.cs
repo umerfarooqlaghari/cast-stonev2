@@ -26,6 +26,7 @@ public class CartRepository : BaseRepository<Cart>, ICartRepository
         return await _dbSet
             .Include(c => c.CartItems)
             .ThenInclude(ci => ci.Product)
+            .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.Id == cartId);
     }
 
@@ -34,6 +35,7 @@ public class CartRepository : BaseRepository<Cart>, ICartRepository
         return await _dbSet
             .Include(c => c.CartItems)
             .ThenInclude(ci => ci.Product)
+            .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.UserId == userId);
     }
 
@@ -42,6 +44,7 @@ public class CartRepository : BaseRepository<Cart>, ICartRepository
         return await _dbSet
             .Include(c => c.CartItems)
             .ThenInclude(ci => ci.Product)
+            .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.SessionId == sessionId);
     }
 
