@@ -6,7 +6,7 @@ export class WholesaleBuyerDeleteService extends BaseService {
    * Delete a wholesale buyer application
    */
   async deleteApplication(id: number): Promise<ApiResponse<boolean>> {
-    return this.delete<boolean>(`/api/wholesalebuyers/${id}`);
+    return this.client.delete<boolean>(`/wholesalebuyers/${id}`);
   }
 }
 

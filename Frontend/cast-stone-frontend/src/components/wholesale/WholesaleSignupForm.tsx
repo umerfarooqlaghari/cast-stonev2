@@ -10,7 +10,7 @@ interface WholesaleSignupFormProps {
   onError?: (error: string) => void;
 }
 
-interface FormData extends CreateWholesaleBuyerRequest {}
+type FormData = CreateWholesaleBuyerRequest;
 
 const BUSINESS_TYPES = [
   'Landscape Contractor',

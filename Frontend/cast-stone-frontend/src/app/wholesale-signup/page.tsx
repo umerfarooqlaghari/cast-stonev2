@@ -14,7 +14,7 @@ export default function WholesaleSignupPage() {
   const [currentView, setCurrentView] = useState<ViewMode>('login');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const { login } = useWholesaleAuth();
+  const { } = useWholesaleAuth();
   const router = useRouter();
 
   const handleLoginSuccess = async (result: AuthenticationResult) => {
@@ -124,8 +124,8 @@ export default function WholesaleSignupPage() {
               <div className={styles.nextSteps}>
                 <h3>What happens next?</h3>
                 <ol>
-                  <li>We'll review your application within 2-3 business days</li>
-                  <li>You'll receive an email notification with our decision</li>
+                  <li>We&apos;ll review your application within 2-3 business days</li>
+                  <li>You&apos;ll receive an email notification with our decision</li>
                   <li>Once approved, you can log in to access wholesale pricing</li>
                 </ol>
               </div>

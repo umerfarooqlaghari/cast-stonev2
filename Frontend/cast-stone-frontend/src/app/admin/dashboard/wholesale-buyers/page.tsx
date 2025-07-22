@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { WholesaleBuyer } from '@/services/types/entities';
 import { wholesaleBuyerService } from '@/services';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
@@ -20,14 +20,6 @@ export default function WholesaleBuyersPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { admin } = useAdminAuth();
 
-  useEffect(() => {
-    fetchBuyers();
-  }, []);
-
-  useEffect(() => {
-    filterBuyers();
-  }, [buyers, filterStatus, searchTerm]);
-
   const fetchBuyers = async () => {
     try {
       setIsLoading(true);
@@ -44,12 +36,12 @@ export default function WholesaleBuyersPage() {
     }
   };
 
-  const filterBuyers = () => {
+  const filterBuyers = useCallback(() => {
     let filtered = buyers;
 
     // Filter by status
     if (filterStatus !== 'all') {
-      filtered = filtered.filter(buyer => 
+      filtered = filtered.filter(buyer =>
         buyer.status.toLowerCase() === filterStatus.toLowerCase()
       );
     }
@@ -66,7 +58,15 @@ export default function WholesaleBuyersPage() {
     }
 
     setFilteredBuyers(filtered);
-  };
+  }, [buyers, filterStatus, searchTerm]);
+
+  useEffect(() => {
+    fetchBuyers();
+  }, []);
+
+  useEffect(() => {
+    filterBuyers();
+  }, [filterBuyers]);
 
   const handleApprove = async (buyer: WholesaleBuyer) => {
     if (!admin?.id) return;
@@ -283,147 +283,6 @@ export default function WholesaleBuyersPage() {
           isProcessing={isProcessing}
         />
       )}
-    </div>
-  );
-}
-
-// Modal component for buyer details
-interface BuyerDetailsModalProps {
-  buyer: WholesaleBuyer;
-  onClose: () => void;
-  onApprove: () => void;
-  onReject: (reason: string) => void;
-  isProcessing: boolean;
-}
-
-function BuyerDetailsModal({ buyer, onClose, onApprove, onReject, isProcessing }: BuyerDetailsModalProps) {
-  const [rejectReason, setRejectReason] = useState('');
-  const [showRejectForm, setShowRejectForm] = useState(false);
-
-  const handleRejectSubmit = () => {
-    if (rejectReason.trim()) {
-      onReject(rejectReason);
-    }
-  };
-
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modal}>
-        <div className={styles.modalHeader}>
-          <h2>Wholesale Buyer Application</h2>
-          <button onClick={onClose} className={styles.closeButton}>×</button>
-        </div>
-
-        <div className={styles.modalContent}>
-          <div className={styles.buyerInfo}>
-            <h3>Personal Information</h3>
-            <div className={styles.infoGrid}>
-              <div><strong>Name:</strong> {buyer.firstName} {buyer.lastName}</div>
-              <div><strong>Email:</strong> {buyer.email}</div>
-              <div><strong>Phone:</strong> {buyer.phone}</div>
-            </div>
-
-            <h3>Business Information</h3>
-            <div className={styles.infoGrid}>
-              <div><strong>Company:</strong> {buyer.companyName}</div>
-              <div><strong>Business Type:</strong> {buyer.businessType}</div>
-              {buyer.otherBusinessType && (
-                <div><strong>Other Business Type:</strong> {buyer.otherBusinessType}</div>
-              )}
-              {buyer.taxNumber && (
-                <div><strong>Tax Number:</strong> {buyer.taxNumber}</div>
-              )}
-            </div>
-
-            <h3>Address</h3>
-            <div className={styles.address}>
-              <p>{buyer.businessAddress}</p>
-              <p>{buyer.city}, {buyer.state} {buyer.zipCode}</p>
-            </div>
-
-            <h3>How They Heard About Us</h3>
-            <div className={styles.hearAbout}>
-              {buyer.howDidYouHear.map((item, index) => (
-                <span key={index} className={styles.tag}>{item}</span>
-              ))}
-              {buyer.otherHowDidYouHear && (
-                <p><strong>Other:</strong> {buyer.otherHowDidYouHear}</p>
-              )}
-            </div>
-
-            {buyer.comments && (
-              <>
-                <h3>Comments</h3>
-                <p className={styles.comments}>{buyer.comments}</p>
-              </>
-            )}
-
-            <h3>Application Status</h3>
-            <div className={styles.statusInfo}>
-              <p><strong>Status:</strong> {buyer.status}</p>
-              <p><strong>Applied:</strong> {new Date(buyer.createdAt).toLocaleString()}</p>
-              {buyer.approvedAt && (
-                <p><strong>Processed:</strong> {new Date(buyer.approvedAt).toLocaleString()}</p>
-              )}
-              {buyer.adminNotes && (
-                <p><strong>Admin Notes:</strong> {buyer.adminNotes}</p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {buyer.status.toLowerCase() === 'pending' && (
-          <div className={styles.modalActions}>
-            {!showRejectForm ? (
-              <>
-                <button
-                  onClick={onApprove}
-                  disabled={isProcessing}
-                  className={styles.approveButton}
-                >
-                  {isProcessing ? 'Processing...' : 'Approve Application'}
-                </button>
-                <button
-                  onClick={() => setShowRejectForm(true)}
-                  disabled={isProcessing}
-                  className={styles.rejectButton}
-                >
-                  Reject Application
-                </button>
-              </>
-            ) : (
-              <div className={styles.rejectForm}>
-                <textarea
-                  value={rejectReason}
-                  onChange={(e) => setRejectReason(e.target.value)}
-                  placeholder="Please provide a reason for rejection..."
-                  className={styles.rejectTextarea}
-                  rows={3}
-                />
-                <div className={styles.rejectActions}>
-                  <button
-                    onClick={handleRejectSubmit}
-                    disabled={isProcessing || !rejectReason.trim()}
-                    className={styles.confirmRejectButton}
-                  >
-                    {isProcessing ? 'Processing...' : 'Confirm Rejection'}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowRejectForm(false);
-                      setRejectReason('');
-                    }}
-                    disabled={isProcessing}
-                    className={styles.cancelButton}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
     </div>
   );
 }

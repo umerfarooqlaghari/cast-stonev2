@@ -7,21 +7,21 @@ export class AuthService extends BaseService {
    * Validate user credentials for login
    */
   async login(request: LoginRequest): Promise<ApiResponse<AuthenticationResult>> {
-    return this.post<AuthenticationResult>('/api/auth/login', request);
+    return this.client.post<AuthenticationResult>('/auth/login', request);
   }
 
   /**
    * Check if user is an approved wholesale buyer
    */
   async checkWholesaleStatus(email: string): Promise<ApiResponse<boolean>> {
-    return this.get<boolean>(`/api/auth/check-wholesale-status/${encodeURIComponent(email)}`);
+    return this.client.get<boolean>(`/auth/check-wholesale-status/${encodeURIComponent(email)}`);
   }
 
   /**
    * Get user information by email
    */
   async getUserByEmail(email: string): Promise<ApiResponse<User>> {
-    return this.get<User>(`/api/auth/user/${encodeURIComponent(email)}`);
+    return this.client.get<User>(`/auth/user/${encodeURIComponent(email)}`);
   }
 }
 

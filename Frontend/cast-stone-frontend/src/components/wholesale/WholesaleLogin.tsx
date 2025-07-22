@@ -116,7 +116,7 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
 
         <div className={styles.loginFooter}>
           <p>
-            Don't have a wholesale account?{' '}
+            Don&apos;t have a wholesale account?{' '}
             <button
               type="button"
               onClick={onSwitchToSignup}
