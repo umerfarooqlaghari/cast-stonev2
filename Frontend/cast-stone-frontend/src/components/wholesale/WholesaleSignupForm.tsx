@@ -10,7 +10,7 @@ interface WholesaleSignupFormProps {
   onError?: (error: string) => void;
 }
 
-interface FormData extends CreateWholesaleBuyerRequest {}
+type FormData = CreateWholesaleBuyerRequest;
 
 const BUSINESS_TYPES = [
   'Landscape Contractor',
@@ -65,6 +65,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
     state: '',
     city: '',
     zipCode: '',
+    country: '', // Added country property
     howDidYouHear: [],
     otherHowDidYouHear: '',
     comments: '',

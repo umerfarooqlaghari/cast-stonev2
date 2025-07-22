@@ -51,6 +51,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const showWholesaleLabel = isApprovedWholesaleBuyer && product.wholeSalePrice;
 
+  // Debug logging
+  console.log('ProductCard Debug:', {
+    productId: product.id,
+    productName: product.name,
+    isApprovedWholesaleBuyer,
+    wholeSalePrice: product.wholeSalePrice,
+    regularPrice: product.price,
+    displayPrice,
+    showWholesaleLabel
+  });
+
   const mainImage = product.images && product.images.length > 0 
     ? product.images[0] 
     : '/images/placeholder-product.jpg';

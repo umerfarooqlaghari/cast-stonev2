@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { WholesaleSignupForm } from '../../components/wholesale/WholesaleSignupForm';
 import { WholesaleLogin } from '../../components/wholesale/WholesaleLogin';
@@ -14,17 +14,33 @@ export default function WholesaleSignupPage() {
   const [currentView, setCurrentView] = useState<ViewMode>('login');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const { login } = useWholesaleAuth();
+  const { isApprovedWholesaleBuyer, user, isLoading } = useWholesaleAuth();
   const router = useRouter();
 
+  // Redirect if user is already logged in and approved
+  useEffect(() => {
+    if (!isLoading && user && isApprovedWholesaleBuyer) {
+      router.push('/catalog?wholesale=true');
+    }
+  }, [isLoading, user, isApprovedWholesaleBuyer, router]);
+
   const handleLoginSuccess = async (result: AuthenticationResult) => {
-    if (result.isApprovedWholesaleBuyer) {
+    // Check the context state for the most up-to-date information
+    if (isApprovedWholesaleBuyer && user) {
       // Redirect to catalog or home page with wholesale pricing
       router.push('/catalog?wholesale=true');
-    } else {
+    } else if (user && !isApprovedWholesaleBuyer) {
       // Show pending approval message
       setCurrentView('pending');
       setMessage('Your wholesale application is pending approval. You will be notified once approved.');
+    } else {
+      // Fallback to result data
+      if (result.isApprovedWholesaleBuyer) {
+        router.push('/catalog?wholesale=true');
+      } else {
+        setCurrentView('pending');
+        setMessage('Your wholesale application is pending approval. You will be notified once approved.');
+      }
     }
   };
 
@@ -124,8 +140,8 @@ export default function WholesaleSignupPage() {
               <div className={styles.nextSteps}>
                 <h3>What happens next?</h3>
                 <ol>
-                  <li>We'll review your application within 2-3 business days</li>
-                  <li>You'll receive an email notification with our decision</li>
+                  <li>We&apos;ll review your application within 2-3 business days</li>
+                  <li>You&apos;ll receive an email notification with our decision</li>
                   <li>Once approved, you can log in to access wholesale pricing</li>
                 </ol>
               </div>
