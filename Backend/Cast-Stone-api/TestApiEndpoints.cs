@@ -42,7 +42,11 @@ public class TestApiEndpoints
             var productDetailsRepo = new ProductDetailsRepository(context);
             var downloadableContentRepo = new DownloadableContentRepository(context);
             var collectionService = new CollectionService(collectionRepo, mapper);
-            var productService = new ProductService(productRepo, collectionRepo, productSpecRepo, productDetailsRepo, downloadableContentRepo, mapper);
+            // Create a mock authentication service for testing
+            var userRepo = new UserRepository(context);
+            var wholesaleBuyerRepo = new WholesaleBuyerRepository(context);
+            var authService = new AuthenticationService(userRepo, wholesaleBuyerRepo, mapper);
+            var productService = new ProductService(productRepo, collectionRepo, productSpecRepo, productDetailsRepo, downloadableContentRepo, authService, mapper);
             
             // Test Collections API
             Console.WriteLine("📦 Testing Collections GetAll...");

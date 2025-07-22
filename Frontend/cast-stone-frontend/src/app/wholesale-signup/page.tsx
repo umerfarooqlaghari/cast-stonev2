@@ -1,0 +1,192 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { WholesaleSignupForm } from '../../components/wholesale/WholesaleSignupForm';
+import { WholesaleLogin } from '../../components/wholesale/WholesaleLogin';
+import { useWholesaleAuth } from '../../contexts/WholesaleAuthContext';
+import { AuthenticationResult } from '../../services/types/entities';
+import styles from './page.module.css';
+
+type ViewMode = 'login' | 'signup' | 'success' | 'pending';
+
+export default function WholesaleSignupPage() {
+  const [currentView, setCurrentView] = useState<ViewMode>('login');
+  const [message, setMessage] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const { login } = useWholesaleAuth();
+  const router = useRouter();
+
+  const handleLoginSuccess = async (result: AuthenticationResult) => {
+    if (result.isApprovedWholesaleBuyer) {
+      // Redirect to catalog or home page with wholesale pricing
+      router.push('/catalog?wholesale=true');
+    } else {
+      // Show pending approval message
+      setCurrentView('pending');
+      setMessage('Your wholesale application is pending approval. You will be notified once approved.');
+    }
+  };
+
+  const handleLoginError = (error: string) => {
+    setError(error);
+  };
+
+  const handleSignupSuccess = () => {
+    setCurrentView('success');
+    setMessage('Your wholesale application has been submitted successfully! We will review your application and notify you within 2-3 business days.');
+    setError('');
+  };
+
+  const handleSignupError = (error: string) => {
+    setError(error);
+  };
+
+  const renderHeader = () => (
+    <div className={styles.header}>
+      <div className={styles.headerContent}>
+        <h1>Wholesale Access</h1>
+        <p>Join our wholesale program to access exclusive pricing and benefits</p>
+      </div>
+    </div>
+  );
+
+  const renderBenefits = () => (
+    <div className={styles.benefits}>
+      <h3>Wholesale Benefits</h3>
+      <ul>
+        <li>Exclusive wholesale pricing on all products</li>
+        <li>Priority customer support</li>
+        <li>Access to new products before general release</li>
+        <li>Dedicated account manager</li>
+        <li>Flexible payment terms</li>
+        <li>Volume discounts available</li>
+      </ul>
+    </div>
+  );
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'login':
+        return (
+          <div className={styles.contentContainer}>
+            <div className={styles.mainContent}>
+              <WholesaleLogin
+                onSuccess={handleLoginSuccess}
+                onError={handleLoginError}
+                onSwitchToSignup={() => {
+                  setCurrentView('signup');
+                  setError('');
+                }}
+              />
+            </div>
+            <div className={styles.sidebar}>
+              {renderBenefits()}
+            </div>
+          </div>
+        );
+
+      case 'signup':
+        return (
+          <div className={styles.contentContainer}>
+            <div className={styles.mainContent}>
+              <div className={styles.formHeader}>
+                <h2>Apply for Wholesale Access</h2>
+                <p>Fill out the form below to apply for wholesale pricing</p>
+                <button
+                  onClick={() => {
+                    setCurrentView('login');
+                    setError('');
+                  }}
+                  className={styles.backToLogin}
+                >
+                  ← Back to Login
+                </button>
+              </div>
+              <WholesaleSignupForm
+                onSuccess={handleSignupSuccess}
+                onError={handleSignupError}
+              />
+            </div>
+            <div className={styles.sidebar}>
+              {renderBenefits()}
+            </div>
+          </div>
+        );
+
+      case 'success':
+        return (
+          <div className={styles.messageContainer}>
+            <div className={styles.successMessage}>
+              <div className={styles.successIcon}>✓</div>
+              <h2>Application Submitted!</h2>
+              <p>{message}</p>
+              <div className={styles.nextSteps}>
+                <h3>What happens next?</h3>
+                <ol>
+                  <li>We'll review your application within 2-3 business days</li>
+                  <li>You'll receive an email notification with our decision</li>
+                  <li>Once approved, you can log in to access wholesale pricing</li>
+                </ol>
+              </div>
+              <button
+                onClick={() => {
+                  setCurrentView('login');
+                  setMessage('');
+                }}
+                className={styles.primaryButton}
+              >
+                Back to Login
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'pending':
+        return (
+          <div className={styles.messageContainer}>
+            <div className={styles.pendingMessage}>
+              <div className={styles.pendingIcon}>⏳</div>
+              <h2>Application Pending</h2>
+              <p>{message}</p>
+              <div className={styles.contactInfo}>
+                <p>
+                  If you have any questions, please contact us at{' '}
+                  <a href="mailto:wholesale@caststone.com">wholesale@caststone.com</a>
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setCurrentView('login');
+                  setMessage('');
+                }}
+                className={styles.primaryButton}
+              >
+                Back to Login
+              </button>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={styles.pageContainer}>
+      {renderHeader()}
+      
+      {error && (
+        <div className={styles.errorBanner}>
+          <p>{error}</p>
+          <button onClick={() => setError('')} className={styles.closeError}>
+            ×
+          </button>
+        </div>
+      )}
+
+      {renderContent()}
+    </div>
+  );
+}

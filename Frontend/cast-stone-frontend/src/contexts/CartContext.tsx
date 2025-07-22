@@ -146,6 +146,8 @@ export function CartProvider({ children }: CartProviderProps) {
     }
   }, [state.sessionId]);
 
+
+
   const loadCart = async (userId?: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });

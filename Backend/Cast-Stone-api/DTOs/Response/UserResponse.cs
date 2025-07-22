@@ -11,6 +11,7 @@ public class UserResponse
     public string? ZipCode { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool Active { get; set; }
+    public bool IsApproved { get; set; }
 }
 
 public class StatusResponse

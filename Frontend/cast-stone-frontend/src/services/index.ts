@@ -18,6 +18,8 @@ export * from './api/cart';
 export * from './api/payments';
 export * from './api/seed';
 export * from './api/contactForm';
+export * from './api/wholesaleBuyers';
+export * from './api/auth';
 
 // Combined API Service
 import { collectionService } from './api/collections';
@@ -31,6 +33,8 @@ import { cartService } from './api/cart';
 import { paymentService } from './api/payments';
 import { seedService } from './api/seed';
 import { contactFormService } from './api/contactForm';
+import { wholesaleBuyerService } from './api/wholesaleBuyers';
+import { authService } from './api/auth';
 
 export class ApiService {
   collections = collectionService;
@@ -44,6 +48,8 @@ export class ApiService {
   payments = paymentService;
   seed = seedService;
   contactForm = contactFormService;
+  wholesaleBuyers = wholesaleBuyerService;
+  auth = authService;
 }
 
 // Export singleton instance
@@ -61,7 +67,9 @@ export {
   cartService,
   paymentService,
   seedService,
-  contactFormService
+  contactFormService,
+  wholesaleBuyerService,
+  authService
 };
 
 // Utility exports

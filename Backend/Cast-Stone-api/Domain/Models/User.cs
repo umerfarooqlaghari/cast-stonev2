@@ -9,7 +9,7 @@ public class User
     
     [Required]
     [MaxLength(20)]
-    public string Role { get; set; } = "guest"; // admin, customer, guest
+    public string Role { get; set; } = "guest"; // admin, customer, guest, WholesaleBuyer
     
     [Required]
     [MaxLength(255)]
@@ -34,7 +34,11 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     public bool Active { get; set; } = true;
-    
+
+    // Wholesale buyer approval status (only relevant for WholesaleBuyer role)
+    public bool IsApproved { get; set; } = false;
+
     // Navigation properties
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual WholesaleBuyer? WholesaleBuyer { get; set; }
 }

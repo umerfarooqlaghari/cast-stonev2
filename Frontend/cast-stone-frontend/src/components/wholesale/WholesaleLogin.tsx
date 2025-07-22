@@ -1,0 +1,133 @@
+'use client';
+
+import React, { useState } from 'react';
+import { LoginRequest, AuthenticationResult } from '../../services/types/entities';
+import { authService } from '../../services';
+import styles from './WholesaleLogin.module.css';
+
+interface WholesaleLoginProps {
+  onSuccess?: (result: AuthenticationResult) => void;
+  onError?: (error: string) => void;
+  onSwitchToSignup?: () => void;
+}
+
+export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
+  onSuccess,
+  onError,
+  onSwitchToSignup
+}) => {
+  const [formData, setFormData] = useState<LoginRequest>({
+    email: '',
+    password: ''
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof LoginRequest, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await authService.login(formData);
+      if (response.success && response.data) {
+        onSuccess?.(response.data);
+      } else {
+        onError?.(response.message || 'Login failed');
+      }
+    } catch (error) {
+      onError?.(error instanceof Error ? error.message : 'An unexpected error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className={styles.loginContainer}>
+      <div className={styles.loginCard}>
+        <div className={styles.loginHeader}>
+          <h2>Wholesale Buyer Login</h2>
+          <p>Access your wholesale pricing and account</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              className={errors.email ? styles.error : ''}
+              placeholder="Enter your email address"
+              disabled={isSubmitting}
+            />
+            {errors.email && <span className={styles.errorText}>{errors.email}</span>}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              className={errors.password ? styles.error : ''}
+              placeholder="Enter your password"
+              disabled={isSubmitting}
+            />
+            {errors.password && <span className={styles.errorText}>{errors.password}</span>}
+          </div>
+
+          <button
+            type="submit"
+            className={styles.loginButton}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Signing In...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className={styles.loginFooter}>
+          <p>
+            Don't have a wholesale account?{' '}
+            <button
+              type="button"
+              onClick={onSwitchToSignup}
+              className={styles.linkButton}
+              disabled={isSubmitting}
+            >
+              Apply for Wholesale Access
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

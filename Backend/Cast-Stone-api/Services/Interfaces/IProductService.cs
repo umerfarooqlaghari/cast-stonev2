@@ -18,4 +18,11 @@ public interface IProductService : IBaseService<Domain.Models.Product, ProductRe
     Task<bool> ReserveStockAsync(int id, int quantity);
     Task<bool> ReleaseStockAsync(int id, int quantity);
     Task<PaginatedResponse<ProductResponse>> GetFilteredAsync(ProductFilterRequest filter);
+
+    // Wholesale pricing methods
+    Task<ProductResponse?> GetByIdWithPricingAsync(int id, string? userEmail = null);
+    Task<IEnumerable<ProductResponse>> GetAllWithPricingAsync(string? userEmail = null);
+    Task<IEnumerable<ProductResponse>> GetByCollectionIdWithPricingAsync(int collectionId, string? userEmail = null);
+    Task<IEnumerable<ProductSummaryResponse>> GetFeaturedWithPricingAsync(int count = 10, string? userEmail = null);
+    Task<IEnumerable<ProductSummaryResponse>> GetLatestWithPricingAsync(int count = 10, string? userEmail = null);
 }

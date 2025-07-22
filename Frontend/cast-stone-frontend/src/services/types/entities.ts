@@ -209,6 +209,7 @@ export interface Product {
   productCode?: string;
   description?: string;
   price: number;
+  wholeSalePrice?: number;
   stock: number;
   collectionId: number;
   images: string[];
@@ -225,6 +226,7 @@ export interface ProductSummary {
   id: number;
   name: string;
   price: number;
+  wholeSalePrice?: number;
   stock: number;
   mainImage?: string;
   collectionName: string;
@@ -236,6 +238,7 @@ export interface CreateProductRequest {
   productCode?: string;
   description?: string;
   price: number;
+  wholeSalePrice?: number;
   stock: number;
   collectionId: number;
   images: string[];
@@ -250,6 +253,7 @@ export interface UpdateProductRequest {
   productCode?: string;
   description?: string;
   price: number;
+  wholeSalePrice?: number;
   stock: number;
   collectionId: number;
   images: string[];
@@ -364,6 +368,7 @@ export interface User {
   zipCode?: string;
   createdAt: string;
   active: boolean;
+  isApproved: boolean;
 }
 
 export interface CreateUserRequest {
@@ -484,4 +489,86 @@ export interface CreateContactFormSubmissionRequest {
   state: string;
   inquiry: InquiryType;
   message: string;
+}
+
+// Wholesale Buyer Types
+export interface WholesaleBuyer {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  companyName: string;
+  businessType: string;
+  otherBusinessType?: string;
+  taxNumber?: string;
+  businessAddress: string;
+  state: string;
+  city: string;
+  zipCode: string;
+  howDidYouHear: string[];
+  otherHowDidYouHear?: string;
+  comments?: string;
+  status: string; // Pending, Approved, Rejected
+  adminNotes?: string;
+  approvedBy?: number;
+  approvedAt?: string;
+  createdAt: string;
+  updatedAt?: string;
+  user?: User;
+  approvedByUser?: User;
+}
+
+export interface WholesaleBuyerSummary {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  status: string;
+  createdAt: string;
+  approvedAt?: string;
+}
+
+export interface CreateWholesaleBuyerRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  companyName: string;
+  businessType: string;
+  otherBusinessType?: string;
+  taxNumber?: string;
+  businessAddress: string;
+  state: string;
+  city: string;
+  zipCode: string;
+  howDidYouHear: string[];
+  otherHowDidYouHear?: string;
+  comments?: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface UpdateWholesaleBuyerStatusRequest {
+  status: string; // Approved, Rejected
+  adminNotes?: string;
+}
+
+export interface ApproveRejectRequest {
+  adminUserId: number;
+  adminNotes?: string;
+}
+
+// Authentication Types
+export interface AuthenticationResult {
+  isValid: boolean;
+  user?: User;
+  errorMessage?: string;
+  isApprovedWholesaleBuyer: boolean;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
 }

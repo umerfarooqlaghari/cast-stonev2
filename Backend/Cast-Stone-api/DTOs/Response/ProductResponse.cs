@@ -7,6 +7,7 @@ public class ProductResponse
     public string? ProductCode { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }
+    public decimal WholeSalePrice { get; set; }
     public int Stock { get; set; }
     public int CollectionId { get; set; }
     public List<string> Images { get; set; } = new List<string>();

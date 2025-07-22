@@ -77,8 +77,14 @@
 .priceContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 0.75rem;
+}
+
+.priceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .price {
@@ -87,10 +93,25 @@
   font-weight: 700;
 }
 
+.wholesaleLabel {
+  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retailPrice {
+  color: #6b7280;
+  font-size: 0.875rem;
+  text-decoration: line-through;
+}
+
 .collection {
   color: #1e40af;
   font-size: 0.85rem;
   font-style: italic;
+  align-self: flex-end;
 }
 
 /* Stock Info */
