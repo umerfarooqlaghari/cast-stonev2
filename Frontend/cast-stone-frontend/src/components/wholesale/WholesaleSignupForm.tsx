@@ -65,6 +65,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
     state: '',
     city: '',
     zipCode: '',
+    country: '', // Added country property
     howDidYouHear: [],
     otherHowDidYouHear: '',
     comments: '',
