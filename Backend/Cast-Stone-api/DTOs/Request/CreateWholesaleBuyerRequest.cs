@@ -52,6 +52,10 @@ public class CreateWholesaleBuyerRequest
     [Required]
     [MaxLength(20)]
     public string ZipCode { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(100)]
+    public string Country { get; set; } = string.Empty;
     
     // How did you hear about us
     public List<string> HowDidYouHear { get; set; } = new List<string>();

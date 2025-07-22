@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { LoginRequest, AuthenticationResult } from '../../services/types/entities';
-import { authService } from '../../services';
+import { useWholesaleAuth } from '../../contexts/WholesaleAuthContext';
 import styles from './WholesaleLogin.module.css';
 
 interface WholesaleLoginProps {
@@ -16,6 +16,7 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
   onError,
   onSwitchToSignup
 }) => {
+  const { login } = useWholesaleAuth();
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: ''
@@ -50,16 +51,22 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      const response = await authService.login(formData);
-      if (response.success && response.data) {
-        onSuccess?.(response.data);
+      const result = await login(formData.email, formData.password);
+      if (result.success) {
+        // Create a mock AuthenticationResult for the onSuccess callback
+        const authResult: AuthenticationResult = {
+          isValid: true,
+          user: undefined, // Will be set by the context
+          isApprovedWholesaleBuyer: true // Will be determined by the context
+        };
+        onSuccess?.(authResult);
       } else {
-        onError?.(response.message || 'Login failed');
+        onError?.(result.error || 'Login failed');
       }
     } catch (error) {
       onError?.(error instanceof Error ? error.message : 'An unexpected error occurred');

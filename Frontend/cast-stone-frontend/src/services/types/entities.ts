@@ -506,6 +506,7 @@ export interface WholesaleBuyer {
   state: string;
   city: string;
   zipCode: string;
+  country: string;
   howDidYouHear: string[];
   otherHowDidYouHear?: string;
   comments?: string;
@@ -543,6 +544,7 @@ export interface CreateWholesaleBuyerRequest {
   state: string;
   city: string;
   zipCode: string;
+  country: string;
   howDidYouHear: string[];
   otherHowDidYouHear?: string;
   comments?: string;

@@ -56,6 +56,11 @@ public class WholesaleBuyer
     [Required]
     [MaxLength(20)]
     public string ZipCode { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(100)]
+    public string Country { get; set; } = string.Empty;
+
     
     // How did you hear about us
     [Column(TypeName = "jsonb")]
