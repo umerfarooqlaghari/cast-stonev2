@@ -11,12 +11,14 @@ public class CartService : ICartService
 {
     private readonly ICartRepository _cartRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IWholesaleBuyerService _wholesaleBuyerService;
     private readonly IMapper _mapper;
 
-    public CartService(ICartRepository cartRepository, IProductRepository productRepository, IMapper mapper)
+    public CartService(ICartRepository cartRepository, IProductRepository productRepository, IWholesaleBuyerService wholesaleBuyerService, IMapper mapper)
     {
         _cartRepository = cartRepository;
         _productRepository = productRepository;
+        _wholesaleBuyerService = wholesaleBuyerService;
         _mapper = mapper;
     }
 
@@ -26,8 +28,11 @@ public class CartService : ICartService
         if (cart == null) return null;
 
         var response = _mapper.Map<CartResponse>(cart);
-        response.TotalAmount = await _cartRepository.GetCartTotalAsync(cart.Id);
+        response.TotalAmount = await CalculateCartTotalWithWholesalePricingAsync(cart.Id, userId);
         response.TotalItems = await _cartRepository.GetCartItemCountAsync(cart.Id);
+
+        // Update ItemTotal for each cart item with wholesale pricing
+        await UpdateCartItemTotalsWithWholesalePricing(response, userId);
         
         return response;
     }
@@ -38,9 +43,12 @@ public class CartService : ICartService
         if (cart == null) return null;
 
         var response = _mapper.Map<CartResponse>(cart);
-        response.TotalAmount = await _cartRepository.GetCartTotalAsync(cart.Id);
+        response.TotalAmount = await CalculateCartTotalWithWholesalePricingAsync(cart.Id, cart.UserId);
         response.TotalItems = await _cartRepository.GetCartItemCountAsync(cart.Id);
-        
+
+        // Update ItemTotal for each cart item with wholesale pricing
+        await UpdateCartItemTotalsWithWholesalePricing(response, cart.UserId);
+
         return response;
     }
 
@@ -53,7 +61,7 @@ public class CartService : ICartService
         {
             Id = cart.Id,
             TotalItems = await _cartRepository.GetCartItemCountAsync(cart.Id),
-            TotalAmount = await _cartRepository.GetCartTotalAsync(cart.Id),
+            TotalAmount = await CalculateCartTotalWithWholesalePricingAsync(cart.Id, userId),
             UpdatedAt = cart.UpdatedAt
         };
     }
@@ -67,7 +75,7 @@ public class CartService : ICartService
         {
             Id = cart.Id,
             TotalItems = await _cartRepository.GetCartItemCountAsync(cart.Id),
-            TotalAmount = await _cartRepository.GetCartTotalAsync(cart.Id),
+            TotalAmount = await CalculateCartTotalWithWholesalePricingAsync(cart.Id, cart.UserId),
             UpdatedAt = cart.UpdatedAt
         };
     }
@@ -123,9 +131,12 @@ public class CartService : ICartService
         if (cart == null) throw new ArgumentException("Cart not found");
 
         var response = _mapper.Map<CartResponse>(cart);
-        response.TotalAmount = await _cartRepository.GetCartTotalAsync(cart.Id);
+        response.TotalAmount = await CalculateCartTotalWithWholesalePricingAsync(cart.Id, cart.UserId);
         response.TotalItems = await _cartRepository.GetCartItemCountAsync(cart.Id);
-        
+
+        // Update ItemTotal for each cart item with wholesale pricing
+        await UpdateCartItemTotalsWithWholesalePricing(response, cart.UserId);
+
         return response;
     }
 
@@ -214,5 +225,82 @@ public class CartService : ICartService
         }
 
         return cart;
+    }
+
+    private async Task<decimal> CalculateCartTotalWithWholesalePricingAsync(int cartId, int? userId)
+    {
+        var cart = await _cartRepository.GetCartWithItemsAsync(cartId);
+        if (cart?.CartItems == null) return 0;
+
+        // Check if user is an approved wholesale buyer
+        bool isApprovedWholesaleBuyer = false;
+        if (userId.HasValue && cart.User != null)
+        {
+            try
+            {
+                isApprovedWholesaleBuyer = await _wholesaleBuyerService.IsUserApprovedWholesaleBuyerAsync(cart.User.Email);
+            }
+            catch
+            {
+                // If there's an error checking wholesale status, default to regular pricing
+                isApprovedWholesaleBuyer = false;
+            }
+        }
+
+        decimal total = 0;
+        foreach (var cartItem in cart.CartItems)
+        {
+            var product = cartItem.Product;
+            if (product != null)
+            {
+                // Use wholesale price if user is approved wholesale buyer and product has wholesale price
+                decimal price = isApprovedWholesaleBuyer && product.WholeSalePrice.HasValue && product.WholeSalePrice > 0
+                    ? product.WholeSalePrice.Value
+                    : product.Price;
+
+                total += cartItem.Quantity * price;
+            }
+        }
+
+        return total;
+    }
+
+    private async Task UpdateCartItemTotalsWithWholesalePricing(CartResponse cartResponse, int? userId)
+    {
+        if (cartResponse.CartItems == null || !cartResponse.CartItems.Any()) return;
+
+        // Check if user is an approved wholesale buyer
+        bool isApprovedWholesaleBuyer = false;
+        if (userId.HasValue)
+        {
+            try
+            {
+                // Get user email from the first cart item's cart (we need to fetch it)
+                var cart = await _cartRepository.GetCartWithItemsAsync(cartResponse.Id);
+                if (cart?.User != null)
+                {
+                    isApprovedWholesaleBuyer = await _wholesaleBuyerService.IsUserApprovedWholesaleBuyerAsync(cart.User.Email);
+                }
+            }
+            catch
+            {
+                // If there's an error checking wholesale status, default to regular pricing
+                isApprovedWholesaleBuyer = false;
+            }
+        }
+
+        // Update ItemTotal for each cart item
+        foreach (var cartItem in cartResponse.CartItems)
+        {
+            if (cartItem.Product != null)
+            {
+                // Use wholesale price if user is approved wholesale buyer and product has wholesale price
+                decimal price = isApprovedWholesaleBuyer && cartItem.Product.WholeSalePrice > 0
+                    ? cartItem.Product.WholeSalePrice
+                    : cartItem.Product.Price;
+
+                cartItem.ItemTotal = cartItem.Quantity * price;
+            }
+        }
     }
 }

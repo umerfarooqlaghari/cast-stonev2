@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Product } from '@/services/types/entities';
 import { useCart } from '@/contexts/CartContext';
@@ -23,6 +24,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Force re-render when wholesale status changes
+  useEffect(() => {
+    setForceUpdate(prev => prev + 1);
+  }, [isApprovedWholesaleBuyer]);
 
   const handleAddToCart = async () => {
     try {
@@ -51,16 +58,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const showWholesaleLabel = isApprovedWholesaleBuyer && product.wholeSalePrice;
 
-  // Debug logging
-  console.log('ProductCard Debug:', {
-    productId: product.id,
-    productName: product.name,
-    isApprovedWholesaleBuyer,
-    wholeSalePrice: product.wholeSalePrice,
-    regularPrice: product.price,
-    displayPrice,
-    showWholesaleLabel
-  });
+
 
   const mainImage = product.images && product.images.length > 0 
     ? product.images[0] 

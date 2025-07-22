@@ -32,6 +32,7 @@ interface CartContextType {
   updateCartItem: (productId: number, quantity: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
   clearCart: () => Promise<void>;
+  refreshCart: (userId?: number) => Promise<void>;
   getCartSummary: () => { totalItems: number; totalAmount: number };
   refreshCart: (userId?: number) => Promise<void>;
 }
