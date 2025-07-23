@@ -5,6 +5,7 @@ using Cast_Stone_api.DTOs.Request;
 using Cast_Stone_api.DTOs.Response;
 using Cast_Stone_api.Repositories.Interfaces;
 using Cast_Stone_api.Services.Interfaces;
+using Cast_Stone_api.Services;
 
 namespace Cast_Stone_api.Services.Implementations;
 
@@ -12,16 +13,22 @@ public class WholesaleBuyerService : IWholesaleBuyerService
 {
     private readonly IWholesaleBuyerRepository _wholesaleBuyerRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IEmailService _emailService;
     private readonly IMapper _mapper;
+    private readonly ILogger<WholesaleBuyerService> _logger;
 
     public WholesaleBuyerService(
         IWholesaleBuyerRepository wholesaleBuyerRepository,
         IUserRepository userRepository,
-        IMapper mapper)
+        IEmailService emailService,
+        IMapper mapper,
+        ILogger<WholesaleBuyerService> logger)
     {
         _wholesaleBuyerRepository = wholesaleBuyerRepository;
         _userRepository = userRepository;
+        _emailService = emailService;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<WholesaleBuyerResponse?> GetByIdAsync(int id)
@@ -173,7 +180,27 @@ public class WholesaleBuyerService : IWholesaleBuyerService
         wholesaleBuyer.CreatedAt = DateTime.UtcNow;
 
         var createdWholesaleBuyer = await _wholesaleBuyerRepository.AddAsync(wholesaleBuyer);
-        return _mapper.Map<WholesaleBuyerResponse>(createdWholesaleBuyer);
+        var response = _mapper.Map<WholesaleBuyerResponse>(createdWholesaleBuyer);
+
+        // Send email notification to admins
+        try
+        {
+            _logger.LogInformation("Sending wholesale buyer application notification emails for application {ApplicationId}", response.Id);
+            var emailResponses = await _emailService.SendWholesaleBuyerApplicationToAdminsAsync(response);
+
+            var successfulEmails = emailResponses.Count(r => r.Success);
+            var totalEmails = emailResponses.Count;
+
+            _logger.LogInformation("Sent {SuccessfulEmails}/{TotalEmails} wholesale buyer application notification emails for application {ApplicationId}",
+                successfulEmails, totalEmails, response.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send wholesale buyer application notification emails for application {ApplicationId}", response.Id);
+            // Don't throw the exception - the application was created successfully, email is just a notification
+        }
+
+        return response;
     }
 
     public async Task<WholesaleBuyerResponse?> ApproveApplicationAsync(int id, int approvedByUserId, string? adminNotes = null)

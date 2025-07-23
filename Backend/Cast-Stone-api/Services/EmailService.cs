@@ -1,4 +1,5 @@
 using Cast_Stone_api.Domain.Models.PaymentGatewaySettings;
+using Cast_Stone_api.Domain.Models;
 using Cast_Stone_api.DTOs.Response;
 using Cast_Stone_api.DTOs.Request;
 using MailKit.Net.Smtp;
@@ -15,6 +16,7 @@ namespace Cast_Stone_api.Services
         Task<EmailNotificationResponse> SendEmailAsync(string to, string subject, string htmlBody, string? plainTextBody = null);
         Task<EmailNotificationResponse> SendContactFormAutoReplyAsync(string userEmail, string userName, string inquiryType, string message, string? company = null, string? state = null, string? phoneNumber = null);
         Task<EmailNotificationResponse> SendOrderConfirmationToCustomerAsync(string customerEmail, string customerName, int orderId, decimal totalAmount, List<OrderItemDetail> orderItems, string paymentMethod, string? shippingAddress = null);
+        Task<List<EmailNotificationResponse>> SendWholesaleBuyerApplicationToAdminsAsync(WholesaleBuyerResponse application);
     }
 
     public class EmailService : IEmailService
@@ -484,6 +486,288 @@ namespace Cast_Stone_api.Services
             text.AppendLine("Premium Cast Stone Solutions");
 
             return text.ToString();
+        }
+
+        private async Task<List<string>> GetAdminEmailsAsync()
+        {
+            // For now, we'll use a simple approach. In a real application, you might want to inject a UserService
+            // to get admin emails from the database. For this implementation, we'll use the configured admin email
+            // and potentially add more admin emails from configuration.
+
+            var adminEmails = new List<string>();
+
+            // Add the primary admin email from configuration
+            if (!string.IsNullOrEmpty(_smtpSettings.AdminEmail))
+            {
+                adminEmails.Add(_smtpSettings.AdminEmail);
+            }
+
+            // You can add more admin emails here or fetch from database
+            // Example: var dbAdminEmails = await _userService.GetAdminEmailsAsync();
+            // adminEmails.AddRange(dbAdminEmails);
+
+            return adminEmails;
+        }
+
+        private string GenerateWholesaleBuyerApplicationHtml(WholesaleBuyerResponse application)
+        {
+            var html = new StringBuilder();
+
+            html.AppendLine("<!DOCTYPE html>");
+            html.AppendLine("<html>");
+            html.AppendLine("<head>");
+            html.AppendLine("    <meta charset='utf-8'>");
+            html.AppendLine("    <title>New Wholesale Buyer Application</title>");
+            html.AppendLine("    <style>");
+            html.AppendLine("        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }");
+            html.AppendLine("        .container { max-width: 600px; margin: 0 auto; padding: 20px; }");
+            html.AppendLine("        .header { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }");
+            html.AppendLine("        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }");
+            html.AppendLine("        .section { margin-bottom: 25px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }");
+            html.AppendLine("        .section h3 { color: #047857; margin-top: 0; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }");
+            html.AppendLine("        .field { margin-bottom: 12px; }");
+            html.AppendLine("        .field strong { color: #374151; display: inline-block; width: 150px; }");
+            html.AppendLine("        .status { padding: 8px 16px; border-radius: 20px; font-weight: bold; text-transform: uppercase; }");
+            html.AppendLine("        .status.pending { background: #fef3c7; color: #92400e; }");
+            html.AppendLine("        .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }");
+            html.AppendLine("        .action-buttons { text-align: center; margin: 25px 0; }");
+            html.AppendLine("        .btn { display: inline-block; padding: 12px 24px; margin: 0 10px; text-decoration: none; border-radius: 6px; font-weight: bold; }");
+            html.AppendLine("        .btn-approve { background: #10b981; color: white; }");
+            html.AppendLine("        .btn-review { background: #3b82f6; color: white; }");
+            html.AppendLine("    </style>");
+            html.AppendLine("</head>");
+            html.AppendLine("<body>");
+            html.AppendLine("    <div class='container'>");
+            html.AppendLine("        <div class='header'>");
+            html.AppendLine("            <h1>🏢 New Wholesale Buyer Application</h1>");
+            html.AppendLine("            <p>A new wholesale buyer application has been submitted and requires your review.</p>");
+            html.AppendLine("        </div>");
+            html.AppendLine("        <div class='content'>");
+
+            // Application Overview
+            html.AppendLine("            <div class='section'>");
+            html.AppendLine("                <h3>📋 Application Overview</h3>");
+            html.AppendLine($"                <div class='field'><strong>Application ID:</strong> #{application.Id}</div>");
+            html.AppendLine($"                <div class='field'><strong>Company Name:</strong> {application.CompanyName}</div>");
+            html.AppendLine($"                <div class='field'><strong>Applicant:</strong> {application.FirstName} {application.LastName}</div>");
+            html.AppendLine($"                <div class='field'><strong>Email:</strong> {application.Email}</div>");
+            html.AppendLine($"                <div class='field'><strong>Status:</strong> <span class='status pending'>{application.Status}</span></div>");
+            html.AppendLine($"                <div class='field'><strong>Applied On:</strong> {application.CreatedAt:MMMM dd, yyyy 'at' hh:mm tt}</div>");
+            html.AppendLine("            </div>");
+
+            // Personal & Contact Information
+            html.AppendLine("            <div class='section'>");
+            html.AppendLine("                <h3>👤 Personal & Contact Information</h3>");
+            html.AppendLine($"                <div class='field'><strong>Full Name:</strong> {application.FirstName} {application.LastName}</div>");
+            html.AppendLine($"                <div class='field'><strong>Email:</strong> {application.Email}</div>");
+            html.AppendLine($"                <div class='field'><strong>Phone:</strong> {application.Phone}</div>");
+            html.AppendLine("            </div>");
+
+            // Business Information
+            html.AppendLine("            <div class='section'>");
+            html.AppendLine("                <h3>🏢 Business Information</h3>");
+            html.AppendLine($"                <div class='field'><strong>Company Name:</strong> {application.CompanyName}</div>");
+            html.AppendLine($"                <div class='field'><strong>Business Type:</strong> {application.BusinessType}</div>");
+            if (!string.IsNullOrEmpty(application.OtherBusinessType))
+            {
+                html.AppendLine($"                <div class='field'><strong>Other Business Type:</strong> {application.OtherBusinessType}</div>");
+            }
+            if (!string.IsNullOrEmpty(application.TaxNumber))
+            {
+                html.AppendLine($"                <div class='field'><strong>Tax Number:</strong> {application.TaxNumber}</div>");
+            }
+            html.AppendLine("            </div>");
+
+            // Business Address
+            html.AppendLine("            <div class='section'>");
+            html.AppendLine("                <h3>📍 Business Address</h3>");
+            html.AppendLine($"                <div class='field'><strong>Address:</strong> {application.BusinessAddress}</div>");
+            html.AppendLine($"                <div class='field'><strong>City:</strong> {application.City}</div>");
+            html.AppendLine($"                <div class='field'><strong>State:</strong> {application.State}</div>");
+            html.AppendLine($"                <div class='field'><strong>ZIP Code:</strong> {application.ZipCode}</div>");
+            html.AppendLine($"                <div class='field'><strong>Country:</strong> {application.Country}</div>");
+            html.AppendLine("            </div>");
+
+            // Additional Information
+            if (application.HowDidYouHear?.Any() == true || !string.IsNullOrEmpty(application.Comments))
+            {
+                html.AppendLine("            <div class='section'>");
+                html.AppendLine("                <h3>💬 Additional Information</h3>");
+
+                if (application.HowDidYouHear?.Any() == true)
+                {
+                    html.AppendLine($"                <div class='field'><strong>How did you hear about us:</strong> {string.Join(", ", application.HowDidYouHear)}</div>");
+                    if (!string.IsNullOrEmpty(application.OtherHowDidYouHear))
+                    {
+                        html.AppendLine($"                <div class='field'><strong>Other:</strong> {application.OtherHowDidYouHear}</div>");
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(application.Comments))
+                {
+                    html.AppendLine($"                <div class='field'><strong>Comments:</strong><br>{application.Comments.Replace("\n", "<br>")}</div>");
+                }
+                html.AppendLine("            </div>");
+            }
+
+            // Action Buttons (these would link to your admin panel)
+            html.AppendLine("            <div class='action-buttons'>");
+            html.AppendLine($"                <a href='#' class='btn btn-approve'>✅ Approve Application</a>");
+            html.AppendLine($"                <a href='#' class='btn btn-review'>👁️ Review in Admin Panel</a>");
+            html.AppendLine("            </div>");
+
+            html.AppendLine("            <div class='footer'>");
+            html.AppendLine("                <p>Please review this application carefully and take appropriate action.</p>");
+            html.AppendLine("                <p><strong>Cast Stone Admin Team</strong></p>");
+            html.AppendLine("            </div>");
+            html.AppendLine("        </div>");
+            html.AppendLine("    </div>");
+            html.AppendLine("</body>");
+            html.AppendLine("</html>");
+
+            return html.ToString();
+        }
+
+        private string GenerateWholesaleBuyerApplicationText(WholesaleBuyerResponse application)
+        {
+            var text = new StringBuilder();
+
+            text.AppendLine("NEW WHOLESALE BUYER APPLICATION");
+            text.AppendLine("=====================================");
+            text.AppendLine();
+            text.AppendLine("A new wholesale buyer application has been submitted and requires your review.");
+            text.AppendLine();
+
+            // Application Overview
+            text.AppendLine("APPLICATION OVERVIEW");
+            text.AppendLine("-------------------");
+            text.AppendLine($"Application ID: #{application.Id}");
+            text.AppendLine($"Company Name: {application.CompanyName}");
+            text.AppendLine($"Applicant: {application.FirstName} {application.LastName}");
+            text.AppendLine($"Email: {application.Email}");
+            text.AppendLine($"Status: {application.Status}");
+            text.AppendLine($"Applied On: {application.CreatedAt:MMMM dd, yyyy 'at' hh:mm tt}");
+            text.AppendLine();
+
+            // Personal & Contact Information
+            text.AppendLine("PERSONAL & CONTACT INFORMATION");
+            text.AppendLine("-----------------------------");
+            text.AppendLine($"Full Name: {application.FirstName} {application.LastName}");
+            text.AppendLine($"Email: {application.Email}");
+            text.AppendLine($"Phone: {application.Phone}");
+            text.AppendLine();
+
+            // Business Information
+            text.AppendLine("BUSINESS INFORMATION");
+            text.AppendLine("-------------------");
+            text.AppendLine($"Company Name: {application.CompanyName}");
+            text.AppendLine($"Business Type: {application.BusinessType}");
+            if (!string.IsNullOrEmpty(application.OtherBusinessType))
+            {
+                text.AppendLine($"Other Business Type: {application.OtherBusinessType}");
+            }
+            if (!string.IsNullOrEmpty(application.TaxNumber))
+            {
+                text.AppendLine($"Tax Number: {application.TaxNumber}");
+            }
+            text.AppendLine();
+
+            // Business Address
+            text.AppendLine("BUSINESS ADDRESS");
+            text.AppendLine("---------------");
+            text.AppendLine($"Address: {application.BusinessAddress}");
+            text.AppendLine($"City: {application.City}");
+            text.AppendLine($"State: {application.State}");
+            text.AppendLine($"ZIP Code: {application.ZipCode}");
+            text.AppendLine($"Country: {application.Country}");
+            text.AppendLine();
+
+            // Additional Information
+            if (application.HowDidYouHear?.Any() == true || !string.IsNullOrEmpty(application.Comments))
+            {
+                text.AppendLine("ADDITIONAL INFORMATION");
+                text.AppendLine("---------------------");
+
+                if (application.HowDidYouHear?.Any() == true)
+                {
+                    text.AppendLine($"How did you hear about us: {string.Join(", ", application.HowDidYouHear)}");
+                    if (!string.IsNullOrEmpty(application.OtherHowDidYouHear))
+                    {
+                        text.AppendLine($"Other: {application.OtherHowDidYouHear}");
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(application.Comments))
+                {
+                    text.AppendLine($"Comments: {application.Comments}");
+                }
+                text.AppendLine();
+            }
+
+            text.AppendLine("Please review this application carefully and take appropriate action.");
+            text.AppendLine();
+            text.AppendLine("Cast Stone Admin Team");
+
+            return text.ToString();
+        }
+
+        public async Task<List<EmailNotificationResponse>> SendWholesaleBuyerApplicationToAdminsAsync(WholesaleBuyerResponse application)
+        {
+            var responses = new List<EmailNotificationResponse>();
+
+            try
+            {
+                // Get all admin users
+                var adminEmails = await GetAdminEmailsAsync();
+
+                if (!adminEmails.Any())
+                {
+                    _logger.LogWarning("No admin emails found for wholesale buyer application notification");
+                    responses.Add(new EmailNotificationResponse
+                    {
+                        Success = false,
+                        Message = "No admin emails configured",
+                        SentAt = DateTime.UtcNow
+                    });
+                    return responses;
+                }
+
+                var subject = $"New Wholesale Buyer Application - {application.CompanyName}";
+                var htmlBody = GenerateWholesaleBuyerApplicationHtml(application);
+                var plainTextBody = GenerateWholesaleBuyerApplicationText(application);
+
+                // Send email to each admin
+                foreach (var adminEmail in adminEmails)
+                {
+                    try
+                    {
+                        var response = await SendEmailAsync(adminEmail, subject, htmlBody, plainTextBody);
+                        responses.Add(response);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error sending wholesale buyer application email to admin {AdminEmail}", adminEmail);
+                        responses.Add(new EmailNotificationResponse
+                        {
+                            Success = false,
+                            Message = $"Failed to send email to {adminEmail}: {ex.Message}",
+                            SentAt = DateTime.UtcNow
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending wholesale buyer application emails for application {ApplicationId}", application.Id);
+                responses.Add(new EmailNotificationResponse
+                {
+                    Success = false,
+                    Message = $"Failed to send wholesale buyer application emails: {ex.Message}",
+                    SentAt = DateTime.UtcNow
+                });
+            }
+
+            return responses;
         }
     }
 }
