@@ -421,7 +421,7 @@ export default function CheckoutPage() {
                   <p>Qty: {item.quantity}</p>
                 </div>
                 <div className={styles.itemPrice}>
-                  {formatPrice(item.quantity * (item.product?.price || 0))}
+                  {formatPrice(item.itemTotal || (item.quantity * (item.product?.price || 0)))}
                 </div>
               </div>
             ))}

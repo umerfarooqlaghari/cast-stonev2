@@ -50,7 +50,7 @@ export const WholesaleUserMenu: React.FC = () => {
               <div className={styles.userEmail}>{user.email}</div>
               <div className={styles.statusBadge}>
                 <span className={styles.statusDot}></span>
-                Wholesale Approved
+                 Approved WholeSale Buyer
               </div>
             </div>
             

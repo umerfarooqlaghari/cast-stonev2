@@ -18,7 +18,7 @@
   backdrop-filter: none;
   border: none;
   padding: 0;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -28,8 +28,10 @@
 
 /* Header when scrolled - stays transparent */
 .header.scrolled {
-  background: transparent;
-  backdrop-filter: none;
+  /* background: transparent;
+  backdrop-filter: none; */
+    transform: translateY(-100%);
+
 }
 
 /* Header for non-home pages - blue background with white text */

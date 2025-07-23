@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CartItem as CartItemType } from '@/services/types/entities';
 import { useCart } from '@/contexts/CartContext';
+import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
 import styles from './cartItem.module.css';
 
 interface CartItemProps {
@@ -12,8 +14,15 @@ interface CartItemProps {
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const { updateCartItem, removeFromCart, state } = useCart();
+  const { isApprovedWholesaleBuyer } = useWholesaleAuth();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Force re-render when wholesale status changes
+  useEffect(() => {
+    setForceUpdate(prev => prev + 1);
+  }, [isApprovedWholesaleBuyer]);
 
   const handleQuantityChange = async (newQuantity: number) => {
     if (newQuantity < 1 || !item.product) return;
@@ -59,7 +68,32 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     ? item.product.images[0] 
     : '/images/placeholder-product.jpg';
 
-  const itemTotal = item.quantity * item.product.price;
+  // Calculate pricing based on wholesale status and backend data
+  const getEffectivePrice = () => {
+    // If backend provided itemTotal, use that (it includes wholesale pricing)
+    if (item.itemTotal && item.itemTotal > 0) {
+      return item.itemTotal / item.quantity;
+    }
+
+    // Fallback: use wholesale price if user is approved wholesale buyer and product has wholesale price
+    if (
+      isApprovedWholesaleBuyer &&
+      item.product &&
+      item.product.wholeSalePrice &&
+      item.product.wholeSalePrice > 0
+    ) {
+      return item.product.wholeSalePrice;
+    }
+
+    // Default to regular price
+    return item.product?.price ?? 0;
+  };
+
+  const unitPrice = getEffectivePrice();
+  const itemTotal = item.itemTotal || (item.quantity * unitPrice);
+  const isWholesalePrice = isApprovedWholesaleBuyer &&
+    ((item.itemTotal && item.itemTotal > 0) ||
+     (item.product.wholeSalePrice && item.product.wholeSalePrice > 0 && unitPrice === item.product.wholeSalePrice));
 
   return (
     <div className={styles.cartItem}>
@@ -86,7 +120,10 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
         <div className={styles.productMeta}>
           <span className={styles.unitPrice}>
-            {formatPrice(item.product.price)} each
+            {formatPrice(unitPrice)} each
+            {isWholesalePrice && (
+              <span className={styles.wholesaleLabel}> (Wholesale)</span>
+            )}
           </span>
           {item.product.collection && (
             <span className={styles.collection}>
@@ -140,7 +177,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           {formatPrice(itemTotal)}
         </div>
         <div className={styles.priceBreakdown}>
-          {item.quantity} × {formatPrice(item.product.price)}
+          {item.quantity} × {formatPrice(unitPrice)}
         </div>
       </div>
 

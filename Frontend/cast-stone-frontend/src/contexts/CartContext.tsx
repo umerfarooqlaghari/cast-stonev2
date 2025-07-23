@@ -5,6 +5,7 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { Cart, CartItem, AddToCartRequest, UpdateCartItemRequest } from '@/services/types/entities';
 import { cartService } from '@/services';
+import { useWholesaleAuth } from './WholesaleAuthContext';
 
 // Cart State Interface
 interface CartState {
@@ -124,6 +125,7 @@ interface CartProviderProps {
 
 export function CartProvider({ children }: CartProviderProps) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const { user, isApprovedWholesaleBuyer } = useWholesaleAuth();
 
   // Initialize session ID on mount
   useEffect(() => {
@@ -145,6 +147,17 @@ export function CartProvider({ children }: CartProviderProps) {
       loadCart();
     }
   }, [state.sessionId]);
+
+  // Load cart when wholesale user changes
+  useEffect(() => {
+    if (user && isApprovedWholesaleBuyer) {
+      // Load cart by user ID for wholesale buyers
+      loadCart(user.id);
+    } else if (!user && state.sessionId) {
+      // Load cart by session ID for non-logged-in users
+      loadCart();
+    }
+  }, [user, isApprovedWholesaleBuyer]);
 
 
 
@@ -173,16 +186,19 @@ export function CartProvider({ children }: CartProviderProps) {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
 
+      // Use wholesale user ID if available, otherwise use provided userId
+      const effectiveUserId = (user && isApprovedWholesaleBuyer) ? user.id : userId;
+
       // Ensure we have either userId or sessionId
-      if (!userId && (!state.sessionId || state.sessionId.length === 0)) {
+      if (!effectiveUserId && (!state.sessionId || state.sessionId.length === 0)) {
         throw new Error('No user ID or session ID available for cart operation');
       }
 
       const request: AddToCartRequest = {
         productId,
         quantity,
-        userId,
-        sessionId: userId ? undefined : state.sessionId,
+        userId: effectiveUserId,
+        sessionId: effectiveUserId ? undefined : state.sessionId,
       };
 
       const updatedCart = await cartService.post.addToCart(request);
@@ -251,7 +267,9 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const refreshCart = async (userId?: number) => {
-    await loadCart(userId);
+    // Use wholesale user ID if available, otherwise use provided userId
+    const effectiveUserId = (user && isApprovedWholesaleBuyer) ? user.id : userId;
+    await loadCart(effectiveUserId);
   };
 
   const contextValue: CartContextType = {

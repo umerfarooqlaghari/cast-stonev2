@@ -63,6 +63,14 @@
   font-weight: 600;
 }
 
+.wholesaleLabel {
+  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .collection {
   color: #2563eb;
   font-size: 0.85rem;
