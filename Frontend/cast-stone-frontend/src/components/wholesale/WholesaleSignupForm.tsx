@@ -324,15 +324,27 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
           </select>
           {errors.state && <span className={styles.errorText}>{errors.state}</span>}
         </div>
+
+          <div className={styles.formGroup}>
+          <label htmlFor="Country">Country *</label>
+          <input
+            type="text"
+            id="country"
+            value={formData.city}
+            onChange={(e) => handleInputChange('country', e.target.value)}
+            className={errors.city ? styles.error : ''}
+          />
+          {errors.city && <span className={styles.errorText}>{errors.country}</span>}
+        </div>
         
         <div className={styles.formGroup}>
-          <label htmlFor="city">City *</label>
+          <label htmlFor="city">city *</label>
           <input
             type="text"
             id="city"
             value={formData.city}
             onChange={(e) => handleInputChange('city', e.target.value)}
-            className={errors.city ? styles.error : ''}
+            className={errors.country ? styles.error : ''}
           />
           {errors.city && <span className={styles.errorText}>{errors.city}</span>}
         </div>
