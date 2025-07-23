@@ -103,8 +103,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   href={item.href}
                   className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                     isActive
-                      ? 'bg-amber-100 text-amber-900 border-r-2 border-amber-900'
-                      : 'text-amber-800 hover:bg-amber-50 hover:text-amber-900'
+                      ? 'bg-gray-100 text-black border-r-2 border-black'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-black'
                   }`}
                 >
                   {item.icon}

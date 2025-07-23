@@ -10,14 +10,14 @@
 
 .header h1 {
   margin: 0 0 0.5rem;
-  color: #1f2937;
+  color: #000000;
   font-size: 2rem;
   font-weight: 700;
 }
 
 .header p {
   margin: 0;
-  color: #6b7280;
+  color: #000000;
   font-size: 1rem;
 }
 
@@ -88,12 +88,12 @@
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid #000000;
 }
 
 .statCard h3 {
   margin: 0 0 0.5rem;
-  color: #6b7280;
+  color: #000000;
   font-size: 0.875rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -104,7 +104,7 @@
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #000000;
 }
 
 .statNumber.pending {
@@ -135,13 +135,13 @@
 .filterGroup label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: #000000;
 }
 
 .searchInput,
 .statusFilter {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #000000;
   border-radius: 6px;
   font-size: 0.875rem;
   min-width: 200px;
@@ -150,15 +150,15 @@
 .searchInput:focus,
 .statusFilter:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .tableContainer {
   background: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid #000000;
   overflow: hidden;
 }
 
@@ -172,15 +172,15 @@
   padding: 0.75rem 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
+  color: #000000;
   font-size: 0.875rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #000000;
 }
 
 .table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  color: #374151;
+  border-bottom: 1px solid #000000;
+  color: #000000;
   font-size: 0.875rem;
 }
 
@@ -214,7 +214,7 @@
 }
 
 .viewButton {
-  background: #3b82f6;
+  background: #000000;
   color: white;
   border: none;
   padding: 0.375rem 0.75rem;
@@ -226,13 +226,13 @@
 }
 
 .viewButton:hover {
-  background: #2563eb;
+  background: #333333;
 }
 
 .emptyState {
   padding: 3rem;
   text-align: center;
-  color: #6b7280;
+  color: #000000;
 }
 
 /* Modal Styles */
@@ -266,12 +266,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #000000;
 }
 
 .modalHeader h2 {
   margin: 0;
-  color: #1f2937;
+  color: #000000;
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -281,7 +281,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6b7280;
+  color: #000000;
   width: 32px;
   height: 32px;
   display: flex;
@@ -302,10 +302,10 @@
 
 .buyerInfo h3 {
   margin: 2rem 0 1rem 0;
-  color: #1f2937;
+  color: #000000;
   font-size: 1.125rem;
   font-weight: 600;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #000000;
   padding-bottom: 0.5rem;
 }
 
@@ -321,13 +321,13 @@
 }
 
 .infoGrid div {
-  color: #374151;
+  color: #000000;
   font-size: 0.875rem;
   line-height: 1.5;
 }
 
 .address {
-  color: #374151;
+  color: #000000;
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -352,7 +352,7 @@
   background: #f9fafb;
   padding: 1rem;
   border-radius: 6px;
-  color: #374151;
+  color: #000000;
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -366,7 +366,7 @@
 
 .statusInfo p {
   margin: 0 0 0.5rem 0;
-  color: #374151;
+  color: #000000;
   font-size: 0.875rem;
 }
 
@@ -376,7 +376,7 @@
 
 .modalActions {
   padding: 1.5rem 2rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #000000;
   display: flex;
   gap: 1rem;
 }
@@ -418,7 +418,7 @@
 .rejectTextarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #000000;
   border-radius: 6px;
   font-size: 0.875rem;
   resize: vertical;
@@ -427,8 +427,8 @@
 
 .rejectTextarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .rejectActions {
@@ -458,8 +458,8 @@
 
 .cancelButton {
   background: white;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  color: #000000;
+  border: 1px solid #000000;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
   font-weight: 600;
@@ -469,7 +469,7 @@
 
 .cancelButton:hover:not(:disabled) {
   background: #f9fafb;
-  border-color: #9ca3af;
+  border-color: #000000;
 }
 
 .approveButton:disabled,

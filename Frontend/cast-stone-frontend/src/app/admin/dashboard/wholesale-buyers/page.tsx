@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { WholesaleBuyer } from '@/services/types/entities';
 import { wholesaleBuyerService } from '@/services';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
+import AdminLayout from '@/components/admin/AdminLayout';
 import styles from './page.module.css';
 
 type FilterStatus = 'all' | 'pending' | 'approved' | 'rejected';
@@ -161,11 +163,13 @@ export default function WholesaleBuyersPage() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>Wholesale Buyers</h1>
-        <p>Manage wholesale buyer applications and approvals</p>
-      </div>
+    <ProtectedRoute>
+      <AdminLayout>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1>Wholesale Buyers</h1>
+            <p>Manage wholesale buyer applications and approvals</p>
+          </div>
 
       {error && (
         <div className={styles.errorBanner}>
@@ -283,7 +287,9 @@ export default function WholesaleBuyersPage() {
           isProcessing={isProcessing}
         />
       )}
-    </div>
+        </div>
+      </AdminLayout>
+    </ProtectedRoute>
   );
 }
 
