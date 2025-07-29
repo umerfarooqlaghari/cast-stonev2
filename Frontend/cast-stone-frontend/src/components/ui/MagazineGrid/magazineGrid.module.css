@@ -1,0 +1,77 @@
+/* Magazine Grid - Professional Layout System */
+.magazineGrid {
+  display: grid;
+  width: 100%;
+}
+
+/* Column Variants */
+.columns1 {
+  grid-template-columns: 1fr;
+}
+
+.columns2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.columns3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.columns4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Gap Variants */
+.gapsmall {
+  gap: 1rem;
+}
+
+.gapmedium {
+  gap: 2rem;
+}
+
+.gaplarge {
+  gap: 3rem;
+}
+
+/* Responsive Behavior */
+@media (max-width: 1200px) {
+  .columns4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .columns3,
+  .columns4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .gapmedium {
+    gap: 1.5rem;
+  }
+  
+  .gaplarge {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .columns2,
+  .columns3,
+  .columns4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .gapsmall {
+    gap: 0.75rem;
+  }
+  
+  .gapmedium {
+    gap: 1rem;
+  }
+  
+  .gaplarge {
+    gap: 1.5rem;
+  }
+}

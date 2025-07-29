@@ -1,13 +1,20 @@
-/* Collection Page - Sharp Rectangular Design */
+/* Magazine-Style Collection Page */
 .collectionPage {
   min-height: 100vh;
   background: #ffffff;
+  color: #1f2937;
+  padding-top: 4.2rem;
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 6rem 2rem 2rem;
+  padding: 0 2rem 2rem;
+}
+
+/* Hero Section Styling */
+.heroSection {
+  background: #fafafa;
 }
 
 /* Loading States */
@@ -44,6 +51,45 @@
 .errorContainer h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
+}
+
+/* Products Section */
+.productsSection {
+  padding: 4rem 0;
+  background: #ffffff;
+}
+
+.productsContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Section Header */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.sectionSubtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Products Grid */
+.productsGrid {
+  margin-top: 2rem;
 }
 
 /* Collection Header */
@@ -150,26 +196,36 @@
 }
 
 .filterToggle {
-  background: #1e40af;
+  background: #1f2937;
   color: white;
-  border: 2px solid #1e40af;
-  padding: 1rem 1.5rem;
+  border: none;
+  padding: 12px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-weight: 600;
   transition: all 0.3s ease;
-  border-radius: 0; /* Sharp corners */
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
 }
 
 .filterToggle:hover {
-  background: white;
-  color: #1e40af;
+  background: #374151;
+  transform: translateY(-1px);
 }
 
 .filterToggle.active {
-  background: #1d4ed8;
+  background: #374151;
+}
+
+.resultsCount {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Advanced Filters */
@@ -376,5 +432,44 @@
   
   .filterToggle {
     padding: 0.75rem 1rem;
+  }
+}
+
+/* Additional Magazine-Style Responsive Design */
+@media (max-width: 1024px) {
+  .sectionTitle {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .productsSection {
+    padding: 3rem 0;
+  }
+
+  .productsContainer {
+    padding: 0 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .productsSection {
+    padding: 2rem 0;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 0.95rem;
   }
 }

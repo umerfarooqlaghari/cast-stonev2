@@ -6,7 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
-import { ProductGrid } from '@/components/products';
+import { MagazineProductGrid } from '@/components/products';
+import { MagazineSection } from '@/components/ui';
 import styles from './collectionPage.module.css';
 
 interface FilterState {
@@ -157,43 +158,66 @@ export default function CollectionPage() {
 
   return (
     <div className={styles.collectionPage}>
-      <div className={styles.container}>
-        {/* Collection Header */}
-        <div className={styles.collectionHeader}>
-          <div className={styles.headerContent}>
-            <h1 className={styles.collectionTitle}>{collection.name}</h1>
-            <div className={styles.collectionMeta}>
-            </div>
-          </div>
-        </div>
+      {/* Hero Section */}
+      <MagazineSection
+        title={collection.name}
+        subtitle="Collection"
+        description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+        imageSrc={collection.images && collection.images.length > 0
+          ? collection.images[0]
+          : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
+        imageAlt={collection.name}
+        imagePosition="left"
+        badge={`${filteredProducts.length} Products`}
+        className={styles.heroSection}
+      />
 
-        {/* Search and Filter Bar */}
-        <div className={styles.filterSection}>
-          <div className={styles.searchBar}>
-            <div className={styles.searchInput}>
-              <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-                <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={filters.search}
-                onChange={(e) => handleFilterChange({ search: e.target.value })}
-                className={styles.searchField}
-              />
+      <div className={styles.container}>
+
+        {/* Products Section */}
+        <section className={styles.productsSection}>
+          <div className={styles.productsContainer}>
+            {/* Section Header with Search and Filters */}
+            <div className={styles.sectionHeader}>
+              <div className={styles.headerContent}>
+                <h2 className={styles.sectionTitle}>Products in this Collection</h2>
+                <p className={styles.sectionSubtitle}>
+                  Explore all the beautiful pieces in the {collection.name} collection
+                </p>
+              </div>
             </div>
-            
-            <button
-              className={`${styles.filterToggle} ${showFilters ? styles.active : ''}`}
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Filters
-            </button>
-          </div>
+
+            {/* Search and Filter Bar */}
+            <div className={styles.filterSection}>
+              <div className={styles.searchBar}>
+                <div className={styles.searchInput}>
+                  <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange({ search: e.target.value })}
+                    className={styles.searchField}
+                  />
+                </div>
+
+                <button
+                  className={`${styles.filterToggle} ${showFilters ? styles.active : ''}`}
+                  onClick={() => setShowFilters(!showFilters)}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Filters
+                </button>
+
+                <div className={styles.resultsCount}>
+                  {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+                </div>
+              </div>
 
           {/* Advanced Filters */}
           {showFilters && (
@@ -277,21 +301,24 @@ export default function CollectionPage() {
           )}
         </div>
 
-        {/* Products Grid */}
-        <div className={styles.productsSection}>
-          <ProductGrid
-            products={filteredProducts}
-            isLoading={isLoading}
-            showAddToCart={true}
-            showViewDetails={true}
-            emptyMessage={
-              filters.search || filters.inStockOnly || 
-              filters.priceRange.min > 0 || filters.priceRange.max < 10000
-                ? "No products match your current filters. Try adjusting your search criteria."
-                : "This collection doesn't have any products yet."
-            }
-          />
-        </div>
+            {/* Products Grid */}
+            <div className={styles.productsGrid}>
+              <MagazineProductGrid
+                products={filteredProducts}
+                isLoading={isLoading}
+                showAddToCart={true}
+                showViewDetails={true}
+                columns={3}
+                emptyMessage={
+                  filters.search || filters.inStockOnly ||
+                  filters.priceRange.min > 0 || filters.priceRange.max < 10000
+                    ? "No products match your current filters. Try adjusting your search criteria."
+                    : "This collection doesn&apos;t have any products yet."
+                }
+              />
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

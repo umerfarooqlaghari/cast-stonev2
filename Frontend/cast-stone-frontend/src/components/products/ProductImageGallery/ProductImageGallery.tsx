@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
 import styles from './productImageGallery.module.css';
 
 interface ProductImageGalleryProps {
@@ -16,12 +17,15 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Use placeholder if no images provided
-  const galleryImages = images.length > 0 
-    ? images 
-    : ['/images/placeholder-product.jpg'];
+  // Use placeholder if no images provided and optimize images for gallery
+  const galleryImages = images.length > 0
+    ? images.map(img => getOptimizedImageUrl(img, 'gallery'))
+    : [getFallbackImageUrl('product')];
 
   const currentImage = galleryImages[selectedImageIndex];
+  const currentImageFull = images.length > 0
+    ? getOptimizedImageUrl(images[selectedImageIndex], 'full')
+    : getFallbackImageUrl('product');
 
   const handleThumbnailClick = (index: number) => {
     setSelectedImageIndex(index);
@@ -51,10 +55,14 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
       {/* Main Image Display */}
       <div className={styles.mainImageContainer}>
         <img
-          src={currentImage}
+          src={isZoomed ? currentImageFull : currentImage}
           alt={`${productName} - Image ${selectedImageIndex + 1}`}
           className={`${styles.mainImage} ${isZoomed ? styles.zoomed : ''}`}
           onClick={handleMainImageClick}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getFallbackImageUrl('product');
+          }}
         />
         
         {/* Navigation Arrows */}
@@ -127,9 +135,13 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
                 aria-label={`View image ${index + 1}`}
               >
                 <img
-                  src={image}
+                  src={getOptimizedImageUrl(images[index] || image, 'thumbnail')}
                   alt={`${productName} thumbnail ${index + 1}`}
                   className={styles.thumbnailImage}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = getFallbackImageUrl('product');
+                  }}
                 />
               </button>
             ))}

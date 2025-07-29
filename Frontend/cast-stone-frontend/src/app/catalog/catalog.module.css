@@ -1,149 +1,198 @@
+/* Magazine-Style Catalog Page */
 .container {
   min-height: 100vh;
-  background: #1a1a2e;
-  color: white;
-  padding: 8rem 1rem 2rem;
-  margin-top: 4.2rem;
+  background: #ffffff;
+  color: #1f2937;
+  padding-top: 4.2rem;
 }
 
-.header {
+/* Hero Section Styling */
+.heroSection {
+  background: #fafafa;
+}
+
+/* Catalog Navigation Section */
+.catalogNavigation {
+  padding: 4rem 0;
+  background: #ffffff;
+}
+
+.navigationContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.navigationHeader {
   text-align: center;
   margin-bottom: 3rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.title {
-  font-size: 3rem;
+.navigationTitle {
+  font-size: 2.5rem;
   font-weight: 700;
+  color: #1f2937;
   margin-bottom: 1rem;
-  color: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  color: #b0b0b0;
+.navigationSubtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
   line-height: 1.6;
-}
-
-.content {
-  max-width: 1200px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.catalogOptions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
+.navigationGrid {
+  margin-top: 3rem;
 }
 
-.catalogCard {
-  background: #2a2a3e;
-  padding: 3rem 2rem;
-  border-radius: 16px;
-  border: 2px solid #3a3a4e;
-  text-decoration: none;
-  color: inherit;
+/* Features Section Styling */
+.featuresSection {
+  background: #f9fafb;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
-  text-align: center;
 }
 
-.catalogCard:hover {
-  transform: translateY(-5px);
-  border-color: #4a90e2;
-  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.2);
+.featureItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.cardIcon {
-  color: #4a90e2;
-  margin-bottom: 1.5rem;
+.featureIcon {
+  width: 48px;
+  height: 48px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.catalogCard h3 {
-  font-size: 1.8rem;
+.featureIcon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #374151;
+  stroke-width: 2;
+}
+
+.featureItem h4 {
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: white;
-}
-
-.catalogCard p {
-  color: #b0b0b0;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.cardAction {
-  color: #4a90e2;
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.features {
-  background: #2a2a3e;
-  padding: 3rem 2rem;
-  border-radius: 16px;
-  border: 2px solid #3a3a4e;
-}
-
-.features h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: white;
-}
-
-.featureGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.feature {
-  background: #3a3a4e;
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid #4a4a5e;
-}
-
-.feature h4 {
-  font-size: 1.3rem;
-  font-weight: 600;
+  color: #1f2937;
   margin-bottom: 0.5rem;
-  color: #4a90e2;
 }
 
-.feature p {
-  color: #b0b0b0;
+.featureItem p {
+  font-size: 0.95rem;
+  color: #6b7280;
   line-height: 1.5;
+  margin: 0;
+}
+
+/* CTA Section Styling */
+.ctaSection {
+  background: #1f2937;
+  color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .navigationTitle {
+    font-size: 2.25rem;
+  }
+
+  .featuresList {
+    gap: 1.25rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .title {
+  .container {
+    padding-top: 3rem;
+  }
+
+  .catalogNavigation {
+    padding: 3rem 0;
+  }
+
+  .navigationContainer {
+    padding: 0 1rem;
+  }
+
+  .navigationTitle {
     font-size: 2rem;
   }
-  
-  .catalogOptions {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+
+  .navigationSubtitle {
+    font-size: 1rem;
   }
-  
-  .featureGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+
+  .featuresList {
+    gap: 1rem;
   }
-  
-  .container {
+
+  .featureItem {
+    padding: 1.25rem;
+  }
+
+  .featureIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .featureIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .featureItem h4 {
+    font-size: 1rem;
+  }
+
+  .featureItem p {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalogNavigation {
+    padding: 2rem 0;
+  }
+
+  .navigationTitle {
+    font-size: 1.75rem;
+  }
+
+  .navigationSubtitle {
+    font-size: 0.95rem;
+  }
+
+  .featureItem {
+    flex-direction: column;
+    text-align: center;
     padding: 1rem;
   }
-  
-  .catalogCard {
-    padding: 2rem 1rem;
-  }
-  
-  .features {
-    padding: 2rem 1rem;
+
+  .featureIcon {
+    margin: 0 auto 1rem;
   }
 }

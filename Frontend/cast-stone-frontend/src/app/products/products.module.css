@@ -1,13 +1,30 @@
-/* Products Page Styles - Blue and White Theme */
+/* Magazine-Style Products Page */
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 6rem 1rem 2rem;
-  min-height: 80vh;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #1f2937;
+  padding-top: 4.2rem;
 }
 
-/* Header */
-.header {
+/* Hero Section Styling */
+.heroSection {
+  background: #fafafa;
+}
+
+/* Products Section */
+.productsSection {
+  padding: 4rem 0;
+  background: #ffffff;
+}
+
+.productsContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Section Header */
+.sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -20,17 +37,18 @@
   flex: 1;
 }
 
-.title {
+.sectionTitle {
   color: #1f2937;
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.subtitle {
-  color: #4b5563;
-  font-size: 1.1rem;
+.sectionSubtitle {
+  color: #6b7280;
+  font-size: 1.125rem;
   margin: 0;
   line-height: 1.5;
 }
@@ -46,17 +64,21 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #2563eb;
+  background: #1f2937;
   color: white;
   border: none;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
 }
 
 .filterToggle:hover {
-  background: #1d4ed8;
+  background: #374151;
+  transform: translateY(-1px);
 }
 
 .filterIcon {
@@ -66,7 +88,7 @@
 }
 
 .resultsCount {
-  color: #4b5563;
+  color: #6b7280;
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
@@ -77,6 +99,11 @@
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 3rem;
+}
+
+/* Products Grid */
+.productsGrid {
+  margin-top: 2rem;
 }
 
 /* Filters Sidebar */
@@ -181,9 +208,15 @@
   accent-color: #2563eb;
 }
 
-/* Products Section */
-.productsSection {
-  min-width: 0; /* Allow content to shrink */
+/* Filters Sidebar - Updated for Magazine Style */
+.filtersSidebar {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
 }
 
 /* Mobile Filters */
@@ -209,12 +242,26 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .sectionTitle {
+    font-size: 2.25rem;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding-top: 3rem;
   }
 
-  .header {
+  .productsSection {
+    padding: 3rem 0;
+  }
+
+  .productsContainer {
+    padding: 0 1rem;
+  }
+
+  .sectionHeader {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
@@ -225,11 +272,11 @@
     justify-content: space-between;
   }
 
-  .title {
+  .sectionTitle {
     font-size: 2rem;
   }
 
-  .subtitle {
+  .sectionSubtitle {
     font-size: 1rem;
   }
 
@@ -243,12 +290,16 @@
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 0.5rem;
+  .productsSection {
+    padding: 2rem 0;
   }
 
-  .title {
+  .sectionTitle {
     font-size: 1.75rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 0.95rem;
   }
 
   .headerActions {

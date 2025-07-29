@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
@@ -6,7 +5,8 @@
 import React, { useState, useEffect } from 'react';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
-import { ProductGrid } from '@/components/products';
+import { MagazineProductGrid } from '@/components/products';
+import { MagazineSection } from '@/components/ui';
 import styles from './products.module.css';
 
 interface FilterState {
@@ -140,42 +140,50 @@ export default function ProductsPage() {
     });
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(price);
-  };
-
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1 className={styles.title}>Our Products</h1>
-          <p className={styles.subtitle}>
-            Discover our exquisite collection of handcrafted cast stone pieces
-          </p>
-        </div>
-        
-        <div className={styles.headerActions}>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={styles.filterToggle}
-          >
-            <svg className={styles.filterIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
-            </svg>
-            Filters
-          </button>
-          
-          <div className={styles.resultsCount}>
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
-          </div>
-        </div>
-      </div>
+      {/* Hero Section */}
+      <MagazineSection
+        title="Our Products"
+        subtitle="Handcrafted Cast Stone Collection"
+        description="Discover our exquisite collection of handcrafted cast stone pieces. Each product is meticulously crafted with attention to detail, bringing timeless elegance and durability to your space."
+        imageSrc="https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=1200&h=600&fit=crop&crop=center"
+        imageAlt="Beautiful cast stone products showcase"
+        imagePosition="right"
+        badge={`${filteredProducts.length} Products`}
+        className={styles.heroSection}
+      />
 
-      <div className={styles.content}>
+      {/* Products Section */}
+      <section className={styles.productsSection}>
+        <div className={styles.productsContainer}>
+          {/* Section Header with Filters */}
+          <div className={styles.sectionHeader}>
+            <div className={styles.headerContent}>
+              <h2 className={styles.sectionTitle}>Browse Products</h2>
+              <p className={styles.sectionSubtitle}>
+                Find the perfect cast stone pieces for your project
+              </p>
+            </div>
+
+            <div className={styles.headerActions}>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={styles.filterToggle}
+              >
+                <svg className={styles.filterIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
+                </svg>
+                Filters
+              </button>
+
+              <div className={styles.resultsCount}>
+                {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.content}>
         {/* Filters Sidebar */}
         <div className={`${styles.filtersSidebar} ${showFilters ? styles.showFilters : ''}`}>
           <div className={styles.filtersHeader}>
@@ -270,14 +278,17 @@ export default function ProductsPage() {
         </div>
 
         {/* Products Grid */}
-        <div className={styles.productsSection}>
-          <ProductGrid
+        <div className={styles.productsGrid}>
+          <MagazineProductGrid
             products={filteredProducts}
             isLoading={isLoading}
             emptyMessage="No products match your current filters. Try adjusting your search criteria."
+            columns={3}
           />
         </div>
       </div>
+    </div>
+    </section>
     </div>
   );
 }

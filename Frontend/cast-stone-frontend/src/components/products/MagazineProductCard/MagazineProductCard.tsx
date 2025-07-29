@@ -8,18 +8,22 @@ import { Product } from '@/services/types/entities';
 import { useCart } from '@/contexts/CartContext';
 import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
 import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
-import styles from './productCard.module.css';
+import styles from './magazineProductCard.module.css';
 
-interface ProductCardProps {
+interface MagazineProductCardProps {
   product: Product;
   showAddToCart?: boolean;
   showViewDetails?: boolean;
+  variant?: 'default' | 'featured' | 'compact';
+  imagePosition?: 'top' | 'left' | 'right';
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
   product,
   showAddToCart = true,
   showViewDetails = true,
+  variant = 'default',
+  imagePosition = 'top'
 }) => {
   const { addToCart, state } = useCart();
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
@@ -36,10 +40,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     try {
       setIsAddingToCart(true);
       await addToCart(product.id, quantity);
-      // You could add a toast notification here
     } catch (error) {
       console.error('Error adding to cart:', error);
-      // You could add error notification here
     } finally {
       setIsAddingToCart(false);
     }
@@ -59,8 +61,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const showWholesaleLabel = isApprovedWholesaleBuyer && product.wholeSalePrice;
 
-
-
   // Get optimized image URL for card display
   const mainImage = product.images && product.images.length > 0
     ? getOptimizedImageUrl(product.images[0], 'card')
@@ -68,34 +68,43 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const isInStock = product.stock > 0;
 
+  const cardClass = `${styles.productCard} ${styles[variant]} ${styles[imagePosition]}`;
+
   return (
-    <div className={styles.productCard}>
+    <div className={cardClass}>
       {/* Product Image */}
       <div className={styles.imageContainer}>
         <img
           src={mainImage}
           alt={product.name}
           className={styles.productImage}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = getFallbackImageUrl('product');
-          }}
         />
         {!isInStock && (
           <div className={styles.outOfStockOverlay}>
             <span>Out of Stock</span>
           </div>
         )}
+        {showWholesaleLabel && (
+          <div className={styles.wholesaleBadge}>
+            Wholesale
+          </div>
+        )}
+        <div className={styles.imageOverlay}></div>
       </div>
 
       {/* Product Info */}
       <div className={styles.productInfo}>
-        <h3 className={styles.productName}>{product.name}</h3>
+        <div className={styles.productHeader}>
+          {product.collection && (
+            <span className={styles.collection}>{product.collection.name}</span>
+          )}
+          <h3 className={styles.productName}>{product.name}</h3>
+        </div>
         
         {product.description && (
           <p className={styles.productDescription}>
-            {product.description.length > 100 
-              ? `${product.description.substring(0, 100)}...` 
+            {product.description.length > 120 
+              ? `${product.description.substring(0, 120)}...` 
               : product.description}
           </p>
         )}
@@ -103,18 +112,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className={styles.priceContainer}>
           <div className={styles.priceSection}>
             <span className={styles.price}>{formatPrice(displayPrice)}</span>
-            {showWholesaleLabel && (
-              <span className={styles.wholesaleLabel}>Wholesale Price</span>
-            )}
             {isApprovedWholesaleBuyer && product.wholeSalePrice && (
               <span className={styles.retailPrice}>
                 Retail: {formatPrice(product.price)}
               </span>
             )}
           </div>
-          {product.collection && (
-            <span className={styles.collection}>{product.collection.name}</span>
-          )}
         </div>
 
         {/* Stock Info */}
@@ -182,4 +185,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-export default ProductCard;
+export default MagazineProductCard;
