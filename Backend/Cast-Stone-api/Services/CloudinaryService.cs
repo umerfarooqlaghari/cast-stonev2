@@ -25,7 +25,7 @@ public class CloudinaryService
             // Folder = "cast-stone-images" // Unified folder for all images
 
         File = new FileDescription(file.FileName, stream),
-        Folder = "cast-stone-images", 
+        Folder = "cast-stone-images",
         UseFilename = true,            
         UniqueFilename = false,        
         Overwrite = false  
@@ -77,7 +77,7 @@ public class CloudinaryService
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
-                    Folder = "cast-stone-images" // Unified folder for all images
+                    Folder = "cast-stone-images", // Unified folder for all images
                     UseFilename = true,            
                     UniqueFilename = false,        
                     Overwrite = false  
