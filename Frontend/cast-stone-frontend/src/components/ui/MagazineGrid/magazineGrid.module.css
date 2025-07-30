@@ -2,6 +2,7 @@
 .magazineGrid {
   display: grid;
   width: 100%;
+  align-items: stretch;
 }
 
 /* Column Variants */

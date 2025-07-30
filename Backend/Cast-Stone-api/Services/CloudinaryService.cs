@@ -20,9 +20,15 @@ public class CloudinaryService
         await using var stream = file.OpenReadStream();
         var uploadParams = new ImageUploadParams
         {
-            File = new FileDescription(file.FileName, stream),
-            PublicId = Guid.NewGuid().ToString(), // Unique ID
-            Folder = "cast-stone-images" // Unified folder for all images
+            // File = new FileDescription(file.FileName, stream),
+            // PublicId = Guid.NewGuid().ToString(), // Unique ID
+            // Folder = "cast-stone-images" // Unified folder for all images
+
+        File = new FileDescription(file.FileName, stream),
+        Folder = "cast-stone-images", 
+        UseFilename = true,            
+        UniqueFilename = false,        
+        Overwrite = false  
         };
 
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
