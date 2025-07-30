@@ -78,9 +78,9 @@ public class CloudinaryService
                 {
                     File = new FileDescription(file.FileName, stream),
                     Folder = "cast-stone-images" // Unified folder for all images
+                    UseFilename = true,            
                     UniqueFilename = false,        
                     Overwrite = false  
-                    UseFilename = true,            
 
                 };
 
