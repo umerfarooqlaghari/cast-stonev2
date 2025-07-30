@@ -64,6 +64,49 @@ public class CloudinaryService
 
         return deleteResult.Result == "ok";
     }
+
+    public async Task<List<BulkUploadResult>> UploadImagesAsync(IFormFileCollection files)
+    {
+        var results = new List<BulkUploadResult>();
+
+        foreach (var file in files)
+        {
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    PublicId = Guid.NewGuid().ToString(), // Unique ID
+                    Folder = "cast-stone-images" // Unified folder for all images
+                };
+
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+                results.Add(new BulkUploadResult
+                {
+                    FileName = file.FileName,
+                    SecureUrl = uploadResult.SecureUrl.ToString(),
+                    PublicId = uploadResult.PublicId,
+                    Success = true,
+                    ErrorMessage = null
+                });
+            }
+            catch (Exception ex)
+            {
+                results.Add(new BulkUploadResult
+                {
+                    FileName = file.FileName,
+                    SecureUrl = null,
+                    PublicId = null,
+                    Success = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        return results;
+    }
 }
 
 public class CloudinaryImageInfo
@@ -72,4 +115,13 @@ public class CloudinaryImageInfo
     public string SecureUrl { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+}
+
+public class BulkUploadResult
+{
+    public string FileName { get; set; } = string.Empty;
+    public string? SecureUrl { get; set; }
+    public string? PublicId { get; set; }
+    public bool Success { get; set; }
+    public string? ErrorMessage { get; set; }
 }

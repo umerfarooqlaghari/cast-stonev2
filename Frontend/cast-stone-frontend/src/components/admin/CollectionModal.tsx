@@ -20,6 +20,8 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   const [allCollections, setAllCollections] = useState<Collection[]>([]);
   const [uploadedImages, setUploadedImages] = useState<CloudinaryImageInfo[]>([]);
   const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string>('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -197,6 +199,73 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         ...prev,
         images: [...prev.images, imageUrl]
       }));
+    }
+  };
+
+  const handleDirectImageUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    setUploadProgress('Validating files...');
+
+    try {
+      // Validate files first
+      const validation = cloudinaryService.validateImageFiles(files);
+      if (!validation.isValid) {
+        setErrors(prev => ({
+          ...prev,
+          directUpload: validation.errors.join(', ')
+        }));
+        return;
+      }
+
+      setUploadProgress('Uploading images...');
+
+      // Upload files
+      const result = await cloudinaryService.uploadImages(files);
+
+      // Add successful uploads to the form
+      const successfulUploads = result.results
+        .filter(r => r.success && r.secureUrl)
+        .map(r => r.secureUrl!);
+
+      if (successfulUploads.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, ...successfulUploads]
+        }));
+
+        // Refresh the uploaded images list
+        await fetchUploadedImages();
+      }
+
+      // Show results
+      if (result.summary.failureCount > 0) {
+        const failedFiles = result.results
+          .filter(r => !r.success)
+          .map(r => `${r.fileName}: ${r.errorMessage}`)
+          .join(', ');
+        setErrors(prev => ({
+          ...prev,
+          directUpload: `Some uploads failed: ${failedFiles}`
+        }));
+      } else {
+        setErrors(prev => ({ ...prev, directUpload: '' }));
+      }
+
+      setUploadProgress(`Upload complete: ${result.summary.successCount} successful, ${result.summary.failureCount} failed`);
+
+      // Clear progress after 3 seconds
+      setTimeout(() => setUploadProgress(''), 3000);
+
+    } catch (error) {
+      console.error('Upload error:', error);
+      setErrors(prev => ({
+        ...prev,
+        directUpload: error instanceof Error ? error.message : 'Upload failed'
+      }));
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -529,6 +598,42 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               <p className="mt-1 text-xs text-gray-500">
                 Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Images section</a>
               </p>
+            </div>
+
+            {/* Direct Image Upload */}
+            <div className="border-t pt-4">
+              <label className="block text-sm font-medium text-gray-600 mb-2">
+                Or upload new images directly:
+              </label>
+              <div className="space-y-3">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => handleDirectImageUpload(e.target.files)}
+                  disabled={isUploading}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 disabled:opacity-50"
+                />
+
+                {isUploading && (
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-amber-600"></div>
+                    <span className="text-sm text-gray-600">{uploadProgress}</span>
+                  </div>
+                )}
+
+                {uploadProgress && !isUploading && (
+                  <p className="text-sm text-green-600">{uploadProgress}</p>
+                )}
+
+                {errors.directUpload && (
+                  <p className="text-sm text-red-600">{errors.directUpload}</p>
+                )}
+
+                <p className="text-xs text-gray-500">
+                  Select multiple images to upload them directly to this collection. Supported formats: JPEG, PNG, GIF, WebP (max 10MB each)
+                </p>
+              </div>
             </div>
           </div>
 

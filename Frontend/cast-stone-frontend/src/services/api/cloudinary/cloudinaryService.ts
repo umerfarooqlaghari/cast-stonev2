@@ -21,6 +21,24 @@ export interface DeleteResponse {
   message: string;
 }
 
+export interface BulkUploadResult {
+  fileName: string;
+  secureUrl: string | null;
+  publicId: string | null;
+  success: boolean;
+  errorMessage: string | null;
+}
+
+export interface BulkUploadResponse {
+  results: BulkUploadResult[];
+  summary: {
+    totalFiles: number;
+    successCount: number;
+    failureCount: number;
+  };
+  message: string;
+}
+
 class CloudinaryService {
   private baseUrl = `${BaseApiUrl}/cloudinary`;
 
@@ -81,7 +99,7 @@ class CloudinaryService {
     try {
       // Encode the publicId to handle special characters
       const encodedPublicId = encodeURIComponent(publicId);
-      
+
       const response = await fetch(`${this.baseUrl}/images/${encodedPublicId}`, {
         method: 'DELETE',
         headers: {
@@ -97,6 +115,36 @@ class CloudinaryService {
       return await response.json();
     } catch (error) {
       console.error('Error deleting image:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Upload multiple image files to Cloudinary
+   */
+  async uploadImages(files: FileList | File[]): Promise<BulkUploadResponse> {
+    const formData = new FormData();
+
+    // Convert FileList to array if needed and append each file
+    const fileArray = Array.from(files);
+    fileArray.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    try {
+      const response = await fetch(`${this.baseUrl}/uploadImages`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload images');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error uploading images:', error);
       throw error;
     }
   }
@@ -132,6 +180,26 @@ class CloudinaryService {
     }
 
     return { isValid: true };
+  }
+
+  /**
+   * Validate multiple image files before upload
+   */
+  validateImageFiles(files: FileList | File[]): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    const fileArray = Array.from(files);
+
+    fileArray.forEach((file, index) => {
+      const validation = this.validateImageFile(file);
+      if (!validation.isValid) {
+        errors.push(`File ${index + 1} (${file.name}): ${validation.error}`);
+      }
+    });
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
   }
 }
 
