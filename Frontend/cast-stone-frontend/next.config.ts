@@ -2,9 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Disable Turbopack to avoid runtime issues
-  experimental: {
-    turbo: false,
-  },
+  // experimental: {
+  //   turbo: false,
+  // },
   // Image optimization configuration
   images: {
     domains: [
