@@ -18,12 +18,14 @@ interface HeaderProps {
 
 
 const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
-  
+
   const { getCartSummary } = useCart();
   const [collections, setCollections] = useState<CollectionHierarchy[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileActiveDropdown, setMobileActiveDropdown] = useState<string | null>(null);
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const pathname = usePathname();
 
@@ -46,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   // Discover dropdown items
   const discoverItems: DropdownItem[] = [
-    { label: 'Catalog', href: '/catalog' },
+    // { label: 'Catalog', href: '/catalog' },
     { label: 'Finishes', href: '/finishes' },
     { label: 'Videos', href: '/videos' },
     { label: 'Technical Info', href: '/technical-info' },
@@ -87,6 +89,15 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
 
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setMobileActiveDropdown(null); // Reset mobile dropdowns when closing menu
+  };
+
+  const handleMobileDropdownToggle = (dropdownName: string) => {
+    setMobileActiveDropdown(mobileActiveDropdown === dropdownName ? null : dropdownName);
+  };
+
   // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -104,6 +115,20 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isMobileMenuOpen]);
+
   // Convert collections to dropdown items
   const collectionsToDropdownItems = (collections: CollectionHierarchy[]): DropdownItem[] => {
     return collections.map(collection => ({
@@ -114,6 +139,18 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
         : undefined
     }));
   };
+
+  useEffect(() => {
+  if (isMobileMenuOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+
+  return () => {
+    document.body.style.overflow = 'auto'; // Reset on unmount
+  };
+}, [isMobileMenuOpen]);
 
   const collectionItems = collectionsToDropdownItems(collections);
 
@@ -304,8 +341,142 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
             </div>
           </Link>
         </div>
+
+        {/* Mobile Menu Hamburger Icon */}
+        <button
+          className={styles.mobileMenuButton}
+          onClick={handleMobileMenuToggle}
+          aria-label="Toggle mobile menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <div className={`${styles.hamburgerIcon} ${isMobileMenuOpen ? styles.open : ''}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className={styles.mobileMenuOverlay} onClick={() => setIsMobileMenuOpen(false)}>
+          <div className={styles.mobileMenuContent} onClick={(e) => e.stopPropagation()}>
+            <nav className={styles.mobileNav}>
+              <ul className={styles.mobileNavList}>
+                {/* Company Section */}
+                <li className={styles.mobileNavItem}>
+                  <button
+                    className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'company' ? styles.active : ''}`}
+                    onClick={() => handleMobileDropdownToggle('company')}
+                  >
+                    Company
+                    <span className={`${styles.mobileDropdownIcon} ${mobileActiveDropdown === 'company' ? styles.rotated : ''}`}>
+                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                        <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  {mobileActiveDropdown === 'company' && (
+                    <ul className={styles.mobileSubMenu}>
+                      {companyItems.map((item, index) => (
+                        <li key={index} className={styles.mobileSubMenuItem}>
+                          <Link href={item.href} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+
+                {/* Collections Section */}
+                <li className={styles.mobileNavItem}>
+                  <button
+                    className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'collections' ? styles.active : ''}`}
+                    onClick={() => handleMobileDropdownToggle('collections')}
+                  >
+                    Collections
+                    <span className={`${styles.mobileDropdownIcon} ${mobileActiveDropdown === 'collections' ? styles.rotated : ''}`}>
+                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                        <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  {mobileActiveDropdown === 'collections' && (
+                    <ul className={styles.mobileSubMenu}>
+                      <li className={styles.mobileSubMenuItem}>
+                        <Link href="/collections" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                          All Collections
+                        </Link>
+                      </li>
+                      {collections.map((collection) => (
+                        <li key={collection.id} className={styles.mobileSubMenuItem}>
+                          <Link href={`/collections/${collection.id}`} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                            {collection.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+
+                {/* Products Section */}
+                <li className={styles.mobileNavItem}>
+                  <Link href="/products" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+                    Products
+                  </Link>
+                </li>
+
+                {/* Completed Projects Section */}
+                <li className={styles.mobileNavItem}>
+                  <Link href="/completed-projects" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+                    Completed Projects
+                  </Link>
+                </li>
+
+                {/* Discover Section */}
+                <li className={styles.mobileNavItem}>
+                  <button
+                    className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'discover' ? styles.active : ''}`}
+                    onClick={() => handleMobileDropdownToggle('discover')}
+                  >
+                    Discover
+                    <span className={`${styles.mobileDropdownIcon} ${mobileActiveDropdown === 'discover' ? styles.rotated : ''}`}>
+                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                        <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  {mobileActiveDropdown === 'discover' && (
+                    <ul className={styles.mobileSubMenu}>
+                      {discoverItems.map((item, index) => (
+                        <li key={index} className={styles.mobileSubMenuItem}>
+                          <Link href={item.href} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                      <li className={styles.mobileSubMenuItem}>
+                        <Link href="/about" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                          About
+                        </Link>
+                      </li>
+                      <li className={styles.mobileSubMenuItem}>
+                        <Link href="/contact" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                          Contact
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
+
+    
   );
 };
 

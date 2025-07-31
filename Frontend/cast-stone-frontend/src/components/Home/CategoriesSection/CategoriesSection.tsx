@@ -134,10 +134,10 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
 
                 <div className={styles.cardContent}>
                   <div className={styles.cardHeader}>
-                    <div className={styles.stats}>
+                    {/* <div className={styles.stats}>
                       <span className={styles.statsNumber}>{collection.productCount || 0}</span>
                       <span className={styles.statsLabel}>Products</span>
-                    </div>
+                    </div> */}
                     <h3 className={styles.categoryTitle}>{collection.name}</h3>
                     <p className={styles.categorySubtitle}>
                       {collection.tags && collection.tags.length > 0

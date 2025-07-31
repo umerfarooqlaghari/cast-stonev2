@@ -150,9 +150,9 @@ const CollectionsCarousel: React.FC<CollectionsCarouselProps> = ({
                   )}
 
                   <div className={styles.cardContent}>
-                    <div className={styles.productCount}>
+                    {/* <div className={styles.productCount}>
                       {collection.productCount} Products
-                    </div>
+                    </div> */}
                     <h3 className={styles.collectionName}>{collection.name}</h3>
                     {collection.description && (
                       <p className={styles.collectionDescription}>
