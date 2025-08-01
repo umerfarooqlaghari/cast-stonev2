@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { collectionGetService } from '../../../services/api/collections';
-import { CollectionHierarchy } from '../../../services/types/entities';
+import { Collection } from '../../../services/types/entities';
 import styles from './collectionsCarousel.module.css';
 
 interface CollectionsCarouselProps {
@@ -16,7 +16,7 @@ const CollectionsCarousel: React.FC<CollectionsCarouselProps> = ({
   title = "Featured Collections",
   subtitle = "Explore our curated selection of handcrafted cast stone collections"
 }) => {
-  const [collections, setCollections] = useState<CollectionHierarchy[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -26,8 +26,11 @@ const CollectionsCarousel: React.FC<CollectionsCarouselProps> = ({
       try {
         setIsLoading(true);
         setError(null);
-        const hierarchyData = await collectionGetService.getHierarchy();
-        setCollections(hierarchyData);
+        // Use getPublished() to get all published collections
+        const publishedData = await (await collectionGetService.getPublished())
+          .filter(collection => collection.level === 1)
+          .slice(0, 4).filter(collection => collection.level === 1);
+        setCollections(publishedData);
       } catch (err) {
         console.error('Failed to fetch collections:', err);
         setError('Failed to load collections');

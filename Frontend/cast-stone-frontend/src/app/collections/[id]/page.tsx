@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
-import { MagazineSection } from '@/components/ui';
+import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
 import styles from './collectionPage.module.css';
 
 interface FilterState {
@@ -26,6 +26,7 @@ export default function CollectionPage() {
   const collectionId = parseInt(params.id as string);
 
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [childCollections, setChildCollections] = useState<Collection[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,23 +56,32 @@ export default function CollectionPage() {
       setIsLoading(true);
       setError(null);
 
-      const [collectionData, productsData] = await Promise.all([
-        collectionService.get.getById(collectionId),
-        productService.get.getByCollection(collectionId)
-      ]);
-
+      // Get collection data first
+      const collectionData = await collectionService.get.getById(collectionId);
       setCollection(collectionData);
-      setProducts(productsData);
-      
-      // Set initial price range based on actual products
-      if (productsData.length > 0) {
-        const prices = productsData.map(p => p.price);
-        const minPrice = Math.min(...prices);
-        const maxPrice = Math.max(...prices);
-        setFilters(prev => ({
-          ...prev,
-          priceRange: { min: minPrice, max: maxPrice }
-        }));
+
+      // Based on collection level, fetch appropriate data
+      if (collectionData.level === 3) {
+        // Level 3: Show products
+        const productsData = await productService.get.getByCollection(collectionId);
+        setProducts(productsData);
+        setChildCollections([]);
+
+        // Set initial price range based on actual products
+        if (productsData.length > 0) {
+          const prices = productsData.map(p => p.price);
+          const minPrice = Math.min(...prices);
+          const maxPrice = Math.max(...prices);
+          setFilters(prev => ({
+            ...prev,
+            priceRange: { min: minPrice, max: maxPrice }
+          }));
+        }
+      } else {
+        // Level 1 or 2: Show child collections
+        const childCollectionsData = await collectionService.get.getChildren(collectionId);
+        setChildCollections(childCollectionsData);
+        setProducts([]);
       }
     } catch (err) {
       console.error('Error fetching collection data:', err);
@@ -161,31 +171,32 @@ export default function CollectionPage() {
       {/* Hero Section */}
       <MagazineSection
         title={collection.name}
-        subtitle="Collection"
+        subtitle={collection.level === 1 ? "Main Collection" : collection.level === 2 ? "Category" : "Subcategory"}
         description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
         imageSrc={collection.images && collection.images.length > 0
           ? collection.images[0]
           : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
         imageAlt={collection.name}
         imagePosition="left"
-        badge={`${filteredProducts.length} Products`}
+        badge={collection.level === 3 ? `${filteredProducts.length} Products` : `${childCollections.length} ${collection.level === 1 ? 'Categories' : 'Subcategories'}`}
         className={styles.heroSection}
       />
 
       <div className={styles.container}>
-
-        {/* Products Section */}
-        <section className={styles.productsSection}>
-          <div className={styles.productsContainer}>
-            {/* Section Header with Search and Filters */}
-            <div className={styles.sectionHeader}>
-              <div className={styles.headerContent}>
-                <h2 className={styles.sectionTitle}>Products in this Collection</h2>
-                <p className={styles.sectionSubtitle}>
-                  Explore all the beautiful pieces in the {collection.name} collection
-                </p>
+        {/* Conditional Content Based on Collection Level */}
+        {collection.level === 3 ? (
+          /* Level 3: Show Products */
+          <section className={styles.productsSection}>
+            <div className={styles.productsContainer}>
+              {/* Section Header with Search and Filters */}
+              <div className={styles.sectionHeader}>
+                <div className={styles.headerContent}>
+                  <h2 className={styles.sectionTitle}>Products in this Collection</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Explore all the beautiful pieces in the {collection.name} collection
+                  </p>
+                </div>
               </div>
-            </div>
 
             {/* Search and Filter Bar */}
             <div className={styles.filterSection}>
@@ -301,24 +312,72 @@ export default function CollectionPage() {
           )}
         </div>
 
-            {/* Products Grid */}
-            <div className={styles.productsGrid}>
-              <MagazineProductGrid
-                products={filteredProducts}
-                isLoading={isLoading}
-                showAddToCart={true}
-                showViewDetails={true}
-                columns={3}
-                emptyMessage={
-                  filters.search || filters.inStockOnly ||
-                  filters.priceRange.min > 0 || filters.priceRange.max < 10000
-                    ? "No products match your current filters. Try adjusting your search criteria."
-                    : "This collection doesn&apos;t have any products yet."
-                }
-              />
+              {/* Products Grid */}
+              <div className={styles.productsGrid}>
+                <MagazineProductGrid
+                  products={filteredProducts}
+                  isLoading={isLoading}
+                  showAddToCart={true}
+                  showViewDetails={true}
+                  columns={3}
+                  emptyMessage={
+                    filters.search || filters.inStockOnly ||
+                    filters.priceRange.min > 0 || filters.priceRange.max < 10000
+                      ? "No products match your current filters. Try adjusting your search criteria."
+                      : "This collection doesn&apos;t have any products yet."
+                  }
+                />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          /* Level 1 & 2: Show Child Collections */
+          <section className={styles.collectionsSection}>
+            <div className={styles.collectionsContainer}>
+              <div className={styles.sectionHeader}>
+                <div className={styles.headerContent}>
+                  <h2 className={styles.sectionTitle}>
+                    {collection.level === 1 ? 'Categories' : 'Subcategories'} in {collection.name}
+                  </h2>
+                  <p className={styles.sectionSubtitle}>
+                    Explore the {collection.level === 1 ? 'categories' : 'subcategories'} within this collection
+                  </p>
+                </div>
+              </div>
+
+              {childCollections.length > 0 ? (
+                <MagazineGrid columns={3} gap="large" className={styles.collectionsGrid}>
+                  {childCollections.map((childCollection, index) => (
+                    <MagazineCard
+                      key={childCollection.id}
+                      title={childCollection.name}
+                      description={childCollection.description || `Explore this beautiful ${collection.level === 1 ? 'category' : 'subcategory'} of cast stone pieces`}
+                      imageSrc={childCollection.images && childCollection.images.length > 0
+                        ? childCollection.images[0]
+                        : "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=300&fit=crop&crop=center"}
+                      imageAlt={childCollection.name}
+                      href={`/collections/${childCollection.id}`}
+                      variant={index === 0 ? "featured" : "default"}
+                      className={styles.collectionCard}
+                    />
+                  ))}
+                </MagazineGrid>
+              ) : (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyIcon}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                      <circle cx="9" cy="9" r="2"/>
+                      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                    </svg>
+                  </div>
+                  <h3>No {collection.level === 1 ? 'Categories' : 'Subcategories'} Available</h3>
+                  <p>This collection doesn&apos;t have any {collection.level === 1 ? 'categories' : 'subcategories'} yet.</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

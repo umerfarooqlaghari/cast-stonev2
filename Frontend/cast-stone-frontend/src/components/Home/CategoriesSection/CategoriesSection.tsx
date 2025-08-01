@@ -23,13 +23,13 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
       try {
         setIsLoading(true);
         setError(null);
-        // Get published collections (level 1 - root collections for categories)
-        const publishedCollections = await collectionGetService.getPublished();
-        // Filter to get only level 1 collections and limit to maxCollections
-        const rootCollections = publishedCollections
-          .filter(collection => collection.level === 1)
-          .slice(0, maxCollections);
-        setCollections(rootCollections);
+        // Get published collections
+        const publishedData = await collectionGetService.getPublished();
+        // Limit to maxCollections
+        const limitedCollections = publishedData.
+         filter(collection => collection.level === 1)
+         .slice(0, maxCollections);
+        setCollections(limitedCollections);
       } catch (err) {
         console.error('Failed to fetch collections:', err);
         setError('Failed to load collections');
@@ -40,6 +40,15 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
 
     fetchCollections();
   }, [maxCollections]);
+
+  const getCollectionImage = (collection: Collection): string | null => {
+    // Use the first image from the collection's images array (same logic as Collections Carousel)
+    if (Array.isArray(collection.images) && collection.images.length > 0) {
+      return collection.images[0];
+    }
+    // Return null if no images available
+    return null;
+  };
 
   if (isLoading) {
     return (
@@ -88,14 +97,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
     );
   }
 
-  const getCollectionImage = (collection: Collection): string | null => {
-    // Use the first image from the collection's images array
-    if (collection.images && collection.images.length > 0) {
-      return collection.images[0];
-    }
-    // Return null if no images available
-    return null;
-  };
+
 
   return (
     <section className={styles.categoriesSection}>

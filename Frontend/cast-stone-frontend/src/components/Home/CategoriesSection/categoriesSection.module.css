@@ -357,29 +357,29 @@ rgba(25, 35, 65, 0.4) 0%,
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem; /* Increased gap between cards */
   }
-  
+
   .categoryCard {
-    height: 300px;
+    height: 380px; /* Increased height for better mobile experience */
   }
-  
+
   .sectionTitle {
     font-size: 2rem;
   }
-  
+
   .sectionSubtitle {
     font-size: 1rem;
   }
-  
+
   .cardContent {
     padding: 1.25rem;
   }
-  
+
   .statsNumber {
     font-size: 1.75rem;
   }
-  
+
   .categoryTitle {
     font-size: 1.25rem;
   }
@@ -389,28 +389,32 @@ rgba(25, 35, 65, 0.4) 0%,
   .categoriesSection {
     padding: 3rem 0;
   }
-  
+
   .container {
     padding: 0 1rem;
   }
-  
+
   .header {
     margin-bottom: 2.5rem;
   }
-  
-  .categoryCard {
-    height: 280px;
+
+  .grid {
+    gap: 1.5rem; /* Better gap for small screens */
   }
-  
+
+  .categoryCard {
+    height: 360px; /* Increased height for better mobile experience */
+  }
+
   .cardContent {
     padding: 1rem;
   }
-  
+
   .cardActions {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .actionButton,
   .secondaryButton {
     width: 100%;

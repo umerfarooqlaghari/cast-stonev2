@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { WholesaleUserMenu } from '../../wholesale/WholesaleUserMenu';
 import { collectionGetService } from '../../../services/api/collections';
-import { CollectionHierarchy } from '../../../services/types/entities';
+import { Collection } from '../../../services/types/entities';
 import { DropdownItem } from '../../../types';
 import styles from './header.module.css';
 import { usePathname } from 'next/navigation';
@@ -20,8 +20,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   const { getCartSummary } = useCart();
-  const [collections, setCollections] = useState<CollectionHierarchy[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [childCollections, setChildCollections] = useState<{ [key: number]: Collection[] }>({});
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [hoveredCollection, setHoveredCollection] = useState<number | null>(null);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -72,8 +75,9 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     const fetchCollections = async () => {
       try {
         setIsLoading(true);
-        const hierarchyData = await collectionGetService.getHierarchy();
-        setCollections(hierarchyData);
+        // Get only level 1 (root) collections for the header dropdown
+        const rootCollections = await collectionGetService.getByLevel(1);
+        setCollections(rootCollections);
       } catch (error) {
         console.error('Failed to fetch collections:', error);
       } finally {
@@ -83,6 +87,30 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
     fetchCollections();
   }, []);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
+  // Fetch child collections for a parent collection
+  const fetchChildCollections = async (parentId: number) => {
+    try {
+      if (!childCollections[parentId]) {
+        const children = await collectionGetService.getChildren(parentId);
+        setChildCollections(prev => ({
+          ...prev,
+          [parentId]: children
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to fetch child collections:', error);
+    }
+  };
 
   // Handle dropdown toggle
   const handleDropdownToggle = (dropdownName: string) => {
@@ -129,15 +157,126 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     };
   }, [isMobileMenuOpen]);
 
-  // Convert collections to dropdown items
-  const collectionsToDropdownItems = (collections: CollectionHierarchy[]): DropdownItem[] => {
-    return collections.map(collection => ({
-      label: collection.name,
-      href: `/collections/${collection.id}`,
-      children: collection.children.length > 0
-        ? collectionsToDropdownItems(collection.children)
-        : undefined
-    }));
+  // Handle collection hover to load child collections
+  const handleCollectionHover = async (collectionId: number) => {
+    // Clear any existing timeout
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+    }
+
+    setHoveredCollection(collectionId);
+    await fetchChildCollections(collectionId);
+  };
+
+  // Handle collection hover leave with delay
+  const handleCollectionLeave = () => {
+    const timeout = setTimeout(() => {
+      setHoveredCollection(null);
+    }, 200); // 200ms delay before hiding submenu
+
+    setHoverTimeout(timeout);
+  };
+
+  // Handle submenu hover to keep it open
+  const handleSubmenuHover = (collectionId: number) => {
+    // Clear any existing timeout
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+    }
+    // Keep the current hovered collection
+    setHoveredCollection(collectionId);
+  };
+
+  // Render hierarchical collections dropdown
+  // const renderCollectionsDropdown = () => {
+  //   if (isLoading) {
+  //     return (
+  //       <div className={styles.dropdownContent}>
+  //         <div className={styles.dropdownItem}>Loading...</div>
+  //       </div>
+  //     );
+  //   }
+
+  const renderCollectionsDropdown = () => {
+  if (isLoading) {
+    return (
+      <div className={styles.dropdownItem}>Loading...</div>
+    );
+  }
+
+    return (
+      <div
+        className={styles.dropdownContent}
+        onMouseLeave={handleCollectionLeave}
+      >
+        {collections.map(collection => (
+          <div
+            key={collection.id}
+            className={styles.hierarchicalDropdownItem}
+            onMouseEnter={() => handleCollectionHover(collection.id)}
+          >
+            <Link
+              href={`/collections/${collection.id}`}
+              className={styles.dropdownLink}
+              onClick={() => setActiveDropdown(null)}
+            >
+              {collection.name}
+              {/* Show arrow if has children */}
+              {childCollections[collection.id] && childCollections[collection.id].length > 0 && (
+                <span className={styles.dropdownArrow}>→</span>
+              )}
+            </Link>
+
+            {/* Level 2 Collections Submenu */}
+            {hoveredCollection === collection.id && childCollections[collection.id] && childCollections[collection.id].length > 0 && (
+              <div
+                className={styles.submenu}
+                onMouseEnter={() => handleSubmenuHover(collection.id)}
+              >
+                {childCollections[collection.id].map(level2Collection => (
+                  <div
+                    key={level2Collection.id}
+                    className={styles.submenuItem}
+                    onMouseEnter={() => handleCollectionHover(level2Collection.id)}
+                  >
+                    <Link
+                      href={`/collections/${level2Collection.id}`}
+                      className={styles.submenuLink}
+                      onClick={() => setActiveDropdown(null)}
+                    >
+                      {level2Collection.name}
+                      {/* Show arrow if has children */}
+                      {childCollections[level2Collection.id] && childCollections[level2Collection.id].length > 0 && (
+                        <span className={styles.dropdownArrow}>→</span>
+                      )}
+                    </Link>
+
+                    {/* Level 3 Collections Sub-submenu */}
+                    {hoveredCollection === level2Collection.id && childCollections[level2Collection.id] && childCollections[level2Collection.id].length > 0 && (
+                      <div
+                        className={styles.subSubmenu}
+                        onMouseEnter={() => handleSubmenuHover(level2Collection.id)}
+                      >
+                        {childCollections[level2Collection.id].map(level3Collection => (
+                          <Link
+                            key={level3Collection.id}
+                            href={`/collections/${level3Collection.id}`}
+                            className={styles.subSubmenuLink}
+                            onClick={() => setActiveDropdown(null)}
+                          >
+                            {level3Collection.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -152,7 +291,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
   };
 }, [isMobileMenuOpen]);
 
-  const collectionItems = collectionsToDropdownItems(collections);
+
 
   // Check if we're on the home page
   const isHomePage = pathname === '/';
@@ -242,41 +381,12 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                     </span>
                   )}
                 </button>
-                {activeDropdown === 'collections' && !isLoading && (
-                  <div className={styles.dropdown}>
-                    <ul className={styles.dropdownList}>
-                      {collectionItems.map((item, index) => (
-                        <li key={index} className={styles.dropdownItem}>
-                          <Link href={item.href} className={styles.dropdownLink}>
-                            {item.label}
-                          </Link>
-                          {item.children && item.children.length > 0 && (
-                            <ul className={styles.subDropdownList}>
-                              {item.children.map((child, childIndex) => (
-                                <li key={childIndex} className={styles.subDropdownItem}>
-                                  <Link href={child.href} className={styles.subDropdownLink}>
-                                    {child.label}
-                                  </Link>
-                                  {child.children && child.children.length > 0 && (
-                                    <ul className={styles.subSubDropdownList}>
-                                      {child.children.map((grandChild, grandChildIndex) => (
-                                        <li key={grandChildIndex} className={styles.subSubDropdownItem}>
-                                          <Link href={grandChild.href} className={styles.subSubDropdownLink}>
-                                            {grandChild.label}
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {/* {activeDropdown === 'collections' && renderCollectionsDropdown()} */}
+                  {activeDropdown === 'collections' && (
+  <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
+    {renderCollectionsDropdown()}
+  </div>
+)}
               </div>
             </li>
 

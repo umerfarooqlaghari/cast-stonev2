@@ -473,3 +473,54 @@
     font-size: 0.95rem;
   }
 }
+
+/* Collections Section (for Level 1 & 2 collections) */
+.collectionsSection {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+}
+
+.collectionsContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.collectionsGrid {
+  margin-top: 3rem;
+}
+
+.collectionCard {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.collectionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty State for Collections */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+  color: #d1d5db;
+}
+
+.emptyState h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
