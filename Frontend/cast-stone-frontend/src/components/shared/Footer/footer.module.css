@@ -1,6 +1,7 @@
 /* Footer Styles */
 .footer {
-  background: #1e40af;
+  /* background: #1e40af; */
+  background: linear-gradient(135deg, #1e40af, #1c1651ff, #1d1d30ff);  overflow: hidden;
   color: #ffffff;
   padding: 4rem 0 2rem;
   position: relative;

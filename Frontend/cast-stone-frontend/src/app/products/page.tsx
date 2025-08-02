@@ -147,7 +147,7 @@ export default function ProductsPage() {
         title="Our Products"
         subtitle="Handcrafted Cast Stone Collection"
         description="Discover our exquisite collection of handcrafted cast stone pieces. Each product is meticulously crafted with attention to detail, bringing timeless elegance and durability to your space."
-        imageSrc="https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=1200&h=600&fit=crop&crop=center"
+        imageSrc="/images/FallBackImage.jpg"
         imageAlt="Beautiful cast stone products showcase"
         imagePosition="right"
         badge={`${filteredProducts.length} Products`}

@@ -1,0 +1,464 @@
+/* Collections Collage Component */
+.collectionsCollage {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #ffffff 0%, #faf9f7 100%);
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1.125rem;
+  color: #1e40af;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Collage Grid - Base */
+.collageGrid {
+  display: grid;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-auto-rows: minmax(120px, auto);
+}
+
+/* Dynamic Grid Layouts Based on Collection Count */
+.grid1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 400px;
+}
+
+.grid2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 200px);
+}
+
+.grid3 {
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 120px);
+}
+
+.grid4 {
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(4, 120px);
+}
+
+.grid5 {
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 120px);
+}
+
+.grid6 {
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 100px);
+}
+
+/* Default for 7+ collections */
+.collageGrid:not([class*="grid"]) {
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 100px);
+}
+
+/* Collection Cards - Different Sizes for Collage Effect */
+.collectionCard {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 8px 32px rgba(30, 58, 138, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.collectionCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+}
+
+/* Single Card (1 collection) */
+.collectionCard.single {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* Half Cards (2 collections) */
+.collectionCard.half {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+/* Large Card (Featured) */
+.collectionCard.large {
+  grid-column: span 7;
+  grid-row: span 4;
+}
+
+/* Medium Cards */
+.collectionCard.medium {
+  grid-column: span 5;
+  grid-row: span 3;
+}
+
+/* Small Cards */
+.collectionCard.small {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+/* Specific layouts for different collection counts */
+.grid3 .collectionCard.large {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.grid3 .collectionCard.medium {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.grid4 .collectionCard.large {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.grid4 .collectionCard.small {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.grid6 .collectionCard.medium {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.grid6 .collectionCard.small {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Image Container */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.collectionImage {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collectionCard:hover .collectionImage {
+  transform: scale(1.05);
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 58, 138, 0.3) 0%,
+    rgba(30, 64, 175, 0.2) 50%,
+    rgba(37, 99, 235, 0.1) 100%
+  );
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.collectionCard:hover .overlay {
+  opacity: 0.9;
+}
+
+/* Card Content */
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  color: white;
+  z-index: 2;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.collectionCard:hover .cardContent {
+  transform: translateY(0);
+}
+
+.collectionName {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.large .collectionName {
+  font-size: 2rem;
+}
+
+.medium .collectionName {
+  font-size: 1.75rem;
+}
+
+.small .collectionName {
+  font-size: 1.25rem;
+}
+
+.collectionDescription {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.large .collectionDescription {
+  font-size: 1rem;
+  -webkit-line-clamp: 3;
+}
+
+.small .collectionDescription {
+  display: none;
+}
+
+/* Explore Button */
+.exploreButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease 0.1s;
+}
+
+.collectionCard:hover .exploreButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.collectionCard:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+  color: #d1d5db;
+}
+
+.emptyState h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .collectionsCollage {
+    padding: 4rem 0;
+  }
+
+  /* Adjust grid layouts for tablet */
+  .grid3, .grid4, .grid5, .grid6 {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 100px);
+  }
+
+  .grid3 .collectionCard.large,
+  .grid4 .collectionCard.large {
+    grid-column: span 5;
+    grid-row: span 3;
+  }
+
+  .grid3 .collectionCard.medium,
+  .grid4 .collectionCard.small,
+  .grid6 .collectionCard.medium {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .collectionsCollage {
+    padding: 3rem 0;
+  }
+
+  /* Mobile grid layouts */
+  .grid1 {
+    grid-template-rows: 300px;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 200px);
+  }
+
+  .grid2 .collectionCard.half {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .grid3, .grid4, .grid5, .grid6 {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(12, 80px);
+    gap: 0.5rem;
+  }
+
+  .collectionCard.large,
+  .grid3 .collectionCard.large,
+  .grid4 .collectionCard.large {
+    grid-column: span 6;
+    grid-row: span 4;
+  }
+
+  .collectionCard.medium,
+  .grid3 .collectionCard.medium,
+  .grid6 .collectionCard.medium {
+    grid-column: span 6;
+    grid-row: span 3;
+  }
+
+  .collectionCard.small,
+  .grid4 .collectionCard.small,
+  .grid6 .collectionCard.small {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+
+  .cardContent {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .collectionsCollage {
+    padding: 2.5rem 0;
+  }
+
+  /* Mobile small screen layouts */
+  .grid1 {
+    grid-template-rows: 250px;
+  }
+
+  .grid2 {
+    grid-template-rows: repeat(2, 180px);
+  }
+
+  .grid3, .grid4, .grid5, .grid6 {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(16, 70px);
+  }
+
+  .collectionCard.large,
+  .grid3 .collectionCard.large,
+  .grid4 .collectionCard.large {
+    grid-column: span 4;
+    grid-row: span 4;
+  }
+
+  .collectionCard.medium,
+  .grid3 .collectionCard.medium,
+  .grid6 .collectionCard.medium {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+
+  .collectionCard.small,
+  .grid4 .collectionCard.small,
+  .grid6 .collectionCard.small {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .cardContent {
+    padding: 1rem;
+  }
+}

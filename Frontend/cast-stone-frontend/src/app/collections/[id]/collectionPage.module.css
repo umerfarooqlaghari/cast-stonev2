@@ -6,6 +6,26 @@
   padding-top: 4.2rem;
 }
 
+/* New Collection Page Design (4 Sections) */
+.newCollectionPage {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #1f2937;
+  padding-top: 4.2rem;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Ensure smooth transitions between sections */
+.newCollectionPage > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Add subtle shadows between sections for depth */
+.newCollectionPage > *:not(:first-child) {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;

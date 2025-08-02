@@ -1,0 +1,200 @@
+/* Full Screen Banner Component */
+.fullScreenBanner {
+  margin-top: 4rem;
+  width: 100%;
+  padding: 0 0 5rem 0;  /* Left, Right & Bottom Padding */
+  position: relative;
+  margin-top: -4.2rem; /* Offset the page padding to make truly full screen */
+}
+
+/* Image Container - Full Screen */
+.imageContainer {
+  margin-top: 5rem;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bannerImage {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bannerImage:hover {
+  transform: scale(1.02);
+}
+
+/* Overlay - Minimal for text readability only */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 1;
+}
+
+/* Content Overlay */
+.contentOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.content {
+  text-align: center;
+  color: white;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+/* Title */
+.title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+  letter-spacing: -0.02em;
+}
+
+/* Description Section */
+.descriptionSection {
+  background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+  padding: 4rem 0;
+  position: relative;
+}
+
+.descriptionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.description {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #374151;
+  max-width: 800px;
+  margin: 0 auto;
+  font-weight: 400;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .title {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+  }
+  
+  .description {
+    font-size: 1.125rem;
+  }
+  
+  .descriptionSection {
+    padding: 3rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageContainer {
+    height: 80vh;
+  }
+  
+  .contentOverlay {
+    padding: 1.5rem;
+  }
+  
+  .title {
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+  
+  .badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .descriptionSection {
+    padding: 2.5rem 0;
+  }
+  
+  .descriptionContainer {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageContainer {
+    height: 70vh;
+  }
+  
+  .contentOverlay {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: clamp(1.75rem, 5vw, 3rem);
+  }
+  
+  .description {
+    font-size: 0.95rem;
+  }
+  
+  .descriptionSection {
+    padding: 2rem 0;
+  }
+}

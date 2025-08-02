@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Swiper Pagination Styles */
+.swiper-pagination-bullet,
+.swiper-pagination-bullet-active {
+  background: #fff !important;
+}
+
+/* Remove default Swiper shadows for 3D effect */
+.swiper-3d .swiper-slide-shadow-left,
+.swiper-3d .swiper-slide-shadow-right {
+  background-image: none !important;
+}

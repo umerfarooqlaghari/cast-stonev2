@@ -7,8 +7,11 @@ import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
-import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
+// import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
+// import { TestimonialsSection } from '@/components/Home/TestimonialsSection/TestimonialsSection';
+import { FullScreenBanner, MasonryCollage } from '@/components/collections';
 import styles from './collectionPage.module.css';
+import MagazineSection from '@/components/ui/MagazineSection/MagazineSection';
 
 interface FilterState {
   search: string;
@@ -166,26 +169,25 @@ export default function CollectionPage() {
     );
   }
 
-  return (
-    <div className={styles.collectionPage}>
-      {/* Hero Section */}
-      <MagazineSection
-        title={collection.name}
-        subtitle={collection.level === 1 ? "Main Collection" : collection.level === 2 ? "Category" : "Subcategory"}
-        description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
-        imageSrc={collection.images && collection.images.length > 0
-          ? collection.images[0]
-          : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
-        imageAlt={collection.name}
-        imagePosition="left"
-        badge={collection.level === 3 ? `${filteredProducts.length} Products` : `${childCollections.length} ${collection.level === 1 ? 'Categories' : 'Subcategories'}`}
-        className={styles.heroSection}
-      />
+  // For level 3 collections (products), keep the existing layout
+  if (collection.level === 3) {
+    return (
+      <div className={styles.collectionPage}>
+        {/* Hero Section */}
+        <MagazineSection
+          title={collection.name}
+          subtitle="Product Collection"
+          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+          imageSrc={collection.images && collection.images.length > 0
+            ? collection.images[0]
+            : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
+          imageAlt={collection.name}
+          imagePosition="left"
+          badge={`${filteredProducts.length} Products`}
+          className={styles.heroSection}
+        />
 
-      <div className={styles.container}>
-        {/* Conditional Content Based on Collection Level */}
-        {collection.level === 3 ? (
-          /* Level 3: Show Products */
+        <div className={styles.container}>
           <section className={styles.productsSection}>
             <div className={styles.productsContainer}>
               {/* Section Header with Search and Filters */}
@@ -330,55 +332,42 @@ export default function CollectionPage() {
               </div>
             </div>
           </section>
-        ) : (
-          /* Level 1 & 2: Show Child Collections */
-          <section className={styles.collectionsSection}>
-            <div className={styles.collectionsContainer}>
-              <div className={styles.sectionHeader}>
-                <div className={styles.headerContent}>
-                  <h2 className={styles.sectionTitle}>
-                    {collection.level === 1 ? 'Categories' : 'Subcategories'} in {collection.name}
-                  </h2>
-                  <p className={styles.sectionSubtitle}>
-                    Explore the {collection.level === 1 ? 'categories' : 'subcategories'} within this collection
-                  </p>
-                </div>
-              </div>
-
-              {childCollections.length > 0 ? (
-                <MagazineGrid columns={3} gap="large" className={styles.collectionsGrid}>
-                  {childCollections.map((childCollection, index) => (
-                    <MagazineCard
-                      key={childCollection.id}
-                      title={childCollection.name}
-                      description={childCollection.description || `Explore this beautiful ${collection.level === 1 ? 'category' : 'subcategory'} of cast stone pieces`}
-                      imageSrc={childCollection.images && childCollection.images.length > 0
-                        ? childCollection.images[0]
-                        : "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=300&fit=crop&crop=center"}
-                      imageAlt={childCollection.name}
-                      href={`/collections/${childCollection.id}`}
-                      variant={index === 0 ? "featured" : "default"}
-                      className={styles.collectionCard}
-                    />
-                  ))}
-                </MagazineGrid>
-              ) : (
-                <div className={styles.emptyState}>
-                  <div className={styles.emptyIcon}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                      <circle cx="9" cy="9" r="2"/>
-                      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-                    </svg>
-                  </div>
-                  <h3>No {collection.level === 1 ? 'Categories' : 'Subcategories'} Available</h3>
-                  <p>This collection doesn&apos;t have any {collection.level === 1 ? 'categories' : 'subcategories'} yet.</p>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
+        </div>
       </div>
+    );
+  }
+
+  // For level 1 & 2 collections, use the new 4-section design
+  return (
+    <div className={styles.newCollectionPage}>
+      {/* Section 1: Full-Screen Banner */}
+      <FullScreenBanner
+        title={collection.name}
+        description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+        imageSrc={collection.images && collection.images.length > 0
+          ? collection.images[0]
+          : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
+        imageAlt={collection.name}
+        badge={`${childCollections.length} ${collection.level === 1 ? 'Categories' : 'Subcategories'}`}
+      />
+
+      {/* Section 2: Child Collections Masonry */}
+      <MasonryCollage
+        collections={childCollections}
+        title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
+        subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
+      />
+
+      {/* Section 3: Testimonials Carousel */}
+
+      {/* Section 4: CTA Section */}
+      {/* <CTASection
+        title="Ready to Transform Your Space?"
+        description="Contact our expert team to discuss your cast stone project and discover how we can bring your vision to life with our premium collection."
+        buttonText="Contact Us"
+        buttonHref="/contact"
+        backgroundImage="/images/FallBackImage.jpg"
+      /> */}
     </div>
   );
 }

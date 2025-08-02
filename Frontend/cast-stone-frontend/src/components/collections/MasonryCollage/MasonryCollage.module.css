@@ -1,0 +1,354 @@
+.collectionsCarousel {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background: linear-gradient(135deg, #1e40af, #1c1651ff, #32327cff);  overflow: hidden; */
+  background: url('/images/CollectionBackground3.jpg') center center/cover no-repeat;
+  padding: 4rem 0;
+}
+
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  z-index: 10;
+  position: relative;
+}
+
+.title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: none;
+}
+
+.subtitle {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1.125rem;
+  color: white;
+  max-width: 600px;
+  margin: 0 auto;
+  text-shadow: none;
+}
+
+.swiperContainer {
+  width: 80vw; /* Full viewport width */
+  max-width: 80vw;
+  position: relative;
+  overflow: visible; /* Allow slides to overflow */
+  margin: 0 calc(-40vw + 50%); /* Negative margin to break out of parent container */
+}
+
+.swiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* Navigation Arrows */
+.swiper :global(.swiper-button-next),
+.swiper :global(.swiper-button-prev) {
+  color: #333 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+  margin-top: -30px !important;
+  border: 2px solid #e0e0e0 !important;
+  z-index: 20 !important;
+}
+
+.swiper :global(.swiper-button-next) {
+  right: 10px !important; /* Adjust value (10px, 0px) as needed */
+}
+
+/* Move Prev Button Close to Left Edge */
+.swiper :global(.swiper-button-prev) {
+  left: 10px !important;  /* Adjust value (10px, 0px) as needed */
+}
+
+.swiper :global(.swiper-button-next):hover,
+.swiper :global(.swiper-button-prev):hover {
+  background: rgba(255, 255, 255, 1) !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25) !important;
+  border-color: #333 !important;
+}
+
+.swiper :global(.swiper-button-next):after,
+.swiper :global(.swiper-button-prev):after {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  color: #333 !important;
+}
+
+.swiper :global(.swiper-button-disabled) {
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Pagination */
+.swiper :global(.swiper-pagination) {
+  bottom: 20px !important;
+  position: relative !important;
+  margin-top: 30px !important;
+}
+
+.swiper :global(.swiper-pagination-bullet) {
+  background: #ccc !important;
+  opacity: 1 !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 8px !important;
+  transition: all 0.3s ease !important;
+  border: 2px solid #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swiper :global(.swiper-pagination-bullet-active) {
+  background: white !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.swiperSlide {
+  width: 390px;
+  height: 480px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: self-start;
+  transition: all 0.4s ease;
+  transform: scale(0.85);
+  opacity: 1;
+  background: none;
+    margin-bottom: 4rem;
+
+}
+
+.swiperSlide.swiper-slide-active {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+}
+
+.slideLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.slideBackground {
+  width: 100%;
+  height: 100%;
+  background: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.categoryTag {
+  text-transform: uppercase;
+  color: #fff;
+  background: #1b7402;
+  padding: 7px 18px 7px 25px;
+  display: inline-block;
+  border-radius: 0 20px 20px 0px;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.category-0 {
+  background: #62667f;
+}
+
+.category-1 {
+  background: #087ac4;
+}
+
+.category-2 {
+  background: #b45205;
+}
+
+.category-3 {
+  background: #1b7402;
+}
+
+.category-4 {
+  background: #8b5cf6;
+}
+
+.slideContent {
+  padding: 25px;
+  z-index: 2;
+  position: relative;
+  /* background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%); */
+  border-radius: 0 0 15px 15px;
+  background: transparent;
+}
+
+.collectionTitle {
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.collectionLocation {
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+.locationIcon {
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.125rem;
+}
+
+/* Swiper Pagination - handled via global CSS */
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .collectionsCarousel {
+    padding: 3rem 0;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .swiperSlide {
+    width: 300px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collectionsCarousel {
+    padding: 2rem 0;
+    min-height: 80vh;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .swiperSlide {
+    width: 280px;
+    height: 380px;
+  }
+
+  .collectionTitle {
+    font-size: 1.1rem;
+  }
+
+  .collectionLocation {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .collectionsCarousel {
+    padding: 1.5rem 0;
+    min-height: 70vh;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .swiperSlide {
+    width: 260px;
+    height: 360px;
+  }
+
+  .slideContent {
+    padding: 20px;
+  }
+
+  .collectionTitle {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .collectionLocation {
+    font-size: 0.75rem;
+  }
+
+  .categoryTag {
+    font-size: 0.7rem;
+    padding: 5px 15px 5px 20px;
+  }
+
+  .locationIcon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+
