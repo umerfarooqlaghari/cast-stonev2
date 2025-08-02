@@ -6,7 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #b4b5bbff, #9a98a4ff, #535359ff);  overflow: hidden;
+  background: white;
+  /* background: linear-gradient(135deg, #b4b5bbff, #9a98a4ff, #535359ff);  overflow: hidden; */
   /* background: url('/images/CollectionBackground3.jpg') center center/cover no-repeat; */
   padding: 4rem 0;
 }
@@ -30,7 +31,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 3rem;
   font-weight: 700;
-  color: white;
+  color: black;
   margin-bottom: 1rem;
   text-shadow: none;
 }
@@ -38,7 +39,7 @@
 .subtitle {
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1.125rem;
-  color: white;
+  color: black;
   max-width: 600px;
   margin: 0 auto;
   text-shadow: none;
