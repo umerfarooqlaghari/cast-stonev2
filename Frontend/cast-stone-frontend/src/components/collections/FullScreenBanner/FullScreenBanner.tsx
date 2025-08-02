@@ -69,7 +69,7 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
               <span>Explore Now</span>
             </Link>
             <Link href={sellHref} className={styles.secondaryButton}>
-              <span>Sell Now</span>
+              <span>Contact Us</span>
             </Link>
           </div>
         </div>

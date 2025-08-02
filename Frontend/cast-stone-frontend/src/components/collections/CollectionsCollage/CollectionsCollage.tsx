@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Collection } from '@/services/types/entities';
-import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
+import { getOptimizedImageUrl } from '@/utils/cloudinaryUtils';
 import styles from './CollectionCollage.module.css';
 
 interface CollectionsCollageProps {
@@ -59,7 +59,6 @@ const CollectionsCollage: React.FC<CollectionsCollageProps> = ({
               : "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop&crop=center";
 
             const optimizedImageSrc = getOptimizedImageUrl(imageSrc, 'card');
-            const fallbackImageSrc = getFallbackImageUrl('card');
 
             // Dynamic sizing based on collection count and position
             const getCardSize = (totalCount: number, currentIndex: number) => {
@@ -102,10 +101,7 @@ const CollectionsCollage: React.FC<CollectionsCollageProps> = ({
                     fill
                     className={styles.collectionImage}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = fallbackImageSrc;
-                    }}
+                    
                   />
                   
                   {/* Overlay */}

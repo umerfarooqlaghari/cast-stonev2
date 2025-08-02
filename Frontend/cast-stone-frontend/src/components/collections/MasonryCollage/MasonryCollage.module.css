@@ -6,8 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background: linear-gradient(135deg, #1e40af, #1c1651ff, #32327cff);  overflow: hidden; */
-  background: url('/images/CollectionBackground3.jpg') center center/cover no-repeat;
+  background: linear-gradient(135deg, #b4b5bbff, #9a98a4ff, #535359ff);  overflow: hidden;
+  /* background: url('/images/CollectionBackground3.jpg') center center/cover no-repeat; */
   padding: 4rem 0;
 }
 
