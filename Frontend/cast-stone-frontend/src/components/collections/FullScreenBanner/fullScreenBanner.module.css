@@ -1,19 +1,18 @@
 /* Full Screen Banner Component */
 .fullScreenBanner {
-  margin-top: 4rem;
   width: 100%;
-  padding: 0 0 5rem 0;  /* Left, Right & Bottom Padding */
+  /* padding: 0 2rem 5rem 2rem;  Left, Right & Bottom Padding for spacing */
   position: relative;
   margin-top: -4.2rem; /* Offset the page padding to make truly full screen */
 }
 
 /* Image Container - Full Screen */
 .imageContainer {
-  margin-top: 5rem;
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  margin-top: 4.2rem;
 }
 
 .bannerImage {
@@ -26,7 +25,7 @@
   transform: scale(1.02);
 }
 
-/* Overlay - Minimal for text readability only */
+/* Dark gradient overlay for text readability */
 .overlay {
   position: absolute;
   top: 0;
@@ -35,86 +34,134 @@
   bottom: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.3) 100%
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.6) 100%
   );
   z-index: 1;
 }
 
-/* Content Overlay */
-.contentOverlay {
+/* Left-aligned text block - positioned at lower-middle left */
+.textBlock {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  bottom: 15%;
+  left: 5%;
   z-index: 2;
-  padding: 2rem;
-}
-
-.content {
-  text-align: center;
   color: white;
-  max-width: 800px;
-  width: 100%;
-}
-
-/* Badge */
-.badge {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
+  max-width: 500px;
   animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-/* Title */
+/* Small badge */
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+/* Large bold heading with responsive clamp */
 .title {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(2rem, 5vw, 6rem);
   font-weight: 700;
   line-height: 1.1;
-  margin: 0;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin: 0 0 1rem 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   animation: fadeInUp 0.8s ease-out 0.4s both;
   letter-spacing: -0.02em;
 }
 
-/* Description Section */
-.descriptionSection {
-  background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
-  padding: 4rem 0;
-  position: relative;
-}
-
-.descriptionContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  text-align: center;
-}
-
+/* Description text with max-width constraint */
 .description {
-  font-family: 'Helvetica Neue', 'Arial', sans-serif;
-  font-size: 1.25rem;
-  line-height: 1.8;
-  color: #374151;
-  max-width: 800px;
-  margin: 0 auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 500px;
+  margin: 0;
   font-weight: 400;
   animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+/* Floating CTA Box - Bottom Right Corner */
+.ctaBox {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.ctaButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 160px;
+}
+
+/* Primary Button - White filled */
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  background: white;
+  color: #1f2937;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  letter-spacing: 0.025em;
+}
+
+.primaryButton:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Secondary Button - White bordered transparent */
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  letter-spacing: 0.025em;
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Animations */
@@ -131,70 +178,103 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+  .fullScreenBanner {
+    padding: 0 1.5rem 4rem 1.5rem;
+  }
+
   .title {
-    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
   }
-  
+
   .description {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
-  
-  .descriptionSection {
-    padding: 3rem 0;
+
+  .ctaBox {
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
+  .fullScreenBanner {
+    padding: 0 1rem 3rem 1rem;
+  }
+
   .imageContainer {
-    height: 80vh;
+    height: 85vh;
   }
-  
-  .contentOverlay {
-    padding: 1.5rem;
+
+  .textBlock {
+    bottom: 20%;
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
   }
-  
+
   .title {
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(2rem, 7vw, 3.5rem);
   }
-  
-  .badge {
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-  
+
   .description {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
-  
-  .descriptionSection {
-    padding: 2.5rem 0;
+
+  .badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
   }
-  
-  .descriptionContainer {
-    padding: 0 1.5rem;
+
+  /* Stack CTA box below text on mobile */
+  .ctaBox {
+    position: static;
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+  }
+
+  .ctaButtons {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .imageContainer {
-    height: 70vh;
+    height: 75vh;
   }
-  
-  .contentOverlay {
-    padding: 1rem;
+
+  .textBlock {
+    bottom: 15%;
+    left: 0.75rem;
+    right: 0.75rem;
   }
-  
+
   .title {
-    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    margin-bottom: 0.75rem;
   }
-  
+
   .description {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
-  
-  .descriptionSection {
-    padding: 2rem 0;
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
   }
 }

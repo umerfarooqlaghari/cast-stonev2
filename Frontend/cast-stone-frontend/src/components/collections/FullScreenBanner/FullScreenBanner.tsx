@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
 import styles from './fullScreenBanner.module.css';
 
@@ -12,6 +13,8 @@ interface FullScreenBannerProps {
   imageAlt: string;
   badge?: string;
   className?: string;
+  exploreHref?: string;
+  sellHref?: string;
 }
 
 const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
@@ -20,11 +23,13 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
   imageSrc,
   imageAlt,
   badge,
-  className = ''
+  className = '',
+  exploreHref = '/collections',
+  sellHref = '/contact'
 }) => {
   // Get optimized image URL for full-screen display
   const optimizedImageSrc = getOptimizedImageUrl(imageSrc, 'hero');
-  const fallbackImageSrc = getFallbackImageUrl('images/CollectionBackground3.jpg');
+  const fallbackImageSrc = getFallbackImageUrl();
 
   return (
     <section className={`${styles.fullScreenBanner} ${className}`}>
@@ -42,30 +47,33 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
             target.src = fallbackImageSrc;
           }}
         />
-        
-        {/* Overlay for better text readability */}
+
+        {/* Dark gradient overlay for text readability */}
         <div className={styles.overlay} />
-        
-        {/* Content overlay */}
-        <div className={styles.contentOverlay}>
-          <div className={styles.content}>
-            {badge && (
-              <div className={styles.badge}>
-                {badge}
-              </div>
-            )}
-            <h1 className={styles.title}>{title}</h1>
-            <p className={styles.bannerDescription}>{description}</p> {/* <-- Moved here */}
+
+        {/* Left-aligned text content */}
+        <div className={styles.textBlock}>
+          {badge && (
+            <div className={styles.badge}>
+              {badge}
+            </div>
+          )}
+          <h1 className={styles.title}>{title}</h1>
+          <p className={styles.description}>{description}</p>
+        </div>
+
+        {/* Floating CTA Box - Bottom Right */}
+        <div className={styles.ctaBox}>
+          <div className={styles.ctaButtons}>
+            <Link href={exploreHref} className={styles.primaryButton}>
+              <span>Explore Now</span>
+            </Link>
+            <Link href={sellHref} className={styles.secondaryButton}>
+              <span>Sell Now</span>
+            </Link>
           </div>
         </div>
       </div>
-      
-      {/* Description Section */}
-      {/* <div className={styles.descriptionSection}>
-        <div className={styles.descriptionContainer}>
-          <p className={styles.description}>{description}</p>
-        </div>
-      </div> */}
     </section>
   );
 };
