@@ -228,15 +228,12 @@
 
   /* Stack CTA box below text on mobile */
   .ctaBox {
-    position: static;
-    margin-top: 2rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
+    display: none !important;
+  
   }
 
   .ctaButtons {
-    flex-direction: row;
-    gap: 0.5rem;
+    display: none !important;
   }
 
   .primaryButton,
@@ -268,8 +265,8 @@
   }
 
   .ctaButtons {
-    flex-direction: column;
-    gap: 0.5rem;
+    display: none !important;
+
   }
 
   .primaryButton,
