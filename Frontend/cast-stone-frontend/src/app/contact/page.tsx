@@ -6,7 +6,6 @@ import styles from './contact.module.css';
 
 // Import WOW.js and Animate.css
 import 'animate.css';
-import 'wow.js';
 import { contactFormPostService } from '@/services/api/contactForm/post';
 import { InquiryType } from '@/services/types/entities';
 
