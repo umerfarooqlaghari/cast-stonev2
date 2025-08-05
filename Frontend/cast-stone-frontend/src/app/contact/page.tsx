@@ -1,8 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './contact.module.css';
+
+// Import WOW.js and Animate.css
+import 'animate.css';
+declare global {
+  interface Window {
+    WOW: any;
+  }
+}
 import { contactFormPostService } from '@/services/api/contactForm/post';
 import { InquiryType } from '@/services/types/entities';
 
@@ -29,6 +37,27 @@ const ContactPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Initialize WOW.js
+  useEffect(() => {
+    const loadWOW = async () => {
+      if (typeof window !== 'undefined') {
+        // Dynamically import WOW.js
+        const WOW = (await import('wow.js')).default;
+        const wow = new WOW({
+          boxClass: 'wow',
+          animateClass: 'animate__animated',
+          offset: 0,
+          mobile: true,
+          live: true,
+          scrollContainer: null,
+        });
+        wow.init();
+      }
+    };
+
+    loadWOW();
+  }, []);
 
   const inquiryOptions = [
     { value: InquiryType.ProductInquiry, label: 'Product Inquiry' },
@@ -108,59 +137,39 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className={styles.contactPage}>
-      <div className={styles.container}>
-        <div className={styles.cardContainer}>
-          <div className={styles.welcomeCard}>
+      <div className={styles.contactContainer}>
 
-            {/* Left Side - Welcome Section */}
-            <div className={styles.leftSection}>
-              <div className={styles.welcomeContent}>
-                <h1 className={styles.welcomeTitle}>Welcome!</h1>
-                <p className={styles.welcomeSubtitle}>First things first...</p>
-                <p className={styles.disclaimerText}>
-                    Your information is secure and will never be shared with anyone. View our Privacy Policy
-                  </p>
-                <p className={styles.disclaimerText}>
-                    By submitting your information, you acknowledge that you may be sent marketing material and
-                    newsletters.
-                  </p>
-              </div>
+        {/* Left Side - Contact Information */}
+        <div className={styles.leftSection}>
 
-              {/* Illustration */}
-              <div className={styles.illustrationContainer}>
-                <img
-                  src="images/contactus.jpg"
-                  alt="Welcome illustration"
-                  className={styles.illustration}
-                />
-              </div>
+          {/* Animated "Get in touch with us" text */}
+          <div className={styles.animatedTextContainer}>
+            <h2 className={styles.animatedText}>
+              <span className={styles.word} data-delay="0">Get</span>
+              <span className={styles.word} data-delay="200">in</span>
+              <span className={styles.word} data-delay="400">touch</span>
+              <span className={styles.word} data-delay="600">with</span>
+              <span className={styles.word} data-delay="800">us</span>
+            </h2>
+          </div>
+
+          {/* Contact Form in Left Panel */}
+          <div className={styles.leftFormContainer}>
+            <div className={`${styles.formHeader} wow animate__fadeInUp`} data-wow-delay="0.1s">
+             
             </div>
 
-            {/* Right Side - Form Section */}
-            <div className={styles.rightSection}>
-              {/* Profile Picture */}
-              <div className={styles.profileSection}>
-                <div className={styles.profilePicture}>
-                  <img
-                    src="images/avatar.jpg"
-                    alt="Profile"
-                    className={styles.profileImage}
-                  />
-                </div>
+            {submitMessage && (
+              <div className={`${styles.submitMessage} ${styles[submitMessage.type]} wow animate__fadeInUp`} data-wow-delay="0.2s">
+                {submitMessage.text}
               </div>
+            )}
 
-              <h2 className={styles.formTitle}>Contact Us</h2>
-              <p className={styles.requiredField}>*Required Field</p>
+            <form onSubmit={handleSubmit} className={styles.contactForm}>
+              <div className={styles.leftFormGrid}>
 
-              {submitMessage && (
-                <div className={`${styles.submitMessage} ${styles[submitMessage.type]}`}>
-                  {submitMessage.text}
-                </div>
-              )}
-              <form onSubmit={handleSubmit} className={styles.contactForm}>
-                <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name" className={styles.label}>*Name</label>
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.3s">
+                  <label htmlFor="name" className={styles.label}>Name *</label>
                   <input
                     type="text"
                     id="name"
@@ -169,12 +178,12 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder="Timothy"
+                    placeholder="Enter your full name"
                   />
                 </div>
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="email" className={styles.label}>*Email</label>
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.4s">
+                  <label htmlFor="email" className={styles.label}>Email *</label>
                   <input
                     type="email"
                     id="email"
@@ -183,13 +192,12 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder="Timothy@gmail.com"
+                    placeholder="Enter your email address"
                   />
                 </div>
-                </div>
-<div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="phoneNumber" className={styles.label}>*Phone Number</label>
+
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.5s">
+                  <label htmlFor="phoneNumber" className={styles.label}>Phone *</label>
                   <input
                     type="tel"
                     id="phoneNumber"
@@ -198,11 +206,11 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder=""
+                    placeholder="Enter your phone number"
                   />
                 </div>
 
-                <div className={styles.formGroup}>
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.6s">
                   <label htmlFor="company" className={styles.label}>Company</label>
                   <input
                     type="text"
@@ -211,13 +219,12 @@ const ContactPage: React.FC = () => {
                     value={formData.company}
                     onChange={handleInputChange}
                     className={styles.input}
-                    placeholder=""
+                    placeholder="Enter your company name"
                   />
                 </div>
-</div>
-<div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="state" className={styles.label}>United States</label>
+
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.7s">
+                  <label htmlFor="state" className={styles.label}>State *</label>
                   <select
                     id="state"
                     name="state"
@@ -226,7 +233,7 @@ const ContactPage: React.FC = () => {
                     className={styles.select}
                     required
                   >
-                    <option value="">State...</option>
+                    <option value="">Select your state</option>
                     {stateOptions.map((state) => (
                       <option key={state} value={state}>
                         {state}
@@ -235,8 +242,8 @@ const ContactPage: React.FC = () => {
                   </select>
                 </div>
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="inquiry" className={styles.label}>I&apos;d Like To...</label>
+                <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.8s">
+                  <label htmlFor="inquiry" className={styles.label}>Nature of Enquiry *</label>
                   <select
                     id="inquiry"
                     name="inquiry"
@@ -245,7 +252,7 @@ const ContactPage: React.FC = () => {
                     className={styles.select}
                     required
                   >
-                    <option value="">Select...</option>
+                    <option value="">Choose Nature of Enquiry</option>
                     {inquiryOptions.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -253,34 +260,54 @@ const ContactPage: React.FC = () => {
                     ))}
                   </select>
                 </div>
-</div>
-                <div className={styles.formGroup}>
+
+                <div className={`${styles.formGroupFull} wow animate__fadeInUp`} data-wow-delay="0.9s">
+                  <label htmlFor="message" className={styles.label}>Message *</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     className={styles.textarea}
-                    rows={4}
-                    placeholder="Type your message here..."
+                    rows={3}
+                    placeholder="Tell us about your project or inquiry..."
                     required
                     minLength={10}
                     maxLength={2000}
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
-                >
-                  {isSubmitting ? 'CONNECTING...' : 'LET\'S CONNECT'}
-                </button>
-              </form>
-            </div>
+                <div className={`${styles.formGroupFull} wow animate__fadeInUp`} data-wow-delay="1.0s">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Request'}
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        {/* Right Side - Image */}
+        <div className={styles.rightSection}>
+          <div className={styles.imageContainer}>
+            <img
+              src="/images/contactus.jpg"
+              alt="Cast Stone Interior Design"
+              className={styles.contactImage}
+            />
           </div>
         </div>
+
       </div>
+
+
+
     </div>
   );
 };

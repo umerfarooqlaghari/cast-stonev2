@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "masonic": "^4.1.0",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "wow.js": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

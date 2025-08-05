@@ -1,157 +1,318 @@
-/* Contact Page Styles - Welcome Card Design */
+/* Contact Page Styles - NORM Architects Inspired Design */
+
 .contactPage {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a5b4fc 0%, #c7d2fe 100%);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: white;
+  padding-top: 80px;
+}
+
+.contactContainer {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  margin-top: 5rem;
+  min-height: calc(100vh - 80px);
 }
 
-.container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.cardContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.welcomeCard {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  width: 100%;
-  max-width: 1300px;
-  min-height: 500px;
-}
-
-/* Left Side - Welcome Section */
+/* Left Section */
 .leftSection {
-  position: relative;
-  background: #f8fafc;
-  padding: 3rem 2.5rem;
+  flex: 1;
+  background: white;
+  padding: 60px 80px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  max-width: 50%;
 }
 
-.welcomeContent {
-  margin-bottom: 2rem;
+.brandHeader {
+  margin-bottom: 60px;
 }
 
-.formRow {
-  display: flex;
-  gap: 1rem; /* spacing between the two fields */
-}
-
-.formRow .formGroup {
-  flex: 1; /* make both fields take equal width */
-}
-
-
-.welcomeTitle {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 0.5rem 0;
-}
-
-.welcomeSubtitle {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin: 0 0 1rem 0;
+.brandName {
+  font-size: 1.2rem;
   font-weight: 400;
-}
-
-.welcomeDescription {
-  font-size: 0.9rem;
-  color: #9ca3af;
-  line-height: 1.5;
+  color: #333;
+  letter-spacing: 2px;
   margin: 0;
 }
 
-.illustrationContainer {
-  position: absolute;
-  bottom: 0;
-  left: 2;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  /* align-items: flex-end; */
-  pointer-events: none; 
+/* Animated Text Styles */
+.animatedTextContainer {
+  margin-bottom: 40px;
+  padding: 20px 0;
 }
 
-.illustration {
-  width: auto;
-  max-width: 90%;
-  height: 180%;
-  border-radius: 8px;
-}
-
-/* Right Side - Form Section */
-.rightSection {
-  padding: 3rem 2.5rem;
-  background: #ffffff;
-}
-
-/* Profile Section */
-.profileSection {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.profilePicture {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.animatedText {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #333;
+  line-height: 1.2;
+  margin: 0;
   overflow: hidden;
-  border: 2px solid #e5e7eb;
 }
 
-.profileImage {
+.word {
+  display: inline-block;
+  margin-right: 0.3em;
+  opacity: 0;
+  transform: translateY(100%);
+  animation: slideInUp 0.8s ease-out forwards;
+}
+
+.word:nth-child(1) { animation-delay: 0ms; }
+.word:nth-child(2) { animation-delay: 200ms; }
+.word:nth-child(3) { animation-delay: 400ms; }
+.word:nth-child(4) { animation-delay: 600ms; }
+.word:nth-child(5) { animation-delay: 800ms; }
+
+/* Left Panel Form Container */
+.leftFormContainer {
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  padding-right: 10px;
+}
+
+.leftFormGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 100%;
+}
+
+/* Form styling for left panel */
+.leftFormContainer .formHeader {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.leftFormContainer .formTitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #2c2c2c;
+  margin-bottom: 8px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.leftFormContainer .formSubtitle {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.leftFormContainer .contactForm {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* Compact form group styling */
+.leftFormContainer .formGroup,
+.leftFormContainer .formGroupFull {
+  margin-bottom: 0;
+}
+
+.leftFormContainer .formGroupFull {
+  grid-column: 1 / -1;
+}
+
+.leftFormContainer .input,
+.leftFormContainer .select,
+.leftFormContainer .textarea {
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  height: 42px;
+}
+
+/* Border drawing animation container */
+.leftFormContainer .input::before,
+.leftFormContainer .select::before,
+.leftFormContainer .textarea::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #0066cc;
+  border-radius: 4px;
+  opacity: 0;
+  animation: borderDraw 2s ease-out forwards;
+  animation-delay: inherit;
+}
+
+/* Individual border segments */
+.leftFormContainer .input::after,
+.leftFormContainer .select::after,
+.leftFormContainer .textarea::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background:
+    linear-gradient(90deg, #0066cc 50%, transparent 50%) bottom left / 0% 2px no-repeat,
+    linear-gradient(0deg, #0066cc 50%, transparent 50%) bottom right / 2px 0% no-repeat,
+    linear-gradient(-90deg, #0066cc 50%, transparent 50%) top right / 0% 2px no-repeat,
+    linear-gradient(180deg, #0066cc 50%, transparent 50%) top left / 2px 0% no-repeat;
+  animation: drawBorderClockwise 2s ease-out forwards;
+  animation-delay: inherit;
+}
+
+.leftFormContainer .input:focus,
+.leftFormContainer .select:focus,
+.leftFormContainer .textarea:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+}
+
+.leftFormContainer .textarea {
+  min-height: 80px;
+  height: auto;
+  resize: vertical;
+}
+
+.leftFormContainer .submitButton {
+  background: #0066cc;
+  color: white;
+  border: 1px solid transparent;
+  padding: 12px 25px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  height: 42px;
+}
+
+/* Submit button border animation */
+.leftFormContainer .submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  opacity: 0;
+  animation: borderDraw 2s ease-out forwards;
+  animation-delay: inherit;
+}
+
+.leftFormContainer .submitButton::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background:
+    linear-gradient(90deg, #ffffff 50%, transparent 50%) bottom left / 0% 2px no-repeat,
+    linear-gradient(0deg, #ffffff 50%, transparent 50%) bottom right / 2px 0% no-repeat,
+    linear-gradient(-90deg, #ffffff 50%, transparent 50%) top right / 0% 2px no-repeat,
+    linear-gradient(180deg, #ffffff 50%, transparent 50%) top left / 2px 0% no-repeat;
+  animation: drawBorderClockwise 2s ease-out forwards;
+  animation-delay: inherit;
+}
+
+.leftFormContainer .submitButton:hover:not(:disabled) {
+  background: #004499;
+  transform: translateY(-1px);
+}
+
+.leftFormContainer .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 4px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Right Section */
+.rightSection {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.contactImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
-.changeText {
-  font-size: 0.75rem;
-  color: #6366f1;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
+/* Form Section */
+.formSection {
+  background: #f8f9fa;
+  padding: 80px 0;
 }
 
-/* Form Title */
+.formContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
 .formTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: #2c2c2c;
+  margin-bottom: 15px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-.requiredField {
-  color: #9ca3af;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+.formSubtitle {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Form Styles */
 .contactForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  background: white;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
 .formGroup {
@@ -159,202 +320,349 @@
   flex-direction: column;
 }
 
+.formGroupFull {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
 .label {
   font-size: 0.9rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 8px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .input,
 .select,
 .textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
+  padding: 15px;
+  border: 2px solid #e1e5e9;
   border-radius: 6px;
-  font-size: 0.95rem;
-  color: #374151;
-  background: #ffffff;
-  transition: all 0.2s ease;
-  outline: none;
-  width: 100%;
+  font-size: 1rem;
+  color: #2c2c2c;
+  background: white;
+  transition: all 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #9ca3af;
+  color: #999;
 }
 
 .select {
   cursor: pointer;
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23374151" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px;
   appearance: none;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
 }
 
 .textarea {
   resize: vertical;
-  min-height: 100px;
-  font-family: inherit;
+  min-height: 120px;
+  line-height: 1.6;
 }
 
-/* Disclaimer */
-.disclaimer {
-  margin: 1rem 0;
-}
-
-.disclaimerText {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
-}
-
-.disclaimerText:last-child {
-  margin-bottom: 0;
-}
-
-/* Submit Button */
 .submitButton {
-  background: #6366f1;
-  color: #ffffff;
+  background: linear-gradient(135deg, #0066cc, #004499);
+  color: white;
   border: none;
+  padding: 18px 40px;
   border-radius: 6px;
-  padding: 0.875rem 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
-.submitButton:hover {
-  background: #5856eb;
-  transform: translateY(-1px);
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
 }
 
 .submitButton:disabled {
-  opacity: 0.6;
+  opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
 .submitting {
-  background: #9ca3af !important;
+  background: #999;
 }
 
-/* Submit Message */
 .submitMessage {
-  padding: 0.75rem 1rem;
+  padding: 15px 20px;
   border-radius: 6px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 500;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .submitMessage.success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
 .submitMessage.error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Animation Styles */
+.slideInUp {
+  animation: slideInUp 0.8s ease-out forwards;
+}
+
+.fadeIn {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.slideInLeft {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes yodezeenSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Border drawing animation - clockwise from bottom-left */
+@keyframes drawBorderClockwise {
+  0% {
+    background-size: 0% 2px, 2px 0%, 0% 2px, 2px 0%;
+  }
+  25% {
+    background-size: 100% 2px, 2px 0%, 0% 2px, 2px 0%;
+  }
+  50% {
+    background-size: 100% 2px, 2px 100%, 0% 2px, 2px 0%;
+  }
+  75% {
+    background-size: 100% 2px, 2px 100%, 100% 2px, 2px 0%;
+  }
+  100% {
+    background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
+  }
+}
+
+/* Fallback border animation for input fields */
+@keyframes borderDraw {
+  0% {
+    opacity: 0;
+    border-color: transparent;
+  }
+  100% {
+    opacity: 1;
+    border-color: #0066cc;
+  }
+}
+
+/* Fallback border animation for submit button */
+.leftFormContainer .submitButton::before {
+  border-color: #ffffff !important;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .contactPage {
-    padding: 1rem;
-  }
-  .illustration{
-    display: none;
-  }
-
-  .formRow {
+  .contactContainer {
     flex-direction: column;
-  }
-  .welcomeCard {
-    grid-template-columns: 1fr;
-    max-width: 500px;
   }
 
   .leftSection {
-    padding: 2rem 1.5rem;
-    order: 1;
+    max-width: 100%;
+    padding: 40px 30px;
   }
 
-  .rightSection {
-    padding: 2rem 1.5rem;
-    order: 2;
+  .leftFormContainer {
+    max-height: none;
   }
 
-  .welcomeTitle {
+  .leftFormContainer .formTitle {
     font-size: 1.5rem;
   }
 
+  .rightSection {
+    min-height: 300px;
+  }
+
+  .brandName {
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+  }
+
+  .animatedText {
+    font-size: 2rem;
+  }
+
+  .formSection {
+    padding: 60px 0;
+  }
+
+  .formContainer {
+    padding: 0 30px;
+  }
+
+  .contactForm {
+    padding: 40px 30px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
   .formTitle {
-    font-size: 1.25rem;
+    font-size: 1.8rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+  }
+
+  .contactEmail,
+  .contactPhone {
+    font-size: 0.9rem;
+  }
+
+  .locationInfo {
+    font-size: 0.9rem;
+  }
+
+  .footerNote p {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
-  .contactPage {
-    padding: 0.5rem;
+  .leftSection {
+    padding: 30px 20px;
   }
 
-  .leftSection,
-  .rightSection {
-    padding: 1.5rem 1rem;
+  .leftFormContainer .formTitle {
+    font-size: 1.3rem;
   }
 
-  .welcomeTitle {
-    font-size: 1.25rem;
+  .leftFormContainer .input,
+  .leftFormContainer .select,
+  .leftFormContainer .textarea {
+    padding: 10px 12px;
+    font-size: 0.9rem;
   }
 
-  .welcomeSubtitle {
-    font-size: 1rem;
+  /* Reduce border animation intensity on mobile */
+  .leftFormContainer .input::after,
+  .leftFormContainer .select::after,
+  .leftFormContainer .textarea::after,
+  .leftFormContainer .submitButton::after {
+    animation-duration: 1.5s;
   }
 
-  .welcomeDescription {
-    font-size: 0.85rem;
+  .leftFormContainer .submitButton {
+    padding: 12px 25px;
+    font-size: 0.9rem;
   }
 
-  .illustration {
-    max-width: 200px;
+  .contactSection {
+    margin-bottom: 35px;
   }
 
-  .profileSection {
-    margin-bottom: 1.5rem;
+  .brandHeader {
+    margin-bottom: 40px;
   }
 
-  .formTitle {
-    font-size: 1.1rem;
+  .animatedText {
+    font-size: 1.5rem;
+  }
+
+  .animatedTextContainer {
+    margin-bottom: 30px;
+  }
+
+  .formContainer {
+    padding: 0 20px;
   }
 
   .contactForm {
-    gap: 1rem;
+    padding: 30px 20px;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
   }
 
   .input,
   .select,
   .textarea {
-    padding: 0.625rem 0.875rem;
-    font-size: 0.9rem;
+    padding: 12px;
+    font-size: 0.95rem;
   }
 
   .submitButton {
-    padding: 0.75rem 1.25rem;
+    padding: 15px 30px;
     font-size: 0.9rem;
   }
 }
+
