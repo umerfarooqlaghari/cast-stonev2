@@ -693,7 +693,13 @@
 }
 
 .nonHomePage .hamburgerIcon span {
-  background: var(--cast-stone-white);
+  background: #000000;
+}
+
+/* Special case for retail locator page with dark background - higher specificity */
+.nonHomePage.retailLocatorPage .hamburgerIcon span,
+.retailLocatorPage .hamburgerIcon span {
+  background: rgba(9, 9, 9, 0.9) !important;
 }
 
 /* Hamburger Animation */
@@ -722,6 +728,18 @@
   backdrop-filter: blur(10px);
   z-index: 999;
   animation: mobileMenuFadeIn 0.3s ease-out;
+}
+
+/* Mobile Menu Overlay for non-home pages */
+.nonHomePage .mobileMenuOverlay {
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+/* Special case for retail locator page */
+.retailLocatorPage .mobileMenuOverlay {
+  background: transparent;
+  backdrop-filter: blur(10px);
 }
 
 .mobileMenuContent {
