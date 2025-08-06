@@ -594,23 +594,6 @@
   .footerNote p {
     font-size: 0.8rem;
   }
-.leftFormGrid {
-    grid-template-columns: 1fr !important; /* Single column layout */
-  }
-
-  .formGroup,
-  .formGroupFull {
-    grid-column: 1 / -1; /* Full width for all fields */
-  }
-
-  .submitButton {
-    width: 100%;
-  }
-
-  .leftSection {
-    padding: 30px 20px !important;
-  }
-
 }
 
 @media (max-width: 480px) {
