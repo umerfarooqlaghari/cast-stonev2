@@ -295,9 +295,11 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   // Check if we're on the home page
   const isHomePage = pathname === '/';
+  // Check if we're on the retail locator page (dark background)
+  const isRetailLocatorPage = pathname === '/retail-locator';
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${!isHomePage ? styles.nonHomePage : ''}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${!isHomePage ? styles.nonHomePage : ''} ${isRetailLocatorPage ? styles.retailLocatorPage : ''}`}>
       <div className={styles.container}>
         {/* Logo */}
         <div className={styles.logo}>
