@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styles from './ourStory.module.css';
-import Link from 'next/link';
 
 const OurStoryPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -176,7 +175,7 @@ const OurStoryPage: React.FC = () => {
                 At Cast Stone, we believe that exceptional architecture begins with exceptional materials.
                 Our journey started with a simple yet profound vision: to create cast stone products that
                 not only meet the highest standards of quality and durability but also inspire architects
-                and designers to push the boundaries of what's possible.
+                and designers to push the boundaries of what&apos;s possible.
               </p>
               <p className={styles.visionText}>
                 From our humble beginnings to becoming an industry leader, we have remained committed to
