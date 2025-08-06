@@ -1,216 +1,256 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import styles from './ourStory.module.css';
-import Link from 'next/link';
 
 const OurStoryPage: React.FC = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Banner images array
+  const bannerImages = [
+    '/images/CollectionBackground.jpg',
+    '/images/CollectionBackground2.jpg',
+    '/images/CollectionBackground3.jpg',
+    '/images/catalog-banner-bg.jpg'
+  ];
+
+  // Auto-rotate banner images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex + 1) % bannerImages.length
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [bannerImages.length]);
+
+  // Timeline data
+  const timelineData = [
+    {
+      year: '2010',
+      title: 'Foundation',
+      description: 'Cast Stone was founded with a vision to revolutionize architectural stone design and manufacturing.'
+    },
+    {
+      year: '2012',
+      title: 'First Major Project',
+      description: 'Completed our first large-scale commercial project, establishing our reputation in the industry.'
+    },
+    {
+      year: '2015',
+      title: 'Innovation Breakthrough',
+      description: 'Developed proprietary casting techniques that enhanced durability and aesthetic appeal.'
+    },
+    {
+      year: '2018',
+      title: 'International Expansion',
+      description: 'Expanded operations internationally, bringing our expertise to global markets.'
+    },
+    {
+      year: '2020',
+      title: 'Sustainable Practices',
+      description: 'Implemented eco-friendly manufacturing processes and sustainable material sourcing.'
+    },
+    {
+      year: '2023',
+      title: 'Digital Innovation',
+      description: 'Launched advanced digital design tools and virtual consultation services.'
+    },
+    {
+      year: '2024',
+      title: 'Industry Leadership',
+      description: 'Recognized as industry leader with over 500 successful projects worldwide.'
+    }
+  ];
+
   return (
     <div className={styles.storyPage}>
-      {/* Hero Section */}
+      {/* Hero Banner Section */}
       <section className={styles.heroSection}>
-        <div className={styles.heroContainer}>
-          <h1 className={styles.heroTitle}>Our Story</h1>
-          <p className={styles.heroSubtitle}>
-            A legacy of craftsmanship, artistry, and timeless elegance spanning generations of master artisans.
-          </p>
+        <div className={styles.bannerContainer}>
+          {bannerImages.map((image, index) => (
+            <motion.div
+              key={index}
+              className={styles.bannerImage}
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: index === currentImageIndex ? 1 : 0,
+                scale: index === currentImageIndex ? 1.05 : 1
+              }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              style={{
+                backgroundImage: `url(${image})`,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                zIndex: index === currentImageIndex ? 1 : 0
+              }}
+            />
+          ))}
+
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroContainer}>
+              <motion.h1
+                className={styles.heroTitle}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              >
+                Our Story
+              </motion.h1>
+              <motion.p
+                className={styles.heroSubtitle}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+              >
+                In 2010, the world of architectural stone made the discovery of a new brand.
+              </motion.p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation Breadcrumb */}
+      <section className={styles.breadcrumbSection}>
+        <div className={styles.container}>
+          <nav className={styles.breadcrumb}>
+            <span>The Company</span>
+            <span>•</span>
+            <span className={styles.currentPage}>Our Story</span>
+          </nav>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className={styles.mainContent}>
+      <main className={styles.mainContent}>
         <div className={styles.container}>
-          
-          {/* Introduction */}
-          <div className={styles.introSection}>
-            <div className={styles.introContent}>
-              <h2 className={styles.sectionTitle}>Crafting Timeless Beauty Since 1952</h2>
-              <p className={styles.introText}>
-                What began as a small family workshop in the heart of New England has evolved into one of the most 
-                respected names in cast stone artistry. For over seven decades, Cast Stone has been dedicated to 
-                creating architectural elements that transform spaces into works of art.
-              </p>
-              <p className={styles.introText}>
-                Our journey started with a simple belief: that every space deserves to be extraordinary. This 
-                philosophy continues to guide us today as we blend traditional craftsmanship with modern innovation 
-                to create pieces that stand the test of time.
-              </p>
-            </div>
-            <div className={styles.introImage}>
-              <div className={styles.imagePlaceholder}>
-                <span className={styles.imageText}>Historic Workshop 1952</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Heritage Section */}
-          <div className={styles.heritageSection}>
-            <h2 className={styles.sectionTitle}>A Heritage of Excellence</h2>
-            <div className={styles.heritageGrid}>
-              <div className={styles.heritageCard}>
-                <div className={styles.heritageIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5"/>
-                    <path d="M2 12l10 5 10-5"/>
-                  </svg>
-                </div>
-                <h3 className={styles.heritageTitle}>Master Craftsmanship</h3>
-                <p className={styles.heritageText}>
-                  Our artisans undergo years of training to master the ancient techniques of cast stone creation, 
-                  ensuring every piece meets our exacting standards.
-                </p>
-              </div>
-
-              <div className={styles.heritageCard}>
-                <div className={styles.heritageIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12"/>
-                  </svg>
-                </div>
-                <h3 className={styles.heritageTitle}>Premium Materials</h3>
-                <p className={styles.heritageText}>
-                  We source only the finest natural materials, from limestone aggregates to specialized binders, 
-                  creating pieces that age beautifully over time.
-                </p>
-              </div>
-
-              <div className={styles.heritageCard}>
-                <div className={styles.heritageIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                  </svg>
-                </div>
-                <h3 className={styles.heritageTitle}>Custom Design</h3>
-                <p className={styles.heritageText}>
-                  Every project is unique. Our design team works closely with clients to create bespoke pieces 
-                  that perfectly complement their architectural vision.
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* Timeline Section */}
-          <div className={styles.timelineSection}>
-            <h2 className={styles.sectionTitle}>Our Journey Through Time</h2>
-            <div className={styles.timeline}>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineYear}>1952</div>
-                <div className={styles.timelineContent}>
-                  <h3 className={styles.timelineTitle}>The Beginning</h3>
-                  <p className={styles.timelineText}>
-                    Founded by master craftsman William Stone in a small workshop in Vermont, 
-                    focusing on traditional limestone carving techniques.
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineYear}>1967</div>
-                <div className={styles.timelineContent}>
-                  <h3 className={styles.timelineTitle}>Innovation Era</h3>
-                  <p className={styles.timelineText}>
-                    Pioneered new cast stone techniques that allowed for more intricate designs 
-                    while maintaining the durability of natural stone.
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineYear}>1985</div>
-                <div className={styles.timelineContent}>
-                  <h3 className={styles.timelineTitle}>National Recognition</h3>
-                  <p className={styles.timelineText}>
-                    Expanded operations nationwide and received the National Craftsmanship Award 
-                    for excellence in architectural stonework.
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineYear}>2010</div>
-                <div className={styles.timelineContent}>
-                  <h3 className={styles.timelineTitle}>Modern Renaissance</h3>
-                  <p className={styles.timelineText}>
-                    Integrated cutting-edge technology with traditional methods, enabling 
-                    precision casting and sustainable production practices.
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineYear}>Today</div>
-                <div className={styles.timelineContent}>
-                  <h3 className={styles.timelineTitle}>Legacy Continues</h3>
-                  <p className={styles.timelineText}>
-                    Now in our third generation of family ownership, we continue to push the 
-                    boundaries of what&apos;s possible in cast stone artistry.
-                  </p>
-                </div>
-              </div>
+          <section className={styles.timelineSection}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Our Journey</h2>
             </div>
-          </div>
 
-          {/* Values Section */}
-          <div className={styles.valuesSection}>
-            <h2 className={styles.sectionTitle}>Our Values</h2>
-            <div className={styles.valuesGrid}>
-              <div className={styles.valueCard}>
-                <h3 className={styles.valueTitle}>Quality First</h3>
-                <p className={styles.valueText}>
-                  We never compromise on quality. Every piece undergoes rigorous testing and 
-                  inspection to ensure it meets our exacting standards.
-                </p>
-              </div>
-
-              <div className={styles.valueCard}>
-                <h3 className={styles.valueTitle}>Sustainable Practices</h3>
-                <p className={styles.valueText}>
-                  We&apos;re committed to environmental responsibility, using eco-friendly materials 
-                  and processes that minimize our ecological footprint.
-                </p>
-              </div>
-
-              <div className={styles.valueCard}>
-                <h3 className={styles.valueTitle}>Client Partnership</h3>
-                <p className={styles.valueText}>
-                  We believe in building lasting relationships with our clients, working as 
-                  partners to bring their architectural visions to life.
-                </p>
-              </div>
-
-              <div className={styles.valueCard}>
-                <h3 className={styles.valueTitle}>Innovation</h3>
-                <p className={styles.valueText}>
-                  While honoring traditional techniques, we continuously innovate to create 
-                  new possibilities in cast stone design and application.
-                </p>
-              </div>
+            <div className={styles.timelineContainer}>
+              {timelineData.map((item, index) => (
+                <motion.div
+                  key={item.year}
+                  className={styles.timelineItem}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <div className={styles.timelineYear}>
+                    <span>{item.year}</span>
+                  </div>
+                  <div className={styles.timelineDot} />
+                  <div className={styles.timelineContent}>
+                    <h3 className={styles.timelineTitle}>{item.title}</h3>
+                    <p className={styles.timelineDescription}>{item.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </section>
 
-          {/* Call to Action */}
-          <div className={styles.ctaSection}>
-            <div className={styles.ctaContent}>
-              <h2 className={styles.ctaTitle}>Ready to Create Something Extraordinary?</h2>
-              <p className={styles.ctaText}>
-                Let&apos;s discuss how our expertise and passion can bring your vision to life.
+          {/* Vision Section */}
+          <section className={styles.visionSection}>
+            <motion.div
+              className={styles.visionContent}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className={styles.visionTitle}>A vision of architectural excellence</h2>
+              <p className={styles.visionText}>
+                At Cast Stone, we believe that exceptional architecture begins with exceptional materials.
+                Our journey started with a simple yet profound vision: to create cast stone products that
+                not only meet the highest standards of quality and durability but also inspire architects
+                and designers to push the boundaries of what&apos;s possible.
               </p>
-              <div className={styles.ctaButtons}>
-                <a href="/contact" className={styles.primaryButton}>
-                  Start Your Project
-                </a>
-                <Link href="/collections" className={styles.secondaryButton}>
-                  View Our Work
-                </Link>
-              </div>
-            </div>
-          </div>
+              <p className={styles.visionText}>
+                From our humble beginnings to becoming an industry leader, we have remained committed to
+                innovation, craftsmanship, and sustainability. Every piece we create tells a story of
+                dedication, precision, and artistic vision.
+              </p>
+            </motion.div>
+          </section>
+
+          {/* Expertise Section */}
+          <section className={styles.expertiseSection}>
+            <motion.div
+              className={styles.expertiseContent}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className={styles.expertiseTitle}>The fruition of decades of experience</h2>
+              <p className={styles.expertiseText}>
+                Our expertise in cast stone manufacturing represents the culmination of years of research,
+                development, and hands-on experience. We have mastered the art of combining traditional
+                craftsmanship with cutting-edge technology to create products that stand the test of time.
+              </p>
+              <p className={styles.expertiseText}>
+                This deep understanding of materials, combined with our passion for architectural innovation
+                and our commitment to excellence, means that every Cast Stone product exceeds expectations
+                in both form and function.
+              </p>
+            </motion.div>
+          </section>
+
+          {/* Partnership Section */}
+          <section className={styles.partnershipSection}>
+            <motion.div
+              className={styles.partnershipContent}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className={styles.partnershipTitle}>Building lasting partnerships</h2>
+              <p className={styles.partnershipText}>
+                Our success is built on strong partnerships with architects, designers, contractors, and
+                clients who share our vision for excellence. We work closely with each partner to understand
+                their unique requirements and deliver solutions that exceed expectations.
+              </p>
+              <p className={styles.partnershipText}>
+                These collaborative relationships have been the foundation of our growth and continue to
+                drive innovation in everything we do. Together, we create architectural masterpieces that
+                define skylines and inspire communities.
+              </p>
+            </motion.div>
+          </section>
+
+          {/* Success Formula Section */}
+          <section className={styles.successSection}>
+            <motion.div
+              className={styles.successContent}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className={styles.successTitle}>A successful formula</h2>
+              <p className={styles.successText}>
+                Those who understand the uncompromising quality of our visionary products have made Cast Stone
+                an unequivocal success. Today, over a decade later, our product portfolio comprises more than
+                200 unique designs, each crafted with the same passion and uncompromising principles that
+                guided our first creation.
+              </p>
+            </motion.div>
+          </section>
         </div>
-      </section>
+      </main>
     </div>
   );
 };
