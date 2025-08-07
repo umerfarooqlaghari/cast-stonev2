@@ -238,8 +238,9 @@ const OurStoryPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Section 3: Vision & Innovation Section */}
-      <section className={styles.visionSection}>
+      {/* Section 3: Vision & Innovation Section with Parallax Background */}
+      <div className={styles.parallaxContainer}>
+        <section className={styles.visionSection}>
         <div className={styles.visionContainer}>
 
           {/* First Blog - Image Left, Text Right */}
@@ -349,6 +350,7 @@ const OurStoryPage: React.FC = () => {
 
         </div>
       </section>
+      </div>
     </div>
   );
 };

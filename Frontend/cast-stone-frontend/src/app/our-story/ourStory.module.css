@@ -321,11 +321,38 @@
 
 
 
+/* Parallax Background Container */
+.parallaxContainer {
+  position: relative;
+  background-image: url('/images/CollectionBackground.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 300vh; /* Covers all three sections */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Overlay to darken background slightly for better text readability */
+.parallaxContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
 /* Section 3: Vision & Innovation Section */
 .visionSection {
-  background: #ffffff;
+  background: transparent;
   padding: 6rem 0;
   min-height: 100vh;
+  position: relative;
+  z-index: 3;
 }
 
 .visionContainer {
@@ -343,6 +370,13 @@
   gap: 4rem;
   align-items: center;
   min-height: 500px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4rem;
+  margin: 4rem 0;
+  position: relative;
+  z-index: 4;
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
 }
 
 .blogItemReverse {
@@ -398,10 +432,14 @@
 
 /* Quote Section */
 .quoteSection {
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.95);
   padding: 6rem 0;
-  margin: 0;
+  margin: 4rem 0;
   width: 100%;
+  position: relative;
+  z-index: 4;
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
 }
 
 .quoteContainer {
@@ -529,6 +567,11 @@
 
   .quoteText {
     font-size: 1rem;
+  }
+
+  /* Disable parallax on smaller screens for better performance */
+  .parallaxContainer {
+    background-attachment: scroll;
   }
 }
 
@@ -661,6 +704,11 @@
   .quoteText {
     text-align: left;
   }
+
+  /* Disable parallax on tablets */
+  .parallaxContainer {
+    background-attachment: scroll;
+  }
 }
 
 @media (max-width: 480px) {
@@ -744,5 +792,10 @@
 
   .quoteText {
     font-size: 0.9rem;
+  }
+
+  /* Disable parallax on mobile */
+  .parallaxContainer {
+    background-attachment: scroll;
   }
 }
