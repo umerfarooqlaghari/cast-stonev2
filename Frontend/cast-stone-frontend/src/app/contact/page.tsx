@@ -152,7 +152,27 @@ const ContactPage: React.FC = () => {
               <span className={styles.word} data-delay="800">us</span>
             </h2>
           </div>
+   <div className={styles.CSection}>
+      <div className={styles.CBlock}>
+        <h4 className={styles.CHeader} data-delay="0">PROJECT INQUIRIES</h4>
+        <p className={styles.CInfo} data-delay="100">Sales@CastStoneInternational.com</p>
+        <hr className={styles.separator} />
+      </div>
 
+      <div className={styles.CBlock}>
+        <h4 className={styles.CHeader} data-delay="200">PHONE</h4>
+        <p className={styles.CInfo} data-delay="300">+1 (561) 625-0333</p>
+        <hr className={styles.separator} />
+      </div>
+
+      <div className={styles.CBlock}>
+        <h4 className={styles.CHeader} data-delay="400">LOCATION</h4>
+        <p className={styles.CInfo} data-delay="500">Cast Stone International, Inc</p>
+        <p className={styles.CInfo} data-delay="600">11555 US Highway 1</p>
+        <p className={styles.CInfo} data-delay="700">North Palm Beach, FL 33408</p>
+        <hr className={styles.separator} />
+      </div>
+    
           {/* Contact Form in Left Panel */}
           <div className={styles.leftFormContainer}>
             <div className={`${styles.formHeader} wow animate__fadeInUp`} data-wow-delay="0.1s">
@@ -165,11 +185,14 @@ const ContactPage: React.FC = () => {
               </div>
             )}
 
+                
+
             <form onSubmit={handleSubmit} className={styles.contactForm}>
               <div className={styles.leftFormGrid}>
 
+
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.3s">
-                  <label htmlFor="name" className={styles.label}>Name *</label>
+                  <label htmlFor="name" className={styles.DHeader}>Name *</label>
                   <input
                     type="text"
                     id="name"
@@ -178,12 +201,12 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder="Enter your full name"
+                    placeholder=""
                   />
                 </div>
 
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.4s">
-                  <label htmlFor="email" className={styles.label}>Email *</label>
+                  <label htmlFor="email" className={styles.DHeader}>Email *</label>
                   <input
                     type="email"
                     id="email"
@@ -192,12 +215,12 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder="Enter your email address"
+                    placeholder=""
                   />
                 </div>
 
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.5s">
-                  <label htmlFor="phoneNumber" className={styles.label}>Phone *</label>
+                  <label htmlFor="phoneNumber" className={styles.DHeader}>Phone *</label>
                   <input
                     type="tel"
                     id="phoneNumber"
@@ -206,12 +229,12 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.input}
                     required
-                    placeholder="Enter your phone number"
+                    placeholder=""
                   />
                 </div>
 
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.6s">
-                  <label htmlFor="company" className={styles.label}>Company</label>
+                  <label htmlFor="company" className={styles.DHeader}>Company</label>
                   <input
                     type="text"
                     id="company"
@@ -219,12 +242,12 @@ const ContactPage: React.FC = () => {
                     value={formData.company}
                     onChange={handleInputChange}
                     className={styles.input}
-                    placeholder="Enter your company name"
+                    placeholder=""
                   />
                 </div>
 
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.7s">
-                  <label htmlFor="state" className={styles.label}>State *</label>
+                  <label htmlFor="state" className={styles.DHeader}>State *</label>
                   <select
                     id="state"
                     name="state"
@@ -233,7 +256,7 @@ const ContactPage: React.FC = () => {
                     className={styles.select}
                     required
                   >
-                    <option value="">Select your state</option>
+                    <option value=""></option>
                     {stateOptions.map((state) => (
                       <option key={state} value={state}>
                         {state}
@@ -243,7 +266,7 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className={`${styles.formGroup} wow animate__fadeInUp`} data-wow-delay="0.8s">
-                  <label htmlFor="inquiry" className={styles.label}>Nature of Enquiry *</label>
+                  <label htmlFor="inquiry" className={styles.DHeader}>Nature of Enquiry *</label>
                   <select
                     id="inquiry"
                     name="inquiry"
@@ -252,7 +275,7 @@ const ContactPage: React.FC = () => {
                     className={styles.select}
                     required
                   >
-                    <option value="">Choose Nature of Enquiry</option>
+                    <option value=""></option>
                     {inquiryOptions.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -262,7 +285,7 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className={`${styles.formGroupFull} wow animate__fadeInUp`} data-wow-delay="0.9s">
-                  <label htmlFor="message" className={styles.label}>Message *</label>
+                  <label htmlFor="message" className={styles.DHeader}>Message *</label>
                   <textarea
                     id="message"
                     name="message"
@@ -270,7 +293,7 @@ const ContactPage: React.FC = () => {
                     onChange={handleInputChange}
                     className={styles.textarea}
                     rows={3}
-                    placeholder="Tell us about your project or inquiry..."
+                    placeholder=""
                     required
                     minLength={10}
                     maxLength={2000}
@@ -290,14 +313,14 @@ const ContactPage: React.FC = () => {
               </div>
             </form>
           </div>
-
+</div>
         </div>
 
         {/* Right Side - Image */}
         <div className={styles.rightSection}>
           <div className={styles.imageContainer}>
             <img
-              src="/images/contactus.jpg"
+              src="/ContactUs.jpg"
               alt="Cast Stone Interior Design"
               className={styles.contactImage}
             />
