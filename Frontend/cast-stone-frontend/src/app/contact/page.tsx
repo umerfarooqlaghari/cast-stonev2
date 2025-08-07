@@ -141,6 +141,7 @@ const ContactPage: React.FC = () => {
 
         {/* Left Side - Contact Information */}
         <div className={styles.leftSection}>
+   <div className={styles.CSection}>
 
           {/* Animated "Get in touch with us" text */}
           <div className={styles.animatedTextContainer}>
@@ -152,7 +153,6 @@ const ContactPage: React.FC = () => {
               <span className={styles.word} data-delay="800">us</span>
             </h2>
           </div>
-   <div className={styles.CSection}>
       <div className={styles.CBlock}>
         <h4 className={styles.CHeader} data-delay="0">PROJECT INQUIRIES</h4>
         <p className={styles.CInfo} data-delay="100">Sales@CastStoneInternational.com</p>
@@ -172,6 +172,14 @@ const ContactPage: React.FC = () => {
         <p className={styles.CInfo} data-delay="700">North Palm Beach, FL 33408</p>
         <hr className={styles.separator} />
       </div>
+
+      <div className={styles.animatedTextContainer}>
+            <h2 className={styles.animatedText}>
+              <span className={styles.word} data-delay="200">Place</span>
+              <span className={styles.word} data-delay="400">Your</span>
+              <span className={styles.word} data-delay="600">Query</span>
+            </h2>
+          </div>
     
           {/* Contact Form in Left Panel */}
           <div className={styles.leftFormContainer}>

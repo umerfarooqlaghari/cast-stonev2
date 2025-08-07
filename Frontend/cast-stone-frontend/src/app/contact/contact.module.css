@@ -100,11 +100,14 @@
 }
 
 .word {
+  text-content: center;
   display: inline-block;
   margin-right: 0.3em;
   opacity: 0;
   transform: translateY(100%);
   animation: slideInUp 0.8s ease-out forwards;
+  font-family: 'Georgia', serif;
+
 }
 
 .word:nth-child(1) { animation-delay: 0ms; }
