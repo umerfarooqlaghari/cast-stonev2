@@ -324,7 +324,7 @@
 /* Parallax Background Container */
 .parallaxContainer {
   position: relative;
-  background-image: url('/images/CollectionBackground.jpg');
+  background-image: url('/Black.jpg');
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;

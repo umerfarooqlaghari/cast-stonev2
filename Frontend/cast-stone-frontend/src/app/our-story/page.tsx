@@ -301,7 +301,7 @@ const OurStoryPage: React.FC = () => {
             <div className={styles.blogItem}>
               <div className={styles.blogImageContainer}>
                 <Image
-                  src="/images/CollectionBackground.jpg"
+                  src="/Black.jpg"
                   alt="Vision of Architectural Excellence"
                   className={styles.blogImage}
                   width={600}
