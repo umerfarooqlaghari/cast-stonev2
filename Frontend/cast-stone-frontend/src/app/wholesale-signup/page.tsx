@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -67,72 +68,98 @@ export default function WholesaleSignupPage() {
     </div>
   );
 
-  const renderBenefits = () => (
-    <div className={styles.benefits}>
-      <h3>Wholesale Benefits</h3>
-      <ul>
-        <li>Exclusive wholesale pricing on all products</li>
-        <li>Priority customer support</li>
-        <li>Access to new products before general release</li>
-        <li>Dedicated account manager</li>
-        <li>Flexible payment terms</li>
-        <li>Volume discounts available</li>
-      </ul>
+  const renderSignupHero = () => (
+    <div className={styles.signupHero}>
+      <div className={styles.signupOverlay} />
+      <div className={styles.signupCard}>
+        <div className={styles.signupLeft}>
+          <h2>Let’s Get Started</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenes placerat
+            ultricies libero eu pharetra. Vestibulum a ultricies augue.
+          </p>
+        </div>
+        <div className={styles.signupRight}>
+          <div className={styles.signupRightInner}>
+            <h3>Sign up</h3>
+            <WholesaleSignupForm
+              onSuccess={handleSignupSuccess}
+              onError={handleSignupError}
+              variant="modern"
+            />
+            <div className={styles.signupFooterInfo}>
+              <span>Already a Member?</span>
+              <button
+                onClick={() => {
+                  setCurrentView('login');
+                  setError('');
+                }}
+                className={styles.signupLink}
+              >
+                Sign in here
+              </button>
+            </div>
+          </div>
+          <div className={styles.signupDivider} />
+          <div className={styles.signupSocialCol}>
+            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
+            <div className={styles.or}>OR</div>
+            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
+            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
-  const renderContent = () => {
-    switch (currentView) {
-      case 'login':
-        return (
-          <div className={styles.contentContainer}>
-            <div className={styles.mainContent}>
-              <WholesaleLogin
-                onSuccess={handleLoginSuccess}
-                onError={handleLoginError}
-                onSwitchToSignup={() => {
-                  setCurrentView('signup');
-                  setError('');
-                }}
-              />
-            </div>
-            <div className={styles.sidebar}>
-              {renderBenefits()}
-            </div>
+  const renderLoginHero = () => (
+    <div className={styles.signupHero}>
+      <div className={styles.signupOverlay} />
+      <div className={styles.signupCard}>
+        <div className={styles.signupLeft}>
+          <h2>Welcome Back</h2>
+          <p>
+            Sign in to access wholesale pricing, orders, and your account dashboard.
+          </p>
+        </div>
+        <div className={styles.signupRight}>
+          <div className={styles.signupRightInner}>
+            <h3>Sign in</h3>
+            <WholesaleLogin
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginError}
+              onSwitchToSignup={() => {
+                setCurrentView('signup');
+                setError('');
+              }}
+              variant="modern"
+            />
           </div>
-        );
-
-      case 'signup':
-        return (
-          <div className={styles.contentContainer}>
-            <div className={styles.mainContent}>
-              <div className={styles.formHeader}>
-                <h2>Apply for Wholesale Access</h2>
-                <p>Fill out the form below to apply for wholesale pricing</p>
-                <button
-                  onClick={() => {
-                    setCurrentView('login');
-                    setError('');
-                  }}
-                  className={styles.backToLogin}
-                >
-                  ← Back to Login
-                </button>
-              </div>
-              <WholesaleSignupForm
-                onSuccess={handleSignupSuccess}
-                onError={handleSignupError}
-              />
-            </div>
-            <div className={styles.sidebar}>
-              {renderBenefits()}
-            </div>
+          <div className={styles.signupDivider} />
+          <div className={styles.signupSocialCol}>
+            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
+            <div className={styles.or}>OR</div>
+            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
+            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
           </div>
-        );
+        </div>
+      </div>
+    </div>
+  );
 
-      case 'success':
-        return (
-          <div className={styles.messageContainer}>
+  const renderSuccessHero = () => (
+    <div className={styles.signupHero}>
+      <div className={styles.signupOverlay} />
+      <div className={styles.signupCard}>
+        <div className={styles.signupLeft}>
+          <h2>Application Submitted</h2>
+          <p>
+            Thank you for applying to our wholesale program. We typically review
+            applications within 2–3 business days.
+          </p>
+        </div>
+        <div className={styles.signupRight}>
+          <div className={styles.signupRightInner}>
             <div className={styles.successMessage}>
               <div className={styles.successIcon}>✓</div>
               <h2>Application Submitted!</h2>
@@ -156,7 +183,42 @@ export default function WholesaleSignupPage() {
               </button>
             </div>
           </div>
-        );
+          <div className={styles.signupDivider} />
+          <div className={styles.signupSocialCol}>
+            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
+            <div className={styles.or}>OR</div>
+            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
+            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderBenefits = () => (
+    <div className={styles.benefits}>
+      <h3>Wholesale Benefits</h3>
+      <ul>
+        <li>Exclusive wholesale pricing on all products</li>
+        <li>Priority customer support</li>
+        <li>Access to new products before general release</li>
+        <li>Dedicated account manager</li>
+        <li>Flexible payment terms</li>
+        <li>Volume discounts available</li>
+      </ul>
+    </div>
+  );
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'login':
+        return renderLoginHero();
+
+      case 'signup':
+        return renderSignupHero();
+
+      case 'success':
+        return renderSuccessHero();
 
       case 'pending':
         return (
@@ -191,8 +253,8 @@ export default function WholesaleSignupPage() {
 
   return (
     <div className={styles.pageContainer}>
-      {renderHeader()}
-      
+      {currentView !== 'signup' && renderHeader()}
+
       {error && (
         <div className={styles.errorBanner}>
           <p>{error}</p>

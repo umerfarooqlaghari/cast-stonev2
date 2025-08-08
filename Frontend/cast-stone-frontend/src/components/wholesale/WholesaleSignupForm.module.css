@@ -7,6 +7,34 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Modern/dark variant to match provided design */
+.modern {
+  background: rgba(0,0,0,0.45);
+  color: #e5e7eb;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.modern .formGroup label { color: #cbd5e1; }
+.modern .formGroup input,
+.modern .formGroup select,
+.modern .formGroup textarea {
+  background: transparent;
+  color: #e5e7eb;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  border-radius: 0;
+}
+.modern .formGroup input::placeholder,
+.modern .formGroup textarea::placeholder { color: #94a3b8; }
+.modern .formGroup input:focus,
+.modern .formGroup select:focus,
+.modern .formGroup textarea:focus {
+  border-bottom-color: #22c55e;
+  box-shadow: none;
+  outline: none;
+}
+
 .progressBar {
   position: relative;
   margin-bottom: 3rem;
@@ -185,7 +213,7 @@
 }
 
 .primaryButton {
-  background: #3b82f6;
+  background: #22c55e;
   color: white;
   border: none;
   padding: 0.75rem 2rem;
@@ -196,8 +224,19 @@
   min-width: 120px;
 }
 
+.arrowButton {
+  width: 56px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1.25rem;
+  border-radius: 8px;
+}
+
 .primaryButton:hover:not(:disabled) {
-  background: #2563eb;
+  background: #16a34a;
 }
 
 .primaryButton:disabled {
