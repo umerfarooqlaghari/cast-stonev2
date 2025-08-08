@@ -6,6 +6,12 @@
   padding: 2rem;
 }
 
+/* Modern variant to match dark hero */
+.modern {
+  background: rgba(0,0,0,0.45);
+  border-radius: 12px;
+}
+
 .loginCard {
   width: 100%;
   max-width: 400px;
@@ -18,7 +24,7 @@
 .loginHeader {
   padding: 2rem 2rem 1rem;
   text-align: center;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   color: white;
 }
 

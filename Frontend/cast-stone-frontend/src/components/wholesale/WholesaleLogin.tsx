@@ -9,12 +9,15 @@ interface WholesaleLoginProps {
   onSuccess?: (result: AuthenticationResult) => void;
   onError?: (error: string) => void;
   onSwitchToSignup?: () => void;
+  // Visual variant only impacts styling
+  variant?: 'default' | 'modern';
 }
 
 export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
   onSuccess,
   onError,
-  onSwitchToSignup
+  onSwitchToSignup,
+  variant = 'default'
 }) => {
   const { login } = useWholesaleAuth();
   const [formData, setFormData] = useState<LoginRequest>({
@@ -76,7 +79,7 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
   };
 
   return (
-    <div className={styles.loginContainer}>
+    <div className={`${styles.loginContainer} ${variant === 'modern' ? styles.modern : ''}`}>
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
           <h2>Wholesale Buyer Login</h2>

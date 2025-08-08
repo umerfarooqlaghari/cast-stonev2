@@ -8,6 +8,8 @@ import styles from './WholesaleSignupForm.module.css';
 interface WholesaleSignupFormProps {
   onSuccess?: () => void;
   onError?: (error: string) => void;
+  // Visual variant only affects styling (UI), not logic
+  variant?: 'default' | 'modern';
 }
 
 type FormData = CreateWholesaleBuyerRequest;
@@ -48,7 +50,8 @@ const US_STATES = [
 
 export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
   onSuccess,
-  onError
+  onError,
+  variant = 'default'
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -413,7 +416,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
   );
 
   return (
-    <div className={styles.formContainer}>
+    <div className={`${styles.formContainer} ${variant === 'modern' ? styles.modern : ''}`}>
       <div className={styles.progressBar}>
         <div className={styles.progressSteps}>
           {[1, 2, 3].map(step => (
@@ -457,9 +460,10 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
             <button
               type="button"
               onClick={nextStep}
-              className={styles.primaryButton}
+              className={`${styles.primaryButton} ${variant === 'modern' ? styles.arrowButton : ''}`}
+              aria-label="Next step"
             >
-              Next
+              {variant === 'modern' ? '➜' : 'Next'}
             </button>
           ) : (
             <button
