@@ -398,7 +398,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               id="name"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                 errors.name ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter product name"
@@ -416,7 +416,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               id="productCode"
               value={formData.productCode}
               onChange={(e) => setFormData(prev => ({ ...prev, productCode: e.target.value }))}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                 errors.productCode ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter product code"
@@ -434,7 +434,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                 errors.description ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter product description"
@@ -455,7 +455,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 min="0"
                 value={formData.price}
                 onChange={(e) => setFormData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                   errors.price ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="0.00"
@@ -473,7 +473,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 min="0"
                 value={formData.stock}
                 onChange={(e) => setFormData(prev => ({ ...prev, stock: parseInt(e.target.value) || 0 }))}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                   errors.stock ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="0"
@@ -491,7 +491,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               id="collection"
               value={formData.collectionId}
               onChange={(e) => setFormData(prev => ({ ...prev, collectionId: parseInt(e.target.value) || 0 }))}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                 errors.collectionId ? 'border-red-500' : 'border-gray-300'
               }`}
             >
@@ -547,7 +547,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               </label>
               <select
                 onChange={(e) => e.target.value && handleAddImageFromDropdown(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 disabled={isLoadingImages}
                 value=""
               >
@@ -562,7 +562,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               </select>
               {uploadedImages.length === 0 && !isLoadingImages && (
                 <p className="text-sm text-gray-500 mt-1">
-                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Upload images here</a>
+                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Upload images here</a>
                 </p>
               )}
             </div>
@@ -584,7 +584,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                     }
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
-                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                     errors.imageInput ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="Paste image URL here or copy from Images section"
@@ -592,7 +592,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <button
                   type="button"
                   onClick={handleAddImage}
-                  className="px-4 py-2 bg-amber-900 text-white rounded-r-md hover:bg-amber-800 disabled:opacity-50"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 disabled:opacity-50"
                   disabled={!imageInput.trim()}
                 >
                   Add
@@ -602,7 +602,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <p className="mt-1 text-sm text-red-600">{errors.imageInput}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Images section</a>
+                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Images section</a>
               </p>
             </div>
 
@@ -618,12 +618,12 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   accept="image/*"
                   onChange={(e) => handleDirectImageUpload(e.target.files)}
                   disabled={isUploading}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 disabled:opacity-50"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
                 />
 
                 {isUploading && (
                   <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-amber-600"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                     <span className="text-sm text-gray-600">{uploadProgress}</span>
                   </div>
                 )}
@@ -652,13 +652,13 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
               {formData.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800"
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                 >
                   {tag}
                   <button
                     type="button"
                     onClick={() => handleRemoveTag(tag)}
-                    className="ml-1 text-amber-600 hover:text-amber-800"
+                    className="ml-1 text-blue-600 hover:text-blue-800"
                   >
                     ×
                   </button>
@@ -671,13 +671,13 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Add a tag"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="px-4 py-2 bg-amber-900 text-white rounded-r-md hover:bg-amber-800"
+                className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700"
               >
                 Add
               </button>
@@ -694,7 +694,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.material}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, material: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Cast Stone"
                 />
               </div>
@@ -704,7 +704,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.dimensions}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, dimensions: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
                 />
               </div>
@@ -714,7 +714,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.Base_Dimensions}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, Base_Dimensions: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
                 />
               </div>
@@ -724,7 +724,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.photographed_In}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, photographed_In: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
                 />
               </div>
@@ -734,7 +734,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.Pieces}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, Pieces: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 24&quot; L x 18&quot; W x 36&quot; H"
                 />
               </div>
@@ -744,7 +744,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.totalWeight}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, totalWeight: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 150 lbs"
                 />
               </div>
@@ -754,7 +754,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.weightWithWater}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, weightWithWater: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 200 lbs"
                 />
               </div>
@@ -764,7 +764,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={specificationsData.waterVolume}
                   onChange={(e) => setSpecificationsData(prev => ({ ...prev, waterVolume: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 50 gallons"
                 />
               </div>
@@ -781,7 +781,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.upc}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, upc: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., 615973253195"
                 />
               </div>
@@ -790,7 +790,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <select
                   value={detailsData.indoorUseOnly}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, indoorUseOnly: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select...</option>
                   <option value="Yes">Yes</option>
@@ -802,7 +802,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                 <select
                   value={detailsData.assemblyRequired}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, assemblyRequired: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select...</option>
                   <option value="Yes">Yes</option>
@@ -815,7 +815,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.easeOfAssembly}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, easeOfAssembly: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -826,7 +826,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.assistanceRequired}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, assistanceRequired: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -837,7 +837,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.splashLevel}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, splashLevel: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -848,7 +848,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.soundLevel}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, soundLevel: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -859,7 +859,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.soundType}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, soundType: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -870,7 +870,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.replacementPumpKit}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, replacementPumpKit: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -881,7 +881,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.electricalCordLength}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, electricalCordLength: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -892,7 +892,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.pumpSize}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, pumpSize: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -903,7 +903,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.shipMethod}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, shipMethod: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -914,7 +914,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.drainage_Info}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, drainage_Info: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -925,7 +925,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.inside_Top}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Top: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -936,7 +936,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.inside_Bottom}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Bottom: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -947,7 +947,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.inside_Height}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, inside_Height: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -958,7 +958,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.catalogPage}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, catalogPage: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -968,7 +968,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="text"
                   value={detailsData.factory_Code}
                   onChange={(e) => setDetailsData(prev => ({ ...prev, factory_Code: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="e.g., Difficult assembly"
                 />
               </div>
@@ -986,7 +986,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="url"
                   value={downloadableData.care}
                   onChange={(e) => setDownloadableData(prev => ({ ...prev, care: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://example.com/care-instructions.pdf"
                 />
               </div>
@@ -996,7 +996,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="url"
                   value={downloadableData.productInstructions}
                   onChange={(e) => setDownloadableData(prev => ({ ...prev, productInstructions: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://example.com/product-instructions.pdf"
                 />
               </div>
@@ -1006,7 +1006,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
                   type="url"
                   value={downloadableData.cad}
                   onChange={(e) => setDownloadableData(prev => ({ ...prev, cad: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://example.com/cad-files.zip"
                 />
               </div>
@@ -1032,7 +1032,7 @@ export default function ProductModal({ product, collections, onClose, onSuccess 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 bg-amber-900 text-white rounded-md hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Saving...' : (product ? 'Update' : 'Create')}
             </button>

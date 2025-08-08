@@ -97,7 +97,7 @@ export default function ProductsPage() {
 
   const getStockStatus = (stock: number) => {
     if (stock === 0) return { label: 'Out of Stock', color: 'bg-red-100 text-red-800' };
-    if (stock < 10) return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-800' };
+    if (stock < 10) return { label: 'Low Stock', color: 'bg-blue-100 text-blue-800' };
     return { label: 'In Stock', color: 'bg-green-100 text-green-800' };
   };
 
@@ -135,7 +135,7 @@ export default function ProductsPage() {
             </div>
             <button
               onClick={handleAddProduct}
-              className="px-4 py-2 bg-amber-900 text-white rounded-md hover:bg-amber-800 transition-colors flex items-center"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -203,7 +203,7 @@ export default function ProductsPage() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             {isLoading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-900 mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto"></div>
                 <p className="mt-4 text-gray-600">Loading products...</p>
               </div>
             ) : (
