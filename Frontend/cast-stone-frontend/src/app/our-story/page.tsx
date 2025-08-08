@@ -1,9 +1,62 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import styles from './ourStory.module.css';
+
+// Letter Container Component with folding animation
+const LetterContainer: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <div ref={ref} className={styles.letterWrapper}>
+      <motion.div
+        className={styles.letterContainer}
+        initial={{
+          rotateX: -90,
+          transformOrigin: "top center",
+          opacity: 0,
+          scale: 0.8
+        }}
+        animate={isInView ? {
+          rotateX: 0,
+          opacity: 1,
+          scale: 1
+        } : {}}
+        transition={{
+          duration: 1.2,
+          delay: delay,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          opacity: { duration: 0.6, delay: delay + 0.3 }
+        }}
+        style={{
+          perspective: "1000px",
+          transformStyle: "preserve-3d"
+        }}
+      >
+        {/* Letter fold line effect */}
+        <motion.div
+          className={styles.letterFoldLine}
+          initial={{ scaleX: 1, opacity: 0.8 }}
+          animate={isInView ? { scaleX: 0, opacity: 0 } : {}}
+          transition={{ duration: 0.8, delay: delay + 0.4 }}
+        />
+
+        {/* Letter content */}
+        <motion.div
+          className={styles.letterContent}
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: delay + 0.6 }}
+        >
+          {children}
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
 
 const OurStoryPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -244,109 +297,97 @@ const OurStoryPage: React.FC = () => {
         <div className={styles.visionContainer}>
 
           {/* First Blog - Image Left, Text Right */}
-          <motion.div
-            className={styles.blogItem}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className={styles.blogImageContainer}>
-              <Image
-                src="/images/CollectionBackground.jpg"
-                alt="Vision of Architectural Excellence"
-                className={styles.blogImage}
-                width={600}
-                height={400}
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-
-            <div className={styles.blogContent}>
-              <h2 className={styles.blogTitle}>A VISION OF ARCHITECTURAL EXCELLENCE</h2>
-              <p className={styles.blogText}>
-                At the age of fifty, Cast Stone decided to create its own brand, with the
-                idea of pushing watchmaking beyond anything that existed at the time,
-                with a new contemporary approach to horology. We was planning to
-                develop one product: the watch of his dreams, an approach that involved
-                operating with little regard for production costs, which were excessive.
-              </p>
-              <p className={styles.blogText}>
-                When released in 2001, this extraordinary timepiece with its ergonomic
-                tonneau case design punctuated with distinctive torque screws and a
-                compelling six-digit price tag, immediately placed the fledgling brand at
-                the highest summit of the entire luxury watch market.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Second Blog - Text Left, Image Right */}
-          <motion.div
-            className={`${styles.blogItem} ${styles.blogItemReverse}`}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <div className={styles.blogContent}>
-              <h2 className={styles.blogTitle}>INNOVATION THROUGH CRAFTSMANSHIP</h2>
-              <p className={styles.blogText}>
-                Our commitment to innovation extends beyond traditional boundaries. Each piece
-                we create represents a perfect fusion of time-honored craftsmanship techniques
-                and cutting-edge technology. This approach allows us to achieve unprecedented
-                levels of precision and aesthetic refinement.
-              </p>
-              <p className={styles.blogText}>
-                The result is a collection of architectural stone products that not only meet
-                the most demanding technical specifications but also inspire architects and
-                designers to explore new possibilities in their creative endeavors. Every
-                project becomes a testament to our unwavering pursuit of excellence.
-              </p>
-            </div>
-
-            <div className={styles.blogImageContainer}>
-              <Image
-                src="/images/CollectionBackground2.jpg"
-                alt="Innovation Through Craftsmanship"
-                className={styles.blogImage}
-                width={600}
-                height={400}
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-          </motion.div>
-
-          {/* Third Blog - Quote Section with Dark Background */}
-          <motion.div
-            className={styles.quoteSection}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <div className={styles.quoteContainer}>
-              <div className={styles.quoteContent}>
-                <blockquote className={styles.quote}>
-                  &ldquo;For a long time, I wished to create something extraordinary in architectural stone. I wanted to develop a new approach, far removed
-                  from traditional manufacturing methods, something totally innovative.
-                  My goal was to establish a new standard of excellence within the architectural stone industry, and I was
-                  very eager to see what could be achieved!&rdquo;
-                </blockquote>
-                <cite className={styles.quoteAuthor}>CAST STONE FOUNDER</cite>
+          <LetterContainer delay={0}>
+            <div className={styles.blogItem}>
+              <div className={styles.blogImageContainer}>
+                <Image
+                  src="/images/CollectionBackground.jpg"
+                  alt="Vision of Architectural Excellence"
+                  className={styles.blogImage}
+                  width={600}
+                  height={400}
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
 
-              <div className={styles.quoteTextContent}>
-                <h2 className={styles.quoteTitle}>THE FRUITION OF DECADES OF EXPERIENCE</h2>
-                <p className={styles.quoteText}>
-                  For Cast Stone, this was not an impulsive decision quickly taken; it was the direct fruition of decades of experience
-                  gained through diverse architectural projects and luxury material development. Our deep fascination for innovative
-                  manufacturing techniques, expertise in material science, and personal passion for architectural excellence
-                  combined with our extreme sensitivity to design and functionality, meant that no existing stone products could
-                  completely meet our vision for perfection.
+              <div className={styles.blogContent}>
+                <h2 className={styles.blogTitle}>A VISION OF ARCHITECTURAL EXCELLENCE</h2>
+                <p className={styles.blogText}>
+                  At the age of fifty, Cast Stone decided to create its own brand, with the
+                  idea of pushing watchmaking beyond anything that existed at the time,
+                  with a new contemporary approach to horology. We was planning to
+                  develop one product: the watch of his dreams, an approach that involved
+                  operating with little regard for production costs, which were excessive.
+                </p>
+                <p className={styles.blogText}>
+                  When released in 2001, this extraordinary timepiece with its ergonomic
+                  tonneau case design punctuated with distinctive torque screws and a
+                  compelling six-digit price tag, immediately placed the fledgling brand at
+                  the highest summit of the entire luxury watch market.
                 </p>
               </div>
             </div>
-          </motion.div>
+          </LetterContainer>
+
+          {/* Second Blog - Text Left, Image Right */}
+          <LetterContainer delay={0.3}>
+            <div className={`${styles.blogItem} ${styles.blogItemReverse}`}>
+              <div className={styles.blogContent}>
+                <h2 className={styles.blogTitle}>INNOVATION THROUGH CRAFTSMANSHIP</h2>
+                <p className={styles.blogText}>
+                  Our commitment to innovation extends beyond traditional boundaries. Each piece
+                  we create represents a perfect fusion of time-honored craftsmanship techniques
+                  and cutting-edge technology. This approach allows us to achieve unprecedented
+                  levels of precision and aesthetic refinement.
+                </p>
+                <p className={styles.blogText}>
+                  The result is a collection of architectural stone products that not only meet
+                  the most demanding technical specifications but also inspire architects and
+                  designers to explore new possibilities in their creative endeavors. Every
+                  project becomes a testament to our unwavering pursuit of excellence.
+                </p>
+              </div>
+
+              <div className={styles.blogImageContainer}>
+                <Image
+                  src="/images/CollectionBackground2.jpg"
+                  alt="Innovation Through Craftsmanship"
+                  className={styles.blogImage}
+                  width={600}
+                  height={400}
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+            </div>
+          </LetterContainer>
+
+          {/* Third Blog - Quote Section with Dark Background */}
+          <LetterContainer delay={0.6}>
+            <div className={styles.quoteSection}>
+              <div className={styles.quoteContainer}>
+                <div className={styles.quoteContent}>
+                  <blockquote className={styles.quote}>
+                    &ldquo;For a long time, I wished to create something extraordinary in architectural stone. I wanted to develop a new approach, far removed
+                    from traditional manufacturing methods, something totally innovative.
+                    My goal was to establish a new standard of excellence within the architectural stone industry, and I was
+                    very eager to see what could be achieved!&rdquo;
+                  </blockquote>
+                  <cite className={styles.quoteAuthor}>CAST STONE FOUNDER</cite>
+                </div>
+
+                <div className={styles.quoteTextContent}>
+                  <h2 className={styles.quoteTitle}>THE FRUITION OF DECADES OF EXPERIENCE</h2>
+                  <p className={styles.quoteText}>
+                    For Cast Stone, this was not an impulsive decision quickly taken; it was the direct fruition of decades of experience
+                    gained through diverse architectural projects and luxury material development. Our deep fascination for innovative
+                    manufacturing techniques, expertise in material science, and personal passion for architectural excellence
+                    combined with our extreme sensitivity to design and functionality, meant that no existing stone products could
+                    completely meet our vision for perfection.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </LetterContainer>
 
         </div>
       </section>

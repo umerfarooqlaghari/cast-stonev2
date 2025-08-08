@@ -346,6 +346,47 @@
   z-index: 1;
 }
 
+/* Letter Animation Styles */
+.letterWrapper {
+  perspective: 1200px;
+  margin-bottom: 2rem;
+}
+
+.letterContainer {
+  position: relative;
+  transform-style: preserve-3d;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.1),
+    0 1px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.letterFoldLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 20%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.1) 80%,
+    transparent 100%
+  );
+  z-index: 10;
+  transform-origin: center;
+}
+
+.letterContent {
+  position: relative;
+  z-index: 1;
+}
+
 /* Section 3: Vision & Innovation Section */
 .visionSection {
   background: transparent;
@@ -370,12 +411,11 @@
   gap: 4rem;
   align-items: center;
   min-height: 500px;
-  background: rgba(255, 255, 255, 0.95);
+  background: transparent;
   padding: 4rem 6rem;
-  margin: 4rem 0;
+  margin: 0;
   position: relative;
   z-index: 4;
-  backdrop-filter: blur(2px);
   border-radius: 0;
   width: 100%;
 }
@@ -435,7 +475,7 @@
 .quoteSection {
   background: rgba(26, 26, 26, 0.95);
   padding: 6rem 0;
-  margin: 4rem 0;
+  margin: 0;
   width: 100%;
   position: relative;
   z-index: 4;
@@ -535,6 +575,13 @@
 
   .visionContainer {
     gap: 6rem;
+  }
+
+  .letterContainer {
+    border-radius: 8px;
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.08),
+      0 1px 6px rgba(0, 0, 0, 0.04);
   }
 
   .blogItem {
@@ -654,6 +701,17 @@
     padding: 0;
   }
 
+  .letterWrapper {
+    perspective: 800px;
+  }
+
+  .letterContainer {
+    border-radius: 6px;
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
   .blogItem,
   .blogItemReverse {
     grid-template-columns: 1fr;
@@ -760,6 +818,17 @@
   .visionContainer {
     gap: 3rem;
     padding: 0;
+  }
+
+  .letterWrapper {
+    perspective: 600px;
+  }
+
+  .letterContainer {
+    border-radius: 4px;
+    box-shadow:
+      0 4px 15px rgba(0, 0, 0, 0.05),
+      0 1px 3px rgba(0, 0, 0, 0.02);
   }
 
   .blogItem,
