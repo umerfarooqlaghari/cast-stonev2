@@ -311,15 +311,15 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   };
 
   return (
-    <div className="fixed inset-0 bg-amber-900 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-20 mx-auto p-6 border border-amber-200 w-full max-w-3xl shadow-xl rounded-lg bg-white">
+    <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div className="relative top-20 mx-auto p-6 border border-black w-full max-w-3xl shadow-xl rounded-lg bg-white">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-amber-900">
+          <h3 className="text-xl font-bold text-black">
             {collection ? 'Edit Collection' : 'Add New Collection'}
           </h3>
           <button
             onClick={onClose}
-            className="text-amber-600 hover:text-amber-800 transition-colors"
+            className="text-black hover:text-gray-600 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -330,7 +330,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-amber-900 mb-2">
+            <label htmlFor="name" className="block text-sm font-semibold text-black mb-2">
               Collection Name *
             </label>
             <input
@@ -338,8 +338,8 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               id="name"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900 placeholder-amber-400 ${
-                errors.name ? 'border-red-500' : 'border-amber-300'
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400 ${
+                errors.name ? 'border-red-500' : 'border-black'
               }`}
               placeholder="Enter collection name"
             />
@@ -348,7 +348,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
           {/* Description */}
           <div>
-            <label htmlFor="description" className="block text-sm font-semibold text-amber-900 mb-2">
+            <label htmlFor="description" className="block text-sm font-semibold text-black mb-2">
               Description
             </label>
             <textarea
@@ -356,8 +356,8 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900 placeholder-amber-400 ${
-                errors.description ? 'border-red-500' : 'border-amber-300'
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400 ${
+                errors.description ? 'border-red-500' : 'border-black'
               }`}
               placeholder="Enter collection description"
             />
@@ -366,7 +366,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
           {/* Level */}
           <div>
-            <label htmlFor="level" className="block text-sm font-semibold text-amber-900 mb-2">
+            <label htmlFor="level" className="block text-sm font-semibold text-black mb-2">
               Hierarchy Level *
             </label>
             <select
@@ -381,7 +381,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                   childCollectionIds: newLevel === 3 ? [] : prev.childCollectionIds
                 }));
               }}
-              className="w-full px-4 py-3 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900"
+              className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             >
               <option value={1}>Level 1 (Root Category)</option>
               <option value={2}>Level 2 (Sub Category)</option>
@@ -394,7 +394,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
             {/* Parent Collection */}
             {formData.level > 1 && (
               <div>
-                <label htmlFor="parentCollection" className="block text-sm font-semibold text-amber-900 mb-2">
+                <label htmlFor="parentCollection" className="block text-sm font-semibold text-black mb-2">
                   Parent Collection *
                 </label>
                 <select
@@ -404,13 +404,13 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                     ...prev,
                     parentCollectionId: e.target.value ? Number(e.target.value) : null
                   }))}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900 ${
-                    errors.parentCollectionId ? 'border-red-500' : 'border-amber-300'
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black ${
+                    errors.parentCollectionId ? 'border-red-500' : 'border-black'
                   }`}
                 >
-                  <option value="" className="text-amber-600">Select parent collection</option>
+                  <option value="" className="text-gray-600">Select parent collection</option>
                   {getAvailableParentCollections().map(parentCollection => (
-                    <option key={parentCollection.id} value={parentCollection.id} className="text-amber-900">
+                    <option key={parentCollection.id} value={parentCollection.id} className="text-black">
                       {parentCollection.name} (Level {parentCollection.level})
                     </option>
                   ))}
@@ -422,12 +422,12 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
             {/* Child Collections */}
             {formData.level < 3 && (
               <div>
-                <label className="block text-sm font-semibold text-amber-900 mb-2">
+                <label className="block text-sm font-semibold text-black mb-2">
                   Child Collections (Optional)
                 </label>
-                <div className="space-y-2 max-h-40 overflow-y-auto border border-amber-300 rounded-lg p-3">
+                <div className="space-y-2 max-h-40 overflow-y-auto border border-black rounded-lg p-3">
                   {getAvailableChildCollections().length === 0 ? (
-                    <p className="text-amber-600 text-sm">No available child collections</p>
+                    <p className="text-gray-600 text-sm">No available child collections</p>
                   ) : (
                     getAvailableChildCollections().map(childCollection => (
                       <label key={childCollection.id} className="flex items-center space-x-2 cursor-pointer">
@@ -442,16 +442,16 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                                 : prev.childCollectionIds.filter(id => id !== childCollection.id)
                             }));
                           }}
-                          className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                          className="rounded border-black text-blue-600 focus:ring-blue-500"
                         />
-                        <span className="text-amber-900 text-sm">
+                        <span className="text-black text-sm">
                           {childCollection.name} (Level {childCollection.level})
                         </span>
                       </label>
                     ))
                   )}
                 </div>
-                <p className="mt-1 text-xs text-amber-700">
+                <p className="mt-1 text-xs text-black">
                   Select multiple child collections to link to this collection
                 </p>
               </div>
@@ -460,20 +460,20 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
           {/* Tags */}
           <div>
-            <label className="block text-sm font-semibold text-amber-900 mb-2">
+            <label className="block text-sm font-semibold text-black mb-2">
               Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
               {formData.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200"
                 >
                   {tag}
                   <button
                     type="button"
                     onClick={() => handleRemoveTag(tag)}
-                    className="ml-2 text-amber-600 hover:text-amber-800 font-bold"
+                    className="ml-2 text-blue-600 hover:text-blue-800 font-bold"
                   >
                     ×
                   </button>
@@ -486,13 +486,13 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                className="flex-1 px-4 py-3 border border-amber-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-amber-900 placeholder-amber-400"
+                className="flex-1 px-4 py-3 border border-black rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400"
                 placeholder="Add a tag"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="px-6 py-3 bg-amber-900 text-white rounded-r-lg hover:bg-amber-800 transition-colors font-medium"
+                className="px-6 py-3 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 Add
               </button>
@@ -501,7 +501,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
           {/* Images */}
           <div>
-            <label className="block text-sm font-semibold text-amber-900 mb-2">
+            <label className="block text-sm font-semibold text-black mb-2">
               Images
             </label>
             <div className="space-y-3 mb-4">
@@ -541,7 +541,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               </label>
               <select
                 onChange={(e) => e.target.value && handleAddImageFromDropdown(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 disabled={isLoadingImages}
                 value=""
               >
@@ -556,7 +556,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               </select>
               {uploadedImages.length === 0 && !isLoadingImages && (
                 <p className="text-sm text-gray-500 mt-1">
-                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Upload images here</a>
+                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Upload images here</a>
                 </p>
               )}
             </div>
@@ -578,7 +578,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                     }
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
-                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 ${
+                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
                     errors.imageInput ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="Paste image URL here or copy from Images section"
@@ -586,7 +586,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                 <button
                   type="button"
                   onClick={handleAddImage}
-                  className="px-4 py-2 bg-amber-900 text-white rounded-r-md hover:bg-amber-800 disabled:opacity-50"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 disabled:opacity-50"
                   disabled={!imageInput.trim()}
                 >
                   Add
@@ -596,7 +596,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                 <p className="mt-1 text-sm text-red-600">{errors.imageInput}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-amber-600 hover:text-amber-800">Images section</a>
+                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Images section</a>
               </p>
             </div>
 
@@ -612,12 +612,12 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                   accept="image/*"
                   onChange={(e) => handleDirectImageUpload(e.target.files)}
                   disabled={isUploading}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 disabled:opacity-50"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
                 />
 
                 {isUploading && (
                   <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-amber-600"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                     <span className="text-sm text-gray-600">{uploadProgress}</span>
                   </div>
                 )}
@@ -638,15 +638,15 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
           </div>
 
           {/* Published */}
-          <div className="flex items-center p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
             <input
               type="checkbox"
               id="published"
               checked={formData.published}
               onChange={(e) => setFormData(prev => ({ ...prev, published: e.target.checked }))}
-              className="h-5 w-5 text-amber-600 focus:ring-amber-500 border-amber-300 rounded"
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
             />
-            <label htmlFor="published" className="ml-3 block text-sm font-medium text-amber-900">
+            <label htmlFor="published" className="ml-3 block text-sm font-medium text-black">
               Published (visible to customers)
             </label>
           </div>
@@ -659,18 +659,18 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
           )}
 
           {/* Actions */}
-          <div className="flex justify-end space-x-4 pt-6 border-t border-amber-200">
+          <div className="flex justify-end space-x-4 pt-6 border-t border-black">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 border border-amber-300 rounded-lg text-amber-800 hover:bg-amber-50 transition-colors font-medium"
+              className="px-6 py-3 border border-black rounded-lg text-black hover:bg-gray-50 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 bg-amber-900 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm"
             >
               {isSubmitting ? 'Saving...' : (collection ? 'Update Collection' : 'Create Collection')}
             </button>

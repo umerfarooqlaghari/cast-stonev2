@@ -51,7 +51,7 @@ export default function OrderStatusModal({ order, statuses, onClose, onSuccess }
 
   const getStatusBadgeColor = (statusId: number) => {
     switch (statusId) {
-      case 1: return 'bg-yellow-100 text-yellow-800'; // Pending
+      case 1: return 'bg-blue-100 text-blue-800'; // Pending
       case 2: return 'bg-blue-100 text-blue-800'; // Processing
       case 3: return 'bg-purple-100 text-purple-800'; // Shipped
       case 4: return 'bg-green-100 text-green-800'; // Delivered
@@ -211,7 +211,7 @@ export default function OrderStatusModal({ order, statuses, onClose, onSuccess }
             <button
               type="submit"
               disabled={isSubmitting || selectedStatusId === order.statusId}
-              className="px-4 py-2 bg-amber-900 text-white rounded-md hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Updating...' : 'Update Status'}
             </button>

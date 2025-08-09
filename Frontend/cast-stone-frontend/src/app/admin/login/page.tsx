@@ -54,11 +54,11 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg border border-amber-200">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg border border-black">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-amber-900 mb-2">Cast Stone</h1>
-          <h2 className="text-2xl font-semibold text-black-800">Admin Portal</h2>
-          <p className="mt-3 text-sm text-amber-700">
+          <h1 className="text-4xl font-bold text-black mb-2">Cast Stone</h1>
+          <h2 className="text-2xl font-semibold text-black">Admin Portal</h2>
+          <p className="mt-3 text-sm text-black">
             Sign in to access the admin dashboard
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-amber-900 hover:bg-amber-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
             >
               {isSubmitting ? (
                 <div className="flex items-center">

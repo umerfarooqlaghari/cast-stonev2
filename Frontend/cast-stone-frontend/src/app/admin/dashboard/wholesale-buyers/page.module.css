@@ -108,7 +108,7 @@
 }
 
 .statNumber.pending {
-  color: #f59e0b;
+  color: #3b82f6;
 }
 
 .statNumber.approved {
@@ -199,8 +199,8 @@
 }
 
 .statusPending {
-  background: #fef3c7;
-  color: #92400e;
+  background: #dbeafe;
+  color: #1e40af;
 }
 
 .statusApproved {

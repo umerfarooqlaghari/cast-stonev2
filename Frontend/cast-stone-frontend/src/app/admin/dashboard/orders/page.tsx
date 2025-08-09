@@ -98,7 +98,7 @@ export default function OrdersPage() {
 
   const getStatusBadgeColor = (statusId: number) => {
     switch (statusId) {
-      case 1: return 'bg-yellow-100 text-yellow-800'; // Pending
+      case 1: return 'bg-blue-100 text-blue-800'; // Pending
       case 2: return 'bg-blue-100 text-blue-800'; // Processing
       case 3: return 'bg-purple-100 text-purple-800'; // Shipped
       case 4: return 'bg-green-100 text-green-800'; // Delivered
@@ -181,7 +181,7 @@ export default function OrdersPage() {
                   id="status"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value === '' ? '' : Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">All Statuses</option>
                   {statuses.map(status => (
@@ -200,7 +200,7 @@ export default function OrdersPage() {
                   id="date"
                   value={dateFilter}
                   onChange={(e) => setDateFilter(e.target.value as any)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="all">All Time</option>
                   <option value="today">Today</option>
@@ -215,7 +215,7 @@ export default function OrdersPage() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             {isLoading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-900 mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
                 <p className="mt-4 text-gray-600">Loading orders...</p>
               </div>
             ) : (
@@ -277,7 +277,7 @@ export default function OrdersPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button
                             onClick={() => handleViewDetails(order)}
-                            className="text-amber-600 hover:text-amber-900 mr-3"
+                            className="text-blue-600 hover:text-blue-900 mr-3"
                           >
                             View
                           </button>

@@ -148,40 +148,40 @@ export default function ImagesPage() {
       <AdminLayout>
         <div className="space-y-6">
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-sm border border-amber-200 p-6">
-            <h1 className="text-2xl font-bold text-amber-900 mb-2">Image Management</h1>
-            <p className="text-amber-700">
+          <div className="bg-white rounded-lg shadow-sm border border-blue-200 p-6">
+            <h1 className="text-2xl font-bold text-black mb-2">Image Management</h1>
+            <p className="text-black">
               Upload and manage images for your products and collections. Images are stored securely in the cloud.
             </p>
           </div>
 
           {/* Upload Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-amber-200 p-6">
-            <h2 className="text-xl font-semibold text-amber-900 mb-4">Upload Images</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-blue-200 p-6">
+            <h2 className="text-xl font-semibold text-black mb-4">Upload Images</h2>
             
             <div
-              className="border-2 border-dashed border-amber-300 rounded-lg p-8 text-center hover:border-amber-400 transition-colors"
+              className="border-2 border-dashed border-blue-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors"
               onDragOver={handleDragOver}
               onDrop={handleDrop}
             >
               <div className="space-y-4">
-                <div className="text-amber-600">
+                <div className="text-blue-600">
                   <svg className="mx-auto h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-lg text-amber-800">Drag and drop images here, or</p>
+                  <p className="text-lg text-black">Drag and drop images here, or</p>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
-                    className="mt-2 px-4 py-2 bg-amber-900 text-white rounded-md hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isUploading ? 'Uploading...' : 'Choose Files'}
                   </button>
                 </div>
-                <p className="text-sm text-amber-600">
+                <p className="text-sm text-blue-600">
                   Supports JPEG, PNG, GIF, and WebP files up to 10MB each
                 </p>
               </div>
@@ -198,11 +198,11 @@ export default function ImagesPage() {
 
             {/* Upload Progress */}
             {uploadProgress.length > 0 && (
-              <div className="mt-4 p-4 bg-amber-50 rounded-lg">
-                <h3 className="font-medium text-amber-900 mb-2">Upload Progress:</h3>
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                <h3 className="font-medium text-black mb-2">Upload Progress:</h3>
                 <div className="space-y-1">
                   {uploadProgress.map((message, index) => (
-                    <p key={index} className="text-sm text-amber-700">{message}</p>
+                    <p key={index} className="text-sm text-black">{message}</p>
                   ))}
                 </div>
               </div>
@@ -235,13 +235,13 @@ export default function ImagesPage() {
           )}
 
           {/* Images Gallery */}
-          <div className="bg-white rounded-lg shadow-sm border border-amber-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-blue-200 p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-amber-900">Uploaded Images ({images.length})</h2>
+              <h2 className="text-xl font-semibold text-black">Uploaded Images ({images.length})</h2>
               <button
                 onClick={fetchImages}
                 disabled={isLoading}
-                className="px-4 py-2 bg-amber-100 text-amber-800 rounded-md hover:bg-amber-200 disabled:opacity-50"
+                className="px-4 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 disabled:opacity-50"
               >
                 {isLoading ? 'Loading...' : 'Refresh'}
               </button>
@@ -249,61 +249,61 @@ export default function ImagesPage() {
 
             {isLoading ? (
               <div className="text-center py-8">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-900"></div>
-                <p className="mt-2 text-amber-700">Loading images...</p>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <p className="mt-2 text-black">Loading images...</p>
               </div>
             ) : images.length === 0 ? (
-              <div className="text-center py-8 text-amber-600">
+              <div className="text-center py-8 text-black">
                 <p>No images uploaded yet. Upload your first image above!</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-amber-200">
-                  <thead className="bg-amber-50">
+                <table className="min-w-full divide-y divide-blue-200">
+                  <thead className="bg-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                         Image
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                         File Name
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                         URL
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                         Uploaded
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-amber-900 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-amber-200">
+                  <tbody className="bg-white divide-y divide-blue-200">
                     {images.map((image) => (
-                      <tr key={image.publicId} className="hover:bg-amber-50">
+                      <tr key={image.publicId} className="hover:bg-blue-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <img
                             src={image.secureUrl}
                             alt={image.fileName}
-                            className="h-16 w-16 object-cover rounded-lg border border-amber-200"
+                            className="h-16 w-16 object-cover rounded-lg border border-blue-200"
                           />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-amber-900">{image.fileName}</div>
-                          <div className="text-sm text-amber-600">{image.publicId}</div>
+                          <div className="text-sm font-medium text-black">{image.fileName}</div>
+                          <div className="text-sm text-black">{image.publicId}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-sm text-amber-800 max-w-xs truncate" title={image.secureUrl}>
+                          <div className="text-sm text-black max-w-xs truncate" title={image.secureUrl}>
                             {image.secureUrl}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-amber-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
                           {new Date(image.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                           <button
                             onClick={() => copyToClipboard(image.secureUrl)}
-                            className="text-amber-600 hover:text-amber-900"
+                            className="text-blue-600 hover:text-blue-900"
                             title="Copy URL"
                           >
                             Copy URL
