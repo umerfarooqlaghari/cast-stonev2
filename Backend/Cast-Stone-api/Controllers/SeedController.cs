@@ -100,4 +100,22 @@ public class SeedController : ControllerBase
             return StatusCode(500, ApiResponse.ErrorResponse("Products seeding failed", new List<string> { ex.ToString() }));
         }
     }
+
+    /// <summary>
+    /// Seed wholesale buyer locations with random US coordinates
+    /// </summary>
+    [HttpPost("wholesale-buyer-locations")]
+    public async Task<ActionResult<ApiResponse>> SeedWholesaleBuyerLocations()
+    {
+        try
+        {
+            var seeder = new SeedWholesaleBuyerLocations(_context);
+            await seeder.SeedLocationsAsync();
+            return Ok(ApiResponse.SuccessResponse("Wholesale buyer locations seeded successfully"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse.ErrorResponse("Wholesale buyer location seeding failed", new List<string> { ex.ToString() }));
+        }
+    }
 }

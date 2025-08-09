@@ -255,6 +255,23 @@ public class WholesaleBuyersController : ControllerBase
             return StatusCode(500, ApiResponse<bool>.ErrorResponse($"Internal server error: {ex.Message}"));
         }
     }
+
+    /// <summary>
+    /// Get approved wholesale buyer locations for map display
+    /// </summary>
+    [HttpGet("locations")]
+    public async Task<ActionResult<ApiResponse<IEnumerable<WholesaleBuyerLocationResponse>>>> GetLocations()
+    {
+        try
+        {
+            var locations = await _wholesaleBuyerService.GetApprovedBuyerLocationsAsync();
+            return Ok(ApiResponse<IEnumerable<WholesaleBuyerLocationResponse>>.SuccessResponse(locations, "Wholesale buyer locations retrieved successfully"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse<IEnumerable<WholesaleBuyerLocationResponse>>.ErrorResponse($"Internal server error: {ex.Message}"));
+        }
+    }
 }
 
 public class ApproveRejectRequest

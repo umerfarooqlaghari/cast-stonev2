@@ -65,6 +65,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
     otherBusinessType: '',
     taxNumber: '',
     businessAddress: '',
+    geoLocation: '',
     state: '',
     city: '',
     zipCode: '',
@@ -100,7 +101,9 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
         newErrors.otherBusinessType = 'Please specify your business type';
       }
       if (!formData.businessAddress.trim()) newErrors.businessAddress = 'Business address is required';
+      if (!formData.geoLocation.trim()) newErrors.geoLocation = 'Geo location is required';
       if (!formData.state) newErrors.state = 'State is required';
+      if (!formData.country) newErrors.country = 'Country is required';
       if (!formData.city.trim()) newErrors.city = 'City is required';
       if (!formData.zipCode.trim()) newErrors.zipCode = 'ZIP code is required';
     } else if (step === 3) {
@@ -290,7 +293,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
       )}
 
       <div className={styles.formGroup}>
-        <label htmlFor="taxNumber">Tax ID Number (Optional)</label>
+        <label htmlFor="taxNumber">Tax ID Number *</label>
         <input
           type="text"
           id="taxNumber"
@@ -311,6 +314,19 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
         {errors.businessAddress && <span className={styles.errorText}>{errors.businessAddress}</span>}
       </div>
 
+      <div className={styles.formGroup}>
+        <label htmlFor="geoLocation">Geo Location PinPoints *</label>
+        <textarea
+          id="geoLocation"
+          value={formData.geoLocation}
+          onChange={(e) => handleInputChange('geoLocation', e.target.value)}
+          className={errors.geoLocation ? styles.error : ''}
+          rows={3}
+          placeholder="40.7128, -74.0060"
+        />
+        {errors.geoLocation && <span className={styles.errorText}>{errors.geoLocation}</span>}
+      </div>
+
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label htmlFor="state">State *</label>
@@ -329,25 +345,25 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
         </div>
 
           <div className={styles.formGroup}>
-          <label htmlFor="Country">Country *</label>
+          <label htmlFor="country">Country *</label>
           <input
             type="text"
             id="country"
-            value={formData.city}
+            value={formData.country}
             onChange={(e) => handleInputChange('country', e.target.value)}
-            className={errors.city ? styles.error : ''}
+            className={errors.country ? styles.error : ''}
           />
-          {errors.city && <span className={styles.errorText}>{errors.country}</span>}
+          {errors.country && <span className={styles.errorText}>{errors.country}</span>}
         </div>
-        
+
         <div className={styles.formGroup}>
-          <label htmlFor="city">city *</label>
+          <label htmlFor="city">City *</label>
           <input
             type="text"
             id="city"
             value={formData.city}
             onChange={(e) => handleInputChange('city', e.target.value)}
-            className={errors.country ? styles.error : ''}
+            className={errors.city ? styles.error : ''}
           />
           {errors.city && <span className={styles.errorText}>{errors.city}</span>}
         </div>

@@ -16,6 +16,7 @@ public class WholesaleBuyerResponse
     
     // Business Address
     public string BusinessAddress { get; set; } = string.Empty;
+    public string GeoLocation { get; set; } = string.Empty;
     public string State { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string ZipCode { get; set; } = string.Empty;

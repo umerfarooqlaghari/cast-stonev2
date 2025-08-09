@@ -267,4 +267,26 @@ public class WholesaleBuyerService : IWholesaleBuyerService
 
         return user.IsApproved;
     }
+
+    public async Task<IEnumerable<WholesaleBuyerLocationResponse>> GetApprovedBuyerLocationsAsync()
+    {
+        var approvedBuyers = await _wholesaleBuyerRepository.GetByStatusAsync("Approved");
+
+        return approvedBuyers
+            .Where(wb => wb.Latitude.HasValue && wb.Longitude.HasValue)
+            .Select(wb => new WholesaleBuyerLocationResponse
+            {
+                Id = wb.Id,
+                CompanyName = wb.CompanyName,
+                BusinessType = wb.BusinessType,
+                City = wb.City,
+                State = wb.State,
+                Country = wb.Country,
+                Latitude = wb.Latitude,
+                Longitude = wb.Longitude,
+                BusinessAddress = wb.BusinessAddress,
+                Phone = wb.Phone,
+                Email = wb.Email
+            });
+    }
 }

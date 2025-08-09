@@ -501,8 +501,9 @@ export interface WholesaleBuyer {
   companyName: string;
   businessType: string;
   otherBusinessType?: string;
-  taxNumber?: string;
+  taxNumber: string;
   businessAddress: string;
+  geoLocation: string;
   state: string;
   city: string;
   zipCode: string;
@@ -510,7 +511,7 @@ export interface WholesaleBuyer {
   howDidYouHear: string[];
   otherHowDidYouHear?: string;
   comments?: string;
-  status: string; // Pending, Approved, Rejected
+  status: string; 
   adminNotes?: string;
   approvedBy?: number;
   approvedAt?: string;
@@ -539,8 +540,9 @@ export interface CreateWholesaleBuyerRequest {
   companyName: string;
   businessType: string;
   otherBusinessType?: string;
-  taxNumber?: string;
+  taxNumber: string;
   businessAddress: string;
+  geoLocation: string;
   state: string;
   city: string;
   zipCode: string;

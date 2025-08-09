@@ -40,6 +40,10 @@ public class CreateWholesaleBuyerRequest
     [Required]
     [MaxLength(500)]
     public string BusinessAddress { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(500)]
+    public string GeoLocation { get; set; } = string.Empty;
     
     [Required]
     [MaxLength(100)]

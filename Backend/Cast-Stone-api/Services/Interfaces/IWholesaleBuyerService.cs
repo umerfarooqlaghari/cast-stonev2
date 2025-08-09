@@ -20,4 +20,5 @@ public interface IWholesaleBuyerService : IBaseService<WholesaleBuyer, Wholesale
     Task<WholesaleBuyerResponse?> ApproveApplicationAsync(int id, int approvedByUserId, string? adminNotes = null);
     Task<WholesaleBuyerResponse?> RejectApplicationAsync(int id, int rejectedByUserId, string? adminNotes = null);
     Task<bool> IsUserApprovedWholesaleBuyerAsync(string email);
+    Task<IEnumerable<WholesaleBuyerLocationResponse>> GetApprovedBuyerLocationsAsync();
 }

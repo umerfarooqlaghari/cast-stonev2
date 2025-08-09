@@ -44,6 +44,14 @@ public class WholesaleBuyer
     [Required]
     [MaxLength(500)]
     public string BusinessAddress { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(500)]
+    public string GeoLocation { get; set; } = string.Empty;
+
+    public double? Latitude { get; set; }
+
+    public double? Longitude { get; set; }
     
     [Required]
     [MaxLength(100)]

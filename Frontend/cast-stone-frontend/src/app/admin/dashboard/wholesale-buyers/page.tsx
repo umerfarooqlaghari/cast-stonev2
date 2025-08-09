@@ -344,7 +344,7 @@ function BuyerDetailsModal({ buyer, onClose, onApprove, onReject, isProcessing }
             <h3>Address</h3>
             <div className={styles.address}>
               <p>{buyer.businessAddress}</p>
-              <p>{buyer.city}, {buyer.state} {buyer.zipCode}</p>
+              <p>{buyer.city}, {buyer.state} {buyer.zipCode} {buyer.geoLocation}</p>
             </div>
 
             <h3>How They Heard About Us</h3>
