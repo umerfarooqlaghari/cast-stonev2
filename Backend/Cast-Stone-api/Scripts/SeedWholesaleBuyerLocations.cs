@@ -75,12 +75,20 @@ public class SeedWholesaleBuyerLocations
         {
             Console.WriteLine("Starting to seed wholesale buyer locations...");
 
-            // Get all wholesale buyers that don't have coordinates yet
+            // First, create some test wholesale buyers if none exist
+            var existingBuyers = await _context.WholesaleBuyers.CountAsync();
+            if (existingBuyers == 0)
+            {
+                Console.WriteLine("No wholesale buyers found. Creating test data...");
+                await CreateTestWholesaleBuyersAsync();
+            }
+
+            // Get all wholesale buyers that don't have proper GeoLocation format
             var buyersWithoutCoordinates = await _context.WholesaleBuyers
-                .Where(wb => wb.Latitude == null || wb.Longitude == null)
+                .Where(wb => string.IsNullOrEmpty(wb.GeoLocation) || !wb.GeoLocation.Contains(","))
                 .ToListAsync();
 
-            Console.WriteLine($"Found {buyersWithoutCoordinates.Count} wholesale buyers without coordinates");
+            Console.WriteLine($"Found {buyersWithoutCoordinates.Count} wholesale buyers without proper coordinates");
 
             if (!buyersWithoutCoordinates.Any())
             {
@@ -92,21 +100,21 @@ public class SeedWholesaleBuyerLocations
             {
                 // Get a random city
                 var randomCity = _usCities[_random.Next(_usCities.Count)];
-                
+
                 // Add some random variation to coordinates (within ~10 mile radius)
                 var latVariation = (_random.NextDouble() - 0.5) * 0.2; // ~±0.1 degrees
                 var lngVariation = (_random.NextDouble() - 0.5) * 0.2; // ~±0.1 degrees
-                
-                buyer.Latitude = randomCity.Lat + latVariation;
-                buyer.Longitude = randomCity.Lng + lngVariation;
-                
+
+                var finalLat = randomCity.Lat + latVariation;
+                var finalLng = randomCity.Lng + lngVariation;
+
                 // Update the location string to match the city
-                buyer.GeoLocation = $"{buyer.Latitude:F6}, {buyer.Longitude:F6}";
+                buyer.GeoLocation = $"{finalLat:F6}, {finalLng:F6}";
                 buyer.City = randomCity.City;
                 buyer.State = randomCity.State;
                 buyer.Country = "United States";
-                
-                Console.WriteLine($"Assigned coordinates to {buyer.FirstName} {buyer.LastName}: {buyer.Latitude:F6}, {buyer.Longitude:F6} ({randomCity.City}, {randomCity.State})");
+
+                Console.WriteLine($"Assigned coordinates to {buyer.FirstName} {buyer.LastName}: {finalLat:F6}, {finalLng:F6} ({randomCity.City}, {randomCity.State})");
             }
 
             await _context.SaveChangesAsync();
@@ -117,5 +125,48 @@ public class SeedWholesaleBuyerLocations
             Console.WriteLine($"Error seeding wholesale buyer locations: {ex.Message}");
             throw;
         }
+    }
+
+    private async Task CreateTestWholesaleBuyersAsync()
+    {
+        var testBuyers = new List<WholesaleBuyer>();
+
+        for (int i = 1; i <= 15; i++)
+        {
+            var randomCity = _usCities[_random.Next(_usCities.Count)];
+
+            // Add some random variation to coordinates (within ~10 mile radius)
+            var latVariation = (_random.NextDouble() - 0.5) * 0.2;
+            var lngVariation = (_random.NextDouble() - 0.5) * 0.2;
+            var finalLat = randomCity.Lat + latVariation;
+            var finalLng = randomCity.Lng + lngVariation;
+
+            var buyer = new WholesaleBuyer
+            {
+                Email = $"testbuyer{i}@example.com",
+                FirstName = $"Test{i}",
+                LastName = "Buyer",
+                Phone = $"555-000-{i:D4}",
+                CompanyName = $"Test Company {i}",
+                BusinessType = "Retailer",
+                BusinessAddress = $"{100 + i} Main St, {randomCity.City}, {randomCity.State}",
+                City = randomCity.City,
+                State = randomCity.State,
+                Country = "United States",
+                ZipCode = $"{10000 + i}",
+                GeoLocation = $"{finalLat:F6}, {finalLng:F6}",
+                Status = "Approved", // Make them approved so they show up in the map
+                HowDidYouHear = new List<string> { "Website" },
+                CreatedAt = DateTime.UtcNow,
+                ApprovedAt = DateTime.UtcNow
+            };
+
+            testBuyers.Add(buyer);
+        }
+
+        _context.WholesaleBuyers.AddRange(testBuyers);
+        await _context.SaveChangesAsync();
+
+        Console.WriteLine($"Created {testBuyers.Count} test wholesale buyers");
     }
 }

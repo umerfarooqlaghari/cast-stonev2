@@ -118,4 +118,40 @@ public class SeedController : ControllerBase
             return StatusCode(500, ApiResponse.ErrorResponse("Wholesale buyer location seeding failed", new List<string> { ex.ToString() }));
         }
     }
+
+    /// <summary>
+    /// Test database connection and check for missing columns
+    /// </summary>
+    [HttpPost("test-database")]
+    public async Task<ActionResult<ApiResponse>> TestDatabase()
+    {
+        try
+        {
+            var tester = new TestAndFixDatabase(_context);
+            await tester.TestDatabaseConnectionAsync();
+            return Ok(ApiResponse.SuccessResponse("Database test completed - check console output"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse.ErrorResponse("Database test failed", new List<string> { ex.ToString() }));
+        }
+    }
+
+    /// <summary>
+    /// Add missing Latitude and Longitude columns to WholesaleBuyers table
+    /// </summary>
+    [HttpPost("fix-database")]
+    public async Task<ActionResult<ApiResponse>> FixDatabase()
+    {
+        try
+        {
+            var tester = new TestAndFixDatabase(_context);
+            await tester.AddMissingColumnsAsync();
+            return Ok(ApiResponse.SuccessResponse("Database columns added successfully"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse.ErrorResponse("Database fix failed", new List<string> { ex.ToString() }));
+        }
+    }
 }

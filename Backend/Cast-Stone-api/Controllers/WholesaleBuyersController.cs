@@ -269,7 +269,32 @@ public class WholesaleBuyersController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResponse<IEnumerable<WholesaleBuyerLocationResponse>>.ErrorResponse($"Internal server error: {ex.Message}"));
+            return StatusCode(500, ApiResponse<IEnumerable<WholesaleBuyerLocationResponse>>.ErrorResponse($"Internal server error: {ex.Message}. Stack trace: {ex.StackTrace}"));
+        }
+    }
+
+    /// <summary>
+    /// Debug endpoint to check wholesale buyers data
+    /// </summary>
+    [HttpGet("debug")]
+    public async Task<ActionResult<ApiResponse<object>>> Debug()
+    {
+        try
+        {
+            var allBuyers = await _wholesaleBuyerService.GetAllAsync();
+            var approvedBuyers = await _wholesaleBuyerService.GetApprovedBuyersAsync();
+
+            return Ok(ApiResponse<object>.SuccessResponse(new
+            {
+                TotalBuyers = allBuyers.Count(),
+                ApprovedBuyers = approvedBuyers.Count(),
+                AllBuyersData = allBuyers.Take(3), // First 3 for debugging
+                ApprovedBuyersData = approvedBuyers.Take(3) // First 3 for debugging
+            }, "Debug data retrieved successfully"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse<object>.ErrorResponse($"Debug error: {ex.Message}. Stack trace: {ex.StackTrace}"));
         }
     }
 }

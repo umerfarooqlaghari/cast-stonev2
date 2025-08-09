@@ -273,20 +273,52 @@ public class WholesaleBuyerService : IWholesaleBuyerService
         var approvedBuyers = await _wholesaleBuyerRepository.GetByStatusAsync("Approved");
 
         return approvedBuyers
-            .Where(wb => wb.Latitude.HasValue && wb.Longitude.HasValue)
-            .Select(wb => new WholesaleBuyerLocationResponse
+            .Where(wb => !string.IsNullOrEmpty(wb.GeoLocation))
+            .Select(wb =>
             {
-                Id = wb.Id,
-                CompanyName = wb.CompanyName,
-                BusinessType = wb.BusinessType,
-                City = wb.City,
-                State = wb.State,
-                Country = wb.Country,
-                Latitude = wb.Latitude,
-                Longitude = wb.Longitude,
-                BusinessAddress = wb.BusinessAddress,
-                Phone = wb.Phone,
-                Email = wb.Email
-            });
+                var (latitude, longitude) = ParseGeoLocation(wb.GeoLocation);
+                return new WholesaleBuyerLocationResponse
+                {
+                    Id = wb.Id,
+                    CompanyName = wb.CompanyName,
+                    BusinessType = wb.BusinessType,
+                    City = wb.City,
+                    State = wb.State,
+                    Country = wb.Country,
+                    GeoLocation = wb.GeoLocation,
+                    Latitude = latitude,
+                    Longitude = longitude,
+                    BusinessAddress = wb.BusinessAddress,
+                    Phone = wb.Phone,
+                    Email = wb.Email
+                };
+            })
+            .Where(response => response.Latitude.HasValue && response.Longitude.HasValue);
+    }
+
+    private (double?, double?) ParseGeoLocation(string geoLocation)
+    {
+        if (string.IsNullOrEmpty(geoLocation))
+            return (null, null);
+
+        try
+        {
+            // Expected format: "latitude, longitude" or "latitude,longitude"
+            var parts = geoLocation.Split(',');
+            if (parts.Length == 2)
+            {
+                if (double.TryParse(parts[0].Trim(), out double lat) &&
+                    double.TryParse(parts[1].Trim(), out double lng))
+                {
+                    return (lat, lng);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning($"Failed to parse GeoLocation '{geoLocation}': {ex.Message}");
+        }
+
+        return (null, null);
     }
 }
