@@ -38,7 +38,7 @@ const CompletedProjectsCarousel: React.FC<CompletedProjectsCarouselProps> = ({
   subtitle = "Discover our stunning architectural stone installations",
   className = ''
 }) => {
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<never>(null);
 
   if (!projects || projects.length === 0) {
     return (
