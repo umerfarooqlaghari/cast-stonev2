@@ -10,6 +10,10 @@ import { MagazineProductGrid } from '@/components/products';
 // import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
 // import { TestimonialsSection } from '@/components/Home/TestimonialsSection/TestimonialsSection';
 import { FullScreenBanner, MasonryCollage } from '@/components/collections';
+import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
+import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
+import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
+import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
 import styles from './collectionPage.module.css';
 import MagazineSection from '@/components/ui/MagazineSection/MagazineSection';
 
@@ -43,6 +47,110 @@ export default function CollectionPage() {
     sortBy: 'name',
     sortDirection: 'asc'
   });
+
+  // Check if this collection is in the Architectural Design hierarchy
+  const isArchitecturalDesign = collection ? isArchitecturalDesignHierarchySync(collection) : false;
+
+  // Sample data for Architectural Design hierarchy collections
+  const zigzagContentData: ZigzagContentItem[] = [
+    {
+      id: '1',
+      title: 'ARCHITECTURAL EXCELLENCE',
+      content: [
+        'Our architectural stone collection represents the pinnacle of craftsmanship and design innovation. Each piece is meticulously crafted to meet the highest standards of architectural excellence.',
+        'From classical columns to contemporary facades, our collection offers versatile solutions for architects and designers seeking to create timeless structures that stand the test of time.'
+      ],
+      imageSrc: '/images/CollectionBackground.jpg',
+      imageAlt: 'Architectural Excellence'
+    },
+    {
+      id: '2',
+      title: 'PRECISION CRAFTSMANSHIP',
+      content: [
+        'Every element in our architectural collection is created with precision and attention to detail. Our master craftsmen combine traditional techniques with modern technology to achieve unparalleled quality.',
+        'The result is a collection of architectural elements that not only meet structural requirements but also elevate the aesthetic appeal of any project.'
+      ],
+      imageSrc: '/images/CollectionBackground2.jpg',
+      imageAlt: 'Precision Craftsmanship'
+    },
+    {
+      id: '3',
+      title: 'TIMELESS DESIGN',
+      content: [
+        'Our architectural stone pieces are designed to transcend trends and create lasting beauty. Drawing inspiration from classical architecture while embracing contemporary sensibilities.',
+        'Each piece in our collection contributes to creating spaces that are both functional and inspiring, making every project a testament to enduring design principles.'
+      ],
+      imageSrc: '/images/CollectionBackground3.jpg',
+      imageAlt: 'Timeless Design'
+    }
+  ];
+
+  const staticCompletedProjectsData: StaticCompletedProject[] = [
+    // Projects for Collection ID 1 (Architectural Design)
+    {
+      id: 'arch-1',
+      collectionId: 1,
+      title: 'Grand Estate Entrance',
+      description: 'Magnificent entrance featuring custom cast stone columns and decorative elements that create a stunning first impression for this luxury residential project.',
+      images: ['/images/catalog-banner-bg.jpg', '/images/CollectionBackground.jpg'],
+      imageAlts: ['Grand Estate Entrance - Main View', 'Grand Estate Entrance - Detail View'],
+      location: 'Beverly Hills, CA',
+      completedDate: '2023',
+      projectType: 'Residential',
+      clientName: 'Private Estate'
+    },
+    {
+      id: 'arch-2',
+      collectionId: 1,
+      title: 'Corporate Headquarters Facade',
+      description: 'Modern corporate building featuring our architectural stone elements that blend contemporary design with classical elegance, creating an impressive business presence.',
+      images: ['/images/CollectionBackground2.jpg', '/images/CollectionBackground3.jpg'],
+      imageAlts: ['Corporate Headquarters - Facade', 'Corporate Headquarters - Entrance Detail'],
+      location: 'Manhattan, NY',
+      completedDate: '2023',
+      projectType: 'Commercial',
+      clientName: 'Fortune 500 Company'
+    },
+    // Projects for Collection ID 2 (if it exists under Architectural Design)
+    {
+      id: 'sub-1',
+      collectionId: 2,
+      title: 'Luxury Hotel Restoration',
+      description: 'Historic hotel restoration project showcasing our ability to recreate period-appropriate architectural details while maintaining modern functionality.',
+      images: ['/images/CollectionBackground.jpg'],
+      imageAlts: ['Luxury Hotel Restoration - Historic Facade'],
+      location: 'Charleston, SC',
+      completedDate: '2022',
+      projectType: 'Restoration',
+      clientName: 'Historic Hotels Group'
+    },
+    // Projects for Collection ID 3 (if it exists under Architectural Design)
+    {
+      id: 'sub-2',
+      collectionId: 3,
+      title: 'Private Villa Courtyard',
+      description: 'Elegant courtyard design featuring custom fountains and architectural elements that create a serene outdoor space for relaxation and entertainment.',
+      images: ['/images/CollectionBackground3.jpg', '/images/catalog-banner-bg.jpg'],
+      imageAlts: ['Private Villa Courtyard - Overview', 'Private Villa Courtyard - Fountain Detail'],
+      location: 'Malibu, CA',
+      completedDate: '2023',
+      projectType: 'Residential',
+      clientName: 'Private Residence'
+    },
+    // Additional projects for other collection IDs
+    {
+      id: 'other-1',
+      collectionId: 4,
+      title: 'Museum Gallery Enhancement',
+      description: 'Contemporary museum project featuring clean lines and modern architectural stone elements that complement the artistic displays.',
+      images: ['/images/CollectionBackground2.jpg'],
+      imageAlts: ['Museum Gallery - Modern Stone Elements'],
+      location: 'Los Angeles, CA',
+      completedDate: '2023',
+      projectType: 'Cultural',
+      clientName: 'Contemporary Art Museum'
+    }
+  ];
 
   useEffect(() => {
     if (collectionId) {
@@ -337,7 +445,53 @@ export default function CollectionPage() {
     );
   }
 
-  // For level 1 & 2 collections, use the new 4-section design
+  // For level 1 & 2 collections, check if it's Architectural Design hierarchy
+  if (isArchitecturalDesign) {
+    // Special layout for Architectural Design hierarchy collections
+    return (
+      <div className={styles.newCollectionPage}>
+        {/* Section 1: Full-Screen Banner */}
+        <FullScreenBanner
+          title={collection.name}
+          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+          imageSrc={collection.images && collection.images.length > 0
+            ? collection.images[0]
+            : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
+          imageAlt={collection.name}
+          badge={`${childCollections.length} ${collection.level === 1 ? 'Categories' : 'Subcategories'}`}
+        />
+
+        {/* Section 2: NEW - Elegant Description Section */}
+        <ElegantDescriptionSection
+          title="About This Collection"
+          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space. Each piece represents the pinnacle of craftsmanship and design innovation."}
+        />
+
+        {/* Section 3: Child Collections Masonry */}
+        <MasonryCollage
+          collections={childCollections}
+          title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
+          subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
+        />
+
+        {/* Section 4: Zigzag Content Section */}
+        <ZigzagContentSection
+          items={zigzagContentData}
+          maxItems={3}
+        />
+
+        {/* Section 5: Static Completed Projects */}
+        <StaticCompletedProjects
+          projects={staticCompletedProjectsData}
+          currentCollectionId={collection.id}
+          title="Featured Projects"
+          subtitle="Explore our stunning architectural stone installations"
+        />
+      </div>
+    );
+  }
+
+  // For non-Architectural Design collections, use the standard layout
   return (
     <div className={styles.newCollectionPage}>
       {/* Section 1: Full-Screen Banner */}

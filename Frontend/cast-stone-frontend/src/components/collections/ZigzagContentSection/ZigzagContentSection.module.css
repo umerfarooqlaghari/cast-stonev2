@@ -1,0 +1,224 @@
+/* Zigzag Content Section Styles */
+.zigzagSection {
+  padding: 8rem 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+}
+
+/* Letter Animation Wrapper */
+.letterWrapper {
+  width: 100%;
+}
+
+.letterContainer {
+  position: relative;
+  width: 100%;
+}
+
+.letterFoldLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ddd 50%, transparent 100%);
+  z-index: 10;
+}
+
+/* Content Item Styles */
+.contentItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  min-height: 500px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 0;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.1),
+    0 1px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 4;
+  width: 100%;
+}
+
+.contentItemReverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.contentItemReverse .imageContainer {
+  order: 2;
+}
+
+.contentItemReverse .contentContainer {
+  order: 1;
+}
+
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  height: 500px;
+}
+
+.contentImage {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.contentImage:hover {
+  transform: scale(1.02);
+}
+
+.contentContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.contentText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4a4a4a;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.contentText:last-child {
+  margin-bottom: 0;
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .zigzagSection {
+    padding: 6rem 0;
+  }
+
+  .container {
+    gap: 6rem;
+    padding: 0 3rem;
+  }
+
+  .contentItem {
+    gap: 3rem;
+    min-height: 400px;
+    padding: 3rem 4rem;
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.08),
+      0 1px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  .imageContainer {
+    height: 400px;
+  }
+
+  .contentTitle {
+    font-size: 2rem;
+  }
+
+  .contentText {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .zigzagSection {
+    padding: 4rem 0;
+  }
+
+  .container {
+    gap: 4rem;
+    padding: 0 2rem;
+  }
+
+  .contentItem,
+  .contentItemReverse {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    min-height: auto;
+    text-align: center;
+    padding: 3rem 2rem;
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .imageContainer {
+    height: 300px;
+    order: 1;
+  }
+
+  .contentContainer {
+    padding: 1rem;
+    order: 2;
+  }
+
+  .contentTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contentText {
+    font-size: 1rem;
+    text-align: left;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .zigzagSection {
+    padding: 3rem 0;
+  }
+
+  .container {
+    gap: 3rem;
+    padding: 0 1rem;
+  }
+
+  .contentItem,
+  .contentItemReverse {
+    padding: 2rem 1rem;
+    box-shadow:
+      0 4px 15px rgba(0, 0, 0, 0.05),
+      0 1px 3px rgba(0, 0, 0, 0.02);
+  }
+
+  .contentTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .contentText {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .imageContainer {
+    height: 250px;
+  }
+}
