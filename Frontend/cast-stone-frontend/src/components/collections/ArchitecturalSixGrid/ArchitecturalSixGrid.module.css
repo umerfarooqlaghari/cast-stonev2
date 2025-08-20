@@ -1,0 +1,111 @@
+/* Layout grid for Architectural Designs (Collection 1 only) */
+.grid {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-rows: 290px 290px 200px;
+  grid-gap: 16px;
+  grid-template-areas:
+    'big midTop rightTall'
+    'big midBottom rightTall'
+    'small1 small2 cta';
+}
+
+.tile {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #0f172a; /* fallback */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.imageBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.05) 100%);
+}
+
+.title {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+}
+
+/* Areas */
+.big { grid-area: big; }
+.midTop { grid-area: midTop; }
+.midBottom { grid-area: midBottom; }
+.rightTall { grid-area: rightTall; }
+.small1 { grid-area: small1; }
+.small2 { grid-area: small2; }
+.cta { grid-area: cta; }
+
+.link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ctaTile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  background: #0f172a; /* deep teal */
+  color: #e6f2f7;
+}
+
+.ctaHeading {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ctaButton {
+  align-self: flex-start;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 220px 220px 160px;
+    grid-template-areas:
+      'big big'
+      'midTop rightTall'
+      'midBottom rightTall'
+      'small1 small2'
+      'cta cta';
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, 200px);
+    grid-template-areas:
+      'big'
+      'midTop'
+      'rightTall'
+      'midBottom'
+      'small1'
+      'small2'
+      'cta';
+  }
+}

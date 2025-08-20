@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cast Stone - Modern Web Application",
+  title: "Cast Stone International",
   description: "A modern web application built with Next.js and .NET Core",
 };
 

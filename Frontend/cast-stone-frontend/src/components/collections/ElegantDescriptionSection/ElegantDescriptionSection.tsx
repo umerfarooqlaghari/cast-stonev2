@@ -43,7 +43,6 @@ const ElegantDescriptionSection: React.FC<ElegantDescriptionSectionProps> = ({
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
               <h2 className={styles.title}>{title}</h2>
-              <div className={styles.titleUnderline}></div>
             </motion.div>
           )}
 

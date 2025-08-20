@@ -9,7 +9,7 @@ import { productService, collectionService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
 // import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
 // import { TestimonialsSection } from '@/components/Home/TestimonialsSection/TestimonialsSection';
-import { FullScreenBanner, MasonryCollage } from '@/components/collections';
+import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
@@ -463,16 +463,20 @@ export default function CollectionPage() {
 
         {/* Section 2: NEW - Elegant Description Section */}
         <ElegantDescriptionSection
-          title="About This Collection"
-          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space. Each piece represents the pinnacle of craftsmanship and design innovation."}
+          title="Standard & bespoke designs tailored to you"
+          description={collection.description || "Specializing in manufacturing Bespoke architectural cast stone designs for 32 years. We believe the architecture should be a reflection of individuality and personal taste. Our dedicated team members and highly skilled designers and craftsmen work closely with clients to turn their architectural dreams into reality. From intricate facades to majestic columns and exquisite stone details, we pride ourselves on creating one-of-a-kind pieces that transform structures into timeless works of art."}
         />
 
-        {/* Section 3: Child Collections Masonry */}
-        <MasonryCollage
-          collections={childCollections}
-          title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
-          subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
-        />
+        {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
+        {collection.id === 1 ? (
+          <ArchitecturalSixGrid collections={childCollections} />
+        ) : (
+          <MasonryCollage
+            collections={childCollections}
+            title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
+            subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
+          />
+        )}
 
         {/* Section 4: Zigzag Content Section */}
         <ZigzagContentSection

@@ -29,7 +29,7 @@
 
 .content {
   text-align: center;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   position: relative;
 }
@@ -41,8 +41,8 @@
 
 .title {
   font-size: 3.5rem;
-  font-weight: 300;
-  color: #1a1a1a;
+  font-weight: 250;
+  color: #342883ff;
   margin-bottom: 1rem;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -67,7 +67,7 @@
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background: #d4af37;
+  background: #342883ff;
   border-radius: 50%;
   box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
 }
@@ -91,11 +91,6 @@
   margin-bottom: 0;
 }
 
-.descriptionText::first-letter {
-  font-size: 1.4em;
-  font-weight: 600;
-  color: #2c2c2c;
-}
 
 .decorativeElements {
   position: relative;
@@ -105,26 +100,8 @@
   justify-content: center;
 }
 
-.decorativeCircle {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #d4af37;
-  border-radius: 50%;
-  position: relative;
-  background: transparent;
-}
 
-.decorativeCircle::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  background: #d4af37;
-  border-radius: 50%;
-}
+
 
 .decorativeLine {
   position: absolute;
@@ -135,9 +112,9 @@
   background: linear-gradient(
     90deg, 
     transparent 0%, 
-    rgba(212, 175, 55, 0.3) 20%, 
-    rgba(212, 175, 55, 0.6) 50%, 
-    rgba(212, 175, 55, 0.3) 80%, 
+    rgba(45, 29, 120, 0.3) 20%, 
+    rgba(34, 34, 142, 0.6) 50%, 
+    rgba(42, 25, 138, 0.3) 80%, 
     transparent 100%
   );
   z-index: -1;

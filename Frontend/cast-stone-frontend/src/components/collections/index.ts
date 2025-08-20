@@ -6,3 +6,4 @@ export { default as ZigzagContentSection } from './ZigzagContentSection/ZigzagCo
 export { default as CompletedProjectsCarousel } from './CompletedProjectsCarousel/CompletedProjectsCarousel';
 export { default as StaticCompletedProjects } from './StaticCompletedProjects/StaticCompletedProjects';
 export { default as ElegantDescriptionSection } from './ElegantDescriptionSection/ElegantDescriptionSection';
+export { default as ArchitecturalSixGrid } from './ArchitecturalSixGrid/ArchitecturalSixGrid';
