@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
@@ -589,13 +590,7 @@ export default function CollectionPage() {
           maxItems={5}
         />
 
-        {/* Section 5: Static Completed Projects */}
-        <StaticCompletedProjects
-          projects={staticCompletedProjectsData}
-          currentCollectionId={collection.id}
-          title="Featured Projects"
-          subtitle="Explore our stunning architectural stone installations"
-        />
+        
       </div>
     );
   }
