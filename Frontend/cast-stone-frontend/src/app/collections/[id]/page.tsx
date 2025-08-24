@@ -51,37 +51,142 @@ export default function CollectionPage() {
   // Check if this collection is in the Architectural Design hierarchy
   const isArchitecturalDesign = collection ? isArchitecturalDesignHierarchySync(collection) : false;
 
-  // Sample data for Architectural Design hierarchy collections
+  // Zigzag content now supports up to 3+ subsections per item. Empty contents are hidden.
   const zigzagContentData: ZigzagContentItem[] = [
     {
       id: '1',
-      title: 'ARCHITECTURAL EXCELLENCE',
-      content: [
-        'Our architectural stone collection represents the pinnacle of craftsmanship and design innovation. Each piece is meticulously crafted to meet the highest standards of architectural excellence.',
-        'From classical columns to contemporary facades, our collection offers versatile solutions for architects and designers seeking to create timeless structures that stand the test of time.'
-      ],
-      imageSrc: '/images/CollectionBackground.jpg',
-      imageAlt: 'Architectural Excellence'
+      title: 'Serving All Homeowners',
+      imageSrc: '/images/content1.jpg',
+      imageAlt: 'Serving All Homeowners',
+      sections: [
+        {
+          subtitle: 'Serving All Homeowners',
+          content:
+            "Have architectural inspiration and ready to design your home? We can help. Simply send us pictures or conceptual drawings and we will work with you to achieve your goals."
+        },
+        {
+          subtitle: 'Builders, Architects, Designers, Or Developers',
+          content:
+            "Our dedicated team will work hand in hand to ensure we work according to your specification, technical drawings and meet your project goals all while ensuring we meet all standard building requirements."
+        },
+        {
+          subtitle: '100% Customer Satisfaction',
+          content:
+            "We are resolutely dedicated to delivering superior workmanship, quality materials, rigorous quality control, and a personalized approach to exceed customer expectations."
+        }
+      ]
     },
     {
       id: '2',
-      title: 'PRECISION CRAFTSMANSHIP',
-      content: [
-        'Every element in our architectural collection is created with precision and attention to detail. Our master craftsmen combine traditional techniques with modern technology to achieve unparalleled quality.',
-        'The result is a collection of architectural elements that not only meet structural requirements but also elevate the aesthetic appeal of any project.'
-      ],
-      imageSrc: '/images/CollectionBackground2.jpg',
-      imageAlt: 'Precision Craftsmanship'
+      title: 'Why Choose Us',
+      imageSrc: '/images/content2.jpg',
+      imageAlt: 'Why Choose Us',
+      sections: [
+        {
+          subtitle: 'Diverse Divisions',
+          content:
+            "Three distinct divisions let customers access custom architectural designs, European garden ornaments, and imported pottery, all under one roof."
+        },
+        {
+          subtitle: 'Quality Control',
+          content:
+            "Every product undergoes rigorous checks to guarantee it meets or exceeds exacting standards."
+        },
+        {
+          subtitle: 'End-to-End Services',
+          content:
+            "From design consultation to production and delivery, we provide end‑to‑end solutions for a seamless experience."
+        }
+      ]
     },
     {
       id: '3',
-      title: 'TIMELESS DESIGN',
-      content: [
-        'Our architectural stone pieces are designed to transcend trends and create lasting beauty. Drawing inspiration from classical architecture while embracing contemporary sensibilities.',
-        'Each piece in our collection contributes to creating spaces that are both functional and inspiring, making every project a testament to enduring design principles.'
-      ],
-      imageSrc: '/images/CollectionBackground3.jpg',
-      imageAlt: 'Timeless Design'
+      title: 'Production Processes',
+      imageSrc: '/images/content3.jpg',
+      imageAlt: 'Production Processes',
+      sections: [
+        {
+          subtitle: 'Precise Manufacturing',
+          content:
+            "State‑of‑the‑art facilities equipped with the latest technology ensure precision and accuracy in every piece we create."
+        },
+        {
+          subtitle: 'Quality Control',
+          content:
+            "Each product is meticulously inspected to ensure it not only meets but exceeds customer expectations."
+        },
+        {
+          subtitle: 'Customization',
+          content:
+            "We work closely with clients to create tailored solutions of the highest quality, aligned with each client’s design."
+        }
+      ]
+    },
+    {
+      id: '4',
+      title: 'Our Pledge To Serve You',
+      imageSrc: '/images/content4.jpg',
+      imageAlt: 'Our Pledge To Serve You',
+      sections: [
+        {
+          subtitle: 'Personalized Attention',
+          content:
+            "We view every interaction as an opportunity to exceed expectations and take pride in the personalized attention we provide."
+        },
+        {
+          subtitle: 'Client‑Centered Collaboration',
+          content:
+            "We prioritize clear communication and open collaboration, fostering trust and partnership with our clients throughout every project."
+        },
+        {
+          subtitle: 'A Trusted Partner',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        }
+      ]
+    },
+    {
+      id: '5',
+      title: 'Additionally, we provide you with:',
+      imageSrc: '/images/content5.jpg',
+      imageAlt: 'What we Provide',
+      sections: [
+        {
+          subtitle: 'Exclusive Design Consultation',
+          content:
+            "We view every interaction as an opportunity to exceed expectations and take pride in the personalized attention we provide."
+        },
+        {
+          subtitle: 'Extended Warranty',
+          content:
+            "We prioritize clear communication and open collaboration, fostering trust and partnership with our clients throughout every project."
+        },
+        {
+          subtitle: 'Bulk Purchase Discounts',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        },
+                {
+          subtitle: 'Virtual 3D Renderings',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        },
+                {
+          subtitle: 'Frequent Buyer Rewards',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        },
+                {
+          subtitle: 'Project Management Support',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        },
+                {
+          subtitle: 'Flexible Payment Plans',
+          content:
+            "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
+        }
+      ]
     }
   ];
 
@@ -481,7 +586,7 @@ export default function CollectionPage() {
         {/* Section 4: Zigzag Content Section */}
         <ZigzagContentSection
           items={zigzagContentData}
-          maxItems={3}
+          maxItems={5}
         />
 
         {/* Section 5: Static Completed Projects */}

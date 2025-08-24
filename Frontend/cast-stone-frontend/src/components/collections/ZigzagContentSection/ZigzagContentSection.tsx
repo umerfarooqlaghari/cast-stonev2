@@ -5,12 +5,17 @@ import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import styles from './ZigzagContentSection.module.css';
 
+export interface ZigzagContentSubsection {
+  subtitle: string;
+  content: string;
+}
+
 export interface ZigzagContentItem {
   id: string;
   title: string;
-  content: string[];
   imageSrc: string;
   imageAlt: string;
+  sections: ZigzagContentSubsection[];
 }
 
 interface ZigzagContentSectionProps {
@@ -66,7 +71,7 @@ const LetterContainer: React.FC<{ children: React.ReactNode; delay?: number }> =
 const ZigzagContentSection: React.FC<ZigzagContentSectionProps> = ({ 
   items, 
   className = '',
-  maxItems = 3 
+  maxItems = 5 
 }) => {
   // Limit items to maxItems
   const limitedItems = items.slice(0, maxItems);
@@ -80,7 +85,8 @@ const ZigzagContentSection: React.FC<ZigzagContentSectionProps> = ({
       <div className={styles.container}>
         {limitedItems.map((item, index) => {
           const isReverse = index % 2 === 1; // Alternate layout: even indices = normal, odd indices = reverse
-          
+          const visibleSections = (item.sections || []).filter(s => s.content && s.content.trim().length > 0);
+
           return (
             <LetterContainer key={item.id} delay={index * 0.3}>
               <div className={`${styles.contentItem} ${isReverse ? styles.contentItemReverse : ''}`}>
@@ -90,7 +96,7 @@ const ZigzagContentSection: React.FC<ZigzagContentSectionProps> = ({
                     src={item.imageSrc}
                     alt={item.imageAlt}
                     className={styles.contentImage}
-                    width={600}
+                    width={400}
                     height={400}
                     style={{ objectFit: 'cover' }}
                   />
@@ -99,10 +105,11 @@ const ZigzagContentSection: React.FC<ZigzagContentSectionProps> = ({
                 {/* Content Container */}
                 <div className={styles.contentContainer}>
                   <h2 className={styles.contentTitle}>{item.title}</h2>
-                  {item.content.map((paragraph, paragraphIndex) => (
-                    <p key={paragraphIndex} className={styles.contentText}>
-                      {paragraph}
-                    </p>
+                  {visibleSections.map((section, sectionIndex) => (
+                    <div key={sectionIndex}>
+                      <h3 className={styles.subtitleHeading}>{section.subtitle}</h3>
+                      <p className={styles.contentText}>{section.content}</p>
+                    </div>
                   ))}
                 </div>
               </div>
