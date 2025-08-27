@@ -384,52 +384,97 @@ export default function CollectionPage() {
           description={collection.elegantDescription || collection.description || ''}
         />
 
-        {/* Section 3: Dynamic Image and Content (Image RIGHT) */}
+        {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) */}
         <section className={styles.dynamicSection}>
-          <div className={`${styles.container} ${styles.twoCol}`}>
-            <div className={styles.contentCol}>
-              <h3 className={styles.dynamicTitle}>{collection.section3Header || collection.name}</h3>
-              <p className={styles.dynamicDescription}>{collection.section3Content || ''}</p>
-              {collection.level === 3 && (
-                <Link href={`#products`} className={styles.dynamicButton}>
-                  Choose your style
-                  <span aria-hidden> →</span>
-                </Link>
-              )}
-            </div>
-            <div className={styles.imageCol}>
-              <div className={styles.imageWrap}>
-                <Image
-                  src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
-                  alt={`${collection.name} showcase`}
-                  fill
-                  className={styles.sectionImage}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
-                />
+          <div className={styles.container}>
+            <div className={styles.section3Hero}>
+              <div className={styles.twoCol}>
+                {/* Content */}
+                <div className={styles.section3ContentCol}>
+                  <span className={styles.section3Badge}>About {collection.name}</span>
+                  <h3 className={styles.section3Title}>{collection.section3Header || collection.name}</h3>
+                  {collection.section3Content && (
+                    <p className={styles.section3Description}>{collection.section3Content}</p>
+                  )}
+
+                  {/* Stats row */}
+                  <div className={styles.section3Stats}>
+                    <div className={styles.section3StatCard}>
+                      <strong>{filteredProducts.length}+</strong>
+                      <span>Styles</span>
+                    </div>
+                    <div className={styles.section3StatCard}>
+                      <strong>Premium</strong>
+                      <span>Craftsmanship</span>
+                    </div>
+                    <div className={styles.section3StatCard}>
+                      <strong>Custom</strong>
+                      <span>Options</span>
+                    </div>
+                  </div>
+
+                  {/* CTAs */}
+                  <div className={styles.section3Ctas}>
+                    <Link href="/contact" className={styles.section3PrimaryCta}>
+                      Get in touch
+                      <span aria-hidden> →</span>
+                    </Link>
+                    <Link href="#products" className={styles.section3GhostCta}>
+                      Choose your style
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Image */}
+                <div className={styles.section3ImageCol}>
+                  <div className={styles.section3ImageWrap}>
+                    <span aria-hidden className={styles.section3ImageOutline}></span>
+                    <Image
+                      src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
+                      alt={`${collection.name} showcase`}
+                      fill
+                      className={styles.section3Image}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 4: Additional Dynamic Content (Image LEFT | Content RIGHT) */}
+        {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) */}
         <section className={styles.dynamicSection}>
-          <div className={`${styles.container} ${styles.twoCol}`}>
-            <div className={styles.imageCol}>
-              <div className={styles.imageWrap}>
-                <Image
-                  src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
-                  alt={`${collection.name} additional showcase`}
-                  fill
-                  className={styles.sectionImage}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
-                />
+          <div className={styles.container}>
+            <div className={styles.section3Hero}>
+              <div className={styles.twoCol}>
+                {/* Image */}
+                <div className={styles.section3ImageCol}>
+                  <div className={styles.section3ImageWrap}>
+                    <span aria-hidden className={styles.section3ImageOutline}></span>
+                    <Image
+                      src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
+                      alt={`${collection.name} additional showcase`}
+                      fill
+                      className={styles.section3Image}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
+                    />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className={styles.section3ContentCol}>
+                  <span className={styles.section3Badge}>About {collection.name}</span>
+                  <h3 className={styles.section3Title}>{collection.section4Header || collection.name}</h3>
+                  {collection.section4Content && (
+                    <p className={styles.section3Description}>{collection.section4Content}</p>
+                  )}
+
+                  {/* Section 4: text + image only (no stat cards or CTAs) */}
+                </div>
               </div>
-            </div>
-            <div className={styles.contentCol}>
-              <h3 className={styles.dynamicTitle}>{collection.section4Header || collection.name}</h3>
-              <p className={styles.dynamicDescription}>{collection.section4Content || ''}</p>
             </div>
           </div>
         </section>
