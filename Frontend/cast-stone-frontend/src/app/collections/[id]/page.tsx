@@ -13,7 +13,7 @@ import StaticCompletedProjects, { StaticCompletedProject } from '@/components/co
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
 import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
 import styles from './collectionPage.module.css';
-import { motion } from 'framer-motion';
+import { motion, cubicBezier } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import StaticContentSection from './StaticContentSection';
@@ -41,6 +41,12 @@ export default function CollectionPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+
+  // Hover and motion preferences
+  const [section3Hovered, setSection3Hovered] = useState(false);
+  const [section4Hovered, setSection4Hovered] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -71,9 +77,34 @@ export default function CollectionPage() {
     show: { opacity: 1, y: 0 }
   };
 
+  // Shared transition for flip interactions
+  const flipTransition = { duration: 0.7, ease: cubicBezier(0.25, 0.46, 0.45, 0.94) } as const;
+
+
   // Check if this collection is in the Architectural Design hierarchy
   const isArchitecturalDesign = collection ? isArchitecturalDesignHierarchySync(collection) : false;
 
+
+  // Detect reduced motion preference and small screens
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mqReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mqSmall = window.matchMedia('(max-width: 900px)');
+
+    const updateReduced = () => setPrefersReducedMotion(mqReduced.matches);
+    const updateSmall = () => setIsSmallScreen(mqSmall.matches);
+
+    updateReduced();
+    updateSmall();
+
+    mqReduced.addEventListener?.('change', updateReduced);
+    mqSmall.addEventListener?.('change', updateSmall);
+
+    return () => {
+      mqReduced.removeEventListener?.('change', updateReduced);
+      mqSmall.removeEventListener?.('change', updateSmall);
+    };
+  }, []);
 
   // Precompute dynamic image paths for level-3 sections
   useEffect(() => {
@@ -387,10 +418,20 @@ export default function CollectionPage() {
         {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) */}
         <section className={styles.dynamicSection}>
           <div className={styles.container}>
-            <div className={styles.section3Hero}>
-              <div className={styles.twoCol}>
+            <motion.div
+              className={styles.section3Hero}
+              onHoverStart={() => (!prefersReducedMotion && !isSmallScreen) && setSection3Hovered(true)}
+              onHoverEnd={() => (!prefersReducedMotion && !isSmallScreen) && setSection3Hovered(false)}
+              animate={(!prefersReducedMotion && !isSmallScreen) ? { boxShadow: section3Hovered ? '0 18px 40px rgba(21,59,77,0.25)' : '0 0 0 rgba(0,0,0,0)' } : undefined}
+              transition={flipTransition}
+            >
+              <motion.div className={`${styles.twoCol} ${styles.twoColAreasRight} ${section3Hovered ? styles.flipped : ''}`} layout>
                 {/* Content */}
-                <div className={styles.section3ContentCol}>
+                <motion.div
+                  className={`${styles.section3ContentCol} ${styles.colContent}`}
+                  layout
+                  layoutId="s3-content"
+                >
                   <span className={styles.section3Badge}>About {collection.name}</span>
                   <h3 className={styles.section3Title}>{collection.section3Header || collection.name}</h3>
                   {collection.section3Content && (
@@ -423,11 +464,15 @@ export default function CollectionPage() {
                       Choose your style
                     </Link>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Image */}
-                <div className={styles.section3ImageCol}>
-                  <div className={styles.section3ImageWrap}>
+                <motion.div
+                  className={`${styles.section3ImageCol} ${styles.colImage}`}
+                  layout
+                  layoutId="s3-image-col"
+                >
+                  <motion.div className={styles.section3ImageWrap} layout animate={(!prefersReducedMotion && !isSmallScreen) ? { scale: 1, opacity: section3Hovered ? 0.99 : 1 } : undefined} transition={flipTransition}>
                     <span aria-hidden className={styles.section3ImageOutline}></span>
                     <Image
                       src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
@@ -437,21 +482,31 @@ export default function CollectionPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                       onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
                     />
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
         {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) */}
         <section className={styles.dynamicSection}>
           <div className={styles.container}>
-            <div className={styles.section3Hero}>
-              <div className={styles.twoCol}>
+            <motion.div
+              className={styles.section3Hero}
+              onHoverStart={() => (!prefersReducedMotion && !isSmallScreen) && setSection4Hovered(true)}
+              onHoverEnd={() => (!prefersReducedMotion && !isSmallScreen) && setSection4Hovered(false)}
+              animate={(!prefersReducedMotion && !isSmallScreen) ? { boxShadow: section4Hovered ? '0 18px 40px rgba(21,59,77,0.25)' : '0 0 0 rgba(0,0,0,0)' } : undefined}
+              transition={flipTransition}
+            >
+              <motion.div className={`${styles.twoCol} ${styles.twoColAreasLeft} ${section4Hovered ? styles.flipped : ''}`} layout>
                 {/* Image */}
-                <div className={styles.section3ImageCol}>
-                  <div className={styles.section3ImageWrap}>
+                <motion.div
+                  className={`${styles.section3ImageCol} ${styles.colImage}`}
+                  layout
+                  layoutId="s4-image-col"
+                >
+                  <motion.div className={styles.section3ImageWrap} layout animate={(!prefersReducedMotion && !isSmallScreen) ? { scale: 1, opacity: section4Hovered ? 0.99 : 1 } : undefined} transition={flipTransition}>
                     <span aria-hidden className={styles.section3ImageOutline}></span>
                     <Image
                       src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
@@ -461,21 +516,23 @@ export default function CollectionPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                       onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
                     />
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
                 {/* Content */}
-                <div className={styles.section3ContentCol}>
+                <motion.div
+                  className={`${styles.section3ContentCol} ${styles.colContent}`}
+                  layout
+                  layoutId="s4-content"
+                >
                   <span className={styles.section3Badge}>About {collection.name}</span>
                   <h3 className={styles.section3Title}>{collection.section4Header || collection.name}</h3>
                   {collection.section4Content && (
                     <p className={styles.section3Description}>{collection.section4Content}</p>
                   )}
-
-                  {/* Section 4: text + image only (no stat cards or CTAs) */}
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 

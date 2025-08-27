@@ -382,7 +382,27 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  align-items: center;
+  align-items: stretch; /* keep rows aligned; prevents diagonal feel */
+  /* Ensure section height exceeds image height */
+  min-height: 460px; /* image is 420px; +40px breathing room */
+}
+
+/* Explicit column ordering handled in markup via grid-areas */
+.twoColAreasRight { grid-template-areas: 'content image'; }
+.twoColAreasLeft  { grid-template-areas: 'image content'; }
+/* Flip helper toggles areas without changing DOM order */
+.flipped.twoColAreasRight { grid-template-areas: 'image content'; }
+.flipped.twoColAreasLeft  { grid-template-areas: 'content image'; }
+.colContent { grid-area: content; }
+.colImage   { grid-area: image; }
+
+/* Mobile: stack image then content for both orientations */
+@media (max-width: 900px) {
+  .twoCol { grid-template-columns: 1fr; }
+  .twoColAreasRight,
+  .twoColAreasLeft,
+  .flipped.twoColAreasRight,
+  .flipped.twoColAreasLeft { grid-template-areas: 'image' 'content'; }
 }
 
 /* Explicit column ordering handled in markup; no RTL needed */
@@ -454,6 +474,12 @@
   padding: 2rem;
   overflow: hidden;
 }
+
+/* motion polish on hover */
+.section3Hero:hover .section3ImageOutline {
+  border-color: rgba(255,255,255,0.35);
+}
+
 
 .section3Hero::after {
   content: "";
