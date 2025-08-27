@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
-// import { MagazineSection, MagazineGrid, MagazineCard } from '@/components/ui';
-// import { TestimonialsSection } from '@/components/Home/TestimonialsSection/TestimonialsSection';
 import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
 import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
 import styles from './collectionPage.module.css';
-import MagazineSection from '@/components/ui/MagazineSection/MagazineSection';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import StaticContentSection from './StaticContentSection';
 
 interface FilterState {
   search: string;
@@ -37,10 +37,11 @@ export default function CollectionPage() {
   const [childCollections, setChildCollections] = useState<Collection[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [rootRecommendations, setRootRecommendations] = useState<Collection[]>([]); // children of ID 1 for recommendations
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     priceRange: { min: 0, max: 10000 },
@@ -49,8 +50,38 @@ export default function CollectionPage() {
     sortDirection: 'asc'
   });
 
+  // Dynamic section images for level 3 collections (kept as fallback only)
+  const [section3ImgSrc, setSection3ImgSrc] = useState<string>('');
+  const [section4ImgSrc, setSection4ImgSrc] = useState<string>('');
+
+
+  // Refs for horizontal scroller
+  const recsScrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Framer Motion variants for staggered card animations
+  const gridMotion = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.12 }
+    }
+  };
+
+  const cardMotion = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   // Check if this collection is in the Architectural Design hierarchy
   const isArchitecturalDesign = collection ? isArchitecturalDesignHierarchySync(collection) : false;
+
+
+  // Precompute dynamic image paths for level-3 sections
+  useEffect(() => {
+    if (!Number.isNaN(collectionId)) {
+      setSection3ImgSrc(`/images/Collection${collectionId}.jpg`);
+      setSection4ImgSrc(`/images/Collection4Section${collectionId}.jpg`);
+    }
+  }, [collectionId]);
 
   // Zigzag content now supports up to 3+ subsections per item. Empty contents are hidden.
   const zigzagContentData: ZigzagContentItem[] = [
@@ -191,73 +222,6 @@ export default function CollectionPage() {
     }
   ];
 
-  const staticCompletedProjectsData: StaticCompletedProject[] = [
-    // Projects for Collection ID 1 (Architectural Design)
-    {
-      id: 'arch-1',
-      collectionId: 1,
-      title: 'Grand Estate Entrance',
-      description: 'Magnificent entrance featuring custom cast stone columns and decorative elements that create a stunning first impression for this luxury residential project.',
-      images: ['/images/catalog-banner-bg.jpg', '/images/CollectionBackground.jpg'],
-      imageAlts: ['Grand Estate Entrance - Main View', 'Grand Estate Entrance - Detail View'],
-      location: 'Beverly Hills, CA',
-      completedDate: '2023',
-      projectType: 'Residential',
-      clientName: 'Private Estate'
-    },
-    {
-      id: 'arch-2',
-      collectionId: 1,
-      title: 'Corporate Headquarters Facade',
-      description: 'Modern corporate building featuring our architectural stone elements that blend contemporary design with classical elegance, creating an impressive business presence.',
-      images: ['/images/CollectionBackground2.jpg', '/images/CollectionBackground3.jpg'],
-      imageAlts: ['Corporate Headquarters - Facade', 'Corporate Headquarters - Entrance Detail'],
-      location: 'Manhattan, NY',
-      completedDate: '2023',
-      projectType: 'Commercial',
-      clientName: 'Fortune 500 Company'
-    },
-    // Projects for Collection ID 2 (if it exists under Architectural Design)
-    {
-      id: 'sub-1',
-      collectionId: 2,
-      title: 'Luxury Hotel Restoration',
-      description: 'Historic hotel restoration project showcasing our ability to recreate period-appropriate architectural details while maintaining modern functionality.',
-      images: ['/images/CollectionBackground.jpg'],
-      imageAlts: ['Luxury Hotel Restoration - Historic Facade'],
-      location: 'Charleston, SC',
-      completedDate: '2022',
-      projectType: 'Restoration',
-      clientName: 'Historic Hotels Group'
-    },
-    // Projects for Collection ID 3 (if it exists under Architectural Design)
-    {
-      id: 'sub-2',
-      collectionId: 3,
-      title: 'Private Villa Courtyard',
-      description: 'Elegant courtyard design featuring custom fountains and architectural elements that create a serene outdoor space for relaxation and entertainment.',
-      images: ['/images/CollectionBackground3.jpg', '/images/catalog-banner-bg.jpg'],
-      imageAlts: ['Private Villa Courtyard - Overview', 'Private Villa Courtyard - Fountain Detail'],
-      location: 'Malibu, CA',
-      completedDate: '2023',
-      projectType: 'Residential',
-      clientName: 'Private Residence'
-    },
-    // Additional projects for other collection IDs
-    {
-      id: 'other-1',
-      collectionId: 4,
-      title: 'Museum Gallery Enhancement',
-      description: 'Contemporary museum project featuring clean lines and modern architectural stone elements that complement the artistic displays.',
-      images: ['/images/CollectionBackground2.jpg'],
-      imageAlts: ['Museum Gallery - Modern Stone Elements'],
-      location: 'Los Angeles, CA',
-      completedDate: '2023',
-      projectType: 'Cultural',
-      clientName: 'Contemporary Art Museum'
-    }
-  ];
-
   useEffect(() => {
     if (collectionId) {
       fetchData();
@@ -297,8 +261,22 @@ export default function CollectionPage() {
       } else {
         // Level 1 or 2: Show child collections
         const childCollectionsData = await collectionService.get.getChildren(collectionId);
+        // Debug: verify child collections for ID=2
+        if (collectionId >= 2 && collectionId <= 7) {
+          console.debug('Fetched child collections for ID=2:', childCollectionsData);
+        }
         setChildCollections(childCollectionsData);
         setProducts([]);
+
+        // Additional data needed when viewing collection ID 2
+        if (collectionId >= 2 && collectionId <= 7) {
+          try {
+            const rootChildren = await collectionService.get.getChildren(1);
+            setRootRecommendations(rootChildren);
+          } catch (e) {
+            console.warn('Failed to load recommendations (children of ID 1):', e);
+          }
+        }
       }
     } catch (err) {
       console.error('Error fetching collection data:', err);
@@ -332,7 +310,7 @@ export default function CollectionPage() {
     // Sorting
     filtered.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (filters.sortBy) {
         case 'name':
           comparison = a.name.localeCompare(b.name);
@@ -344,7 +322,7 @@ export default function CollectionPage() {
           comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           break;
       }
-      
+
       return filters.sortDirection === 'desc' ? -comparison : comparison;
     });
 
@@ -383,170 +361,99 @@ export default function CollectionPage() {
     );
   }
 
-  // For level 3 collections (products), keep the existing layout
+  // For level 3 collections (products), show specialized sections
   if (collection.level === 3) {
+    const bannerImage = collection.images && collection.images.length > 0
+      ? collection.images[0]
+      : 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center';
+
     return (
-      <div className={styles.collectionPage}>
-        {/* Hero Section */}
-        <MagazineSection
+      <div className={styles.newCollectionPage}>
+        {/* Section 1: Full-Screen Banner */}
+        <FullScreenBanner
           title={collection.name}
-          subtitle="Product Collection"
-          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
-          imageSrc={collection.images && collection.images.length > 0
-            ? collection.images[0]
-            : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
+          description={collection.description || ''}
+          imageSrc={bannerImage}
           imageAlt={collection.name}
-          imagePosition="left"
           badge={`${filteredProducts.length} Products`}
-          className={styles.heroSection}
         />
 
-        <div className={styles.container}>
-          <section className={styles.productsSection}>
-            <div className={styles.productsContainer}>
-              {/* Section Header with Search and Filters */}
-              <div className={styles.sectionHeader}>
-                <div className={styles.headerContent}>
-                  <h2 className={styles.sectionTitle}>Products in this Collection</h2>
-                  <p className={styles.sectionSubtitle}>
-                    Explore all the beautiful pieces in the {collection.name} collection
-                  </p>
-                </div>
-              </div>
+        {/* Section 2: Elegant Description Section (from collection fields) */}
+        <ElegantDescriptionSection
+          title={collection.elegantHeader || collection.name}
+          description={collection.elegantDescription || collection.description || ''}
+        />
 
-            {/* Search and Filter Bar */}
-            <div className={styles.filterSection}>
-              <div className={styles.searchBar}>
-                <div className={styles.searchInput}>
-                  <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={filters.search}
-                    onChange={(e) => handleFilterChange({ search: e.target.value })}
-                    className={styles.searchField}
-                  />
-                </div>
-
-                <button
-                  className={`${styles.filterToggle} ${showFilters ? styles.active : ''}`}
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Filters
-                </button>
-
-                <div className={styles.resultsCount}>
-                  {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
-                </div>
-              </div>
-
-          {/* Advanced Filters */}
-          {showFilters && (
-            <div className={styles.advancedFilters}>
-              <div className={styles.filterGrid}>
-                {/* Price Range */}
-                <div className={styles.filterGroup}>
-                  <label className={styles.filterLabel}>Price Range</label>
-                  <div className={styles.priceRange}>
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={filters.priceRange.min}
-                      onChange={(e) => handleFilterChange({
-                        priceRange: { ...filters.priceRange, min: Number(e.target.value) || 0 }
-                      })}
-                      className={styles.priceInput}
-                    />
-                    <span>to</span>
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={filters.priceRange.max}
-                      onChange={(e) => handleFilterChange({
-                        priceRange: { ...filters.priceRange, max: Number(e.target.value) || 10000 }
-                      })}
-                      className={styles.priceInput}
-                    />
-                  </div>
-                </div>
-
-                {/* Stock Filter */}
-                <div className={styles.filterGroup}>
-                  <label className={styles.checkboxLabel}>
-                    <input
-                      type="checkbox"
-                      checked={filters.inStockOnly}
-                      onChange={(e) => handleFilterChange({ inStockOnly: e.target.checked })}
-                      className={styles.checkbox}
-                    />
-                    In Stock Only
-                  </label>
-                </div>
-
-                {/* Sort Options */}
-                <div className={styles.filterGroup}>
-                  <label className={styles.filterLabel}>Sort By</label>
-                  <div className={styles.sortControls}>
-                    <select
-                      value={filters.sortBy}
-                      onChange={(e) => handleFilterChange({ sortBy: e.target.value as any })}
-                      className={styles.sortSelect}
-                    >
-                      <option value="name">Name</option>
-                      <option value="price">Price</option>
-                      <option value="newest">Newest</option>
-                    </select>
-                    
-                    <button
-                      className={`${styles.sortDirection} ${filters.sortDirection === 'desc' ? styles.desc : ''}`}
-                      onClick={() => handleFilterChange({
-                        sortDirection: filters.sortDirection === 'asc' ? 'desc' : 'asc'
-                      })}
-                      title={`Sort ${filters.sortDirection === 'asc' ? 'Descending' : 'Ascending'}`}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M7 10L12 15L17 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Clear Filters */}
-                <div className={styles.filterGroup}>
-                  <button onClick={clearFilters} className={styles.clearFilters}>
-                    Clear All Filters
-                  </button>
-                </div>
-              </div>
+        {/* Section 3: Dynamic Image and Content (Image RIGHT) */}
+        <section className={styles.dynamicSection}>
+          <div className={`${styles.container} ${styles.twoCol}`}>
+            <div className={styles.contentCol}>
+              <h3 className={styles.dynamicTitle}>{collection.section3Header || collection.name}</h3>
+              <p className={styles.dynamicDescription}>{collection.section3Content || ''}</p>
+              {collection.level === 3 && (
+                <Link href={`#products`} className={styles.dynamicButton}>
+                  Choose your style
+                  <span aria-hidden> →</span>
+                </Link>
+              )}
             </div>
-          )}
-        </div>
-
-              {/* Products Grid */}
-              <div className={styles.productsGrid}>
-                <MagazineProductGrid
-                  products={filteredProducts}
-                  isLoading={isLoading}
-                  showAddToCart={true}
-                  showViewDetails={true}
-                  columns={3}
-                  emptyMessage={
-                    filters.search || filters.inStockOnly ||
-                    filters.priceRange.min > 0 || filters.priceRange.max < 10000
-                      ? "No products match your current filters. Try adjusting your search criteria."
-                      : "This collection doesn&apos;t have any products yet."
-                  }
+            <div className={styles.imageCol}>
+              <div className={styles.imageWrap}>
+                <Image
+                  src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
+                  alt={`${collection.name} showcase`}
+                  fill
+                  className={styles.sectionImage}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Section 4: Additional Dynamic Content (Image LEFT | Content RIGHT) */}
+        <section className={styles.dynamicSection}>
+          <div className={`${styles.container} ${styles.twoCol}`}>
+            <div className={styles.imageCol}>
+              <div className={styles.imageWrap}>
+                <Image
+                  src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
+                  alt={`${collection.name} additional showcase`}
+                  fill
+                  className={styles.sectionImage}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
+                />
+              </div>
+            </div>
+            <div className={styles.contentCol}>
+              <h3 className={styles.dynamicTitle}>{collection.section4Header || collection.name}</h3>
+              <p className={styles.dynamicDescription}>{collection.section4Content || ''}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: Collage images for Level 3 (if provided) */}
+        {Array.isArray(collection.collageImageSection) && collection.collageImageSection.length > 0 && (
+          <section className={styles.dynamicSection}>
+            <div className={styles.container}>
+              <div className={styles.collageGrid}>
+                {collection.collageImageSection.map((src, idx) => (
+                  <div key={idx} className={styles.collageItem}>
+                    <div className={styles.imageWrap}>
+                      <Image src={src} alt={`${collection.name} collage ${idx+1}`} fill className={styles.sectionImage} sizes="(max-width: 768px) 100vw, 33vw" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
-        </div>
+        )}
+
+
+        {/* Products Section (with anchor) */}
+
       </div>
     );
   }
@@ -559,7 +466,7 @@ export default function CollectionPage() {
         {/* Section 1: Full-Screen Banner */}
         <FullScreenBanner
           title={collection.name}
-          description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+          description={collection.description || ''}
           imageSrc={collection.images && collection.images.length > 0
             ? collection.images[0]
             : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}
@@ -569,28 +476,125 @@ export default function CollectionPage() {
 
         {/* Section 2: NEW - Elegant Description Section */}
         <ElegantDescriptionSection
-          title="Standard & bespoke designs tailored to you"
-          description={collection.description || "Specializing in manufacturing Bespoke architectural cast stone designs for 32 years. We believe the architecture should be a reflection of individuality and personal taste. Our dedicated team members and highly skilled designers and craftsmen work closely with clients to turn their architectural dreams into reality. From intricate facades to majestic columns and exquisite stone details, we pride ourselves on creating one-of-a-kind pieces that transform structures into timeless works of art."}
+          title={collection.elegantHeader || collection.name}
+          description={collection.elegantDescription || collection.description || ''}
         />
 
-        {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
-        {collection.id === 1 ? (
+ {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
+        {collection.id === 1 && (
           <ArchitecturalSixGrid collections={childCollections} />
-        ) : (
-          <MasonryCollage
-            collections={childCollections}
-            title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
-            subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
+        )
+        }
+
+        {/* Section X: ID=2 exclusive sections */}
+        {(collection.id === 2 || collection.id === 3 || collection.id === 4 || collection.id === 5 || collection.id === 6 || collection.id === 7) && (
+          <>
+            {/* Section 1: Sub-category Grid (right aligned) */}
+            <section className={styles.id2Subcategories}>
+              <div className={styles.container}>
+                <div className={styles.id2TwoColumn}>
+                  <div className={styles.id2Sidebar}>
+                    <h3 className={styles.sidebarHeading}>Category</h3>
+                    <nav className={styles.categoryNav} aria-label="Subcategories">
+                      <ul className={styles.categoryList}>
+                        {childCollections.map((c) => (
+                          <li key={c.id} className={styles.categoryItem}>
+                            <Link href={`/collections/${c.id}`} className={styles.categoryLink}>{c.name}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+                  </div>
+                  <motion.div
+                    className={styles.id2Grid}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.2 }}
+                    variants={gridMotion}
+                  >
+                    {childCollections.map((c) => {
+                      const imageSrc = Array.isArray(c.images) && c.images.length > 0
+                        ? c.images[0]
+                        : "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop&crop=center";
+                      return (
+                        <motion.div key={c.id} variants={cardMotion} className={styles.id2Card}>
+                          <Link href={`/collections/${c.id}`} className={styles.imageCard}>
+                            <div className={styles.cardImageWrap}>
+                              <Image src={imageSrc} alt={c.name} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, 50vw" />
+                              <div className={styles.cardOverlay}>
+                                <h3 className={styles.cardTitle}>{c.name}</h3>
+                                 <p className={styles.cardDescription}>
+                                   {c.description || "Explore our collection of premium cast stone designs."}
+                                     </p>
+
+                              </div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Static Content (from collection fields) */}
+            <StaticContentSection
+              header={collection.staticContentHeader}
+              paragraph1={collection.staticContentParagraph1}
+              paragraph2={collection.staticContentParagraph2}
+              paragraph3={collection.staticContentParagraph3}
+            />
+
+            {/* Section 2: Recommendations (children of ID 1) */}
+            {rootRecommendations.length > 0 && (
+              <section className={styles.recommendationsSection}>
+                <div className={styles.container}>
+                  <div className={styles.recsHeader}>
+                    <h2 className={styles.recsTitle}>You may also like</h2>
+                    <div className={styles.recsNav}>
+                      <button type="button" className={styles.recsButton} onClick={() => recsScrollRef.current?.scrollBy({ left: -320, behavior: 'smooth' })} aria-label="Scroll left">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </button>
+                      <button type="button" className={styles.recsButton} onClick={() => recsScrollRef.current?.scrollBy({ left: 320, behavior: 'smooth' })} aria-label="Scroll right">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className={styles.recsScroller} ref={recsScrollRef}>
+                    {rootRecommendations.map((r) => {
+                      const imageSrc = Array.isArray(r.images) && r.images.length > 0
+                        ? r.images[0]
+                        : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=800&fit=crop&crop=center";
+                      return (
+                        <motion.div key={r.id} className={styles.recsItem} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={cardMotion}>
+                          <Link href={`/collections/${r.id}`} className={styles.imageCard}>
+                            <div className={styles.cardImageWrap}>
+                              <Image src={imageSrc} alt={r.name} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, 33vw" />
+                              <div className={styles.cardOverlay}>
+                                <h3 className={styles.cardTitle}>{r.name}</h3>
+                              </div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {/* Section 4: Zigzag Content Section - only on collection ID 1 */}
+        {collection.id === 1 && (
+          <ZigzagContentSection
+            items={zigzagContentData}
+            maxItems={5}
           />
         )}
 
-        {/* Section 4: Zigzag Content Section */}
-        <ZigzagContentSection
-          items={zigzagContentData}
-          maxItems={5}
-        />
 
-        
       </div>
     );
   }
@@ -601,7 +605,7 @@ export default function CollectionPage() {
       {/* Section 1: Full-Screen Banner */}
       <FullScreenBanner
         title={collection.name}
-        description={collection.description || "Discover this beautiful collection of handcrafted cast stone pieces, carefully curated to bring elegance and sophistication to your space."}
+        description={collection.description || ''}
         imageSrc={collection.images && collection.images.length > 0
           ? collection.images[0]
           : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"}

@@ -9,6 +9,22 @@ export interface Collection {
   tags: string[];
   images: string[];
   productIds?: number[];
+
+  // New optional content fields from backend
+  elegantHeader?: string | null;
+  elegantDescription?: string | null;
+  section3Header?: string | null;
+  section3Content?: string | null;
+  section3Image?: string | null;
+  section4Header?: string | null;
+  section4Content?: string | null;
+  section4Image?: string | null;
+  collageImageSection?: string[] | null;
+  staticContentHeader?: string | null;
+  staticContentParagraph1?: string | null;
+  staticContentParagraph2?: string | null;
+  staticContentParagraph3?: string | null;
+
   published: boolean;
   createdBy: string;
   createdAt: string;
@@ -29,10 +45,26 @@ export interface CollectionHierarchy {
   published: boolean;
   children: CollectionHierarchy[];
   productCount: number;
-  images?: string[]; 
+  images?: string[];
 }
 
 export interface CreateCollectionRequest {
+  // New content fields
+  elegantHeader?: string | null;
+  elegantDescription?: string | null;
+  section3Header?: string | null;
+  section3Content?: string | null;
+  section3Image?: string | null;
+  section4Header?: string | null;
+  section4Content?: string | null;
+  section4Image?: string | null;
+  collageImageSection?: string[] | null;
+  staticContentHeader?: string | null;
+  staticContentParagraph1?: string | null;
+  staticContentParagraph2?: string | null;
+  staticContentParagraph3?: string | null;
+
+  // Existing fields
   name: string;
   description?: string;
   level: number;
@@ -46,6 +78,22 @@ export interface CreateCollectionRequest {
 }
 
 export interface UpdateCollectionRequest {
+  // New content fields
+  elegantHeader?: string | null;
+  elegantDescription?: string | null;
+  section3Header?: string | null;
+  section3Content?: string | null;
+  section3Image?: string | null;
+  section4Header?: string | null;
+  section4Content?: string | null;
+  section4Image?: string | null;
+  collageImageSection?: string[] | null;
+  staticContentHeader?: string | null;
+  staticContentParagraph1?: string | null;
+  staticContentParagraph2?: string | null;
+  staticContentParagraph3?: string | null;
+
+  // Existing fields
   name: string;
   description?: string;
   level: number;
@@ -511,7 +559,7 @@ export interface WholesaleBuyer {
   howDidYouHear: string[];
   otherHowDidYouHear?: string;
   comments?: string;
-  status: string; 
+  status: string;
   adminNotes?: string;
   approvedBy?: number;
   approvedAt?: string;

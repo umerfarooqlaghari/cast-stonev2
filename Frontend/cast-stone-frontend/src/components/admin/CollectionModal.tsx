@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
@@ -23,6 +24,8 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
 
+
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -31,6 +34,22 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     childCollectionIds: [] as number[],
     tags: [] as string[],
     images: [] as string[],
+
+    // Dynamic content fields (all optional)
+    elegantHeader: '' as string | null,
+    elegantDescription: '' as string | null,
+    section3Header: '' as string | null,
+    section3Content: '' as string | null,
+    section3Image: '' as string | null,
+    section4Header: '' as string | null,
+    section4Content: '' as string | null,
+    section4Image: '' as string | null,
+    collageImageSection: [] as string[] | null,
+    staticContentHeader: '' as string | null,
+    staticContentParagraph1: '' as string | null,
+    staticContentParagraph2: '' as string | null,
+    staticContentParagraph3: '' as string | null,
+
     published: false,
   });
 
@@ -41,17 +60,42 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     fetchAllCollections();
     fetchUploadedImages();
 
-    if (collection) {
+    const prefill = (c: Collection) => {
       setFormData({
-        name: collection.name,
-        description: collection.description || '',
-        level: collection.level,
-        parentCollectionId: collection.parentCollectionId || null,
-        childCollectionIds: collection.childCollectionIds || [],
-        tags: collection.tags || [],
-        images: collection.images || [],
-        published: collection.published,
+        name: c.name,
+        description: c.description || '',
+        level: c.level,
+        parentCollectionId: c.parentCollectionId || null,
+        childCollectionIds: c.childCollectionIds || [],
+        tags: c.tags || [],
+        images: c.images || [],
+        elegantHeader: c.elegantHeader || '',
+        elegantDescription: c.elegantDescription || '',
+        section3Header: c.section3Header || '',
+        section3Content: c.section3Content || '',
+        section3Image: c.section3Image || '',
+        section4Header: c.section4Header || '',
+        section4Content: c.section4Content || '',
+        section4Image: c.section4Image || '',
+        collageImageSection: c.collageImageSection || [],
+        staticContentHeader: c.staticContentHeader || '',
+        staticContentParagraph1: c.staticContentParagraph1 || '',
+        staticContentParagraph2: c.staticContentParagraph2 || '',
+        staticContentParagraph3: c.staticContentParagraph3 || '',
+        published: c.published,
       });
+    };
+
+    if (collection) {
+      // Fetch the latest copy to ensure fields are up-to-date when reopening
+      (async () => {
+        try {
+          const fresh = await collectionService.get.getById(collection.id);
+          prefill(fresh);
+        } catch {
+          prefill(collection);
+        }
+      })();
     }
   }, [collection]);
 
@@ -119,13 +163,13 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       if (collection) {
         // Update existing collection
@@ -146,7 +190,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         };
         await collectionService.post.create(createData);
       }
-      
+
       onSuccess();
     } catch (error) {
       console.error('Error saving collection:', error);
@@ -256,6 +300,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
       setUploadProgress(`Upload complete: ${result.summary.successCount} successful, ${result.summary.failureCount} failed`);
 
       // Clear progress after 3 seconds
+
       setTimeout(() => setUploadProgress(''), 3000);
 
     } catch (error) {
@@ -276,6 +321,14 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     }));
   };
 
+  const handleRemoveCollageImage = (url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      collageImageSection: (prev.collageImageSection || []).filter(u => u !== url)
+    }));
+  };
+
+
   const validateImageUrl = async (url: string): Promise<boolean> => {
     // Check if URL exists in uploaded images
     const existsInUploaded = uploadedImages.some(img => img.secureUrl === url);
@@ -291,6 +344,56 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
       // Timeout after 5 seconds
       setTimeout(() => resolve(false), 5000);
     });
+  };
+
+  const uploadDynamicImage = async (
+    key: 'section3Image' | 'section4Image',
+    files: FileList | null
+  ) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const validation = cloudinaryService.validateImageFile(file);
+    if (!validation.isValid) {
+      setErrors(prev => ({ ...prev, [key]: validation.error || 'Invalid file' }));
+      return;
+    }
+    try {
+      setIsUploading(true);
+      setUploadProgress('Uploading image...');
+      const res = await cloudinaryService.uploadImage(file);
+      if (res.imageUrl) {
+        setFormData(prev => ({ ...prev, [key]: res.imageUrl }));
+        await fetchUploadedImages();
+      }
+      setErrors(prev => ({ ...prev, [key]: '' }));
+    } catch (e) {
+      setErrors(prev => ({ ...prev, [key]: 'Upload failed' }));
+    } finally {
+      setIsUploading(false);
+      setUploadProgress('');
+    }
+  };
+
+  const uploadCollageImages = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setIsUploading(true);
+    setUploadProgress('Uploading collage images...');
+    try {
+      const result = await cloudinaryService.uploadImages(files);
+      const urls = result.results.filter(r => r.success && r.secureUrl).map(r => r.secureUrl!)
+      if (urls.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          collageImageSection: [...(prev.collageImageSection || []), ...urls]
+        }));
+      }
+      await fetchUploadedImages();
+    } catch {
+      setErrors(prev => ({ ...prev, collageImageSection: 'Upload failed' }));
+    } finally {
+      setIsUploading(false);
+      setUploadProgress('');
+    }
   };
 
   const getAvailableParentCollections = () => {
@@ -364,248 +467,203 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
             {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
           </div>
 
-          {/* Level */}
-          <div>
-            <label htmlFor="level" className="block text-sm font-semibold text-black mb-2">
-              Hierarchy Level *
-            </label>
-            <select
-              id="level"
-              value={formData.level}
-              onChange={(e) => {
-                const newLevel = Number(e.target.value);
-                setFormData(prev => ({
-                  ...prev,
-                  level: newLevel,
-                  parentCollectionId: newLevel === 1 ? null : prev.parentCollectionId,
-                  childCollectionIds: newLevel === 3 ? [] : prev.childCollectionIds
-                }));
-              }}
-              className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
-            >
-              <option value={1}>Level 1 (Root Category)</option>
-              <option value={2}>Level 2 (Sub Category)</option>
-              <option value={3}>Level 3 (Specific Type)</option>
-            </select>
-          </div>
 
-          {/* Parent and Child Collections Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Parent Collection */}
-            {formData.level > 1 && (
-              <div>
-                <label htmlFor="parentCollection" className="block text-sm font-semibold text-black mb-2">
-                  Parent Collection *
-                </label>
-                <select
-                  id="parentCollection"
-                  value={formData.parentCollectionId || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    parentCollectionId: e.target.value ? Number(e.target.value) : null
-                  }))}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black ${
-                    errors.parentCollectionId ? 'border-red-500' : 'border-black'
-                  }`}
-                >
-                  <option value="" className="text-gray-600">Select parent collection</option>
-                  {getAvailableParentCollections().map(parentCollection => (
-                    <option key={parentCollection.id} value={parentCollection.id} className="text-black">
-                      {parentCollection.name} (Level {parentCollection.level})
-                    </option>
-                  ))}
-                </select>
-                {errors.parentCollectionId && <p className="mt-1 text-sm text-red-600">{errors.parentCollectionId}</p>}
-              </div>
-            )}
-
-            {/* Child Collections */}
-            {formData.level < 3 && (
-              <div>
-                <label className="block text-sm font-semibold text-black mb-2">
-                  Child Collections (Optional)
-                </label>
-                <div className="space-y-2 max-h-40 overflow-y-auto border border-black rounded-lg p-3">
-                  {getAvailableChildCollections().length === 0 ? (
-                    <p className="text-gray-600 text-sm">No available child collections</p>
-                  ) : (
-                    getAvailableChildCollections().map(childCollection => (
-                      <label key={childCollection.id} className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={formData.childCollectionIds.includes(childCollection.id)}
-                          onChange={(e) => {
-                            setFormData(prev => ({
-                              ...prev,
-                              childCollectionIds: e.target.checked
-                                ? [...prev.childCollectionIds, childCollection.id]
-                                : prev.childCollectionIds.filter(id => id !== childCollection.id)
-                            }));
-                          }}
-                          className="rounded border-black text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-black text-sm">
-                          {childCollection.name} (Level {childCollection.level})
-                        </span>
-                      </label>
-                    ))
-                  )}
-                </div>
-                <p className="mt-1 text-xs text-black">
-                  Select multiple child collections to link to this collection
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Tags */}
-          <div>
-            <label className="block text-sm font-semibold text-black mb-2">
-              Tags
-            </label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {formData.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="ml-2 text-blue-600 hover:text-blue-800 font-bold"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-            <div className="flex">
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                className="flex-1 px-4 py-3 border border-black rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400"
-                placeholder="Add a tag"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="px-6 py-3 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Add
-              </button>
-            </div>
-          </div>
 
           {/* Images */}
           <div>
-            <label className="block text-sm font-semibold text-black mb-2">
-              Images
-            </label>
-            <div className="space-y-3 mb-4">
-              {formData.images.map((image, index) => (
-                <div key={index} className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
-                  <img
-                    src={image}
-                    alt={`Collection image ${index + 1}`}
-                    className="w-16 h-16 object-cover rounded-md border border-gray-200"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg0NFY0NEgyMFYyMFoiIHN0cm9rZT0iIzlDQTNBRiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjI4IiBjeT0iMjgiIHI9IjMiIGZpbGw9IiM5Q0EzQUYiLz4KPHBhdGggZD0iTTIwIDM2TDI4IDI4TDM2IDM2TDQ0IDI4VjQ0SDIwVjM2WiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
-                    }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">Image {index + 1}</p>
-                    <p className="text-xs text-gray-500 truncate" title={image}>{image}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(image)}
-                    className="flex-shrink-0 p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
-                    title="Remove image"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            {/* Uploaded Images Dropdown */}
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Choose from uploaded images:
-              </label>
-              <select
-                onChange={(e) => e.target.value && handleAddImageFromDropdown(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                disabled={isLoadingImages}
-                value=""
-              >
-                <option value="">
-                  {isLoadingImages ? 'Loading images...' : 'Select an uploaded image'}
-                </option>
-                {uploadedImages.map((image) => (
-                  <option key={image.publicId} value={image.secureUrl}>
-                    {image.fileName}
-                  </option>
-                ))}
-              </select>
-              {uploadedImages.length === 0 && !isLoadingImages && (
-                <p className="text-sm text-gray-500 mt-1">
-                  No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Upload images here</a>
-                </p>
-              )}
-            </div>
-
-            {/* Manual URL Input */}
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Or enter image URL manually:
-              </label>
-              <div className="flex">
-                <input
-                  type="url"
-                  value={imageInput}
-                  onChange={(e) => {
-                    setImageInput(e.target.value);
-                    // Clear error when user starts typing
-                    if (errors.imageInput) {
-                      setErrors(prev => ({ ...prev, imageInput: '' }));
-                    }
-                  }}
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
-                  className={`flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.imageInput ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Paste image URL here or copy from Images section"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddImage}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 disabled:opacity-50"
-                  disabled={!imageInput.trim()}
-                >
-                  Add
-                </button>
-              </div>
-              {errors.imageInput && (
-                <p className="mt-1 text-sm text-red-600">{errors.imageInput}</p>
-              )}
-              <p className="mt-1 text-xs text-gray-500">
-                Tip: You can copy image URLs from the <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Images section</a>
-              </p>
-            </div>
-
+           
+         
             {/* Direct Image Upload */}
-            <div className="border-t pt-4">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
-                Or upload new images directly:
-              </label>
+
+
+
+	          {/* Dynamic Content Fields */}
+	          <div className="border-t pt-6 space-y-6">
+	            <h4 className="text-lg font-semibold text-black">Dynamic Content</h4>
+
+	            {/* Elegant Section (always visible) */}
+	            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	              <div>
+	                <label className="block text-sm font-semibold text-black mb-2">Elegant Header</label>
+	                <input type="text" value={formData.elegantHeader || ''} onChange={(e)=>setFormData(p=>({...p,elegantHeader:e.target.value}))}
+	                  className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	              </div>
+	              <div>
+	                <label className="block text-sm font-semibold text-black mb-2">Elegant Description</label>
+	                <textarea value={formData.elegantDescription || ''} onChange={(e)=>setFormData(p=>({...p,elegantDescription:e.target.value}))} rows={3}
+	                  className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	              </div>
+	            </div>
+
+	            {/* Section 3 (Level 3 only) */}
+	            {formData.level === 3 && (
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 3 Header</label>
+	                  <input type="text" value={formData.section3Header || ''} onChange={(e)=>setFormData(p=>({...p,section3Header:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 3 Content</label>
+	                  <textarea value={formData.section3Content || ''} onChange={(e)=>setFormData(p=>({...p,section3Content:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 3 Image URL</label>
+	                  <input type="url" value={formData.section3Image || ''} onChange={(e)=>setFormData(p=>({...p,section3Image:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="mt-2 md:col-span-2">
+	                  <label className="block text-sm font-medium text-gray-600 mb-1">Choose from uploaded images:</label>
+	                  <select
+	                    onChange={(e)=> e.target.value && setFormData(p=>({...p, section3Image: e.target.value}))}
+	                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+	                    value=""
+	                  >
+	                    <option value="">Select an uploaded image</option>
+	                    {uploadedImages.map(img => (
+	                      <option key={img.publicId} value={img.secureUrl}>{img.fileName}</option>
+	                    ))}
+	                  </select>
+
+	                  <div className="mt-3">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Or upload a new Section 3 image:</label>
+	                    <input type="file" accept="image/*" onChange={(e)=> uploadDynamicImage('section3Image', e.target.files)} disabled={isUploading}
+	                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+	                    {errors.section3Image && <p className="text-sm text-red-600 mt-1">{errors.section3Image}</p>}
+	                  </div>
+	                  {formData.section3Image && (
+	                    <div className="mt-2 flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+	                      <img src={formData.section3Image} alt="Section 3" className="w-16 h-16 object-cover rounded-md border" />
+	                      <div className="flex-1 min-w-0">
+	                        <p className="text-sm text-gray-600 truncate">{formData.section3Image}</p>
+	                      </div>
+	                      <button type="button" onClick={() => setFormData(p=>({...p, section3Image: ''}))} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+	                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+	                      </button>
+	                    </div>
+	                  )}
+
+	                </div>
+	              </div>
+	            )}
+
+	            {/* Section 4 (Level 3 only) */}
+	            {formData.level === 3 && (
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 4 Header</label>
+	                  <input type="text" value={formData.section4Header || ''} onChange={(e)=>setFormData(p=>({...p,section4Header:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 4 Content</label>
+	                  <textarea value={formData.section4Content || ''} onChange={(e)=>setFormData(p=>({...p,section4Content:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 4 Image URL</label>
+	                  <input type="url" value={formData.section4Image || ''} onChange={(e)=>setFormData(p=>({...p,section4Image:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <div className="mt-2">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Choose from uploaded images:</label>
+	                    <select
+	                      onChange={(e)=> e.target.value && setFormData(p=>({...p, section4Image: e.target.value}))}
+	                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+	                      value=""
+	                    >
+	                      <option value="">Select an uploaded image</option>
+	                      {uploadedImages.map(img => (
+	                        <option key={img.publicId} value={img.secureUrl}>{img.fileName}</option>
+	                      ))}
+	                    </select>
+	                  </div>
+
+	                  <div className="mt-3">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Or upload a new Section 4 image:</label>
+	                    <input type="file" accept="image/*" onChange={(e)=> uploadDynamicImage('section4Image', e.target.files)} disabled={isUploading}
+	                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+	                    {errors.section4Image && <p className="text-sm text-red-600 mt-1">{errors.section4Image}</p>}
+	                  </div>
+	                  {formData.section4Image && (
+	                    <div className="mt-2 flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+	                      <img src={formData.section4Image} alt="Section 4" className="w-16 h-16 object-cover rounded-md border" />
+	                      <div className="flex-1 min-w-0">
+	                        <p className="text-sm text-gray-600 truncate">{formData.section4Image}</p>
+	                      </div>
+	                      <button type="button" onClick={() => setFormData(p=>({...p, section4Image: ''}))} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+	                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+	                      </button>
+	                    </div>
+	                  )}
+
+	                </div>
+	              </div>
+	            )}
+
+	            {/* Collage Images (Level 3 only) */}
+	            {formData.level === 3 && (
+	              <div>
+	                <label className="block text-sm font-semibold text-black mb-2">Collage Images (comma separated URLs)</label>
+	                <input type="text" value={(formData.collageImageSection || []).join(', ')} onChange={(e)=>setFormData(p=>({...p,collageImageSection:e.target.value.split(',').map(s=>s.trim()).filter(Boolean)}))}
+	                  className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+
+					<div className="mt-2 space-y-2">
+					  <label className="block text-sm font-medium text-gray-600">Upload Collage Images (Level 3 only)</label>
+					  <input type="file" accept="image/*" multiple onChange={(e)=> uploadCollageImages(e.target.files)} disabled={isUploading}
+					    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+					  {errors.collageImageSection && <p className="text-sm text-red-600">{errors.collageImageSection}</p>}
+					  {(formData.collageImageSection || []).length > 0 && (
+					    <div className="grid grid-cols-2 gap-2 mt-2">
+					      {(formData.collageImageSection || []).map((url, idx) => (
+					        <div key={idx} className="flex items-center space-x-2 bg-gray-50 p-2 rounded border">
+					          <img src={url} alt={`Collage ${idx+1}`} className="w-14 h-14 object-cover rounded border" />
+					          <button type="button" onClick={() => handleRemoveCollageImage(url)} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+					            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+					          </button>
+					        </div>
+					      ))}
+					    </div>
+					  )}
+					</div>
+
+	              </div>
+	            )}
+
+	            {/* Level 2+ Static Content (hide for Level 1) */}
+	            {formData.level >= 2 && (
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Static Content Header</label>
+	                  <input type="text" value={formData.staticContentHeader || ''} onChange={(e)=>setFormData(p=>({...p,staticContentHeader:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Static Paragraph 1</label>
+	                  <textarea value={formData.staticContentParagraph1 || ''} onChange={(e)=>setFormData(p=>({...p,staticContentParagraph1:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Static Paragraph 2</label>
+	                  <textarea value={formData.staticContentParagraph2 || ''} onChange={(e)=>setFormData(p=>({...p,staticContentParagraph2:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Static Paragraph 3</label>
+	                  <textarea value={formData.staticContentParagraph3 || ''} onChange={(e)=>setFormData(p=>({...p,staticContentParagraph3:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	              </div>
+	            )}
+	          </div>
+
+          </div>
+          {formData.level >= 2 && (
+            <div className="mt-4">
               <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">Upload Main Images (Level 2+ only)</label>
                 <input
                   type="file"
                   multiple
@@ -635,7 +693,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
                 </p>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Published */}
           <div className="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">

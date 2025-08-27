@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React from 'react';
@@ -60,7 +59,7 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
             </div>
           )}
           <h1 className={styles.title}>{title}</h1>
-          <p className={styles.description}>{title}</p>
+          <p className={styles.description}>{description}</p>
         </div>
 
         {/* Floating CTA Box - Bottom Right */}
