@@ -17,6 +17,7 @@ import { motion, cubicBezier } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import StaticContentSection from './StaticContentSection';
+import { createPortal } from 'react-dom';
 
 interface FilterState {
   search: string;
@@ -55,6 +56,18 @@ export default function CollectionPage() {
     sortBy: 'name',
     sortDirection: 'asc'
   });
+
+  // Modal state for full-size collage image
+  // track mounting for portal safety
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
+  const [activeModalSrc, setActiveModalSrc] = useState<string | null>(null);
+  const [modalOpenReason, setModalOpenReason] = useState<'hover' | 'click' | null>(null);
+
+  const openFromHover = (src: string) => { setActiveModalSrc(src); setModalOpenReason('hover'); };
+  const openFromClick = (src: string) => { setActiveModalSrc(src); setModalOpenReason('click'); };
+  const closeModal = () => { setActiveModalSrc(null); setModalOpenReason(null); };
 
   // Dynamic section images for level 3 collections (kept as fallback only)
   const [section3ImgSrc, setSection3ImgSrc] = useState<string>('');
@@ -105,6 +118,16 @@ export default function CollectionPage() {
       mqSmall.removeEventListener?.('change', updateSmall);
     };
   }, []);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (!activeModalSrc) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [activeModalSrc]);
 
   // Precompute dynamic image paths for level-3 sections
   useEffect(() => {
@@ -541,17 +564,45 @@ export default function CollectionPage() {
           <section className={styles.dynamicSection}>
             <div className={styles.container}>
               <div className={styles.collageGrid}>
-                {collection.collageImageSection.map((src, idx) => (
-                  <div key={idx} className={styles.collageItem}>
-                    <div className={styles.imageWrap}>
-                      <Image src={src} alt={`${collection.name} collage ${idx+1}`} fill className={styles.sectionImage} sizes="(max-width: 768px) 100vw, 33vw" />
-                    </div>
-                  </div>
-                ))}
+                {(() => {
+                  const imgs = collection.collageImageSection as string[];
+                  const rows: string[][] = [];
+                  let i = 0;
+                  let rowIdx = 0;
+                  while (i < imgs.length) {
+                    const desired = rowIdx % 2 === 0 ? 2 : 3; // 2-3-2-3 pattern
+                    const remaining = imgs.length - i;
+                    const take = remaining < desired ? remaining : desired; // edge cases: 1 or 2 left
+                    rows.push(imgs.slice(i, i + take));
+                    i += take;
+                    rowIdx++;
+                  }
+                  return rows.map((row, rIdx) => {
+                    const colsClass = row.length === 1 ? styles.cols1 : row.length === 2 ? styles.cols2 : styles.cols3;
+                    return (
+                      <div key={`row-${rIdx}`} className={`${styles.collageRow} ${colsClass}`}>
+                        {row.map((src, idx) => (
+                          <div
+                            key={`${rIdx}-${idx}`}
+                            className={styles.collageItem}
+                            role="img" aria-label={`${collection.name} collage ${rIdx + 1}-${idx + 1}`}>
+                            <div className={styles.imageWrap}>
+                              <Image src={src} alt={`${collection.name} collage ${rIdx + 1}-${idx + 1}`} fill className={styles.sectionImage} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </section>
         )}
+
+
+
+        {/* Collage full-size modal overlay (Level 3) via portal to escape any stacking contexts */}
 
 
         {/* Products Section (with anchor) */}
@@ -575,6 +626,7 @@ export default function CollectionPage() {
           imageAlt={collection.name}
           badge={`${childCollections.length} ${collection.level === 1 ? 'Categories' : 'Subcategories'}`}
         />
+
 
         {/* Section 2: NEW - Elegant Description Section */}
         <ElegantDescriptionSection
