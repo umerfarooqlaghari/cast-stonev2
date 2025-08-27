@@ -63,6 +63,16 @@ public class ApplicationDbContext : DbContext
       v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : null,
       v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions)null)
   );
+
+        // CollageImageSection (nullable list of strings as jsonb)
+        modelBuilder.Entity<Collection>()
+           .Property(c => c.CollageImageSection)
+           .HasColumnType("jsonb")
+           .HasConversion(
+              v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : null,
+              v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+        );
+
         modelBuilder.Entity<Product>()
        .Property(c => c.Tags)
        .HasColumnType("jsonb")

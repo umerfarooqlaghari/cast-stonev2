@@ -11,6 +11,22 @@ public class CollectionResponse
     public List<string> Tags { get; set; } = new List<string>();
     public List<string> Images { get; set; } = new List<string>();
     public List<int>? ProductIds { get; set; }
+
+    // New optional content fields
+    public string? ElegantHeader { get; set; }
+    public string? ElegantDescription { get; set; }
+    public string? Section3Header { get; set; }
+    public string? Section3Content { get; set; }
+    public string? Section3Image { get; set; }
+    public string? Section4Header { get; set; }
+    public string? Section4Content { get; set; }
+    public string? Section4Image { get; set; }
+    public List<string>? CollageImageSection { get; set; }
+    public string? StaticContentHeader { get; set; }
+    public string? StaticContentParagraph1 { get; set; }
+    public string? StaticContentParagraph2 { get; set; }
+    public string? StaticContentParagraph3 { get; set; }
+
     public bool Published { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
