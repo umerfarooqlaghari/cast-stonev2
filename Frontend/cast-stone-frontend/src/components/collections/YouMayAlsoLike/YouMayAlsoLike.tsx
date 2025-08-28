@@ -123,10 +123,10 @@ const YouMayAlsoLike: React.FC<YouMayAlsoLikeProps> = ({
                         <Image
                           src={optimizedImageSrc}
                           alt={activeCollection.name}
-                          fill
+                          width={800}
+                          height={800}
                           className={styles.cardImage}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
-                          style={{ objectFit: 'cover' }}
                         />
                       </div>
                     </div>

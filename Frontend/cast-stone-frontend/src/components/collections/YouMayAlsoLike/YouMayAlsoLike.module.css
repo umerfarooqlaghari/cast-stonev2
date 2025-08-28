@@ -65,7 +65,7 @@
   grid-template-columns: 1fr;
   gap: 1.5rem;
   flex: 1;
-  min-height: 300px;
+  /* Remove min-height to allow natural image dimensions */
 }
 
 .collectionCard {
@@ -76,7 +76,7 @@
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  height: 300px;
+  /* Remove fixed height to allow natural image dimensions */
 }
 
 .collectionCard:hover {
@@ -86,14 +86,19 @@
 
 .cardImageContainer {
   position: relative;
-  height: 100%;
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
+  /* Remove fixed height to allow natural image dimensions */
 }
 
 .cardImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
   transition: transform 0.3s ease;
+  /* Let image maintain its original aspect ratio */
 }
 
 .collectionCard:hover .cardImage {
