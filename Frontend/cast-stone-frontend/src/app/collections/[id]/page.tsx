@@ -11,6 +11,7 @@ import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid } from '@/compon
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
+import YouMayAlsoLike from '@/components/collections/YouMayAlsoLike';
 import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
 import styles from './collectionPage.module.css';
 import { motion, cubicBezier } from 'framer-motion';
@@ -38,7 +39,7 @@ export default function CollectionPage() {
   const [childCollections, setChildCollections] = useState<Collection[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [rootRecommendations, setRootRecommendations] = useState<Collection[]>([]); // children of ID 1 for recommendations
+  const [siblingCollections, setSiblingCollections] = useState<Collection[]>([]); // collections of the same level for "You May Also Like"
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -322,14 +323,13 @@ export default function CollectionPage() {
         setChildCollections(childCollectionsData);
         setProducts([]);
 
-        // Additional data needed when viewing collection ID 2
-        if (collectionId >= 2 && collectionId <= 7) {
-          try {
-            const rootChildren = await collectionService.get.getChildren(1);
-            setRootRecommendations(rootChildren);
-          } catch (e) {
-            console.warn('Failed to load recommendations (children of ID 1):', e);
-          }
+        // Fetch sibling collections for "You May Also Like" section
+        // Get all collections of the same level as the current collection
+        try {
+          const allCollectionsOfSameLevel = await collectionService.get.getByLevel(collectionData.level);
+          setSiblingCollections(allCollectionsOfSameLevel);
+        } catch (e) {
+          console.warn('Failed to load sibling collections for You May Also Like:', e);
         }
       }
     } catch (err) {
@@ -700,42 +700,13 @@ export default function CollectionPage() {
               paragraph3={collection.staticContentParagraph3}
             />
 
-            {/* Section 2: Recommendations (children of ID 1) */}
-            {rootRecommendations.length > 0 && (
-              <section className={styles.recommendationsSection}>
-                <div className={styles.container}>
-                  <div className={styles.recsHeader}>
-                    <h2 className={styles.recsTitle}>You may also like</h2>
-                    <div className={styles.recsNav}>
-                      <button type="button" className={styles.recsButton} onClick={() => recsScrollRef.current?.scrollBy({ left: -320, behavior: 'smooth' })} aria-label="Scroll left">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </button>
-                      <button type="button" className={styles.recsButton} onClick={() => recsScrollRef.current?.scrollBy({ left: 320, behavior: 'smooth' })} aria-label="Scroll right">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div className={styles.recsScroller} ref={recsScrollRef}>
-                    {rootRecommendations.map((r) => {
-                      const imageSrc = Array.isArray(r.images) && r.images.length > 0
-                        ? r.images[0]
-                        : "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=800&fit=crop&crop=center";
-                      return (
-                        <motion.div key={r.id} className={styles.recsItem} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} variants={cardMotion}>
-                          <Link href={`/collections/${r.id}`} className={styles.imageCard}>
-                            <div className={styles.cardImageWrap}>
-                              <Image src={imageSrc} alt={r.name} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, 33vw" />
-                              <div className={styles.cardOverlay}>
-                                <h3 className={styles.cardTitle}>{r.name}</h3>
-                              </div>
-                            </div>
-                          </Link>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
+            {/* Section 2: You May Also Like - New Component (Level 2 only) */}
+            {collection.level === 2 && siblingCollections.length > 0 && (
+              <YouMayAlsoLike
+                collections={siblingCollections}
+                currentCollectionId={collectionId}
+                title="You May Also Like"
+              />
             )}
           </>
         )}

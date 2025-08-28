@@ -27,6 +27,8 @@ interface StaticCompletedProjectsProps {
   className?: string;
 }
 
+
+
 const StaticCompletedProjects: React.FC<StaticCompletedProjectsProps> = ({
   projects,
   currentCollectionId,
