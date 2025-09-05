@@ -10,9 +10,8 @@ namespace Cast_Stone_api.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "GeoLocation",
-                table: "WholesaleBuyers");
+            // Make idempotent for environments where the column may not exist
+            migrationBuilder.Sql("ALTER TABLE \"WholesaleBuyers\" DROP COLUMN IF EXISTS \"GeoLocation\";");
         }
 
         /// <inheritdoc />

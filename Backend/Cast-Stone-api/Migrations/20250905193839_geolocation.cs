@@ -10,12 +10,11 @@ namespace Cast_Stone_api.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "GeoLocation",
-                table: "WholesaleBuyers",
-                type: "character varying(500)",
-                maxLength: 500,
-                nullable: true);
+            // Ensure column exists and is nullable
+            migrationBuilder.Sql("ALTER TABLE \"WholesaleBuyers\" ADD COLUMN IF NOT EXISTS \"GeoLocation\" character varying(500);");
+            // Also enforce nullability and length if column pre-existed as NOT NULL or with different type/length
+            migrationBuilder.Sql("ALTER TABLE \"WholesaleBuyers\" ALTER COLUMN \"GeoLocation\" TYPE character varying(500);");
+            migrationBuilder.Sql("ALTER TABLE \"WholesaleBuyers\" ALTER COLUMN \"GeoLocation\" DROP NOT NULL;");
         }
 
         /// <inheritdoc />

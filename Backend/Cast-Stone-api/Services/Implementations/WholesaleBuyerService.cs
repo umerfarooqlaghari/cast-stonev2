@@ -296,7 +296,7 @@ public class WholesaleBuyerService : IWholesaleBuyerService
             .Where(response => response.Latitude.HasValue && response.Longitude.HasValue);
     }
 
-    private (double?, double?) ParseGeoLocation(string geoLocation)
+    private (double?, double?) ParseGeoLocation(string? geoLocation)
     {
         if (string.IsNullOrEmpty(geoLocation))
             return (null, null);
