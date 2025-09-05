@@ -2,17 +2,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 export const dynamic = "force-dynamic";
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
-import { MagazineProductGrid, MagazineProductCard } from '@/components/products';
-import NextDynamic from 'next/dynamic';
+import { MagazineProductGrid } from '@/components/products';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const Swiper = NextDynamic(() => import('swiper/react').then(mod => mod.Swiper), { ssr: false });
-const SwiperSlide = NextDynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
+
 import styles from './products.module.css';
 
 interface FilterState {
@@ -43,24 +41,30 @@ export default function ProductsPage() {
     sortDirection: 'asc'
   });
 
-  const searchParams = useSearchParams();
+  // Suspense wrapper to safely read search params during SSR/edge
+  const SearchParamsBinder = () => {
+    const sp = useSearchParams();
+    useEffect(() => {
+      if (!sp) return;
+      const cid = sp.get('collectionId');
+      if (cid) {
+        const parsed = parseInt(cid);
+        if (!isNaN(parsed)) {
+          setFilters(prev => ({ ...prev, collectionId: parsed }));
+        }
+      }
+    }, [sp]);
+    return null;
+  };
 
   // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Apply collectionId from query params when available
-  useEffect(() => {
-    if (!searchParams) return; 
-    const cid = searchParams?.get('collectionId');
-    if (cid) {
-      const parsed = parseInt(cid);
-      if (!isNaN(parsed)) {
-        setFilters(prev => ({ ...prev, collectionId: parsed }));
-      }
-    }
-  }, [searchParams]);
+  // Apply collectionId from query params when available (via Suspense-bound binder)
+  // The binder runs the side-effect client-side when search params are ready.
+
 
   // Apply filters when products or filters change
   useEffect(() => {
@@ -163,7 +167,13 @@ export default function ProductsPage() {
   return (
     <div className={styles.container}>
       {/* Hero Section */}
-    
+
+
+      {/* Suspense around search params binder */}
+      <Suspense fallback={null}>
+        <SearchParamsBinder />
+      </Suspense>
+
 
       {/* Products Section */}
       <section className={styles.productsSection}>
@@ -178,7 +188,7 @@ export default function ProductsPage() {
             </div>
 
             <div className={styles.headerActions}>
-          
+
               <div className={styles.resultsCount}>
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
               </div>
@@ -284,27 +294,7 @@ export default function ProductsPage() {
         {/* Products Grid */}
         <div className={styles.productsGrid}>
           {/* Top Carousel Row: show 2 products at a time, looped */}
-          {filteredProducts.length > 0 && (
-            <div className={styles.topCarouselRow}>
-              <Swiper
-                slidesPerView={2}
-                spaceBetween={24}
-                loop={false}
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                navigation
-                breakpoints={{
-                  0: { slidesPerView: 1 },
-                  768: { slidesPerView: 2 },
-                }}
-              >
-                {filteredProducts.map((p) => (
-                  <SwiperSlide key={`top-${p.id}`}>
-                    <MagazineProductCard product={p} showAddToCart showViewDetails />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-          )}
+          
 
           {/* Products Grid below: 3 columns */}
           <div className={styles.productsGridBelow}>
