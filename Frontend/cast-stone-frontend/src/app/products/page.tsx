@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-
+export const dynamic = "force-dynamic";
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
@@ -50,6 +50,7 @@ export default function ProductsPage() {
 
   // Apply collectionId from query params when available
   useEffect(() => {
+    if (!searchParams) return; 
     const cid = searchParams?.get('collectionId');
     if (cid) {
       const parsed = parseInt(cid);
@@ -57,7 +58,7 @@ export default function ProductsPage() {
         setFilters(prev => ({ ...prev, collectionId: parsed }));
       }
     }
-  }, []);
+  }, [searchParams]);
 
   // Apply filters when products or filters change
   useEffect(() => {
