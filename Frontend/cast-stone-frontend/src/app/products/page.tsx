@@ -50,6 +50,7 @@ export default function ProductsPage() {
 
   // Apply collectionId from query params when available
   useEffect(() => {
+    if (!searchParams) return; 
     const cid = searchParams?.get('collectionId');
     if (cid) {
       const parsed = parseInt(cid);
