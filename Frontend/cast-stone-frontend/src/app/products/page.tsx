@@ -50,7 +50,6 @@ export default function ProductsPage() {
 
   // Apply collectionId from query params when available
   useEffect(() => {
-    if (!searchParams) return; 
     const cid = searchParams?.get('collectionId');
     if (cid) {
       const parsed = parseInt(cid);
@@ -58,7 +57,7 @@ export default function ProductsPage() {
         setFilters(prev => ({ ...prev, collectionId: parsed }));
       }
     }
-  }, [searchParams]);
+  }, []);
 
   // Apply filters when products or filters change
   useEffect(() => {
