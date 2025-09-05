@@ -7,10 +7,12 @@ import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
 import { MagazineProductGrid, MagazineProductCard } from '@/components/products';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
+import NextDynamic from 'next/dynamic';
 import 'swiper/css';
 import 'swiper/css/navigation';
+
+const Swiper = NextDynamic(() => import('swiper/react').then(mod => mod.Swiper), { ssr: false });
+const SwiperSlide = NextDynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 import styles from './products.module.css';
 
 interface FilterState {
@@ -285,7 +287,6 @@ export default function ProductsPage() {
           {filteredProducts.length > 0 && (
             <div className={styles.topCarouselRow}>
               <Swiper
-                modules={[Autoplay, Navigation]}
                 slidesPerView={2}
                 spaceBetween={24}
                 loop={false}
