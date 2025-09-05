@@ -13,6 +13,7 @@ interface MagazineProductGridProps {
   showViewDetails?: boolean;
   emptyMessage?: string;
   columns?: 1 | 2 | 3 | 4;
+  cardTheme?: 'navy' | undefined;
 }
 
 const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
@@ -21,7 +22,8 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
   showAddToCart = true,
   showViewDetails = true,
   emptyMessage = 'No products found.',
-  columns = 3
+  columns = 3,
+  cardTheme,
 }) => {
   if (isLoading) {
     return (
@@ -70,6 +72,7 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
           showAddToCart={showAddToCart}
           showViewDetails={showViewDetails}
           variant={index === 0 ? "featured" : "default"}
+          theme={cardTheme}
         />
       ))}
     </MagazineGrid>

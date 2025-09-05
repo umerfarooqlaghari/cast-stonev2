@@ -3,10 +3,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
-import { MagazineProductGrid } from '@/components/products';
-import { MagazineSection } from '@/components/ui';
+import { MagazineProductGrid, MagazineProductCard } from '@/components/products';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import styles from './products.module.css';
 
 interface FilterState {
@@ -26,8 +30,8 @@ export default function ProductsPage() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
-  
+  const [showFilters] = useState(false);
+
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     collectionId: '',
@@ -37,10 +41,23 @@ export default function ProductsPage() {
     sortDirection: 'asc'
   });
 
+  const searchParams = useSearchParams();
+
   // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Apply collectionId from query params when available
+  useEffect(() => {
+    const cid = searchParams?.get('collectionId');
+    if (cid) {
+      const parsed = parseInt(cid);
+      if (!isNaN(parsed)) {
+        setFilters(prev => ({ ...prev, collectionId: parsed }));
+      }
+    }
+  }, [searchParams]);
 
   // Apply filters when products or filters change
   useEffect(() => {
@@ -96,7 +113,7 @@ export default function ProductsPage() {
     // Sorting
     filtered.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (filters.sortBy) {
         case 'name':
           comparison = a.name.localeCompare(b.name);
@@ -108,7 +125,7 @@ export default function ProductsPage() {
           comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           break;
       }
-      
+
       return filters.sortDirection === 'desc' ? -comparison : comparison;
     });
 
@@ -143,16 +160,7 @@ export default function ProductsPage() {
   return (
     <div className={styles.container}>
       {/* Hero Section */}
-      <MagazineSection
-        title="Our Products"
-        subtitle="Handcrafted Cast Stone Collection"
-        description="Discover our exquisite collection of handcrafted cast stone pieces. Each product is meticulously crafted with attention to detail, bringing timeless elegance and durability to your space."
-        imageSrc="/images/FallBackImage.jpg"
-        imageAlt="Beautiful cast stone products showcase"
-        imagePosition="right"
-        badge={`${filteredProducts.length} Products`}
-        className={styles.heroSection}
-      />
+    
 
       {/* Products Section */}
       <section className={styles.productsSection}>
@@ -167,16 +175,7 @@ export default function ProductsPage() {
             </div>
 
             <div className={styles.headerActions}>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={styles.filterToggle}
-              >
-                <svg className={styles.filterIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
-                </svg>
-                Filters
-              </button>
-
+          
               <div className={styles.resultsCount}>
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
               </div>
@@ -259,6 +258,8 @@ export default function ProductsPage() {
           {/* Sort Options */}
           <div className={styles.filterGroup}>
             <label>Sort By</label>
+
+
             <select
               value={`${filters.sortBy}-${filters.sortDirection}`}
               onChange={(e) => {
@@ -279,12 +280,39 @@ export default function ProductsPage() {
 
         {/* Products Grid */}
         <div className={styles.productsGrid}>
-          <MagazineProductGrid
-            products={filteredProducts}
-            isLoading={isLoading}
-            emptyMessage="No products match your current filters. Try adjusting your search criteria."
-            columns={3}
-          />
+          {/* Top Carousel Row: show 2 products at a time, looped */}
+          {filteredProducts.length > 0 && (
+            <div className={styles.topCarouselRow}>
+              <Swiper
+                modules={[Autoplay, Navigation]}
+                slidesPerView={2}
+                spaceBetween={24}
+                loop={false}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                navigation
+                breakpoints={{
+                  0: { slidesPerView: 1 },
+                  768: { slidesPerView: 2 },
+                }}
+              >
+                {filteredProducts.map((p) => (
+                  <SwiperSlide key={`top-${p.id}`}>
+                    <MagazineProductCard product={p} showAddToCart showViewDetails />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          )}
+
+          {/* Products Grid below: 3 columns */}
+          <div className={styles.productsGridBelow}>
+            <MagazineProductGrid
+              products={filteredProducts}
+              isLoading={isLoading}
+              emptyMessage="No products match your current filters. Try adjusting your search criteria."
+              columns={3}
+            />
+          </div>
         </div>
       </div>
     </div>

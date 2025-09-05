@@ -106,6 +106,14 @@
   margin-top: 2rem;
 }
 
+/* Top carousel row for first two products */
+.topCarouselRow {
+  margin: 1rem 0 2rem;
+}
+.productsGridBelow {
+  margin-top: 1rem;
+}
+
 /* Filters Sidebar */
 .filtersSidebar {
   background: white;

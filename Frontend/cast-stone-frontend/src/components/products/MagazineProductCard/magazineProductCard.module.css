@@ -1,4 +1,21 @@
 /* Magazine-Style Product Card */
+/* Navy Theme overrides to match Section 3 styling */
+.navyTheme {
+  background: #0b2230;
+  color: #e5ecf2;
+}
+.navyTheme .productName,
+.navyTheme .price,
+.navyTheme .collection {
+  color: #ffffff;
+}
+.navyTheme .productDescription { color: #c7d0d9; }
+.navyTheme .viewDetailsBtn { border-color: rgba(255,255,255,0.2); color: #e5ecf2; }
+.navyTheme .viewDetailsBtn:hover { background: #153b4d; border-color: #153b4d; }
+.navyTheme .addToCartBtn { background: #1e40af; }
+.navyTheme .addToCartBtn:hover { background: #153b4d; }
+.navyTheme .quantitySelector { background: rgba(255,255,255,0.06); }
+
 .productCard {
   background: #ffffff;
   border-radius: 0;
@@ -167,16 +184,16 @@
 
 .productName {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
-  line-height: 1.3;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.35;
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .productDescription {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: #374151;
   line-height: 1.6;
   margin: 1rem 0;
   flex: 1;
@@ -198,8 +215,8 @@
 
 .price {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
+  font-weight: 800;
+  color: #111827;
 }
 
 .retailPrice {
@@ -238,21 +255,21 @@
   justify-content: center;
   padding: 0.75rem 1rem;
   background: transparent;
-  color: #1f2937;
-  border: 2px solid #e5e7eb;
+  color: #111827;
+  border: 2px solid #d1d5db;
   border-radius: 0;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
+  letter-spacing: 0.06em;
+  transition: all 0.2s ease;
 }
 
 .viewDetailsBtn:hover {
-  background: #1f2937;
+  background: #111827;
   color: white;
-  border-color: #1f2937;
+  border-color: #111827;
 }
 
 .addToCartSection {
@@ -348,15 +365,15 @@
   .featured {
     grid-column: span 1;
   }
-  
+
   .featured .imageContainer {
     height: 300px;
   }
-  
+
   .featured .productInfo {
     padding: 2rem;
   }
-  
+
   .featured .productName {
     font-size: 1.375rem;
   }
@@ -368,26 +385,26 @@
     flex-direction: column;
     height: auto;
   }
-  
+
   .left .imageContainer,
   .right .imageContainer {
     width: 100%;
     height: 200px;
   }
-  
+
   .left .productInfo,
   .right .productInfo {
     width: 100%;
   }
-  
+
   .productInfo {
     padding: 1.5rem;
   }
-  
+
   .productName {
     font-size: 1.125rem;
   }
-  
+
   .productDescription {
     font-size: 0.9rem;
     -webkit-line-clamp: 2;
@@ -398,23 +415,23 @@
   .imageContainer {
     height: 200px;
   }
-  
+
   .productInfo {
     padding: 1rem;
   }
-  
+
   .productName {
     font-size: 1rem;
   }
-  
+
   .productDescription {
     font-size: 0.875rem;
   }
-  
+
   .actionButtons {
     gap: 0.75rem;
   }
-  
+
   .addToCartSection {
     gap: 0.5rem;
   }

@@ -16,6 +16,7 @@ interface MagazineProductCardProps {
   showViewDetails?: boolean;
   variant?: 'default' | 'featured' | 'compact';
   imagePosition?: 'top' | 'left' | 'right';
+  theme?: 'navy' | undefined;
 }
 
 const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
@@ -23,7 +24,8 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
   showAddToCart = true,
   showViewDetails = true,
   variant = 'default',
-  imagePosition = 'top'
+  imagePosition = 'top',
+  theme,
 }) => {
   const { addToCart, state } = useCart();
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
@@ -68,7 +70,7 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
 
   const isInStock = product.stock > 0;
 
-  const cardClass = `${styles.productCard} ${styles[variant]} ${styles[imagePosition]}`;
+  const cardClass = `${styles.productCard} ${styles[variant]} ${styles[imagePosition]} ${theme === 'navy' ? styles.navyTheme : ''}`;
 
   return (
     <div className={cardClass}>

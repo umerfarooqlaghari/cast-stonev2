@@ -483,7 +483,7 @@ export default function CollectionPage() {
                       Get in touch
                       <span aria-hidden> →</span>
                     </Link>
-                    <Link href="#products" className={styles.section3GhostCta}>
+                    <Link href={`/products?collectionId=${collectionId}`} className={styles.section3GhostCta}>
                       Choose your style
                     </Link>
                   </div>

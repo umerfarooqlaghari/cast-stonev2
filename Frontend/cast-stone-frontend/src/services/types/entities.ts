@@ -551,7 +551,6 @@ export interface WholesaleBuyer {
   otherBusinessType?: string;
   taxNumber: string;
   businessAddress: string;
-  geoLocation: string;
   state: string;
   city: string;
   zipCode: string;
