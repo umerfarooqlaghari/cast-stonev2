@@ -24,6 +24,7 @@ export interface Collection {
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
+  staticContentBackgroundImage?: string | null;
 
   published: boolean;
   createdBy: string;
@@ -63,6 +64,7 @@ export interface CreateCollectionRequest {
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
+  staticContentBackgroundImage?: string | null;
 
   // Existing fields
   name: string;
@@ -92,6 +94,7 @@ export interface UpdateCollectionRequest {
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
+  staticContentBackgroundImage?: string | null;
 
   // Existing fields
   name: string;
@@ -589,7 +592,6 @@ export interface CreateWholesaleBuyerRequest {
   otherBusinessType?: string;
   taxNumber: string;
   businessAddress: string;
-  geoLocation: string;
   state: string;
   city: string;
   zipCode: string;

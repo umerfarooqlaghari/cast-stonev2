@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback, ReactNode } from 'react';
 import { Cart, CartItem, AddToCartRequest, UpdateCartItemRequest } from '@/services/types/entities';
 import { cartService } from '@/services';
 import { useWholesaleAuth } from './WholesaleAuthContext';
@@ -141,27 +141,11 @@ export function CartProvider({ children }: CartProviderProps) {
     initializeSession();
   }, []);
 
-  // Load cart on session ID change
-  useEffect(() => {
-    if (state.sessionId && state.sessionId.length > 0) {
-      loadCart();
-    }
-  }, [state.sessionId]);
-
-  // Load cart when wholesale user changes
-  useEffect(() => {
-    if (user && isApprovedWholesaleBuyer) {
-      // Load cart by user ID for wholesale buyers
-      loadCart(user.id);
-    } else if (!user && state.sessionId) {
-      // Load cart by session ID for non-logged-in users
-      loadCart();
-    }
-  }, [user, isApprovedWholesaleBuyer]);
 
 
 
-  const loadCart = async (userId?: number) => {
+
+  const loadCart = useCallback(async (userId?: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       let cart: Cart | null = null;
@@ -180,9 +164,9 @@ export function CartProvider({ children }: CartProviderProps) {
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  };
+  }, [state.sessionId]);
 
-  const addToCart = async (productId: number, quantity: number, userId?: number) => {
+  const addToCart = useCallback(async (productId: number, quantity: number, userId?: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
 
@@ -209,7 +193,7 @@ export function CartProvider({ children }: CartProviderProps) {
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  };
+  }, [user, isApprovedWholesaleBuyer, state.sessionId]);
 
   const updateCartItem = async (productId: number, quantity: number) => {
     if (!state.cart) return;
@@ -266,11 +250,29 @@ export function CartProvider({ children }: CartProviderProps) {
     };
   };
 
-  const refreshCart = async (userId?: number) => {
+  const refreshCart = useCallback(async (userId?: number) => {
     // Use wholesale user ID if available, otherwise use provided userId
     const effectiveUserId = (user && isApprovedWholesaleBuyer) ? user.id : userId;
     await loadCart(effectiveUserId);
-  };
+  }, [user, isApprovedWholesaleBuyer, loadCart]);
+
+  // Load cart on session ID change
+  useEffect(() => {
+    if (state.sessionId && state.sessionId.length > 0) {
+      loadCart();
+    }
+  }, [state.sessionId, loadCart]);
+
+  // Load cart when wholesale user changes
+  useEffect(() => {
+    if (user && isApprovedWholesaleBuyer) {
+      // Load cart by user ID for wholesale buyers
+      loadCart(user.id);
+    } else if (!user && state.sessionId) {
+      // Load cart by session ID for non-logged-in users
+      loadCart();
+    }
+  }, [user, isApprovedWholesaleBuyer, state.sessionId, loadCart]);
 
   const contextValue: CartContextType = {
     state,

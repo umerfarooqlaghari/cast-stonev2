@@ -15,6 +15,9 @@
 .navyTheme .addToCartBtn { background: #1e40af; }
 .navyTheme .addToCartBtn:hover { background: #153b4d; }
 .navyTheme .quantitySelector { background: rgba(255,255,255,0.06); }
+.navyTheme .clickIndicator { color: #c7d0d9; border-top-color: rgba(255,255,255,0.1); }
+.navyTheme .viewProductBtn { background: rgba(229, 236, 242, 0.95); color: #0b2230; }
+.navyTheme .viewProductBtn:hover { background: #e5ecf2; }
 
 .productCard {
   background: #ffffff;
@@ -31,6 +34,7 @@
 .productCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 /* Variants */
@@ -122,10 +126,45 @@
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .productCard:hover .imageOverlay {
   opacity: 1;
+}
+
+.viewProductOverlay {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.productCard:hover .viewProductOverlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.viewProductBtn {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1f2937;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.viewProductBtn:hover {
+  background: white;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .outOfStockOverlay {
@@ -239,6 +278,36 @@
   color: #dc2626;
   font-size: 0.875rem;
   font-weight: 600;
+}
+
+/* Click Indicator */
+.clickIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-top: 1px solid #f3f4f6;
+}
+
+.productCard:hover .clickIndicator {
+  opacity: 1;
+}
+
+.arrowIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+}
+
+.productCard:hover .arrowIcon {
+  transform: translateX(2px);
 }
 
 /* Action Buttons */

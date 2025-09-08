@@ -119,11 +119,20 @@ export function getOptimizedImageUrl(
   imageUrl: string,
   context: 'thumbnail' | 'card' | 'hero' | 'gallery' | 'full' = 'card'
 ): string {
-  // If it's not a Cloudinary URL, return as is
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+  // Heuristic: if not a full Cloudinary URL but looks like a publicId (e.g., 'cast-stone-images/..'),
+  // and cloud name is available, construct a full secure URL.
+  const isLikelyPublicId = !!imageUrl && !imageUrl.includes('://') && /[\w-]+\/.+/.test(imageUrl);
+  if (!isCloudinaryUrl(imageUrl) && isLikelyPublicId && cloudName) {
+    imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${imageUrl}`;
+  }
+
+  // If it's still not a Cloudinary URL, return as is
   if (!isCloudinaryUrl(imageUrl)) {
     return imageUrl;
   }
-  
+
   const optimizationOptions: Record<string, CloudinaryTransformOptions> = {
     thumbnail: {
       width: 150,
@@ -152,7 +161,7 @@ export function getOptimizedImageUrl(
     gallery: {
       width: 800,
       height: 600,
-      crop: 'fit',
+      crop: 'fill',
       gravity: 'auto',
       quality: 'auto',
       format: 'auto'
@@ -162,7 +171,7 @@ export function getOptimizedImageUrl(
       format: 'auto'
     }
   };
-  
+
   return optimizeCloudinaryUrl(imageUrl, optimizationOptions[context]);
 }
 

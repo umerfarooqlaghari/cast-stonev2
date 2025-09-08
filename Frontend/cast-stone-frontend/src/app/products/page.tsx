@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 export const dynamic = "force-dynamic";
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { productService, collectionService } from '@/services';
@@ -66,10 +66,7 @@ export default function ProductsPage() {
   // The binder runs the side-effect client-side when search params are ready.
 
 
-  // Apply filters when products or filters change
-  useEffect(() => {
-    applyFilters();
-  }, [products, filters]);
+
 
   const fetchData = async () => {
     try {
@@ -87,7 +84,31 @@ export default function ProductsPage() {
     }
   };
 
-  const applyFilters = () => {
+  const getDescendantCollectionIds = (rootId: number, all: Collection[]): Set<number> => {
+    const childrenByParent = new Map<number, number[]>();
+    for (const c of all) {
+      if (c.parentCollectionId != null) {
+        const arr = childrenByParent.get(c.parentCollectionId) || [];
+        arr.push(c.id);
+        childrenByParent.set(c.parentCollectionId, arr);
+      }
+    }
+    const result = new Set<number>([rootId]);
+    const queue: number[] = [rootId];
+    while (queue.length) {
+      const current = queue.shift()!;
+      const kids = childrenByParent.get(current) || [];
+      for (const kid of kids) {
+        if (!result.has(kid)) {
+          result.add(kid);
+          queue.push(kid);
+        }
+      }
+    }
+    return result;
+  };
+
+  const applyFilters = useCallback(() => {
     let filtered = [...products];
 
     // Search filter
@@ -102,9 +123,10 @@ export default function ProductsPage() {
       );
     }
 
-    // Collection filter
+    // Collection filter (include descendants of selected collection)
     if (filters.collectionId) {
-      filtered = filtered.filter(product => product.collectionId === filters.collectionId);
+      const allowedIds = getDescendantCollectionIds(filters.collectionId as number, collections);
+      filtered = filtered.filter(product => allowedIds.has(product.collectionId));
     }
 
     // Price range filter
@@ -137,7 +159,12 @@ export default function ProductsPage() {
     });
 
     setFilteredProducts(filtered);
-  };
+  }, [products, filters, collections]);
+
+  // Apply filters when applyFilters function changes
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     setFilters(prev => ({
@@ -217,22 +244,7 @@ export default function ProductsPage() {
             />
           </div>
 
-          {/* Collection Filter */}
-          <div className={styles.filterGroup}>
-            <label>Collection</label>
-            <select
-              value={filters.collectionId}
-              onChange={(e) => handleFilterChange('collectionId', e.target.value ? parseInt(e.target.value) : '')}
-              className={styles.filterSelect}
-            >
-              <option value="">All Collections</option>
-              {collections.map(collection => (
-                <option key={collection.id} value={collection.id}>
-                  {collection.name}
-                </option>
-              ))}
-            </select>
-          </div>
+
 
           {/* Price Range */}
           <div className={styles.filterGroup}>

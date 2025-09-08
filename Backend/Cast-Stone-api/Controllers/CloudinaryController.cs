@@ -32,9 +32,9 @@ namespace Cast_Stone_api.Controllers
                 }
 
                 // Validate file size (max 10MB)
-                if (image.Length > 10 * 1024 * 1024)
+                if (image.Length > 20 * 1024 * 1024)
                 {
-                    return BadRequest(new { message = "File size too large. Maximum size is 10MB." });
+                    return BadRequest(new { message = "File size too large. Maximum size is 20MB." });
                 }
 
                 var url = await _cloudinaryService.UploadImageAsync(image);
@@ -96,7 +96,7 @@ namespace Cast_Stone_api.Controllers
 
                 // Validate each file
                 var allowedTypes = new[] { "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp" };
-                var maxFileSize = 10 * 1024 * 1024; // 10MB
+                var maxFileSize = 20 * 1024 * 1024; // 10MB
 
                 foreach (var image in images)
                 {
@@ -107,7 +107,7 @@ namespace Cast_Stone_api.Controllers
 
                     if (image.Length > maxFileSize)
                     {
-                        return BadRequest(new { message = $"File {image.FileName} is too large. Maximum size is 10MB." });
+                        return BadRequest(new { message = $"File {image.FileName} is too large. Maximum size is 20MB." });
                     }
                 }
 

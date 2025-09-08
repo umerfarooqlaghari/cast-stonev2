@@ -363,7 +363,6 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   className={`${styles.navButton} ${activeDropdown === 'collections' ? styles.active : ''}`}
                   onClick={() => handleDropdownToggle('collections')}
                   aria-expanded={activeDropdown === 'collections'}
-                  disabled={isLoading}
                 >
                   Collections
                   {isLoading ? (

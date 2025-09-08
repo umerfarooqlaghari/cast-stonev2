@@ -10,7 +10,6 @@ interface MagazineProductGridProps {
   products: Product[];
   isLoading?: boolean;
   showAddToCart?: boolean;
-  showViewDetails?: boolean;
   emptyMessage?: string;
   columns?: 1 | 2 | 3 | 4;
   cardTheme?: 'navy' | undefined;
@@ -20,7 +19,6 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
   products,
   isLoading = false,
   showAddToCart = true,
-  showViewDetails = true,
   emptyMessage = 'No products found.',
   columns = 3,
   cardTheme,
@@ -70,7 +68,6 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
           key={product.id}
           product={product}
           showAddToCart={showAddToCart}
-          showViewDetails={showViewDetails}
           variant={index === 0 ? "featured" : "default"}
           theme={cardTheme}
         />

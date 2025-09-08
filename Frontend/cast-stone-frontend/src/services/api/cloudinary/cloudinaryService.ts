@@ -171,11 +171,11 @@ class CloudinaryService {
     }
 
     // Check file size (max 10MB)
-    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    const maxSize = 20 * 1024 * 1024; // 10MB in bytes
     if (file.size > maxSize) {
       return {
         isValid: false,
-        error: 'File size too large. Maximum size is 10MB.'
+        error: 'File size too large. Maximum size is 20MB.'
       };
     }
 

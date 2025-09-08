@@ -58,6 +58,7 @@ public class Collection
     public string? StaticContentParagraph1 { get; set; }
     public string? StaticContentParagraph2 { get; set; }
     public string? StaticContentParagraph3 { get; set; }
+    public string? StaticContentBackgroundImage { get; set; }
 
 
     public bool Published { get; set; } = false;

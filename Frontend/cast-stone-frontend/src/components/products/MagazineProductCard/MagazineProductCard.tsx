@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { Product } from '@/services/types/entities';
 import { useCart } from '@/contexts/CartContext';
 import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
@@ -13,7 +11,6 @@ import styles from './magazineProductCard.module.css';
 interface MagazineProductCardProps {
   product: Product;
   showAddToCart?: boolean;
-  showViewDetails?: boolean;
   variant?: 'default' | 'featured' | 'compact';
   imagePosition?: 'top' | 'left' | 'right';
   theme?: 'navy' | undefined;
@@ -22,7 +19,6 @@ interface MagazineProductCardProps {
 const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
   product,
   showAddToCart = true,
-  showViewDetails = true,
   variant = 'default',
   imagePosition = 'top',
   theme,
@@ -31,12 +27,6 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [forceUpdate, setForceUpdate] = useState(0);
-
-  // Force re-render when wholesale status changes
-  useEffect(() => {
-    setForceUpdate(prev => prev + 1);
-  }, [isApprovedWholesaleBuyer]);
 
   const handleAddToCart = async () => {
     try {
@@ -72,14 +62,28 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
 
   const cardClass = `${styles.productCard} ${styles[variant]} ${styles[imagePosition]} ${theme === 'navy' ? styles.navyTheme : ''}`;
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('input') || target.closest('select')) {
+      return;
+    }
+    // Navigate to product detail page
+    window.location.href = `/products/${product.id}`;
+  };
+
   return (
-    <div className={cardClass}>
+    <div className={cardClass} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       {/* Product Image */}
       <div className={styles.imageContainer}>
         <img
           src={mainImage}
           alt={product.name}
           className={styles.productImage}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getFallbackImageUrl('product');
+          }}
         />
         {!isInStock && (
           <div className={styles.outOfStockOverlay}>
@@ -91,7 +95,19 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
             Wholesale
           </div>
         )}
-        <div className={styles.imageOverlay}></div>
+        <div className={styles.imageOverlay}>
+          <div className={styles.viewProductOverlay}>
+            <button
+              className={styles.viewProductBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                window.location.href = `/products/${product.id}`;
+              }}
+            >
+              View Product
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Product Info */}
@@ -133,14 +149,16 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
           )}
         </div>
 
+        {/* Click to view details indicator */}
+        <div className={styles.clickIndicator}>
+          <span>Click to view details</span>
+          <svg className={styles.arrowIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+          </svg>
+        </div>
+
         {/* Action Buttons */}
         <div className={styles.actionButtons}>
-          {showViewDetails && (
-            <Link href={`/products/${product.id}`} className={styles.viewDetailsBtn}>
-              View Details
-            </Link>
-          )}
-          
           {showAddToCart && isInStock && (
             <div className={styles.addToCartSection}>
               <div className={styles.quantitySelector}>

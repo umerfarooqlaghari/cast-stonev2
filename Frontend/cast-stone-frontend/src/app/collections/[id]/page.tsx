@@ -698,6 +698,14 @@ export default function CollectionPage() {
               paragraph1={collection.staticContentParagraph1}
               paragraph2={collection.staticContentParagraph2}
               paragraph3={collection.staticContentParagraph3}
+              backgroundImage={
+                collection.staticContentBackgroundImage ||
+                (collection.images && collection.images.length > 1
+                  ? collection.images[1]
+                  : collection.images && collection.images.length > 0
+                    ? collection.images[0]
+                    : undefined)
+              }
             />
 
             {/* Section 2: You May Also Like - New Component (Level 2 only) */}

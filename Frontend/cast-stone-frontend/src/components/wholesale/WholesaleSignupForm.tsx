@@ -64,8 +64,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
     businessType: '',
     otherBusinessType: '',
     taxNumber: '',
-    businessAddress: '',    geoLocation: '',
-
+    businessAddress: '',
     state: '',
     city: '',
     zipCode: '',

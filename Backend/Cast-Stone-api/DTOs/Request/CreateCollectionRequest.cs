@@ -37,6 +37,7 @@ public class CreateCollectionRequest
 	    public string? StaticContentParagraph1 { get; set; }
 	    public string? StaticContentParagraph2 { get; set; }
 	    public string? StaticContentParagraph3 { get; set; }
+	    public string? StaticContentBackgroundImage { get; set; }
 
 
     public List<int>? ProductIds { get; set; }

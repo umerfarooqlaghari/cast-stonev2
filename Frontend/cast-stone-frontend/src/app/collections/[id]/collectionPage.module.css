@@ -911,49 +911,121 @@
   border-radius: 0.75rem;
   margin: 0;
 }
-/* Static content section for ID=2 */
+/* Static content section with background image overlay */
 .staticContentSection {
-  padding: 2.5rem 0 2rem;
-  background: #ffffff;
+  position: relative;
+  min-height: 600px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
 }
 
-.staticContentWrap {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+/* Full-scale background image container */
+.staticBackgroundContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  /* margin-bottom: 3rem; */
 }
 
-.staticBlock {
-  padding: 1.25rem 0;
-  border-top: 1px solid #e5e7eb;
+.staticBackgroundImage {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
 }
 
-.staticHeader {
-  /* text-align: center;
-  margin: 0 0 0.5rem 0;
-  font-weight: 700;
-  font-size: 1.55rem;
-  color: #253245ff;
-  margin-bottom: 1rem; */
+/* Optional overlay for better text readability */
+.staticOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
 
-  font-size: 3.5rem;
-  font-weight: 250;
+/* Content box positioned on top-left */
+.staticContentBox {
+  position: relative;
+  z-index: 3;
+  max-width: 500px;
+  margin: 3rem 0 0 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 3rem;
+}
+
+.staticTextBlock {
+  /* No additional styling needed, content flows naturally */
+}
+
+.staticContentHeader {
+  font-size: 2.5rem;
+  font-weight: 300;
   color: #342883ff;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   letter-spacing: 0.02em;
   line-height: 1.2;
   text-transform: uppercase;
   font-family: 'Georgia', serif;
 }
 
-.staticParagraph {
-  margin: 0.5rem 0 0 0;
-  color: #4b5563;
+.staticContentParagraph {
+  font-size: 1rem;
+  color: #253245ff;
   line-height: 1.7;
+  margin-bottom: 1.2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }
 
+.staticContentParagraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-  .staticHeader { font-size: 1.125rem; }
+  .staticContentSection {
+    min-height: 500px;
+  }
+
+  .staticContentBox {
+    margin: 3rem 2.5rem 0 2.5rem;
+    max-width: calc(100% - 3rem);
+    padding: 2rem;
+  }
+
+  .staticContentHeader {
+    font-size: 2rem;
+  }
+
+  .staticContentParagraph {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .staticContentBox {
+    margin: 2.5rem 2rem 0 2rem;
+    max-width: calc(100% - 2rem);
+    padding: 1.5rem;
+  }
+
+  .staticContentHeader {
+    font-size: 1.75rem;
+  }
 }
 
 
