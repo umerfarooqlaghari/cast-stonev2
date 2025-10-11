@@ -3,6 +3,7 @@ using System;
 using Cast_Stone_api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cast_Stone_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251011212618_AddProductVariants")]
+    partial class AddProductVariants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,9 +585,6 @@ namespace Cast_Stone_api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("VariantImages")
-                        .HasColumnType("jsonb");
-
                     b.Property<string>("VariantName")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
@@ -593,6 +593,7 @@ namespace Cast_Stone_api.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("VariantTags")
+                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<decimal?>("VariantWholesalePrice")

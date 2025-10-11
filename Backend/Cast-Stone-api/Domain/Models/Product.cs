@@ -59,4 +59,7 @@ public class Product
 
     [JsonIgnore]
     public virtual DownloadableContent? DownloadableContent { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
 }

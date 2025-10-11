@@ -94,6 +94,19 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductId, opt => opt.Ignore())
             .ForMember(dest => dest.Product, opt => opt.Ignore());
 
+        // ProductVariant mappings
+        CreateMap<ProductVariant, ProductVariantResponse>();
+        CreateMap<CreateProductVariantRequest, ProductVariant>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+        CreateMap<UpdateProductVariantRequest, ProductVariant>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore());
+
         // Order mappings
         CreateMap<Order, OrderResponse>();
         

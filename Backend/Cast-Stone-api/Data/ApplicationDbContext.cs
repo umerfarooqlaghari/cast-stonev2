@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductSpecifications> ProductSpecifications { get; set; }
     public DbSet<ProductDetails> ProductDetails { get; set; }
     public DbSet<DownloadableContent> DownloadableContents { get; set; }
+    public DbSet<ProductVariant> ProductVariants { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
@@ -231,6 +232,37 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<WholesaleBuyer>()
             .HasIndex(wb => wb.CreatedAt);
+
+        // Configure ProductVariant JSON properties
+        modelBuilder.Entity<ProductVariant>()
+            .Property(pv => pv.VariantTags)
+            .HasColumnType("jsonb")
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
+            );
+
+        modelBuilder.Entity<ProductVariant>()
+            .Property(pv => pv.VariantImages)
+            .HasColumnType("jsonb")
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => string.IsNullOrEmpty(v) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
+            );
+
+        // Configure ProductVariant relationships
+        modelBuilder.Entity<ProductVariant>()
+            .HasOne(pv => pv.Product)
+            .WithMany()
+            .HasForeignKey(pv => pv.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure ProductVariant indexes
+        modelBuilder.Entity<ProductVariant>()
+            .HasIndex(pv => pv.ProductId);
+
+        modelBuilder.Entity<ProductVariant>()
+            .HasIndex(pv => pv.VariantName);
 
         // Seed comprehensive Status data for eCommerce
         modelBuilder.Entity<Status>().HasData(

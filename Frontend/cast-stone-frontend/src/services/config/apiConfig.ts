@@ -78,7 +78,14 @@ export const ApiEndpoints = {
     ById: (id: number) => `/downloadablecontent/${id}`,
     ByProduct: (productId: number) => `/downloadablecontent/product/${productId}`
   },
-  
+
+  // Product Variants
+  ProductVariants: {
+    Base: '/productvariants',
+    ById: (id: number) => `/productvariants/${id}`,
+    ByProduct: (productId: number) => `/productvariants/product/${productId}`
+  },
+
   // Orders
   Orders: {
     Base: '/orders',

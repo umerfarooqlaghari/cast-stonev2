@@ -333,6 +333,54 @@ export interface ProductFilterRequest {
   sortDirection?: 'asc' | 'desc';
 }
 
+// Product Variant Types
+export interface ProductVariant {
+  id: number;
+  productId: number;
+  productCode?: string;
+  variantName?: string;
+  variantIdentity?: string;
+  variantDescription?: string;
+  variantPrice: number;
+  variantWholesalePrice?: number;
+  variantTags: string[];
+  variantImages: string[];
+  createdAt: string;
+  updatedAt?: string;
+  product?: Product;
+}
+
+export interface CreateProductVariantRequest {
+  productId: number;
+  productCode?: string;
+  variantName?: string;
+  variantIdentity?: string;
+  variantDescription?: string;
+  variantPrice: number;
+  variantWholesalePrice?: number;
+  variantTags: string[];
+  variantImages: string[];
+}
+
+export interface UpdateProductVariantRequest {
+  productCode?: string;
+  variantName?: string;
+  variantIdentity?: string;
+  variantDescription?: string;
+  variantPrice: number;
+  variantWholesalePrice?: number;
+  variantTags: string[];
+  variantImages: string[];
+}
+
+export interface ProductVariantFilterRequest {
+  productId?: number;
+  variantName?: string;
+  variantTag?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 // Order Types
 export interface Order {
   id: number;
