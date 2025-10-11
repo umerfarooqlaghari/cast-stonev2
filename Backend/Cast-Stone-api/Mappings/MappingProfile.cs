@@ -158,7 +158,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.TotalItems, opt => opt.Ignore());
 
         CreateMap<CartItem, CartItemResponse>()
-            .ForMember(dest => dest.ItemTotal, opt => opt.MapFrom(src => src.Quantity * (src.Product != null ? src.Product.Price : 0)));
+            .ForMember(dest => dest.ItemTotal, opt => opt.MapFrom(src => src.Quantity * (src.ProductVariant != null ? src.ProductVariant.VariantPrice : (src.Product != null ? src.Product.Price : 0))));
 
         CreateMap<AddToCartRequest, Cart>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

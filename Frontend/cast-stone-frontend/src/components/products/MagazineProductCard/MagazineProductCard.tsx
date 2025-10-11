@@ -14,6 +14,7 @@ interface MagazineProductCardProps {
   variant?: 'default' | 'featured' | 'compact';
   imagePosition?: 'top' | 'left' | 'right';
   theme?: 'navy' | undefined;
+  hasVariants?: boolean;
 }
 
 const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
@@ -22,6 +23,7 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
   variant = 'default',
   imagePosition = 'top',
   theme,
+  hasVariants = false,
 }) => {
   const { addToCart, state } = useCart();
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
@@ -160,44 +162,68 @@ const MagazineProductCard: React.FC<MagazineProductCardProps> = ({
         {/* Action Buttons */}
         <div className={styles.actionButtons}>
           {showAddToCart && isInStock && (
-            <div className={styles.addToCartSection}>
-              <div className={styles.quantitySelector}>
-                <button
-                  type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className={styles.quantityBtn}
-                  disabled={quantity <= 1}
-                >
-                  -
-                </button>
-                <span className={styles.quantity}>{quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                  className={styles.quantityBtn}
-                  disabled={quantity >= product.stock}
-                >
-                  +
-                </button>
-              </div>
-              
-              <button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart || state.isLoading}
-                className={styles.addToCartBtn}
-              >
-                {isAddingToCart ? (
-                  <span className={styles.loading}>Adding...</span>
-                ) : (
-                  <>
-                    <svg className={styles.cartIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M17 13H7"/>
+            <>
+              {hasVariants ? (
+                <div className={styles.variantRequiredSection}>
+                  <div className={styles.variantRequiredMessage}>
+                    <svg className={styles.infoIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="12" y1="16" x2="12" y2="12"/>
+                      <line x1="12" y1="8" x2="12.01" y2="8"/>
                     </svg>
-                    Add to Cart
-                  </>
-                )}
-              </button>
-            </div>
+                    <span>This product has variants</span>
+                  </div>
+                  <button
+                    className={styles.viewVariantsBtn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = `/products/${product.id}`;
+                    }}
+                  >
+                    Select Variant to Add to Cart
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.addToCartSection}>
+                  <div className={styles.quantitySelector}>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className={styles.quantityBtn}
+                      disabled={quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span className={styles.quantity}>{quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      className={styles.quantityBtn}
+                      disabled={quantity >= product.stock}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={isAddingToCart || state.isLoading}
+                    className={styles.addToCartBtn}
+                  >
+                    {isAddingToCart ? (
+                      <span className={styles.loading}>Adding...</span>
+                    ) : (
+                      <>
+                        <svg className={styles.cartIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M17 13H7"/>
+                        </svg>
+                        Add to Cart
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -29,7 +29,7 @@ type CartAction =
 // Cart Context Interface
 interface CartContextType {
   state: CartState;
-  addToCart: (productId: number, quantity: number, userId?: number) => Promise<void>;
+  addToCart: (productId: number, quantity: number, userId?: number, productVariantId?: number) => Promise<void>;
   updateCartItem: (productId: number, quantity: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -166,7 +166,7 @@ export function CartProvider({ children }: CartProviderProps) {
     }
   }, [state.sessionId]);
 
-  const addToCart = useCallback(async (productId: number, quantity: number, userId?: number) => {
+  const addToCart = useCallback(async (productId: number, quantity: number, userId?: number, productVariantId?: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
 
@@ -180,6 +180,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
       const request: AddToCartRequest = {
         productId,
+        productVariantId,
         quantity,
         userId: effectiveUserId,
         sessionId: effectiveUserId ? undefined : state.sessionId,

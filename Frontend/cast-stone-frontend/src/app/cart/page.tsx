@@ -98,7 +98,7 @@ export default function CartPage() {
           <h3>Need Help?</h3>
           <p>
             Have questions about your order? 
-            <Link href="/contact" className={styles.contactLink}> Contact us</Link> 
+            <Link href="/contact" className={styles.contactLink}> Contact us </Link> 
             or call (555) 123-4567
           </p>
         </div>

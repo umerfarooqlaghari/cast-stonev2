@@ -82,7 +82,18 @@
   color:rgb(0, 0, 0);
   margin-bottom: 2rem;
   border-radius: 0; /* Sharp corners */
-   display: inline-block;   
+   display: inline-block;
+}
+
+/* Variant Description */
+.variantDescription {
+  background: #eff6ff;
+  border-left: 3px solid #2563eb;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  color: #1f2937;
+  line-height: 1.6;
 }
 
 /* Product Info Grid */

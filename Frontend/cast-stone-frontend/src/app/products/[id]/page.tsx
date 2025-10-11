@@ -3,13 +3,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Product } from '@/services/types/entities';
-import { productService } from '@/services';
+import { Product, ProductVariant } from '@/services/types/entities';
+import { productService, productVariantService } from '@/services';
 import { useCart } from '@/contexts/CartContext';
 import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
 import ProductImageGallery from '@/components/products/ProductImageGallery/ProductImageGallery';
 import ProductSpecifications from '@/components/products/ProductSpecifications/ProductSpecifications';
 import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
+import VariantSelector from '@/components/products/VariantSelector/VariantSelector';
 import RelatedProducts from '@/components/products/RelatedProducts/RelatedProducts';
 import styles from './productPage.module.css';
 
@@ -20,6 +21,8 @@ export default function ProductPage() {
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [variants, setVariants] = useState<ProductVariant[]>([]);
+  const [selectedVariantId, setSelectedVariantId] = useState<number | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,13 +41,18 @@ export default function ProductPage() {
       setIsLoading(true);
       setError(null);
 
-      const [productData, relatedData] = await Promise.all([
+      const [productData, relatedData, variantsData] = await Promise.all([
         productService.get.getById(productId),
-        productService.get.getRecommendations(productId, 6)
+        productService.get.getRecommendations(productId, 6),
+        productVariantService.get.getByProductId(productId).catch(() => [])
       ]);
 
       setProduct(productData);
       setRelatedProducts(relatedData);
+      setVariants(variantsData);
+
+      // Reset selected variant when product changes
+      setSelectedVariantId(null);
     } catch (err) {
       console.error('Error fetching product:', err);
       setError('Failed to load product details');
@@ -56,9 +64,15 @@ export default function ProductPage() {
   const handleAddToCart = async () => {
     if (!product) return;
 
+    // If product has variants, require variant selection
+    if (variants.length > 0 && !selectedVariantId) {
+      alert('Please select a variant before adding to cart');
+      return;
+    }
+
     try {
       setIsAddingToCart(true);
-      await addToCart(product.id, quantity);
+      await addToCart(product.id, quantity, undefined, selectedVariantId || undefined);
       // You could add a success notification here
     } catch (err) {
       console.error('Error adding to cart:', err);
@@ -75,12 +89,33 @@ export default function ProductPage() {
     }).format(price);
   };
 
-  // Determine which price to display
-  const displayPrice = isApprovedWholesaleBuyer && product?.wholeSalePrice
-    ? product.wholeSalePrice
-    : product?.price || 0;
+  // Get selected variant
+  const selectedVariant = selectedVariantId ? variants.find(v => v.id === selectedVariantId) : null;
 
-  const showWholesaleLabel = isApprovedWholesaleBuyer && product?.wholeSalePrice;
+  // Determine which price to display (variant price takes precedence)
+  const getDisplayPrice = () => {
+    if (selectedVariant) {
+      // Use variant pricing with fallback to product pricing
+      if (isApprovedWholesaleBuyer && selectedVariant.variantWholesalePrice) {
+        return selectedVariant.variantWholesalePrice;
+      } else if (isApprovedWholesaleBuyer && product?.wholeSalePrice) {
+        return product.wholeSalePrice;
+      } else {
+        return selectedVariant.variantPrice;
+      }
+    } else {
+      // Use product pricing
+      return isApprovedWholesaleBuyer && product?.wholeSalePrice
+        ? product.wholeSalePrice
+        : product?.price || 0;
+    }
+  };
+
+  const displayPrice = getDisplayPrice();
+  const showWholesaleLabel = isApprovedWholesaleBuyer && (
+    (selectedVariant && selectedVariant.variantWholesalePrice) ||
+    (!selectedVariant && product?.wholeSalePrice)
+  );
 
   if (isLoading) {
     return (
@@ -109,20 +144,36 @@ export default function ProductPage() {
         <div className={styles.productMain}>
           {/* Product Image Gallery */}
           <div className={styles.imageSection}>
-            <ProductImageGallery 
-              images={product.images} 
-              productName={product.name}
+            <ProductImageGallery
+              images={selectedVariant && selectedVariant.variantImages && selectedVariant.variantImages.length > 0
+                ? selectedVariant.variantImages
+                : product.images}
+              productName={selectedVariant?.variantName || product.name}
             />
           </div>
 
           {/* Product Details */}
           <div className={styles.detailsSection}>
-            <h1 className={styles.productTitle}>{product.name}</h1>
-            
+            <h1 className={styles.productTitle}>
+              {product.name}
+              {selectedVariant && selectedVariant.variantName && (
+                <span style={{ fontSize: '0.8em', color: '#6b7280', marginLeft: '0.5rem' }}>
+                  - {selectedVariant.variantName}
+                </span>
+              )}
+            </h1>
+
             {/* Product Code */}
             <div className={styles.productCode}>
-              Product Code: {product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
+              Product Code: {(selectedVariant && selectedVariant.productCode) || product.productCode || `P-${product.id.toString().padStart(3, '0')}-AS`}
             </div>
+
+            {/* Variant Description (if available) */}
+            {selectedVariant && selectedVariant.variantDescription && (
+              <div className={styles.variantDescription}>
+                {selectedVariant.variantDescription}
+              </div>
+            )}
 
             {/* Key Specifications - Styled Table Look */}
             {product.productSpecifications && (
@@ -236,25 +287,40 @@ export default function ProductPage() {
                 </div>
                 
               <div className={styles.addToCartRow}>
-                <div className={styles.addToCartLabel}> 
-                
+                <div className={styles.addToCartLabel}>
+
                 <button
                   onClick={handleAddToCart}
-                  disabled={isAddingToCart}
+                  disabled={isAddingToCart || (variants.length > 0 && !selectedVariantId)}
                   className={styles.addToCartBtn}
+                  title={variants.length > 0 && !selectedVariantId ? 'Please select a variant first' : ''}
                 >
                   {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                 </button>
+                {variants.length > 0 && !selectedVariantId && (
+                  <p style={{ color: '#dc2626', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                    Please select a variant before adding to cart
+                  </p>
+                )}
               </div>
             </div>
             </div>     
             </div>
 
-              <PatinaSelector 
+              <PatinaSelector
               selectedPatina={selectedPatina}
               onPatinaChange={setSelectedPatina}
             />
 
+            {/* Variant Selector */}
+            {variants.length > 0 && (
+              <VariantSelector
+                variants={variants}
+                selectedVariantId={selectedVariantId}
+                onVariantChange={setSelectedVariantId}
+                required={true}
+              />
+            )}
 
         {/* Product Specifications */}
         <ProductSpecifications product={product} />

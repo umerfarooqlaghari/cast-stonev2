@@ -11,13 +11,15 @@ public class CartService : ICartService
 {
     private readonly ICartRepository _cartRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IProductVariantRepository _productVariantRepository;
     private readonly IWholesaleBuyerService _wholesaleBuyerService;
     private readonly IMapper _mapper;
 
-    public CartService(ICartRepository cartRepository, IProductRepository productRepository, IWholesaleBuyerService wholesaleBuyerService, IMapper mapper)
+    public CartService(ICartRepository cartRepository, IProductRepository productRepository, IProductVariantRepository productVariantRepository, IWholesaleBuyerService wholesaleBuyerService, IMapper mapper)
     {
         _cartRepository = cartRepository;
         _productRepository = productRepository;
+        _productVariantRepository = productVariantRepository;
         _wholesaleBuyerService = wholesaleBuyerService;
         _mapper = mapper;
     }
@@ -90,26 +92,59 @@ public class CartService : ICartService
         if (product.Stock < request.Quantity)
             throw new ArgumentException("Insufficient stock");
 
+        // If variant is specified, validate it exists and belongs to the product
+        if (request.ProductVariantId.HasValue)
+        {
+            var variant = await _productVariantRepository.GetByIdAsync(request.ProductVariantId.Value);
+            if (variant == null)
+                throw new ArgumentException("Product variant not found");
+
+            if (variant.ProductId != request.ProductId)
+                throw new ArgumentException("Product variant does not belong to the specified product");
+        }
+
         // Get or create cart
         var cart = await GetOrCreateCartInternalAsync(request.UserId, request.SessionId);
 
-        // Check if item already exists in cart
+        // Check if item already exists in cart (same product AND same variant)
         var existingCartItem = await _cartRepository.GetCartItemAsync(cart.Id, request.ProductId);
-        
-        if (existingCartItem != null)
+
+        // If variant is specified, check if the same variant exists
+        if (existingCartItem != null && request.ProductVariantId.HasValue)
         {
-            // Update quantity
+            // Only update if the variant matches
+            if (existingCartItem.ProductVariantId == request.ProductVariantId)
+            {
+                existingCartItem.Quantity += request.Quantity;
+                existingCartItem.UpdatedAt = DateTime.UtcNow;
+                await _cartRepository.UpdateCartItemAsync(existingCartItem);
+            }
+            else
+            {
+                // Different variant, add as new item
+                existingCartItem = null;
+            }
+        }
+        else if (existingCartItem != null && !request.ProductVariantId.HasValue && !existingCartItem.ProductVariantId.HasValue)
+        {
+            // Same product, no variant specified for both
             existingCartItem.Quantity += request.Quantity;
             existingCartItem.UpdatedAt = DateTime.UtcNow;
             await _cartRepository.UpdateCartItemAsync(existingCartItem);
         }
         else
         {
+            existingCartItem = null;
+        }
+
+        if (existingCartItem == null)
+        {
             // Add new item
             var cartItem = new CartItem
             {
                 CartId = cart.Id,
                 ProductId = request.ProductId,
+                ProductVariantId = request.ProductVariantId,
                 Quantity = request.Quantity,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
@@ -251,12 +286,36 @@ public class CartService : ICartService
         foreach (var cartItem in cart.CartItems)
         {
             var product = cartItem.Product;
+            var variant = cartItem.ProductVariant;
+
             if (product != null)
             {
-                // Use wholesale price if user is approved wholesale buyer and product has wholesale price
-                decimal price = isApprovedWholesaleBuyer && product.WholeSalePrice.HasValue && product.WholeSalePrice > 0
-                    ? product.WholeSalePrice.Value
-                    : product.Price;
+                decimal price;
+
+                // If variant is selected, use variant pricing with fallback to product pricing
+                if (variant != null)
+                {
+                    if (isApprovedWholesaleBuyer && variant.VariantWholesalePrice.HasValue && variant.VariantWholesalePrice > 0)
+                    {
+                        price = variant.VariantWholesalePrice.Value;
+                    }
+                    else if (isApprovedWholesaleBuyer && product.WholeSalePrice.HasValue && product.WholeSalePrice > 0)
+                    {
+                        // Fallback to product wholesale price if variant doesn't have one
+                        price = product.WholeSalePrice.Value;
+                    }
+                    else
+                    {
+                        price = variant.VariantPrice;
+                    }
+                }
+                else
+                {
+                    // No variant selected, use product pricing
+                    price = isApprovedWholesaleBuyer && product.WholeSalePrice.HasValue && product.WholeSalePrice > 0
+                        ? product.WholeSalePrice.Value
+                        : product.Price;
+                }
 
                 total += cartItem.Quantity * price;
             }
@@ -294,10 +353,32 @@ public class CartService : ICartService
         {
             if (cartItem.Product != null)
             {
-                // Use wholesale price if user is approved wholesale buyer and product has wholesale price
-                decimal price = isApprovedWholesaleBuyer && cartItem.Product.WholeSalePrice > 0
-                    ? cartItem.Product.WholeSalePrice
-                    : cartItem.Product.Price;
+                decimal price;
+
+                // If variant is selected, use variant pricing with fallback to product pricing
+                if (cartItem.ProductVariant != null)
+                {
+                    if (isApprovedWholesaleBuyer && cartItem.ProductVariant.VariantWholesalePrice.HasValue && cartItem.ProductVariant.VariantWholesalePrice > 0)
+                    {
+                        price = cartItem.ProductVariant.VariantWholesalePrice.Value;
+                    }
+                    else if (isApprovedWholesaleBuyer && cartItem.Product.WholeSalePrice > 0)
+                    {
+                        // Fallback to product wholesale price if variant doesn't have one
+                        price = cartItem.Product.WholeSalePrice;
+                    }
+                    else
+                    {
+                        price = cartItem.ProductVariant.VariantPrice;
+                    }
+                }
+                else
+                {
+                    // No variant selected, use product pricing
+                    price = isApprovedWholesaleBuyer && cartItem.Product.WholeSalePrice > 0
+                        ? cartItem.Product.WholeSalePrice
+                        : cartItem.Product.Price;
+                }
 
                 cartItem.ItemTotal = cartItem.Quantity * price;
             }

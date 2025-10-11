@@ -13,6 +13,7 @@ interface MagazineProductGridProps {
   emptyMessage?: string;
   columns?: 1 | 2 | 3 | 4;
   cardTheme?: 'navy' | undefined;
+  productVariantCounts?: Map<number, number>;
 }
 
 const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
@@ -22,6 +23,7 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
   emptyMessage = 'No products found.',
   columns = 3,
   cardTheme,
+  productVariantCounts,
 }) => {
   if (isLoading) {
     return (
@@ -63,15 +65,21 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
 
   return (
     <MagazineGrid columns={columns} gap="large" className={styles.productGrid}>
-      {products.map((product, index) => (
-        <MagazineProductCard
-          key={product.id}
-          product={product}
-          showAddToCart={showAddToCart}
-          variant={index === 0 ? "featured" : "default"}
-          theme={cardTheme}
-        />
-      ))}
+      {products.map((product, index) => {
+        const variantCount = productVariantCounts?.get(product.id) || 0;
+        const hasVariants = variantCount > 0;
+
+        return (
+          <MagazineProductCard
+            key={product.id}
+            product={product}
+            showAddToCart={showAddToCart}
+            variant={index === 0 ? "featured" : "default"}
+            theme={cardTheme}
+            hasVariants={hasVariants}
+          />
+        );
+      })}
     </MagazineGrid>
   );
 };

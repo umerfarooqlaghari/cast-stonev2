@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import React, { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
-import { productService, collectionService } from '@/services';
+import { productService, collectionService, productVariantService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -31,6 +31,7 @@ export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters] = useState(false);
+  const [productVariantCounts, setProductVariantCounts] = useState<Map<number, number>>(new Map());
 
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -77,6 +78,21 @@ export default function ProductsPage() {
       ]);
       setProducts(productsData);
       setCollections(collectionsData);
+
+      // Fetch variant counts for all products
+      const variantCountsMap = new Map<number, number>();
+      await Promise.all(
+        productsData.map(async (product) => {
+          try {
+            const variants = await productVariantService.get.getByProductId(product.id);
+            variantCountsMap.set(product.id, variants.length);
+          } catch (error) {
+            // If error fetching variants, assume no variants
+            variantCountsMap.set(product.id, 0);
+          }
+        })
+      );
+      setProductVariantCounts(variantCountsMap);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -315,6 +331,7 @@ export default function ProductsPage() {
               isLoading={isLoading}
               emptyMessage="No products match your current filters. Try adjusting your search criteria."
               columns={3}
+              productVariantCounts={productVariantCounts}
             />
           </div>
         </div>

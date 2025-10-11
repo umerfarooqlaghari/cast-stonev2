@@ -529,10 +529,12 @@ export interface CartItem {
   id: number;
   cartId: number;
   productId: number;
+  productVariantId?: number;
   quantity: number;
   createdAt: string;
   updatedAt: string;
   product?: Product;
+  productVariant?: ProductVariant;
   itemTotal: number;
 }
 
@@ -545,6 +547,7 @@ export interface CartSummary {
 
 export interface AddToCartRequest {
   productId: number;
+  productVariantId?: number;
   quantity: number;
   userId?: number;
   sessionId?: string;
