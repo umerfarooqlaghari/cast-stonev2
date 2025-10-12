@@ -20,6 +20,9 @@ public class CreateOrderRequest
     [MaxLength(100)]
     public string? City { get; set; }
 
+    [MaxLength(100)]
+    public string? State { get; set; }
+
     [MaxLength(20)]
     public string? ZipCode { get; set; }
 

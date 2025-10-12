@@ -8,7 +8,10 @@ public class OrderResponse
     public string? PhoneNumber { get; set; }
     public string? Country { get; set; }
     public string? City { get; set; }
+    public string? State { get; set; }
     public string? ZipCode { get; set; }
+    public decimal SubtotalAmount { get; set; }
+    public decimal TaxAmount { get; set; }
     public decimal TotalAmount { get; set; }
     public int StatusId { get; set; }
     public string? PaymentMethod { get; set; }

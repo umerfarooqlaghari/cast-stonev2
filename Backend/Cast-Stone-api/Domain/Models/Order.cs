@@ -23,10 +23,19 @@ public class Order
     
     [MaxLength(100)]
     public string? City { get; set; }
-    
+
+    [MaxLength(100)]
+    public string? State { get; set; }
+
     [MaxLength(20)]
     public string? ZipCode { get; set; }
-    
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal SubtotalAmount { get; set; }
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal TaxAmount { get; set; } = 0;
+
     [Required]
     [Column(TypeName = "decimal(18,2)")]
     public decimal TotalAmount { get; set; }

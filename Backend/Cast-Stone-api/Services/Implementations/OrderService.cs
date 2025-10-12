@@ -55,8 +55,8 @@ public class OrderService : IOrderService
             }
         }
 
-        // Validate products and calculate total
-        decimal totalAmount = 0;
+        // Validate products and calculate subtotal
+        decimal subtotalAmount = 0;
         var orderItems = new List<OrderItem>();
 
         foreach (var item in request.OrderItems)
@@ -80,11 +80,25 @@ public class OrderService : IOrderService
             };
 
             orderItems.Add(orderItem);
-            totalAmount += product.Price * item.Quantity;
+            subtotalAmount += product.Price * item.Quantity;
         }
+
+        // Calculate tax based on shipping state (7% for Florida, 0% otherwise)
+        decimal taxRate = 0;
+        if (!string.IsNullOrEmpty(request.State) &&
+            (request.State.Equals("Florida", StringComparison.OrdinalIgnoreCase) ||
+             request.State.Equals("FL", StringComparison.OrdinalIgnoreCase)))
+        {
+            taxRate = 0.07m; // 7% for Florida
+        }
+
+        decimal taxAmount = subtotalAmount * taxRate;
+        decimal totalAmount = subtotalAmount + taxAmount;
 
         // Create order
         var order = _mapper.Map<Order>(request);
+        order.SubtotalAmount = subtotalAmount;
+        order.TaxAmount = taxAmount;
         order.TotalAmount = totalAmount;
         order.StatusId = 1; // Pending status
         order.CreatedAt = DateTime.UtcNow;
@@ -131,14 +145,16 @@ public class OrderService : IOrderService
             }
 
             var shippingAddress = $"{order.Country}, {order.City}";
+            if (!string.IsNullOrEmpty(order.State))
+                shippingAddress += $", {order.State}";
             if (!string.IsNullOrEmpty(order.ZipCode))
-                shippingAddress += $", {order.ZipCode}";
+                shippingAddress += $" {order.ZipCode}";
 
             await _emailService.SendOrderConfirmationToCustomerAsync(
                 order.Email,
                 order.Email, // Using email as name since we don't have customer name in order
                 createdOrder.Id,
-                totalAmount,
+                order.TotalAmount,
                 orderItemDetails,
                 order.PaymentMethod ?? "Unknown",
                 shippingAddress

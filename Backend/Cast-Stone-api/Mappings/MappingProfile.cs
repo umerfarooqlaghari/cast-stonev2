@@ -112,6 +112,8 @@ public class MappingProfile : Profile
         
         CreateMap<CreateOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.SubtotalAmount, opt => opt.Ignore())
+            .ForMember(dest => dest.TaxAmount, opt => opt.Ignore())
             .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
             .ForMember(dest => dest.StatusId, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
