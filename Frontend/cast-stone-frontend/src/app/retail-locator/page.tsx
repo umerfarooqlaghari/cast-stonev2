@@ -4,6 +4,8 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Search, MapPin, Phone, Mail, Navigation } from 'lucide-react';
+import { wholesaleBuyerLocationService, wholesaleBuyerService } from '@/services';
+import { WholesaleBuyerLocation as WBLocation, WholesaleBuyer } from '@/services/types/entities';
 
 // Dynamically import the map component to avoid SSR issues
 const RetailLocatorMap = dynamic(() => import('../../components/retail-locator/RetailLocatorMap'), {
@@ -46,12 +48,52 @@ export default function RetailLocatorPage() {
 
   const fetchLocations = async () => {
     try {
-      const response = await fetch('/api/wholesale-buyers/locations');
-      if (!response.ok) {
+      setLoading(true);
+
+      // Fetch all wholesale buyer locations
+      const locationsResponse = await wholesaleBuyerLocationService.get.getAll();
+
+      if (!locationsResponse.success || !locationsResponse.data) {
         throw new Error('Failed to fetch locations');
       }
-      const data = await response.json();
-      setLocations(data.data || []);
+
+      // Fetch all wholesale buyers to get their details
+      const buyersResponse = await wholesaleBuyerService.get.getAll();
+
+      if (!buyersResponse.success || !buyersResponse.data) {
+        throw new Error('Failed to fetch wholesale buyers');
+      }
+
+      // Create a map of buyer ID to buyer details
+      const buyersMap = new Map<number, WholesaleBuyer>();
+      buyersResponse.data.forEach((buyer: WholesaleBuyer) => {
+        buyersMap.set(buyer.id, buyer);
+      });
+
+      // Combine location data with buyer details
+      const combinedLocations: WholesaleBuyerLocation[] = locationsResponse.data
+        .map((location: WBLocation) => {
+          const buyer = buyersMap.get(location.wholesaleBuyerId);
+          if (!buyer) return null;
+
+          return {
+            id: location.id,
+            companyName: buyer.companyName || 'N/A',
+            businessType: buyer.businessType || 'N/A',
+            city: buyer.city || 'N/A',
+            state: buyer.state || 'N/A',
+            country: buyer.country || 'N/A',
+            latitude: location.latitude,
+            longitude: location.longitude,
+            businessAddress: location.address || buyer.businessAddress || 'N/A',
+            phone: buyer.phone || 'N/A',
+            email: buyer.email || 'N/A',
+          };
+        })
+        .filter((loc): loc is WholesaleBuyerLocation => loc !== null);
+
+      setLocations(combinedLocations);
+      setError(null);
     } catch (err) {
       setError('Failed to load store locations');
       console.error('Error fetching locations:', err);
@@ -189,7 +231,7 @@ export default function RetailLocatorPage() {
                     onChange={(e) => setSearchLocation(e.target.value)}
                     placeholder="40.7128, -74.0060"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    onKeyPress={(e) => e.key === 'Enter' && handleLocationSearch()}
+                    onKeyDown={(e) => e.key === 'Enter' && handleLocationSearch()}
                   />
                 </div>
                 

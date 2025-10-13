@@ -670,6 +670,30 @@ export interface ApproveRejectRequest {
   adminNotes?: string;
 }
 
+// Wholesale Buyer Location Types
+export interface WholesaleBuyerLocation {
+  id: number;
+  wholesaleBuyerId: number;
+  address?: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface CreateWholesaleBuyerLocationRequest {
+  wholesaleBuyerId: number;
+  address?: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface UpdateWholesaleBuyerLocationRequest {
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
 // Authentication Types
 export interface AuthenticationResult {
   isValid: boolean;

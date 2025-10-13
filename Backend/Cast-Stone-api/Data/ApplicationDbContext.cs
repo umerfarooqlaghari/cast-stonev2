@@ -26,6 +26,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Status> Statuses { get; set; }
     public DbSet<WholesaleBuyer> WholesaleBuyers { get; set; }
+    public DbSet<WholesaleBuyerLocation> WholesaleBuyerLocations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -232,6 +233,20 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<WholesaleBuyer>()
             .HasIndex(wb => wb.CreatedAt);
+
+        // Configure WholesaleBuyerLocation relationships
+        modelBuilder.Entity<WholesaleBuyerLocation>()
+            .HasOne(wbl => wbl.WholesaleBuyer)
+            .WithMany()
+            .HasForeignKey(wbl => wbl.WholesaleBuyerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure WholesaleBuyerLocation indexes
+        modelBuilder.Entity<WholesaleBuyerLocation>()
+            .HasIndex(wbl => wbl.WholesaleBuyerId);
+
+        modelBuilder.Entity<WholesaleBuyerLocation>()
+            .HasIndex(wbl => wbl.CreatedAt);
 
         // Configure ProductVariant JSON properties
         modelBuilder.Entity<ProductVariant>()

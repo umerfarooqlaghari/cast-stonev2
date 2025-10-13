@@ -12,12 +12,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-gray-50">
+<div>      <div className="antialiased bg-gray-50">
         <AdminAuthProvider>
           {children}
         </AdminAuthProvider>
-      </body>
-    </html>
-  );
+      </div>
+</div>  );
 }

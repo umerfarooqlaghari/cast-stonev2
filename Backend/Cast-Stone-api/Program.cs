@@ -52,6 +52,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IContactFormSubmissionRepository, ContactFormSubmissionRepository>();
 builder.Services.AddScoped<IWholesaleBuyerRepository, WholesaleBuyerRepository>();
+builder.Services.AddScoped<IWholesaleBuyerLocationRepository, WholesaleBuyerLocationRepository>();
 
 // Register Services
 builder.Services.AddScoped<ICollectionService, CollectionService>();
@@ -65,6 +66,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IContactFormSubmissionService, ContactFormSubmissionService>();
 builder.Services.AddScoped<IWholesaleBuyerService, WholesaleBuyerService>();
+builder.Services.AddScoped<IWholesaleBuyerLocationService, WholesaleBuyerLocationService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<StripeService>();

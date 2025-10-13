@@ -6,6 +6,7 @@ import { wholesaleBuyerService } from '@/services';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
+import AddLocationModal from '@/components/admin/AddLocationModal';
 import styles from './page.module.css';
 
 type FilterStatus = 'all' | 'pending' | 'approved' | 'rejected';
@@ -19,6 +20,8 @@ export default function WholesaleBuyersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBuyer, setSelectedBuyer] = useState<WholesaleBuyer | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [locationBuyer, setLocationBuyer] = useState<WholesaleBuyer | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const { admin } = useAdminAuth();
 
@@ -252,15 +255,27 @@ export default function WholesaleBuyersPage() {
                 <td>{getStatusBadge(buyer.status)}</td>
                 <td>{formatDate(buyer.createdAt)}</td>
                 <td>
-                  <button
-                    onClick={() => {
-                      setSelectedBuyer(buyer);
-                      setIsModalOpen(true);
-                    }}
-                    className={styles.viewButton}
-                  >
-                    View Details
-                  </button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => {
+                        setSelectedBuyer(buyer);
+                        setIsModalOpen(true);
+                      }}
+                      className={styles.viewButton}
+                    >
+                      View Details
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLocationBuyer(buyer);
+                        setIsLocationModalOpen(true);
+                      }}
+                      className={styles.viewButton}
+                      style={{ backgroundColor: '#16a34a' }}
+                    >
+                      Add Location
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -285,6 +300,21 @@ export default function WholesaleBuyersPage() {
           onApprove={() => handleApprove(selectedBuyer)}
           onReject={(reason) => handleReject(selectedBuyer, reason)}
           isProcessing={isProcessing}
+        />
+      )}
+
+      {/* Modal for adding location */}
+      {isLocationModalOpen && locationBuyer && (
+        <AddLocationModal
+          buyer={locationBuyer}
+          onClose={() => {
+            setIsLocationModalOpen(false);
+            setLocationBuyer(null);
+          }}
+          onSuccess={() => {
+            // Optionally refresh the buyers list or show a success message
+            fetchBuyers();
+          }}
         />
       )}
         </div>

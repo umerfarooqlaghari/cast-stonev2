@@ -192,6 +192,21 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ApprovedByUser, opt => opt.Ignore());
 
         CreateMap<WholesaleBuyer, WholesaleBuyerSummaryResponse>();
+
+        // WholesaleBuyerLocation mappings
+        CreateMap<WholesaleBuyerLocation, BuyerLocationResponse>();
+
+        CreateMap<CreateWholesaleBuyerLocationRequest, WholesaleBuyerLocation>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.WholesaleBuyer, opt => opt.Ignore());
+
+        CreateMap<UpdateWholesaleBuyerLocationRequest, WholesaleBuyerLocation>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.WholesaleBuyerId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.WholesaleBuyer, opt => opt.Ignore());
     }
 
     private static string GetInquiryDisplayName(InquiryType inquiry)
