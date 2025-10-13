@@ -6,8 +6,10 @@ export const dynamic = "force-dynamic";
 import React, { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
-import { productService, collectionService, productVariantService } from '@/services';
+import { productVariantService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
+import { useProducts } from '@/hooks/useProducts';
+import { useCollections } from '@/hooks/useCollections';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -27,10 +29,11 @@ interface FilterState {
 }
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [collections, setCollections] = useState<Collection[]>([]);
+  // Use React Query hooks for cached data
+  const { data: products = [], isLoading: isLoadingProducts } = useProducts();
+  const { data: collections = [], isLoading: isLoadingCollections } = useCollections();
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [showFilters] = useState(false);
   const [productVariantCounts, setProductVariantCounts] = useState<Map<number, number>>(new Map());
 
@@ -42,6 +45,8 @@ export default function ProductsPage() {
     sortBy: 'name',
     sortDirection: 'asc'
   });
+
+  const isLoading = isLoadingProducts || isLoadingCollections;
 
   // Suspense wrapper to safely read search params during SSR/edge
   const SearchParamsBinder = () => {
@@ -59,41 +64,31 @@ export default function ProductsPage() {
     return null;
   };
 
-  // Fetch data on component mount
+  // Fetch product variants when products are loaded
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchVariants = async () => {
+      if (products.length === 0) return;
+
+      try {
+        const allVariants = await productVariantService.get.getAll().catch(() => []);
+
+        // Group variants by productId to create variant counts map
+        const variantCountsMap = new Map<number, number>();
+        allVariants.forEach((variant) => {
+          const currentCount = variantCountsMap.get(variant.productId) || 0;
+          variantCountsMap.set(variant.productId, currentCount + 1);
+        });
+        setProductVariantCounts(variantCountsMap);
+      } catch (error) {
+        console.error('Error fetching variants:', error);
+      }
+    };
+
+    fetchVariants();
+  }, [products]);
 
   // Apply collectionId from query params when available (via Suspense-bound binder)
   // The binder runs the side-effect client-side when search params are ready.
-
-
-
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const [productsData, collectionsData, allVariants] = await Promise.all([
-        productService.get.getAll(),
-        collectionService.get.getAll(),
-        productVariantService.get.getAll().catch(() => []), // Fetch all variants in one call
-      ]);
-      setProducts(productsData);
-      setCollections(collectionsData);
-
-      // Group variants by productId to create variant counts map
-      const variantCountsMap = new Map<number, number>();
-      allVariants.forEach((variant) => {
-        const currentCount = variantCountsMap.get(variant.productId) || 0;
-        variantCountsMap.set(variant.productId, currentCount + 1);
-      });
-      setProductVariantCounts(variantCountsMap);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const getDescendantCollectionIds = (rootId: number, all: Collection[]): Set<number> => {
     const childrenByParent = new Map<number, number[]>();

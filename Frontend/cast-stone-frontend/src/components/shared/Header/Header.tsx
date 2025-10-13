@@ -5,9 +5,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { WholesaleUserMenu } from '../../wholesale/WholesaleUserMenu';
-import { collectionGetService } from '../../../services/api/collections';
 import { Collection } from '../../../services/types/entities';
 import { DropdownItem } from '../../../types';
+import { useCollectionsByLevel } from '@/hooks/useCollections';
 import styles from './header.module.css';
 import { usePathname } from 'next/navigation';
 
@@ -20,11 +20,13 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   const { getCartSummary } = useCart();
-  const [collections, setCollections] = useState<Collection[]>([]);
+
+  // Use React Query hook for cached collections
+  const { data: collections = [], isLoading } = useCollectionsByLevel(1);
+
   const [childCollections, setChildCollections] = useState<{ [key: number]: Collection[] }>({});
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   // const [setHoveredCollection] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState<string | null>(null);
@@ -69,31 +71,13 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch collections on component mount
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        setIsLoading(true);
-        // Get only level 1 (root) collections for the header dropdown
-        const rootCollections = await collectionGetService.getByLevel(1);
-        setCollections(rootCollections);
-      } catch (error) {
-        console.error('Failed to fetch collections:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCollections();
-  }, []);
-
-
-
-  // Fetch child collections for a parent collection
+  // Fetch child collections for a parent collection (still using direct API call for dynamic loading)
   const fetchChildCollections = async (parentId: number) => {
     try {
       if (!childCollections[parentId]) {
-        const children = await collectionGetService.getChildren(parentId);
+        // Import the service dynamically to avoid circular dependencies
+        const { collectionService } = await import('@/services');
+        const children = await collectionService.get.getChildren(parentId);
         setChildCollections(prev => ({
           ...prev,
           [parentId]: children

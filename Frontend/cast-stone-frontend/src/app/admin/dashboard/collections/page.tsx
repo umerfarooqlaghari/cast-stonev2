@@ -1,35 +1,21 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
 import CollectionModal from '@/components/admin/CollectionModal';
 import { collectionService } from '@/services';
 import { Collection } from '@/services/types/entities';
+import { useCollections } from '@/hooks/useCollections';
 
 export default function CollectionsPage() {
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Use React Query hook for cached data with refetch capability
+  const { data: collections = [], isLoading, refetch: refetchCollections } = useCollections();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCollection, setEditingCollection] = useState<Collection | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [levelFilter, setLevelFilter] = useState<number | ''>('');
-
-  useEffect(() => {
-    fetchCollections();
-  }, []);
-
-  const fetchCollections = async () => {
-    try {
-      setIsLoading(true);
-      const data = await collectionService.get.getAll();
-      setCollections(data);
-    } catch (error) {
-      console.error('Error fetching collections:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleAddCollection = () => {
     setEditingCollection(null);
@@ -45,7 +31,7 @@ export default function CollectionsPage() {
     if (window.confirm('Are you sure you want to delete this collection?')) {
       try {
         await collectionService.delete.delete(id);
-        await fetchCollections();
+        await refetchCollections(); // Refetch collections after deletion
       } catch (error) {
         console.error('Error deleting collection:', error);
         alert('Error deleting collection. Please try again.');
@@ -61,7 +47,7 @@ export default function CollectionsPage() {
   const handleModalSuccess = () => {
     setIsModalOpen(false);
     setEditingCollection(null);
-    fetchCollections();
+    refetchCollections(); // Refetch collections after create/update
   };
 
   const filteredCollections = collections.filter(collection => {

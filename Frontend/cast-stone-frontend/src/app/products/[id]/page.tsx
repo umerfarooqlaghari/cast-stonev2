@@ -3,10 +3,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Product, ProductVariant } from '@/services/types/entities';
-import { productService, productVariantService } from '@/services';
+import { ProductVariant } from '@/services/types/entities';
+import { productVariantService } from '@/services';
 import { useCart } from '@/contexts/CartContext';
 import { useWholesaleAuth } from '@/contexts/WholesaleAuthContext';
+import { useProduct, useProductRecommendations } from '@/hooks/useProducts';
 import ProductImageGallery from '@/components/products/ProductImageGallery/ProductImageGallery';
 import ProductSpecifications from '@/components/products/ProductSpecifications/ProductSpecifications';
 import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
@@ -20,46 +21,39 @@ export default function ProductPage() {
   const { addToCart } = useCart();
   const { isApprovedWholesaleBuyer } = useWholesaleAuth();
 
-  const [product, setProduct] = useState<Product | null>(null);
+  // Use React Query hooks for cached data
+  const { data: product, isLoading: isLoadingProduct, error: productError } = useProduct(productId);
+  const { data: relatedProducts = [], isLoading: isLoadingRelated } = useProductRecommendations(productId, 6);
+
   const [variants, setVariants] = useState<ProductVariant[]>([]);
   const [selectedVariantId, setSelectedVariantId] = useState<number | null>(null);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedPatina, setSelectedPatina] = useState<string>('Alpine Stone');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
+  const isLoading = isLoadingProduct || isLoadingRelated;
+  const error = productError ? 'Failed to load product details' : null;
+
+  // Fetch variants when product is loaded
   useEffect(() => {
-    if (productId) {
-      fetchProductData();
-    }
+    const fetchVariants = async () => {
+      if (!productId) return;
+
+      try {
+        const variantsData = await productVariantService.get.getByProductId(productId).catch(() => []);
+        setVariants(variantsData);
+      } catch (err) {
+        console.error('Error fetching variants:', err);
+      }
+    };
+
+    fetchVariants();
   }, [productId]);
 
-  const fetchProductData = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      const [productData, relatedData, variantsData] = await Promise.all([
-        productService.get.getById(productId),
-        productService.get.getRecommendations(productId, 6),
-        productVariantService.get.getByProductId(productId).catch(() => [])
-      ]);
-
-      setProduct(productData);
-      setRelatedProducts(relatedData);
-      setVariants(variantsData);
-
-      // Reset selected variant when product changes
-      setSelectedVariantId(null);
-    } catch (err) {
-      console.error('Error fetching product:', err);
-      setError('Failed to load product details');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Reset selected variant when product changes
+  useEffect(() => {
+    setSelectedVariantId(null);
+  }, [productId]);
 
   const handleAddToCart = async () => {
     if (!product) return;

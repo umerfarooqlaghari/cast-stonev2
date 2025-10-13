@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ProductModal from '@/components/admin/ProductModal';
 import StockUpdateModal from '@/components/admin/StockUpdateModal';
-import { productService, collectionService } from '@/services';
-import { Product, Collection } from '@/services/types/entities';
+import { productService } from '@/services';
+import { Product } from '@/services/types/entities';
+import { useProducts } from '@/hooks/useProducts';
+import { useCollections } from '@/hooks/useCollections';
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Use React Query hooks for cached data with refetch capability
+  const { data: products = [], isLoading: isLoadingProducts, refetch: refetchProducts } = useProducts();
+  const { data: collections = [], isLoading: isLoadingCollections } = useCollections();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStockModalOpen, setIsStockModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -21,25 +24,7 @@ export default function ProductsPage() {
   const [collectionFilter, setCollectionFilter] = useState<number | ''>('');
   const [stockFilter, setStockFilter] = useState<'all' | 'inStock' | 'lowStock' | 'outOfStock'>('all');
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const [productsData, collectionsData] = await Promise.all([
-        productService.get.getAll(),
-        collectionService.get.getAll(),
-      ]);
-      setProducts(productsData);
-      setCollections(collectionsData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const isLoading = isLoadingProducts || isLoadingCollections;
 
   const handleAddProduct = () => {
     setEditingProduct(null);
@@ -60,7 +45,7 @@ export default function ProductsPage() {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
         await productService.delete.delete(id);
-        await fetchData();
+        await refetchProducts(); // Refetch products after deletion
       } catch (error) {
         console.error('Error deleting product:', error);
         alert('Error deleting product. Please try again.');
@@ -81,13 +66,13 @@ export default function ProductsPage() {
   const handleModalSuccess = () => {
     setIsModalOpen(false);
     setEditingProduct(null);
-    fetchData();
+    refetchProducts(); // Refetch products after create/update
   };
 
   const handleStockUpdateSuccess = () => {
     setIsStockModalOpen(false);
     setStockUpdateProduct(null);
-    fetchData();
+    refetchProducts(); // Refetch products after stock update
   };
 
   const getCollectionName = (collectionId: number) => {

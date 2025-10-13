@@ -2,38 +2,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ProductVariantModal from '@/components/admin/ProductVariantModal';
-import { productService, productVariantService } from '@/services';
+import { productVariantService } from '@/services';
 import { Product, ProductVariant } from '@/services/types/entities';
+import { useProducts } from '@/hooks/useProducts';
 
 export default function ProductVariantsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  // Use React Query hook for cached products data
+  const { data: products = [], isLoading } = useProducts();
+
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<ProductVariant[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isVariantsLoading, setIsVariantsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      const productsData = await productService.get.getAll();
-      setProducts(productsData);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const fetchVariants = async (productId: number) => {
     try {

@@ -5,7 +5,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
-import { productService, collectionService } from '@/services';
 import { MagazineProductGrid } from '@/components/products';
 import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
@@ -13,6 +12,8 @@ import StaticCompletedProjects, { StaticCompletedProject } from '@/components/co
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
 import YouMayAlsoLike from '@/components/collections/YouMayAlsoLike';
 import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
+import { useCollection, useCollectionChildren, useCollectionsByLevel } from '@/hooks/useCollections';
+import { useProductsByCollection } from '@/hooks/useProducts';
 import styles from './collectionPage.module.css';
 import { motion, cubicBezier } from 'framer-motion';
 import Image from 'next/image';
@@ -35,14 +36,17 @@ export default function CollectionPage() {
   const params = useParams();
   const collectionId = parseInt(params.id as string);
 
-  const [collection, setCollection] = useState<Collection | null>(null);
-  const [childCollections, setChildCollections] = useState<Collection[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  // Use React Query hooks for cached data
+  const { data: collection, isLoading: isLoadingCollection, error: collectionError } = useCollection(collectionId);
+  const { data: childCollections = [] } = useCollectionChildren(collectionId);
+  const { data: products = [] } = useProductsByCollection(collectionId);
+  const { data: siblingCollections = [] } = useCollectionsByLevel(collection?.level || 0);
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [siblingCollections, setSiblingCollections] = useState<Collection[]>([]); // collections of the same level for "You May Also Like"
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+
+  const isLoading = isLoadingCollection;
+  const error = collectionError ? 'Failed to load collection' : null;
 
   // Hover and motion preferences
   const [section3Hovered, setSection3Hovered] = useState(false);
@@ -277,68 +281,22 @@ export default function CollectionPage() {
     }
   ];
 
+  // Set initial price range based on actual products
   useEffect(() => {
-    if (collectionId) {
-      fetchData();
+    if (products.length > 0 && collection?.level === 3) {
+      const prices = products.map(p => p.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      setFilters(prev => ({
+        ...prev,
+        priceRange: { min: minPrice, max: maxPrice }
+      }));
     }
-  }, [collectionId]);
+  }, [products, collection]);
 
   useEffect(() => {
     applyFilters();
   }, [products, filters]);
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Get collection data first
-      const collectionData = await collectionService.get.getById(collectionId);
-      setCollection(collectionData);
-
-      // Based on collection level, fetch appropriate data
-      if (collectionData.level === 3) {
-        // Level 3: Show products
-        const productsData = await productService.get.getByCollection(collectionId);
-        setProducts(productsData);
-        setChildCollections([]);
-
-        // Set initial price range based on actual products
-        if (productsData.length > 0) {
-          const prices = productsData.map(p => p.price);
-          const minPrice = Math.min(...prices);
-          const maxPrice = Math.max(...prices);
-          setFilters(prev => ({
-            ...prev,
-            priceRange: { min: minPrice, max: maxPrice }
-          }));
-        }
-      } else {
-        // Level 1 or 2: Show child collections
-        const childCollectionsData = await collectionService.get.getChildren(collectionId);
-        // Debug: verify child collections for ID=2
-        if (collectionId >= 2 && collectionId <= 7) {
-          console.debug('Fetched child collections for ID=2:', childCollectionsData);
-        }
-        setChildCollections(childCollectionsData);
-        setProducts([]);
-
-        // Fetch sibling collections for "You May Also Like" section
-        // Get all collections of the same level as the current collection
-        try {
-          const allCollectionsOfSameLevel = await collectionService.get.getByLevel(collectionData.level);
-          setSiblingCollections(allCollectionsOfSameLevel);
-        } catch (e) {
-          console.warn('Failed to load sibling collections for You May Also Like:', e);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching collection data:', err);
-      setError('Failed to load collection');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const applyFilters = () => {
     let filtered = [...products];
@@ -604,6 +562,14 @@ export default function CollectionPage() {
 
         {/* Collage full-size modal overlay (Level 3) via portal to escape any stacking contexts */}
 
+        {/* Section: You May Also Like - For Level 3 collections */}
+        {siblingCollections.length > 0 && (
+          <YouMayAlsoLike
+            collections={siblingCollections}
+            currentCollectionId={collectionId}
+            title="You May Also Like"
+          />
+        )}
 
         {/* Products Section (with anchor) */}
 
@@ -692,24 +658,8 @@ export default function CollectionPage() {
               </div>
             </section>
 
-            {/* Section: Static Content (from collection fields) */}
-            <StaticContentSection
-              header={collection.staticContentHeader}
-              paragraph1={collection.staticContentParagraph1}
-              paragraph2={collection.staticContentParagraph2}
-              paragraph3={collection.staticContentParagraph3}
-              backgroundImage={
-                collection.staticContentBackgroundImage ||
-                (collection.images && collection.images.length > 1
-                  ? collection.images[1]
-                  : collection.images && collection.images.length > 0
-                    ? collection.images[0]
-                    : undefined)
-              }
-            />
-
-            {/* Section 2: You May Also Like - New Component (Level 2 only) */}
-            {collection.level === 2 && siblingCollections.length > 0 && (
+            {/* Section: You May Also Like - New Component (All levels) */}
+            {siblingCollections.length > 0 && (
               <YouMayAlsoLike
                 collections={siblingCollections}
                 currentCollectionId={collectionId}
@@ -718,6 +668,33 @@ export default function CollectionPage() {
             )}
           </>
         )}
+
+        {/* Section: Static Content (from collection fields) - Level 2 and 3 */}
+        {(collection.level === 2 || collection.level === 3) && (
+          <StaticContentSection
+            header={collection.staticContentHeader}
+            paragraph1={collection.staticContentParagraph1}
+            paragraph2={collection.staticContentParagraph2}
+            paragraph3={collection.staticContentParagraph3}
+            backgroundImage={
+              collection.staticContentBackgroundImage ||
+              (collection.images && collection.images.length > 1
+                ? collection.images[1]
+                : collection.images && collection.images.length > 0
+                  ? collection.images[0]
+                  : undefined)
+            }
+          />
+        )}
+
+        {/* Section: You May Also Like - For all levels in Architectural Design */}
+        {/* {siblingCollections.length > 0 && (
+          <YouMayAlsoLike
+            collections={siblingCollections}
+            currentCollectionId={collectionId}
+            title="You May Also Like"
+          />
+        )} */}
 
         {/* Section 4: Zigzag Content Section - only on collection ID 1 */}
         {collection.id === 1 && (
@@ -752,6 +729,33 @@ export default function CollectionPage() {
         title={`${collection.level === 1 ? 'Categories' : 'Subcategories'} in ${collection.name}`}
         subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
       />
+
+      {/* Section: Static Content (from collection fields) - Level 2 and 3 */}
+      {(collection.level === 2 || collection.level === 3) && (
+        <StaticContentSection
+          header={collection.staticContentHeader}
+          paragraph1={collection.staticContentParagraph1}
+          paragraph2={collection.staticContentParagraph2}
+          paragraph3={collection.staticContentParagraph3}
+          backgroundImage={
+            collection.staticContentBackgroundImage ||
+            (collection.images && collection.images.length > 1
+              ? collection.images[1]
+              : collection.images && collection.images.length > 0
+                ? collection.images[0]
+                : undefined)
+          }
+        />
+      )}
+
+      {/* Section: You May Also Like - For all levels in standard layout */}
+      {siblingCollections.length > 0 && (
+        <YouMayAlsoLike
+          collections={siblingCollections}
+          currentCollectionId={collectionId}
+          title="You May Also Like"
+        />
+      )}
 
       {/* Section 3: Testimonials Carousel */}
 

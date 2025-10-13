@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { collectionGetService } from '../../../services/api/collections';
-import { Collection } from '../../../services/types/entities';
+import { usePublishedCollections } from '@/hooks/useCollections';
 import styles from './collectionsCarousel.module.css';
 
 interface CollectionsCarouselProps {
@@ -16,31 +15,18 @@ const CollectionsCarousel: React.FC<CollectionsCarouselProps> = ({
   title = "Featured Collections",
   subtitle = "Explore our curated selection of handcrafted cast stone collections"
 }) => {
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Use React Query hook for cached data
+  const { data: publishedCollections = [], isLoading, error: queryError } = usePublishedCollections();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        // Use getPublished() to get all published collections
-        const publishedData = await (await collectionGetService.getPublished())
-          .filter(collection => collection.level === 1)
-          .slice(0, 4).filter(collection => collection.level === 1);
-        setCollections(publishedData);
-      } catch (err) {
-        console.error('Failed to fetch collections:', err);
-        setError('Failed to load collections');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Filter and limit collections to level 1, max 4 items
+  const collections = useMemo(() => {
+    return publishedCollections
+      .filter(collection => collection.level === 1)
+      .slice(0, 4);
+  }, [publishedCollections]);
 
-    fetchCollections();
-  }, []);
+  const error = queryError ? 'Failed to load collections' : null;
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
