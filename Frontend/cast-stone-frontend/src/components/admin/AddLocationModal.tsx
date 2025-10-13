@@ -1,19 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { wholesaleBuyerLocationService } from '@/services';
 import { WholesaleBuyer } from '@/services/types/entities';
-
-// Fix for default markers in Leaflet with Next.js
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
 
 interface AddLocationModalProps {
   buyer: WholesaleBuyer;
@@ -23,8 +14,9 @@ interface AddLocationModalProps {
 
 export default function AddLocationModal({ buyer, onClose, onSuccess }: AddLocationModalProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const markerRef = useRef<L.Marker | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markerRef = useRef<any>(null);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState(39.8283); // Default to center of US
@@ -38,37 +30,56 @@ export default function AddLocationModal({ buyer, onClose, onSuccess }: AddLocat
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    // Create map centered on the US
-    const map = L.map(mapRef.current).setView([latitude, longitude], 4);
+    // Dynamically import Leaflet to avoid SSR issues
+    const initMap = async () => {
+      const L = (await import('leaflet')).default;
+      // CSS is imported via next.config or global styles
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
+      // Fix for default markers in Leaflet with Next.js
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+      });
 
-    // Add draggable marker
-    const marker = L.marker([latitude, longitude], {
-      draggable: true,
-    }).addTo(map);
+      if (!mapRef.current) return;
 
-    // Update coordinates when marker is dragged
-    marker.on('dragend', () => {
-      const position = marker.getLatLng();
-      setLatitude(Number(position.lat.toFixed(7)));
-      setLongitude(Number(position.lng.toFixed(7)));
-    });
+      // Create map centered on the US
+      const map = L.map(mapRef.current).setView([latitude, longitude], 4);
 
-    // Add click event to map to move marker
-    map.on('click', (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
-      marker.setLatLng([lat, lng]);
-      setLatitude(Number(lat.toFixed(7)));
-      setLongitude(Number(lng.toFixed(7)));
-    });
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(map);
 
-    mapInstanceRef.current = map;
-    markerRef.current = marker;
+      // Add draggable marker
+      const marker = L.marker([latitude, longitude], {
+        draggable: true,
+      }).addTo(map);
+
+      // Update coordinates when marker is dragged
+      marker.on('dragend', () => {
+        const position = marker.getLatLng();
+        setLatitude(Number(position.lat.toFixed(7)));
+        setLongitude(Number(position.lng.toFixed(7)));
+      });
+
+      // Add click event to map to move marker
+      map.on('click', (e: any) => {
+        const { lat, lng } = e.latlng;
+        marker.setLatLng([lat, lng]);
+        setLatitude(Number(lat.toFixed(7)));
+        setLongitude(Number(lng.toFixed(7)));
+      });
+
+      mapInstanceRef.current = map;
+      markerRef.current = marker;
+      setIsMapReady(true);
+    };
+
+    initMap();
 
     return () => {
       if (mapInstanceRef.current) {
@@ -184,7 +195,7 @@ export default function AddLocationModal({ buyer, onClose, onSuccess }: AddLocat
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 placeholder="Enter address, city, or place name..."
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                 disabled={isLoading || isSaving}

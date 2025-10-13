@@ -1,13 +1,19 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { WholesaleBuyer } from '@/services/types/entities';
 import { wholesaleBuyerService } from '@/services';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
-import AddLocationModal from '@/components/admin/AddLocationModal';
 import styles from './page.module.css';
+
+// Dynamically import AddLocationModal to avoid SSR issues with Leaflet
+const AddLocationModal = dynamic(() => import('@/components/admin/AddLocationModal'), {
+  ssr: false,
+  loading: () => <div>Loading map...</div>
+});
 
 type FilterStatus = 'all' | 'pending' | 'approved' | 'rejected';
 
