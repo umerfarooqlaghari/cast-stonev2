@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import { paymentService } from '@/services';
+import { orderService } from '@/services';
+import StripePaymentModal from '@/components/payment/StripePaymentModal';
 import styles from './checkout.module.css';
 
 interface ShippingInfo {
@@ -45,7 +47,9 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [paymentError, setPaymentError] = useState<string>('');
-  
+  const [isFloridaResident, setIsFloridaResident] = useState<boolean>(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     firstName: '',
     lastName: '',
@@ -57,7 +61,7 @@ export default function CheckoutPage() {
     zipCode: '',
     country: 'United States'
   });
-  
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('stripe');
 
   // Initialize payment methods
@@ -103,78 +107,47 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async () => {
     if (!state.cart) return;
 
+    // Validate payment amount
+    const validation = paymentService.validatePaymentAmount(total);
+    if (!validation.valid) {
+      setPaymentError(validation.errors.join(', '));
+      return;
+    }
+
+    // Open payment modal for Stripe
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = async (paymentIntentId: string) => {
+    setShowPaymentModal(false);
     setIsProcessing(true);
     setPaymentError('');
 
     try {
-      // Validate payment amount
-      const validation = paymentService.validatePaymentAmount(total);
-      if (!validation.valid) {
-        setPaymentError(validation.errors.join(', '));
-        return;
+      if (!state.cart) {
+        throw new Error('Cart is empty');
       }
 
-      // Create order first (this would be a real API call)
+      // Create order with payment information
       const orderData = {
         email: shippingInfo.email,
         phoneNumber: shippingInfo.phone,
         country: shippingInfo.country,
         city: shippingInfo.city,
+        state: shippingInfo.state,
         zipCode: shippingInfo.zipCode,
-        paymentMethod: selectedPaymentMethod,
+        isFloridaResident: isFloridaResident,
+        paymentMethod: 'stripe',
         orderItems: state.cart.cartItems.map(item => ({
           productId: item.productId,
           quantity: item.quantity
         }))
       };
 
-      // For demo purposes, we'll simulate order creation
-      const mockOrderId = Math.floor(Math.random() * 10000);
+      // Create order in database
+      const createdOrder = await orderService.post.create(orderData);
 
-      // Process payment based on selected method
-      const paymentResult = await paymentService.processPayment(
-        selectedPaymentMethod as 'stripe' | 'paypal' | 'apple_pay' | 'affirm',
-        total,
-        'USD',
-        mockOrderId,
-        {
-          description: `Cast Stone Order #${mockOrderId}`,
-          customer_email: shippingInfo.email
-        }
-      );
-
-      if (!paymentResult.success) {
-        setPaymentError(paymentResult.message || 'Payment processing failed');
-        return;
-      }
-
-      // For demo purposes, simulate payment completion
-      if (selectedPaymentMethod === 'paypal' && 'approvalUrl' in paymentResult) {
-        // For PayPal, redirect to approval URL
-        if (typeof paymentResult.approvalUrl === 'string') {
-          window.location.href = paymentResult.approvalUrl;
-        } else {
-          setPaymentError('Invalid approval URL received from payment service.');
-          return;
-        }
-        return;
-      }
-
-      // For other payment methods, complete the payment
-      if ('paymentIntentId' in paymentResult && paymentResult.paymentIntentId) {
-        const completionResult = await paymentService.completePayment(
-          selectedPaymentMethod as 'stripe' | 'paypal' | 'apple_pay' | 'affirm',
-          paymentResult.paymentIntentId,
-          mockOrderId
-        );
-
-        if (!completionResult.payment.success) {
-          setPaymentError(completionResult.payment.message || 'Payment completion failed');
-          return;
-        }
-
-        console.log('Payment completed:', completionResult);
-      }
+      console.log('Order created successfully:', createdOrder);
 
       // Clear cart after successful order
       await clearCart();
@@ -182,12 +155,16 @@ export default function CheckoutPage() {
       // Redirect to success page
       router.push('/checkout/success');
     } catch (error) {
-      console.error('Error placing order:', error);
-      const errorInfo = paymentService.handlePaymentError(error, selectedPaymentMethod);
-      setPaymentError(errorInfo.userMessage);
+      console.error('Error creating order:', error);
+      setPaymentError('Order creation failed. Please contact support.');
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handlePaymentError = (error: string) => {
+    setShowPaymentModal(false);
+    setPaymentError(error);
   };
 
   if (!state.cart || state.cart.cartItems.length === 0) {
@@ -195,7 +172,11 @@ export default function CheckoutPage() {
   }
 
   const subtotal = state.cart.totalAmount;
-  const tax = subtotal * 0.08;
+
+  // Calculate tax based on isFloridaResident (7% for Florida, 0% otherwise)
+  const taxRate = isFloridaResident ? 0.07 : 0;
+  const tax = subtotal * taxRate;
+
   const shipping = subtotal > 100 ? 0 : 15;
   const total = subtotal + tax + shipping;
 
@@ -336,7 +317,38 @@ export default function CheckoutPage() {
                   </select>
                 </div>
               </div>
-              
+
+              {/* Florida Resident Tax Question */}
+              <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '20px' }}>
+                <label style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px', display: 'block' }}>
+                  Are you based in Florida? *
+                </label>
+                <div style={{ display: 'flex', gap: '24px', marginTop: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      name="floridaResident"
+                      value="yes"
+                      checked={isFloridaResident === true}
+                      onChange={() => setIsFloridaResident(true)}
+                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    <span style={{ fontSize: '15px' }}>Yes</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      name="floridaResident"
+                      value="no"
+                      checked={isFloridaResident === false}
+                      onChange={() => setIsFloridaResident(false)}
+                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    <span style={{ fontSize: '15px' }}>No</span>
+                  </label>
+                </div>
+              </div>
+
               <div className={styles.stepActions}>
                 <button
                   onClick={handleNextStep}
@@ -447,6 +459,15 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* Stripe Payment Modal */}
+      <StripePaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        amount={total}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+      />
     </div>
   );
 }

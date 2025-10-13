@@ -389,7 +389,11 @@ export interface Order {
   phoneNumber?: string;
   country?: string;
   city?: string;
+  state?: string;
   zipCode?: string;
+  isFloridaResident: boolean;
+  subtotalAmount: number;
+  taxAmount: number;
   totalAmount: number;
   statusId: number;
   paymentMethod?: string;
@@ -424,7 +428,9 @@ export interface CreateOrderRequest {
   phoneNumber?: string;
   country?: string;
   city?: string;
+  state?: string;
   zipCode?: string;
+  isFloridaResident: boolean;
   paymentMethod?: string;
   orderItems: CreateOrderItemRequest[];
 }

@@ -73,26 +73,20 @@ export default function ProductsPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const [productsData, collectionsData] = await Promise.all([
+      const [productsData, collectionsData, allVariants] = await Promise.all([
         productService.get.getAll(),
         collectionService.get.getAll(),
+        productVariantService.get.getAll().catch(() => []), // Fetch all variants in one call
       ]);
       setProducts(productsData);
       setCollections(collectionsData);
 
-      // Fetch variant counts for all products
+      // Group variants by productId to create variant counts map
       const variantCountsMap = new Map<number, number>();
-      await Promise.all(
-        productsData.map(async (product) => {
-          try {
-            const variants = await productVariantService.get.getByProductId(product.id);
-            variantCountsMap.set(product.id, variants.length);
-          } catch (error) {
-            // If error fetching variants, assume no variants
-            variantCountsMap.set(product.id, 0);
-          }
-        })
-      );
+      allVariants.forEach((variant) => {
+        const currentCount = variantCountsMap.get(variant.productId) || 0;
+        variantCountsMap.set(variant.productId, currentCount + 1);
+      });
       setProductVariantCounts(variantCountsMap);
     } catch (error) {
       console.error('Error fetching data:', error);

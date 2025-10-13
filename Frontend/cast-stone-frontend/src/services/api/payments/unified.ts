@@ -102,6 +102,7 @@ export class UnifiedPaymentService extends BaseService {
   }[] {
     const stripeCapabilities = this.stripe.getPaymentMethodCapabilities();
 
+    // Only show Stripe payment method
     return [
       {
         method: 'stripe',
@@ -109,27 +110,6 @@ export class UnifiedPaymentService extends BaseService {
         description: 'Visa, Mastercard, American Express',
         available: stripeCapabilities.card,
         icon: '💳'
-      },
-      {
-        method: 'paypal',
-        name: 'PayPal',
-        description: 'Pay securely with your PayPal account',
-        available: true,
-        icon: '🅿️'
-      },
-      {
-        method: 'affirm',
-        name: 'Affirm',
-        description: 'Buy now, pay later with Affirm',
-        available: stripeCapabilities.affirm,
-        icon: '📅'
-      },
-      {
-        method: 'apple_pay',
-        name: 'Apple Pay',
-        description: 'Pay with Touch ID or Face ID',
-        available: stripeCapabilities.applePay,
-        icon: '🍎'
       }
     ];
   }

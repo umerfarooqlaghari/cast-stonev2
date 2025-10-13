@@ -34,9 +34,9 @@ const CartSummary: React.FC<CartSummaryProps> = ({
   }
 
   const subtotal = state.cart.totalAmount;
-  const tax = subtotal * 0.08; // 8% tax rate
+  // Tax will be calculated at checkout based on shipping address
   const shipping = subtotal > 100 ? 0 : 15; // Free shipping over $100
-  const total = subtotal + tax + shipping;
+  const total = subtotal + shipping;
 
   return (
     <div className={styles.cartSummary}>
@@ -60,10 +60,12 @@ const CartSummary: React.FC<CartSummaryProps> = ({
           </span>
         </div>
 
-        {/* Tax */}
+        {/* Tax Note */}
         <div className={styles.summaryRow}>
           <span className={styles.label}>Tax</span>
-          <span className={styles.value}>{formatPrice(tax)}</span>
+          <span className={styles.value} style={{ fontSize: '0.85rem', color: '#666' }}>
+            Calculated at checkout
+          </span>
         </div>
 
         {/* Divider */}
