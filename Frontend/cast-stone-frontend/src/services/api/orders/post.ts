@@ -41,7 +41,8 @@ export class OrderPostService extends BaseService {
       city: shippingInfo.city,
       zipCode: shippingInfo.zipCode,
       paymentMethod,
-      orderItems
+      orderItems,
+      isFloridaResident: false
     };
 
     return this.create(data);
@@ -69,7 +70,9 @@ export class OrderPostService extends BaseService {
       city: shippingInfo.city,
       zipCode: shippingInfo.zipCode,
       paymentMethod,
-      orderItems
+      orderItems,
+      isFloridaResident: false
+
     };
 
     return this.create(data);
@@ -106,7 +109,9 @@ export class OrderPostService extends BaseService {
       city: customerInfo.city,
       zipCode: customerInfo.zipCode,
       paymentMethod,
-      orderItems
+      orderItems,
+      isFloridaResident: false
+
     };
 
     return this.create(data);
@@ -191,7 +196,9 @@ export class OrderPostService extends BaseService {
         city: customerInfo.city,
         zipCode: customerInfo.zipCode,
         paymentMethod,
-        orderItems
+        orderItems,
+              isFloridaResident: false
+
       };
 
       return this.create(data);
