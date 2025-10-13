@@ -83,15 +83,8 @@ public class OrderService : IOrderService
             subtotalAmount += product.Price * item.Quantity;
         }
 
-        // Calculate tax based on shipping state (7% for Florida, 0% otherwise)
-        decimal taxRate = 0;
-        if (!string.IsNullOrEmpty(request.State) &&
-            (request.State.Equals("Florida", StringComparison.OrdinalIgnoreCase) ||
-             request.State.Equals("FL", StringComparison.OrdinalIgnoreCase)))
-        {
-            taxRate = 0.07m; // 7% for Florida
-        }
-
+        // Calculate tax based on IsFloridaResident field (7% for Florida, 0% otherwise)
+        decimal taxRate = request.IsFloridaResident ? 0.07m : 0m;
         decimal taxAmount = subtotalAmount * taxRate;
         decimal totalAmount = subtotalAmount + taxAmount;
 

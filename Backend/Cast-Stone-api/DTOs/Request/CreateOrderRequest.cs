@@ -26,6 +26,9 @@ public class CreateOrderRequest
     [MaxLength(20)]
     public string? ZipCode { get; set; }
 
+    // Tax calculation field - true if customer is Florida resident (7% tax), false otherwise (0% tax)
+    public bool IsFloridaResident { get; set; } = false;
+
     [MaxLength(50)]
     public string? PaymentMethod { get; set; }
 

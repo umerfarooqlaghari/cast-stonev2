@@ -30,6 +30,9 @@ public class Order
     [MaxLength(20)]
     public string? ZipCode { get; set; }
 
+    // Tax calculation field - true if customer is Florida resident (7% tax), false otherwise (0% tax)
+    public bool IsFloridaResident { get; set; } = false;
+
     [Column(TypeName = "decimal(18,2)")]
     public decimal SubtotalAmount { get; set; }
 

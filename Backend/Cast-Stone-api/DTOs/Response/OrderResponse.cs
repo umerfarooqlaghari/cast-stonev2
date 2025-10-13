@@ -10,6 +10,7 @@ public class OrderResponse
     public string? City { get; set; }
     public string? State { get; set; }
     public string? ZipCode { get; set; }
+    public bool IsFloridaResident { get; set; }
     public decimal SubtotalAmount { get; set; }
     public decimal TaxAmount { get; set; }
     public decimal TotalAmount { get; set; }
