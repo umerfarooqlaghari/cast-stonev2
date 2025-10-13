@@ -74,7 +74,7 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
             key={product.id}
             product={product}
             showAddToCart={showAddToCart}
-            variant={index === 0 ? "featured" : "default"}
+            variant="default"
             theme={cardTheme}
             hasVariants={hasVariants}
           />

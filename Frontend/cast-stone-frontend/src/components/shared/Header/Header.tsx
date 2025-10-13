@@ -23,8 +23,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [childCollections, setChildCollections] = useState<{ [key: number]: Collection[] }>({});
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [hoveredCollection, setHoveredCollection] = useState<number | null>(null);
-  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  // const [setHoveredCollection] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -88,14 +87,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     fetchCollections();
   }, []);
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (hoverTimeout) {
-        clearTimeout(hoverTimeout);
-      }
-    };
-  }, [hoverTimeout]);
+
 
   // Fetch child collections for a parent collection
   const fetchChildCollections = async (parentId: number) => {
@@ -136,6 +128,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
       if (!isClickInsideDropdown) {
         setActiveDropdown(null);
+       
       }
     };
 
@@ -159,32 +152,8 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   // Handle collection hover to load child collections
   const handleCollectionHover = async (collectionId: number) => {
-    // Clear any existing timeout
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-    }
-
-    setHoveredCollection(collectionId);
+    // setHoveredCollection(collectionId);
     await fetchChildCollections(collectionId);
-  };
-
-  // Handle collection hover leave with delay
-  const handleCollectionLeave = () => {
-    const timeout = setTimeout(() => {
-      setHoveredCollection(null);
-    }, 200); // 200ms delay before hiding submenu
-
-    setHoverTimeout(timeout);
-  };
-
-  // Handle submenu hover to keep it open
-  const handleSubmenuHover = (collectionId: number) => {
-    // Clear any existing timeout
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-    }
-    // Keep the current hovered collection
-    setHoveredCollection(collectionId);
   };
 
   // Render hierarchical collections dropdown
@@ -205,10 +174,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
   }
 
     return (
-      <div
-        className={styles.dropdownContent}
-        onMouseLeave={handleCollectionLeave}
-      >
+      <div className={styles.dropdownContent}>
         {collections.map(collection => (
           <div
             key={collection.id}
@@ -221,18 +187,13 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
               onClick={() => setActiveDropdown(null)}
             >
               {collection.name}
-              {/* Show arrow if has children */}
-              {childCollections[collection.id] && childCollections[collection.id].length > 0 && (
+              {/* {childCollections[collection.id] && childCollections[collection.id].length > 0 && (
                 <span className={styles.dropdownArrow}>→</span>
-              )}
+              )} */}
             </Link>
 
-            {/* Level 2 Collections Submenu */}
-            {hoveredCollection === collection.id && childCollections[collection.id] && childCollections[collection.id].length > 0 && (
-              <div
-                className={styles.submenu}
-                onMouseEnter={() => handleSubmenuHover(collection.id)}
-              >
+            {/* {hoveredCollection === collection.id && childCollections[collection.id] && childCollections[collection.id].length > 0 && (
+              <div className={styles.submenu}>
                 {childCollections[collection.id].map(level2Collection => (
                   <div
                     key={level2Collection.id}
@@ -245,18 +206,13 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                       onClick={() => setActiveDropdown(null)}
                     >
                       {level2Collection.name}
-                      {/* Show arrow if has children */}
                       {childCollections[level2Collection.id] && childCollections[level2Collection.id].length > 0 && (
                         <span className={styles.dropdownArrow}>→</span>
                       )}
                     </Link>
 
-                    {/* Level 3 Collections Sub-submenu */}
                     {hoveredCollection === level2Collection.id && childCollections[level2Collection.id] && childCollections[level2Collection.id].length > 0 && (
-                      <div
-                        className={styles.subSubmenu}
-                        onMouseEnter={() => handleSubmenuHover(level2Collection.id)}
-                      >
+                      <div className={styles.subSubmenu}>
                         {childCollections[level2Collection.id].map(level3Collection => (
                           <Link
                             key={level3Collection.id}
@@ -272,7 +228,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   </div>
                 ))}
               </div>
-            )}
+            )} */}
           </div>
         ))}
       </div>

@@ -90,17 +90,17 @@ const Footer: React.FC<FooterProps> = ({ companyName = "Cast Stone" }) => {
             <div className={styles.contactItem}>
               <span className={styles.contactLabel}>Address:</span>
               <span className={styles.contactValue}>
-                123 Artisan Way<br />
-                Craftsman City, CC 12345
+               Cast Stone International, Inc<br />
+                11555 US Highway 1 North Palm Beach, FL 33408
               </span>
             </div>
             <div className={styles.contactItem}>
               <span className={styles.contactLabel}>Phone:</span>
-              <span className={styles.contactValue}>(555) 123-4567</span>
+              <span className={styles.contactValue}>+1 (561) 625-0333</span>
             </div>
             <div className={styles.contactItem}>
               <span className={styles.contactLabel}>Email:</span>
-              <span className={styles.contactValue}>info@caststone.com</span>
+              <span className={styles.contactValue}>sales@caststoneinternational.com</span>
             </div>
           </div>
         </div>
