@@ -100,7 +100,7 @@ const Footer: React.FC<FooterProps> = ({ companyName = "Cast Stone" }) => {
             </div>
             <div className={styles.contactItem}>
               <span className={styles.contactLabel}>Email:</span>
-              <span className={styles.contactValue}>sales@caststoneinternational.com</span>
+              <span className={styles.contactValue}>Sales@CastStoneInternational.com</span>
             </div>
           </div>
         </div>

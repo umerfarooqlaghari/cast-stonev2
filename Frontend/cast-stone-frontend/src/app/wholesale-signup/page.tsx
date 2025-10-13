@@ -1,13 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, EffectFade } from 'swiper/modules';
 import { WholesaleSignupForm } from '../../components/wholesale/WholesaleSignupForm';
 import { WholesaleLogin } from '../../components/wholesale/WholesaleLogin';
 import { useWholesaleAuth } from '../../contexts/WholesaleAuthContext';
 import { AuthenticationResult } from '../../services/types/entities';
+import { useCollectionsByLevel } from '../../hooks/useCollections';
 import styles from './page.module.css';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/autoplay';
 
 type ViewMode = 'login' | 'signup' | 'success' | 'pending';
 
@@ -17,6 +25,23 @@ export default function WholesaleSignupPage() {
   const [error, setError] = useState<string>('');
   const { isApprovedWholesaleBuyer, user, isLoading } = useWholesaleAuth();
   const router = useRouter();
+
+  // Fetch level 2 collections for carousel images
+  const { data: level2Collections = [] } = useCollectionsByLevel(2);
+
+  // Get first 8 collection images (using only the first image URL from each collection)
+  const carouselImages = useMemo(() => {
+    return level2Collections
+      .slice(0, 8)
+      .map(collection => {
+        // Use only the first image URL from the images array
+        if (Array.isArray(collection.images) && collection.images.length > 0) {
+          return collection.images[0];
+        }
+        return '/ContactUs.jpg'; // Fallback image
+      })
+      .filter(Boolean); // Remove any undefined/null values
+  }, [level2Collections]);
 
   // Redirect if user is already logged in and approved
   useEffect(() => {
@@ -68,144 +93,164 @@ export default function WholesaleSignupPage() {
     </div>
   );
 
+  // Reusable image carousel component
+  const renderImageCarousel = () => {
+    // Use carousel images if available, otherwise fallback
+    const images = carouselImages.length > 0 ? carouselImages : ['/ContactUs.jpg'];
+
+    return (
+      <div className={styles.signupRight}>
+        <div className={styles.signupRightInner}>
+          <Swiper
+            modules={[Autoplay, EffectFade]}
+            effect="fade"
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            speed={1000}
+            className={styles.imageCarousel}
+          >
+            {images.map((imageSrc, index) => (
+              <SwiperSlide key={index}>
+                <Image
+                  src={imageSrc}
+                  alt={`Wholesale ${index + 1}`}
+                  fill
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center'
+                  }}
+                  priority={index === 0}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+    );
+  };
+
   const renderSignupHero = () => (
     <div className={styles.signupHero}>
-      <div className={styles.signupOverlay} />
       <div className={styles.signupCard}>
+        {/* Left Section - Form */}
         <div className={styles.signupLeft}>
-          <h2>Let’s Get Started</h2>
+          {/* Animated Text */}
+          <div className={styles.animatedTextContainer}>
+            <h2 className={styles.animatedText}>
+              <span className={styles.word} data-delay="0">Join</span>
+              <span className={styles.word} data-delay="200">Our</span>
+              <span className={styles.word} data-delay="400">Wholesale</span>
+              <span className={styles.word} data-delay="600">Program</span>
+            </h2>
+          </div>
+
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenes placerat
-            ultricies libero eu pharetra. Vestibulum a ultricies augue.
+            Access exclusive wholesale pricing, priority support, and dedicated account management. 
+            Join our network of professional partners and grow your business with Cast Stone International.
           </p>
-        </div>
-        <div className={styles.signupRight}>
-          <div className={styles.signupRightInner}>
-            <h3>Sign up</h3>
-            <WholesaleSignupForm
-              onSuccess={handleSignupSuccess}
-              onError={handleSignupError}
-              variant="modern"
-            />
-            <div className={styles.signupFooterInfo}>
-              <span>Already a Member?</span>
-              <button
-                onClick={() => {
-                  setCurrentView('login');
-                  setError('');
-                }}
-                className={styles.signupLink}
-              >
-                Sign in here
-              </button>
-            </div>
+
+          <div className={styles.formHeader}>
+            <h2>Create Your Account</h2>
+            <p>Fill out the form below to apply for wholesale access</p>
           </div>
-          <div className={styles.signupDivider} />
-          <div className={styles.signupSocialCol}>
-            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
-            <div className={styles.or}>OR</div>
-            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
-            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
+
+          <WholesaleSignupForm
+            onSuccess={handleSignupSuccess}
+            onError={handleSignupError}
+            variant="modern"
+          />
+
+          <div className={styles.signupFooterInfo}>
+            <span>Already a Member?</span>
+            <button
+              onClick={() => {
+                setCurrentView('login');
+                setError('');
+              }}
+              className={styles.signupLink}
+            >
+              Sign in here
+            </button>
           </div>
         </div>
+
+        {/* Right Section - Image Carousel */}
+        {renderImageCarousel()}
       </div>
     </div>
   );
 
   const renderLoginHero = () => (
     <div className={styles.signupHero}>
-      <div className={styles.signupOverlay} />
       <div className={styles.signupCard}>
+        {/* Left Section - Form */}
         <div className={styles.signupLeft}>
-          <h2>Welcome Back</h2>
+          {/* Animated Text */}
+          <div className={styles.animatedTextContainer}>
+            <h2 className={styles.animatedText}>
+              <span className={styles.word} data-delay="0">Welcome</span>
+              <span className={styles.word} data-delay="200">Back</span>
+            </h2>
+          </div>
           <p>
-            Sign in to access wholesale pricing, orders, and your account dashboard.
+            Sign in to access wholesale pricing, manage your orders, and view your account dashboard.
           </p>
-        </div>
-        <div className={styles.signupRight}>
-          <div className={styles.signupRightInner}>
-            <h3>Sign in</h3>
-            <WholesaleLogin
-              onSuccess={handleLoginSuccess}
-              onError={handleLoginError}
-              onSwitchToSignup={() => {
-                setCurrentView('signup');
-                setError('');
-              }}
-              variant="modern"
-            />
+          <div className={styles.formHeader}>
+            <h2>Sign In</h2>
           </div>
-          <div className={styles.signupDivider} />
-          <div className={styles.signupSocialCol}>
-            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
-            <div className={styles.or}>OR</div>
-            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
-            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
-          </div>
+
+          <WholesaleLogin
+            onSuccess={handleLoginSuccess}
+            onError={handleLoginError}
+            onSwitchToSignup={() => {
+              setCurrentView('signup');
+              setError('');
+            }}
+            variant="modern"
+          />
         </div>
+
+        {/* Right Section - Image Carousel */}
+        {renderImageCarousel()}
       </div>
     </div>
   );
 
   const renderSuccessHero = () => (
     <div className={styles.signupHero}>
-      <div className={styles.signupOverlay} />
       <div className={styles.signupCard}>
-        <div className={styles.signupLeft}>
-          <h2>Application Submitted</h2>
-          <p>
-            Thank you for applying to our wholesale program. We typically review
-            applications within 2–3 business days.
-          </p>
-        </div>
-        <div className={styles.signupRight}>
-          <div className={styles.signupRightInner}>
-            <div className={styles.successMessage}>
-              <div className={styles.successIcon}>✓</div>
-              <h2>Application Submitted!</h2>
-              <p>{message}</p>
-              <div className={styles.nextSteps}>
-                <h3>What happens next?</h3>
-                <ol>
-                  <li>We&apos;ll review your application within 2-3 business days</li>
-                  <li>You&apos;ll receive an email notification with our decision</li>
-                  <li>Once approved, you can log in to access wholesale pricing</li>
-                </ol>
-              </div>
-              <button
-                onClick={() => {
-                  setCurrentView('login');
-                  setMessage('');
-                }}
-                className={styles.primaryButton}
-              >
-                Back to Login
-              </button>
+        {/* Left Section - Success Message */}
+        <div className={styles.messageContainer}>
+          <div className={styles.successMessage}>
+            <div className={styles.successIcon}>✓</div>
+            <h2>Application Submitted!</h2>
+            <p>{message}</p>
+            <div className={styles.nextSteps}>
+              <h3>What happens next?</h3>
+              <ol>
+                <li>We will review your application within 2-3 business days</li>
+                <li>You will receive an email notification with our decision</li>
+                <li>Once approved, you can log in to access wholesale pricing</li>
+              </ol>
             </div>
-          </div>
-          <div className={styles.signupDivider} />
-          <div className={styles.signupSocialCol}>
-            <button className={styles.socialBtn} aria-label="Continue with Facebook">F</button>
-            <div className={styles.or}>OR</div>
-            <button className={styles.socialBtn} aria-label="Continue with Twitter">T</button>
-            <button className={styles.socialBtn} aria-label="Continue with Google">G</button>
+            <button
+              onClick={() => {
+                setCurrentView('login');
+                setMessage('');
+              }}
+              className={styles.primaryButton}
+            >
+              Back to Login
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  );
 
-  const renderBenefits = () => (
-    <div className={styles.benefits}>
-      <h3>Wholesale Benefits</h3>
-      <ul>
-        <li>Exclusive wholesale pricing on all products</li>
-        <li>Priority customer support</li>
-        <li>Access to new products before general release</li>
-        <li>Dedicated account manager</li>
-        <li>Flexible payment terms</li>
-        <li>Volume discounts available</li>
-      </ul>
+        {/* Right Section - Image Carousel */}
+        {renderImageCarousel()}
+      </div>
     </div>
   );
 
@@ -222,26 +267,33 @@ export default function WholesaleSignupPage() {
 
       case 'pending':
         return (
-          <div className={styles.messageContainer}>
-            <div className={styles.pendingMessage}>
-              <div className={styles.pendingIcon}>⏳</div>
-              <h2>Application Pending</h2>
-              <p>{message}</p>
-              <div className={styles.contactInfo}>
-                <p>
-                  If you have any questions, please contact us at{' '}
-                  <a href="mailto:wholesale@caststone.com">wholesale@caststone.com</a>
-                </p>
+          <div className={styles.signupHero}>
+            <div className={styles.signupCard}>
+              <div className={styles.messageContainer}>
+                <div className={styles.pendingMessage}>
+                  <div className={styles.pendingIcon}>⏳</div>
+                  <h2>Application Pending</h2>
+                  <p>{message}</p>
+                  <div className={styles.contactInfo}>
+                    <p>
+                      If you have any questions, please contact us at{' '}
+                      <a href="mailto:wholesale@caststone.com">wholesale@caststone.com</a>
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setCurrentView('login');
+                      setMessage('');
+                    }}
+                    className={styles.primaryButton}
+                  >
+                    Back to Login
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={() => {
-                  setCurrentView('login');
-                  setMessage('');
-                }}
-                className={styles.primaryButton}
-              >
-                Back to Login
-              </button>
+
+              {/* Right Section - Image Carousel */}
+              {renderImageCarousel()}
             </div>
           </div>
         );
@@ -268,3 +320,4 @@ export default function WholesaleSignupPage() {
     </div>
   );
 }
+

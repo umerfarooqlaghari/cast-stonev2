@@ -65,7 +65,7 @@ const MagazineProductGrid: React.FC<MagazineProductGridProps> = ({
 
   return (
     <MagazineGrid columns={columns} gap="large" className={styles.productGrid}>
-      {products.map((product, index) => {
+      {products.map((product) => {
         const variantCount = productVariantCounts?.get(product.id) || 0;
         const hasVariants = variantCount > 0;
 
