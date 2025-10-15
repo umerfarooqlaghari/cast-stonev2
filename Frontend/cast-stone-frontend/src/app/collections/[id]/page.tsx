@@ -399,20 +399,10 @@ export default function CollectionPage() {
         {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) */}
         <section className={styles.dynamicSection}>
           <div className={styles.container}>
-            <motion.div
-              className={styles.section3Hero}
-              onHoverStart={() => (!prefersReducedMotion && !isSmallScreen) && setSection3Hovered(true)}
-              onHoverEnd={() => (!prefersReducedMotion && !isSmallScreen) && setSection3Hovered(false)}
-              animate={(!prefersReducedMotion && !isSmallScreen) ? { boxShadow: section3Hovered ? '0 18px 40px rgba(21,59,77,0.25)' : '0 0 0 rgba(0,0,0,0)' } : undefined}
-              transition={flipTransition}
-            >
-              <motion.div className={`${styles.twoCol} ${styles.twoColAreasRight} ${section3Hovered ? styles.flipped : ''}`} layout>
+            <div className={styles.section3Hero}>
+              <div className={`${styles.twoCol} ${styles.twoColAreasRight}`}>
                 {/* Content */}
-                <motion.div
-                  className={`${styles.section3ContentCol} ${styles.colContent}`}
-                  layout
-                  layoutId="s3-content"
-                >
+                <div className={`${styles.section3ContentCol} ${styles.colContent}`}>
                   <span className={styles.section3Badge}>About {collection.name}</span>
                   <h3 className={styles.section3Title}>{collection.section3Header || collection.name}</h3>
                   {collection.section3Content && (
@@ -445,16 +435,11 @@ export default function CollectionPage() {
                       Choose your style
                     </Link>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Image */}
-                <motion.div
-                  className={`${styles.section3ImageCol} ${styles.colImage}`}
-                  layout
-                  layoutId="s3-image-col"
-                >
-                  <motion.div className={styles.section3ImageWrap} layout animate={(!prefersReducedMotion && !isSmallScreen) ? { scale: 1, opacity: section3Hovered ? 0.99 : 1 } : undefined} transition={flipTransition}>
-                    <span aria-hidden className={styles.section3ImageOutline}></span>
+                <div className={`${styles.section3ImageCol} ${styles.colImage}`}>
+                  <div className={styles.section3ImageWrap}>
                     <Image
                       src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
                       alt={`${collection.name} showcase`}
@@ -463,32 +448,21 @@ export default function CollectionPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                       onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
                     />
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            </motion.div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) */}
         <section className={styles.dynamicSection}>
           <div className={styles.container}>
-            <motion.div
-              className={styles.section3Hero}
-              onHoverStart={() => (!prefersReducedMotion && !isSmallScreen) && setSection4Hovered(true)}
-              onHoverEnd={() => (!prefersReducedMotion && !isSmallScreen) && setSection4Hovered(false)}
-              animate={(!prefersReducedMotion && !isSmallScreen) ? { boxShadow: section4Hovered ? '0 18px 40px rgba(21,59,77,0.25)' : '0 0 0 rgba(0,0,0,0)' } : undefined}
-              transition={flipTransition}
-            >
-              <motion.div className={`${styles.twoCol} ${styles.twoColAreasLeft} ${section4Hovered ? styles.flipped : ''}`} layout>
+            <div className={styles.section3Hero}>
+              <div className={`${styles.twoCol} ${styles.twoColAreasLeft}`}>
                 {/* Image */}
-                <motion.div
-                  className={`${styles.section3ImageCol} ${styles.colImage}`}
-                  layout
-                  layoutId="s4-image-col"
-                >
-                  <motion.div className={styles.section3ImageWrap} layout animate={(!prefersReducedMotion && !isSmallScreen) ? { scale: 1, opacity: section4Hovered ? 0.99 : 1 } : undefined} transition={flipTransition}>
-                    <span aria-hidden className={styles.section3ImageOutline}></span>
+                <div className={`${styles.section3ImageCol} ${styles.colImage}`}>
+                  <div className={styles.section3ImageWrap}>
                     <Image
                       src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
                       alt={`${collection.name} additional showcase`}
@@ -497,23 +471,19 @@ export default function CollectionPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                       onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
                     />
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
 
                 {/* Content */}
-                <motion.div
-                  className={`${styles.section3ContentCol} ${styles.colContent}`}
-                  layout
-                  layoutId="s4-content"
-                >
+                <div className={`${styles.section3ContentCol} ${styles.colContent}`}>
                   <span className={styles.section3Badge}>About {collection.name}</span>
                   <h3 className={styles.section3Title}>{collection.section4Header || collection.name}</h3>
                   {collection.section4Content && (
                     <p className={styles.section3Description}>{collection.section4Content}</p>
                   )}
-                </motion.div>
-              </motion.div>
-            </motion.div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

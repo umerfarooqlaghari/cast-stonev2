@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/contexts/CartContext';
 import { WholesaleUserMenu } from '../../wholesale/WholesaleUserMenu';
 import { Collection } from '../../../services/types/entities';
@@ -50,6 +51,15 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     { label: 'Wholesale Signup', href: '/wholesale-signup' }
   ];
 
+  // Collections dropdown items (static list)
+  const collectionsItems: DropdownItem[] = [
+    { label: 'Mykonos Collection', href: '#' },
+    { label: 'Italia Collection', href: '#' },
+    { label: 'Oceanic Collection', href: '#' },
+    { label: 'Pacifica Collection', href: '#' },
+    { label: 'Petra Collection', href: '#' }
+  ];
+
   // Discover dropdown items
   const discoverItems: DropdownItem[] = [
     // { label: 'Catalog', href: '/catalog' },
@@ -88,7 +98,16 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
     }
   };
 
-  // Handle dropdown toggle
+  // Handle dropdown hover (for desktop)
+  const handleDropdownEnter = (dropdownName: string) => {
+    setActiveDropdown(dropdownName);
+  };
+
+  const handleDropdownLeave = () => {
+    setActiveDropdown(null);
+  };
+
+  // Handle dropdown toggle (for mobile)
   const handleDropdownToggle = (dropdownName: string) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
@@ -244,8 +263,20 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
         {/* Logo */}
         <div className={styles.logo}>
           <Link href="/" className={styles.logoLink}>
-            <span className={styles.logoText}>{title}</span>
-            <span className={styles.logoSubtext}>Interiors & Decorations</span>
+            <div className={styles.logoImageWrapper}>
+              <Image
+                src="/medusa-logo.png"
+                alt="Cast Stone International Logo"
+                width={50}
+                height={30}
+                className={styles.logoImage}
+                priority
+              />
+            </div>
+            <div className={styles.logoContent}>
+              <span className={styles.logoText}>Cast Stone International</span>
+              <span className={styles.logoSubtext}>Manufacturing and Distributing World-Class Products.</span>
+            </div>
           </Link>
         </div>
 
@@ -257,18 +288,14 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
               <div
                 className={styles.dropdownContainer}
                 ref={el => { dropdownRefs.current['company'] = el; }}
+                onMouseEnter={() => handleDropdownEnter('company')}
+                onMouseLeave={handleDropdownLeave}
               >
                 <button
                   className={`${styles.navButton} ${activeDropdown === 'company' ? styles.active : ''}`}
-                  onClick={() => handleDropdownToggle('company')}
                   aria-expanded={activeDropdown === 'company'}
                 >
                   Company
-                  <span className={`${styles.dropdownIcon} ${activeDropdown === 'company' ? styles.rotated : ''}`}>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
                 </button>
                 {activeDropdown === 'company' && (
                   <div className={styles.dropdown}>
@@ -286,26 +313,20 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
               </div>
             </li>
 
-            {/* Products */}
-            <li className={styles.navItem}>
-              <Link href="/products" className={styles.navLink}>
-                Products
-              </Link>
-            </li>
-
-            {/* Collections Dropdown */}
+            {/* Products Dropdown (formerly Collections) */}
             <li className={styles.navItem}>
               <div
                 className={styles.dropdownContainer}
-                ref={el => {dropdownRefs.current['collections'] = el}}
+                ref={el => {dropdownRefs.current['products'] = el}}
+                onMouseEnter={() => handleDropdownEnter('products')}
+                onMouseLeave={handleDropdownLeave}
               >
                 <button
-                  className={`${styles.navButton} ${activeDropdown === 'collections' ? styles.active : ''}`}
-                  onClick={() => handleDropdownToggle('collections')}
-                  aria-expanded={activeDropdown === 'collections'}
+                  className={`${styles.navButton} ${activeDropdown === 'products' ? styles.active : ''}`}
+                  aria-expanded={activeDropdown === 'products'}
                 >
-                  Collections
-                  {isLoading ? (
+                  Products
+                  {isLoading && (
                     <span className={styles.loadingIcon}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="31.416" strokeDashoffset="31.416">
@@ -314,20 +335,43 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                         </circle>
                       </svg>
                     </span>
-                  ) : (
-                    <span className={`${styles.dropdownIcon} ${activeDropdown === 'collections' ? styles.rotated : ''}`}>
-                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                        <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
                   )}
                 </button>
-                {/* {activeDropdown === 'collections' && renderCollectionsDropdown()} */}
-                  {activeDropdown === 'collections' && (
-  <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
-    {renderCollectionsDropdown()}
-  </div>
-)}
+                {activeDropdown === 'products' && (
+                  <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
+                    {renderCollectionsDropdown()}
+                  </div>
+                )}
+              </div>
+            </li>
+
+            {/* Collections Dropdown (formerly Products) */}
+            <li className={styles.navItem}>
+              <div
+                className={styles.dropdownContainer}
+                ref={el => {dropdownRefs.current['collections'] = el}}
+                onMouseEnter={() => handleDropdownEnter('collections')}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <Link
+                  href="/collections"
+                  className={`${styles.navLink} ${activeDropdown === 'collections' ? styles.active : ''}`}
+                >
+                  Collections
+                </Link>
+                {activeDropdown === 'collections' && (
+                  <div className={styles.dropdown}>
+                    <ul className={styles.dropdownList}>
+                      {collectionsItems.map((item, index) => (
+                        <li key={index} className={styles.dropdownItem}>
+                          <Link href={item.href} className={styles.dropdownLink}>
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </li>
 
@@ -343,18 +387,14 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
               <div
                 className={styles.dropdownContainer}
                 ref={el => {dropdownRefs.current['discover'] = el}}
+                onMouseEnter={() => handleDropdownEnter('discover')}
+                onMouseLeave={handleDropdownLeave}
               >
                 <button
                   className={`${styles.navButton} ${activeDropdown === 'discover' ? styles.active : ''}`}
-                  onClick={() => handleDropdownToggle('discover')}
                   aria-expanded={activeDropdown === 'discover'}
                 >
                   Discover
-                  <span className={`${styles.dropdownIcon} ${activeDropdown === 'discover' ? styles.rotated : ''}`}>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
                 </button>
                 {activeDropdown === 'discover' && (
                   <div className={styles.dropdown}>
@@ -440,7 +480,38 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   )}
                 </li>
 
-                {/* Collections Section */}
+                {/* Products Section (formerly Collections) */}
+                <li className={styles.mobileNavItem}>
+                  <button
+                    className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'products' ? styles.active : ''}`}
+                    onClick={() => handleMobileDropdownToggle('products')}
+                  >
+                    Products
+                    <span className={`${styles.mobileDropdownIcon} ${mobileActiveDropdown === 'products' ? styles.rotated : ''}`}>
+                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                        <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  {mobileActiveDropdown === 'products' && (
+                    <ul className={styles.mobileSubMenu}>
+                      <li className={styles.mobileSubMenuItem}>
+                        <Link href="/collections" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                          All Products
+                        </Link>
+                      </li>
+                      {collections.map((collection) => (
+                        <li key={collection.id} className={styles.mobileSubMenuItem}>
+                          <Link href={`/collections/${collection.id}`} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                            {collection.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+
+                {/* Collections Section (formerly Products) */}
                 <li className={styles.mobileNavItem}>
                   <button
                     className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'collections' ? styles.active : ''}`}
@@ -455,27 +526,15 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   </button>
                   {mobileActiveDropdown === 'collections' && (
                     <ul className={styles.mobileSubMenu}>
-                      <li className={styles.mobileSubMenuItem}>
-                        <Link href="/collections" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
-                          All Collections
-                        </Link>
-                      </li>
-                      {collections.map((collection) => (
-                        <li key={collection.id} className={styles.mobileSubMenuItem}>
-                          <Link href={`/collections/${collection.id}`} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
-                            {collection.name}
+                      {collectionsItems.map((item, index) => (
+                        <li key={index} className={styles.mobileSubMenuItem}>
+                          <Link href={item.href} className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                            {item.label}
                           </Link>
                         </li>
                       ))}
                     </ul>
                   )}
-                </li>
-
-                {/* Products Section */}
-                <li className={styles.mobileNavItem}>
-                  <Link href="/products" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
-                    Products
-                  </Link>
                 </li>
 
                 {/* Completed Projects Section */}

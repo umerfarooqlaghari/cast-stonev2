@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
 import styles from './fullScreenBanner.module.css';
 
@@ -13,8 +12,6 @@ interface FullScreenBannerProps {
   imageAlt: string;
   badge?: string;
   className?: string;
-  exploreHref?: string;
-  sellHref?: string;
 }
 
 const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
@@ -23,9 +20,7 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
   imageSrc,
   imageAlt,
   badge,
-  className = '',
-  exploreHref = '/collections',
-  sellHref = '/contact'
+  className = ''
 }) => {
   // Get optimized image URL for full-screen display
   const optimizedImageSrc = getOptimizedImageUrl(imageSrc, 'hero');
@@ -60,18 +55,6 @@ const FullScreenBanner: React.FC<FullScreenBannerProps> = ({
           )}
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.description}>{description}</p>
-        </div>
-
-        {/* Floating CTA Box - Bottom Right */}
-        <div className={styles.ctaBox}>
-          <div className={styles.ctaButtons}>
-            <Link href={exploreHref} className={styles.primaryButton}>
-              <span>Explore Now</span>
-            </Link>
-            <Link href={sellHref} className={styles.secondaryButton}>
-              <span>Contact Us</span>
-            </Link>
-          </div>
         </div>
       </div>
     </section>
