@@ -13,12 +13,7 @@ import styles from './header.module.css';
 import { usePathname } from 'next/navigation';
 
 
-interface HeaderProps {
-  title?: string;
-}
-
-
-const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
+const Header: React.FC = () => {
 
   const { getCartSummary } = useCart();
 
@@ -105,11 +100,6 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
 
   const handleDropdownLeave = () => {
     setActiveDropdown(null);
-  };
-
-  // Handle dropdown toggle (for mobile)
-  const handleDropdownToggle = (dropdownName: string) => {
-    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
   };
 
   const handleMobileMenuToggle = () => {
@@ -313,7 +303,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
               </div>
             </li>
 
-            {/* Products Dropdown (formerly Collections) */}
+            {/* Products Dropdown with Link */}
             <li className={styles.navItem}>
               <div
                 className={styles.dropdownContainer}
@@ -321,22 +311,12 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                 onMouseEnter={() => handleDropdownEnter('products')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <button
-                  className={`${styles.navButton} ${activeDropdown === 'products' ? styles.active : ''}`}
-                  aria-expanded={activeDropdown === 'products'}
+                <Link
+                  href="/products"
+                  className={`${styles.navLink} ${activeDropdown === 'products' ? styles.active : ''}`}
                 >
                   Products
-                  {isLoading && (
-                    <span className={styles.loadingIcon}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="31.416" strokeDashoffset="31.416">
-                          <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
-                          <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
-                        </circle>
-                      </svg>
-                    </span>
-                  )}
-                </button>
+                </Link>
                 {activeDropdown === 'products' && (
                   <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
                     {renderCollectionsDropdown()}
@@ -480,7 +460,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   )}
                 </li>
 
-                {/* Products Section (formerly Collections) */}
+                {/* Products Section with Dropdown */}
                 <li className={styles.mobileNavItem}>
                   <button
                     className={`${styles.mobileNavButton} ${mobileActiveDropdown === 'products' ? styles.active : ''}`}
@@ -496,7 +476,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Cast Stone" }) => {
                   {mobileActiveDropdown === 'products' && (
                     <ul className={styles.mobileSubMenu}>
                       <li className={styles.mobileSubMenuItem}>
-                        <Link href="/collections" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/products" className={styles.mobileSubMenuLink} onClick={() => setIsMobileMenuOpen(false)}>
                           All Products
                         </Link>
                       </li>

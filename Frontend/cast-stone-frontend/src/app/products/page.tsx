@@ -228,104 +228,16 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          <div className={styles.content}>
-        {/* Filters Sidebar */}
-        <div className={`${styles.filtersSidebar} ${showFilters ? styles.showFilters : ''}`}>
-          <div className={styles.filtersHeader}>
-            <h3>Filters</h3>
-            <button onClick={clearFilters} className={styles.clearFilters}>
-              Clear All
-            </button>
-          </div>
-
-          {/* Search */}
-          <div className={styles.filterGroup}>
-            <label>Search</label>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-              className={styles.searchInput}
-            />
-          </div>
-
-
-
-          {/* Price Range */}
-          <div className={styles.filterGroup}>
-            <label>Price Range</label>
-            <div className={styles.priceRange}>
-              <input
-                type="number"
-                placeholder="Min"
-                value={filters.priceRange.min}
-                onChange={(e) => handlePriceRangeChange(parseInt(e.target.value) || 0, filters.priceRange.max)}
-                className={styles.priceInput}
-              />
-              <span>to</span>
-              <input
-                type="number"
-                placeholder="Max"
-                value={filters.priceRange.max}
-                onChange={(e) => handlePriceRangeChange(filters.priceRange.min, parseInt(e.target.value) || 10000)}
-                className={styles.priceInput}
-              />
-            </div>
-          </div>
-
-          {/* Stock Filter */}
-          <div className={styles.filterGroup}>
-            <label className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                checked={filters.inStockOnly}
-                onChange={(e) => handleFilterChange('inStockOnly', e.target.checked)}
-              />
-              In Stock Only
-            </label>
-          </div>
-
-          {/* Sort Options */}
-          <div className={styles.filterGroup}>
-            <label>Sort By</label>
-
-
-            <select
-              value={`${filters.sortBy}-${filters.sortDirection}`}
-              onChange={(e) => {
-                const [sortBy, sortDirection] = e.target.value.split('-');
-                handleFilterChange('sortBy', sortBy);
-                handleFilterChange('sortDirection', sortDirection);
-              }}
-              className={styles.filterSelect}
-            >
-              <option value="name-asc">Name (A-Z)</option>
-              <option value="name-desc">Name (Z-A)</option>
-              <option value="price-asc">Price (Low to High)</option>
-              <option value="price-desc">Price (High to Low)</option>
-              <option value="newest-desc">Newest First</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Products Grid */}
-        <div className={styles.productsGrid}>
-          {/* Top Carousel Row: show 2 products at a time, looped */}
-          
-
-          {/* Products Grid below: 3 columns */}
-          <div className={styles.productsGridBelow}>
+          {/* Products Grid */}
+          <div className={styles.productsGrid}>
             <MagazineProductGrid
               products={filteredProducts}
               isLoading={isLoading}
-              emptyMessage="No products match your current filters. Try adjusting your search criteria."
+              emptyMessage="No products found."
               columns={3}
               productVariantCounts={productVariantCounts}
             />
           </div>
-        </div>
-      </div>
     </div>
     </section>
     </div>
