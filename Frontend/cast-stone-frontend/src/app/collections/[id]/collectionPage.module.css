@@ -415,7 +415,7 @@
   border-radius: 0.5rem;
 }
 
-.sectionImage { object-fit: cover; }
+.sectionImage { object-fit: contain !important; /* Show full image proportionally */ }
 
 .dynamicTitle {
   font-size: 1.5rem;
@@ -896,6 +896,10 @@
   overflow: hidden;
   border-radius: 0.75rem;
   margin: 0;
+  background: #f5f5f5; /* Light background for professional look */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /* Static content section with background image overlay */
 .staticContentSection {
@@ -921,7 +925,7 @@
 }
 
 .staticBackgroundImage {
-  object-fit: cover;
+  object-fit: contain !important; /* Show full image proportionally without cropping */
   object-position: center;
   width: 100%;
   height: 100%;
@@ -1016,9 +1020,9 @@
 
 
 
-/* Ensure the image fills entire card area */
+/* Ensure the image displays proportionally without cropping */
 .cardImage {
-  object-fit: cover;
+  object-fit: contain !important; /* Show full image proportionally */
   z-index: 0;
 }
 

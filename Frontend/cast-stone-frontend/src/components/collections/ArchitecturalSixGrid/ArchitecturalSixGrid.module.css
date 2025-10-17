@@ -24,8 +24,10 @@
 .imageBg {
   position: absolute;
   inset: 0;
-  background-size: cover;
+  background-size: contain; /* Show full image proportionally without cropping */
   background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f5f5f5; /* Light background for professional look */
   transform: none;
 }
 

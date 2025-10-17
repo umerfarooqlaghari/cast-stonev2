@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display, Montserrat } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Montserrat, Lora } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer/Footer";
@@ -29,6 +29,12 @@ const montserrat = Montserrat({
   weight: ["300", "400", "500", "600"],
 });
 
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Cast Stone International",
   description: "A modern web application built with Next.js and .NET Core",
@@ -42,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${montserrat.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${montserrat.variable} ${lora.variable} antialiased`}
       >
         <QueryProvider>
           <WholesaleAuthProvider>
