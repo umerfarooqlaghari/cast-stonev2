@@ -22,7 +22,8 @@
   right: 0;
   z-index: 1000;
   transition: var(--transition-smooth);
-  height: 44px;
+  --header-height: 44px; /* used to position overlays under header */
+  height: var(--header-height);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -582,6 +583,7 @@
 
 /* Hamburger Icon */
 .hamburgerIcon {
+  background: transparent; /* keep container transparent so spans show clearly */
   width: 18px;
   height: 14px;
   position: relative;
@@ -592,35 +594,39 @@
 
 .hamburgerIcon span {
   display: block;
-  height: 1px;
+  height: 2px; /* slightly thicker for visibility */
   width: 100%;
-  background: var(--nav-text);
-  border-radius: 0.5px;
+  background: #ffffff; /* force white lines */
+  border-radius: 1px;
   transition: var(--transition-fast);
 }
 
 /* Hamburger Animation */
 .hamburgerIcon.open span:nth-child(1) {
   transform: translateY(6.5px) rotate(45deg);
+  background: #ffffff;
 }
 
 .hamburgerIcon.open span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
+  background: #ffffff;
 }
 
 .hamburgerIcon.open span:nth-child(3) {
   transform: translateY(-6.5px) rotate(-45deg);
+  background: #ffffff;
 }
 
 /* Mobile Menu Overlay - Apple-like */
 .mobileMenuOverlay {
   position: fixed;
-  top: 44px;
+  /* position overlay under the header by using the header's CSS variable */
+  top: var(--header-height, 44px);
   left: 0;
   right: 0;
   bottom: 0;
-  background: #1d1d1f !important;
+  background: #ffffffff !important;
   z-index: 999;
   animation: mobileMenuFadeIn 0.3s ease-out;
 }
@@ -738,7 +744,7 @@
 
 .mobileSubMenuLink {
   display: block;
-  color: rgba(245, 245, 247, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;
@@ -790,16 +796,21 @@
 }
 
 @media (max-width: 768px) {
+  .header {
+    align-content: center;
+    --header-height: 74px;
+    height: var(--header-height);
+  }
   .container {
     padding: 0 16px;
   }
 
   .logoText {
-    font-size: 18px;
+    font-size: 10px;
   }
 
   .logoSubtext {
-    font-size: 9px;
+    font-size: 8px;
   }
 
   .navLink,

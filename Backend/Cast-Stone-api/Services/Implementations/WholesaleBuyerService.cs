@@ -182,23 +182,27 @@ public class WholesaleBuyerService : IWholesaleBuyerService
         var createdWholesaleBuyer = await _wholesaleBuyerRepository.AddAsync(wholesaleBuyer);
         var response = _mapper.Map<WholesaleBuyerResponse>(createdWholesaleBuyer);
 
-        // Send email notification to admins
-        try
+        // Send email notification to admins asynchronously (fire-and-forget)
+        // This prevents blocking the response while emails are being sent
+        _ = Task.Run(async () =>
         {
-            _logger.LogInformation("Sending wholesale buyer application notification emails for application {ApplicationId}", response.Id);
-            var emailResponses = await _emailService.SendWholesaleBuyerApplicationToAdminsAsync(response);
+            try
+            {
+                _logger.LogInformation("Sending wholesale buyer application notification emails for application {ApplicationId}", response.Id);
+                var emailResponses = await _emailService.SendWholesaleBuyerApplicationToAdminsAsync(response);
 
-            var successfulEmails = emailResponses.Count(r => r.Success);
-            var totalEmails = emailResponses.Count;
+                var successfulEmails = emailResponses.Count(r => r.Success);
+                var totalEmails = emailResponses.Count;
 
-            _logger.LogInformation("Sent {SuccessfulEmails}/{TotalEmails} wholesale buyer application notification emails for application {ApplicationId}",
-                successfulEmails, totalEmails, response.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to send wholesale buyer application notification emails for application {ApplicationId}", response.Id);
-            // Don't throw the exception - the application was created successfully, email is just a notification
-        }
+                _logger.LogInformation("Sent {SuccessfulEmails}/{TotalEmails} wholesale buyer application notification emails for application {ApplicationId}",
+                    successfulEmails, totalEmails, response.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send wholesale buyer application notification emails for application {ApplicationId}", response.Id);
+                // Don't throw the exception - the application was created successfully, email is just a notification
+            }
+        });
 
         return response;
     }

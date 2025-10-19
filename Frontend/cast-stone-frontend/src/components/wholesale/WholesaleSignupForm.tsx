@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState } from 'react';
@@ -148,8 +149,20 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
     if (!validateStep(3)) return;
 
     setIsSubmitting(true);
+
+    // Clear any previous errors when starting submission
+    onError?.('');
+
     try {
-      const response = await wholesaleBuyerService.post.submitApplication(formData);
+      // Add timeout to prevent indefinite waiting (60 seconds)
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Request timeout - please try again')), 60000)
+      );
+
+      const submitPromise = wholesaleBuyerService.post.submitApplication(formData);
+
+      const response = await Promise.race([submitPromise, timeoutPromise]) as any;
+
       if (response.success) {
         onSuccess?.();
       } else {
@@ -164,54 +177,74 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
 
   const renderStep1 = () => (
     <div className={styles.stepContent}>
-      <h3>Personal Information</h3>
-      
-      <div className={styles.formRow}>
-        <div className={styles.formGroup}>
-          <label htmlFor="firstName">First Name *</label>
+      <div className={styles.formGroup}>
+        <label htmlFor="firstName">
+          NAME <span className={styles.required}>(required)</span>
+        </label>
+        <div className={styles.formRow}>
           <input
             type="text"
             id="firstName"
             value={formData.firstName}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
             className={errors.firstName ? styles.error : ''}
+            placeholder="Your first name"
           />
-          {errors.firstName && <span className={styles.errorText}>{errors.firstName}</span>}
-        </div>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="lastName">Last Name *</label>
           <input
             type="text"
             id="lastName"
             value={formData.lastName}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
             className={errors.lastName ? styles.error : ''}
+            placeholder="Your last name"
           />
-          {errors.lastName && <span className={styles.errorText}>{errors.lastName}</span>}
         </div>
+        {(errors.firstName || errors.lastName) && (
+          <span className={styles.errorText}>{errors.firstName || errors.lastName}</span>
+        )}
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="email">Email Address *</label>
+        <label htmlFor="email">
+          EMAIL <span className={styles.required}>(required)</span>
+        </label>
         <input
           type="email"
           id="email"
           value={formData.email}
           onChange={(e) => handleInputChange('email', e.target.value)}
           className={errors.email ? styles.error : ''}
+          placeholder="Your email"
         />
         {errors.email && <span className={styles.errorText}>{errors.email}</span>}
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="phone">Phone Number *</label>
+        <label htmlFor="companyName">
+          COMPANY NAME <span className={styles.required}>(required)</span>
+        </label>
         <input
-          type="tel"
+          type="text"
+          id="companyName"
+          value={formData.companyName}
+          onChange={(e) => handleInputChange('companyName', e.target.value)}
+          className={errors.companyName ? styles.error : ''}
+          placeholder="Your company name"
+        />
+        {errors.companyName && <span className={styles.errorText}>{errors.companyName}</span>}
+      </div>
+
+      <div className={styles.formGroup}>
+        <label htmlFor="phone">
+          COMPANY INSTAGRAM <span className={styles.required}>(required)</span>
+        </label>
+        <input
+          type="text"
           id="phone"
           value={formData.phone}
           onChange={(e) => handleInputChange('phone', e.target.value)}
           className={errors.phone ? styles.error : ''}
+          placeholder="Your company Instagram"
         />
         {errors.phone && <span className={styles.errorText}>{errors.phone}</span>}
       </div>
@@ -225,10 +258,11 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
             value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
             className={errors.password ? styles.error : ''}
+            placeholder="Password"
           />
           {errors.password && <span className={styles.errorText}>{errors.password}</span>}
         </div>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="confirmPassword">Confirm Password *</label>
           <input
@@ -237,6 +271,7 @@ export const WholesaleSignupForm: React.FC<WholesaleSignupFormProps> = ({
             value={formData.confirmPassword}
             onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
             className={errors.confirmPassword ? styles.error : ''}
+            placeholder="Confirm Password"
           />
           {errors.confirmPassword && <span className={styles.errorText}>{errors.confirmPassword}</span>}
         </div>

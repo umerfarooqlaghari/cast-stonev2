@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import styles from './patinaSelector.module.css';
 
 interface PatinaOption {
@@ -14,9 +15,9 @@ interface PatinaSelectorProps {
   onPatinaChange: (patina: string) => void;
 }
 
-const PatinaSelector: React.FC<PatinaSelectorProps> = ({ 
-  selectedPatina, 
-  onPatinaChange 
+const PatinaSelector: React.FC<PatinaSelectorProps> = ({
+  selectedPatina,
+  onPatinaChange
 }) => {
   // Patina options based on the reference design
   const patinaOptions: PatinaOption[] = [
@@ -40,7 +41,7 @@ const PatinaSelector: React.FC<PatinaSelectorProps> = ({
         <h3 className={styles.selectorTitle}>Select Patina</h3>
         <span className={styles.selectedPatina}>{selectedPatina}</span>
       </div>
-      
+
       <div className={styles.patinaGrid}>
         {patinaOptions.map((option) => (
           <button
@@ -52,18 +53,27 @@ const PatinaSelector: React.FC<PatinaSelectorProps> = ({
             title={`${option.name} - ${option.description}`}
             aria-label={`Select ${option.name} patina`}
           >
-            <div 
-              className={styles.patinaColor}
-              style={{ backgroundColor: option.color }}
-            />
+            <div className={styles.patinaLogoContainer}>
+              <Image
+                src="/medusa-logo.png"
+                alt={option.name}
+                width={50}
+                height={50}
+                className={styles.medusaLogo}
+              />
+              <div
+                className={styles.colorOverlay}
+                style={{ backgroundColor: option.color }}
+              />
+            </div>
             <span className={styles.patinaName}>{option.name}</span>
           </button>
         ))}
       </div>
-      
+
       <div className={styles.patinaNote}>
         <p>
-          <strong>Note:</strong> Patina colors are representative. Actual finish may vary 
+          <strong>Note:</strong> Patina colors are representative. Actual finish may vary
           due to the handcrafted nature of cast stone. Contact us for physical samples.
         </p>
       </div>

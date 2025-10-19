@@ -66,11 +66,47 @@
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
 }
 
+/* Medusa Logo Container with Color Overlay */
+.patinaLogoContainer {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medusaLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+.colorOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.patinaOption:hover .colorOverlay {
+  opacity: 0.85;
+}
+
+.patinaOption.selected .colorOverlay {
+  opacity: 0.9;
+}
+
+/* Legacy color box - hidden now */
 .patinaColor {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #333;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: none;
 }
 
 .patinaName {
@@ -116,19 +152,19 @@
   }
 
   .patinaGrid {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     gap: 0.5rem;
   }
 
   .patinaOption {
     padding: 0.5rem;
-    min-height: 70px;
+    min-height: 90px;
     gap: 0.4rem;
   }
 
-  .patinaColor {
-    width: 25px;
-    height: 25px;
+  .patinaLogoContainer {
+    width: 40px;
+    height: 40px;
   }
 
   .patinaName {
@@ -147,11 +183,17 @@
 
 @media (max-width: 480px) {
   .patinaGrid {
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
   }
 
   .patinaOption {
-    min-height: 60px;
+    min-height: 80px;
+    padding: 0.4rem;
+  }
+
+  .patinaLogoContainer {
+    width: 35px;
+    height: 35px;
   }
 
   .patinaNote {

@@ -3,17 +3,168 @@
 .pageContainer {
   min-height: 100vh;
   background: white;
-  padding-top: 80px;
+  padding-top: 44px;
+  margin-bottom: -44px;
 }
 
 .header {
   display: none;
 }
 
+/* Landing Page Styles */
+.landingPage {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.landingBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.landingCarousel {
+  width: 100%;
+  height: 100%;
+}
+
+.landingCarousel :global(.swiper-slide) {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.landingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.landingContent {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: white;
+  padding: 40px;
+}
+
+.landingTitle {
+  font-size: 3.5rem;
+  font-weight: 300;
+  letter-spacing: 8px;
+  margin: 0 0 1rem;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  color: white;
+}
+
+.landingSubtitle {
+  font-size: 1rem;
+  letter-spacing: 4px;
+  margin: 0 0 3rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-transform: uppercase;
+  color: white;
+}
+
+.landingButtons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.landingButton {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 15px 40px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-width: 180px;
+}
+
+.landingButton:hover {
+  background: #e7c58bff;
+  border-color: #e7c58bff;
+  color: #333;
+  transform: translateY(-2px);
+}
+
+/* Login Page Styles */
+.loginPage {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 60px 20px;
+}
+
+.loginContainer {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.loginTitle {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin: 0 0 3rem;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+}
+
+.socialIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.socialIcon:hover {
+  color: #333;
+}
+
 /* Main container matching Contact Us layout */
 .signupHero {
   display: flex;
   min-height: calc(100vh - 80px);
+  background: white;
 }
 
 .signupOverlay {
@@ -25,6 +176,8 @@
   display: flex;
   width: 100%;
   min-height: calc(100vh - 80px);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .signupLeft {
@@ -34,7 +187,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 50%;
+  width: 100%;
 }
 
 .signupLeft h2 {
@@ -44,6 +197,7 @@
   line-height: 1.2;
   margin: 0 0 40px;
   font-family: 'Georgia', serif;
+  display: none;
 }
 
 .signupLeft p {
@@ -52,27 +206,16 @@
   line-height: 1.6;
   margin: 0 0 40px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  display: none;
 }
 
 /* Right Section - Image Carousel */
 .signupRight {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fdfaf4;
-  padding: 60px 80px;
+  display: none;
 }
 
 .signupRightInner {
-  width: 85%;
-  height: 80%;
-  position: relative;
-  border: 25px solid white;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  display: none;
 }
 
 .signupRightInner h3 {
@@ -139,6 +282,7 @@
 .animatedTextContainer {
   margin-bottom: -20px;
   padding: 20px 0;
+  display: none;
 }
 
 .animatedText {
@@ -272,17 +416,19 @@
 }
 
 .formHeader {
-  margin-top: -20px;
-  text-align: left;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .formHeader h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 300;
-  color: #2c2c2c;
+  color: #333;
   margin-bottom: 8px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Georgia', serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .formHeader p {
@@ -291,6 +437,7 @@
   line-height: 1.4;
   margin: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  display: none;
 }
 
 .backToLogin {
@@ -488,11 +635,33 @@
   .contentContainer {
     flex-direction: column;
   }
+
+  .landingTitle {
+    font-size: 2.5rem;
+    letter-spacing: 6px;
+  }
+
+  .landingButtons {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .landingButton {
+    min-width: 220px;
+  }
+
+  .socialIcons {
+    position: static;
+    flex-direction: row;
+    transform: none;
+    margin-top: 2rem;
+  }
 }
 
 @media (max-width: 768px) {
   .pageContainer {
     padding-top: 60px;
+    margin-bottom: 0px;
   }
 
   .signupHero {
@@ -540,6 +709,30 @@
   .pendingMessage {
     padding: 0;
   }
+
+  .landingPage {
+    min-height: calc(100vh - 60px);
+  }
+
+  .landingTitle {
+    font-size: 2rem;
+    letter-spacing: 4px;
+  }
+
+  .landingSubtitle {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+  }
+
+  .loginPage {
+    min-height: calc(100vh - 60px);
+    padding: 40px 20px;
+  }
+
+  .loginTitle {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -585,5 +778,29 @@
     padding: 12px 20px;
     font-size: 12px;
     letter-spacing: 2px;
+  }
+
+  .landingTitle {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+  }
+
+  .landingSubtitle {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .landingButton {
+    padding: 12px 30px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    min-width: 160px;
+  }
+
+  .loginTitle {
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
   }
 }

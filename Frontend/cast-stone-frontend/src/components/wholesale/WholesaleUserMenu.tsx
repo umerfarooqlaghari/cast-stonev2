@@ -32,7 +32,7 @@ export const WholesaleUserMenu: React.FC = () => {
             {user.name}
           </span>
         </div>
-        <svg 
+        {/* <svg 
           className={`${styles.chevron} ${isMenuOpen ? styles.open : ''}`}
           width="16" 
           height="16" 
@@ -40,7 +40,7 @@ export const WholesaleUserMenu: React.FC = () => {
           fill="currentColor"
         >
           <path d="M4.427 9.573L8 6l3.573 3.573a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708z"/>
-        </svg>
+        </svg> */}
       </button>
 
       {isMenuOpen && (

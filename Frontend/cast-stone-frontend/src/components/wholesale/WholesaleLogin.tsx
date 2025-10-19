@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState } from 'react';
@@ -24,6 +25,7 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
     email: '',
     password: ''
   });
+  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -88,31 +90,43 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <div className={styles.formGroup}>
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email">Username or email address *</label>
             <input
               type="email"
               id="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className={errors.email ? styles.error : ''}
-              placeholder="Enter your email address"
+              placeholder=""
               disabled={isSubmitting}
             />
             {errors.email && <span className={styles.errorText}>{errors.email}</span>}
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Password *</label>
             <input
               type="password"
               id="password"
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               className={errors.password ? styles.error : ''}
-              placeholder="Enter your password"
+              placeholder=""
               disabled={isSubmitting}
             />
             {errors.password && <span className={styles.errorText}>{errors.password}</span>}
+          </div>
+
+          <div className={styles.rememberMe}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={isSubmitting}
+              />
+              <span>Remember me</span>
+            </label>
           </div>
 
           <button
@@ -120,23 +134,9 @@ export const WholesaleLogin: React.FC<WholesaleLoginProps> = ({
             className={styles.loginButton}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Signing In...' : 'Sign In'}
+            {isSubmitting ? 'Logging in...' : 'Log in'}
           </button>
         </form>
-
-        <div className={styles.loginFooter}>
-          <p>
-            Don&apos;t have a wholesale account?{' '}
-            <button
-              type="button"
-              onClick={onSwitchToSignup}
-              className={styles.linkButton}
-              disabled={isSubmitting}
-            >
-              Apply for Wholesale Access
-            </button>
-          </p>
-        </div>
       </div>
     </div>
   );
