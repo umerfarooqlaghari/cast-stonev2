@@ -25,7 +25,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 3rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: #000000ff;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
@@ -33,7 +33,7 @@
 .sectionSubtitle {
   font-family: 'Helvetica Neue', 'Arial', sans-serif;
   font-size: 1.125rem;
-  color:rgb(54, 76, 137);
+  color:rgba(22, 22, 22, 1);
   line-height: 1.6;
   font-weight: 400;
 }
