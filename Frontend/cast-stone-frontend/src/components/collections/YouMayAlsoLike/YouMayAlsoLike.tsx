@@ -80,7 +80,7 @@ const YouMayAlsoLike: React.FC<YouMayAlsoLikeProps> = ({
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.description}>
-            It's not just balustrading and parapet screening we offer. We provide a whole range of architectural services, from façade stonework to flooring and paving. Take a look at some of our other products below.
+            It&apos;s not just balustrading and parapet screening we offer. We provide a whole range of architectural services, from façade stonework to flooring and paving. Take a look at some of our other products below.
           </p>
         </div>
 
