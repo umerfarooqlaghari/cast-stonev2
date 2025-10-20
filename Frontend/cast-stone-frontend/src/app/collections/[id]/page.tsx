@@ -409,6 +409,7 @@ export default function CollectionPage() {
                     <p className={styles.section3Description}>{collection.section3Content}</p>
                   )}
 
+
                   {/* Stats row */}
                   <div className={styles.section3Stats}>
                     <div className={styles.section3StatCard}>
