@@ -1028,7 +1028,7 @@
 .cardImage {
   object-fit: cover; /* Show full image proportionally */
   z-index: 0;
-    border: 2px solid #14204a; /* Elegant border for image only */
+    border: 2px solid #f6f7fbff; /* Elegant border for image only */
     border-radius: 0.5rem;
 }
 

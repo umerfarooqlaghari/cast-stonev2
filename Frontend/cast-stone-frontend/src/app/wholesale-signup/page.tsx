@@ -9,7 +9,7 @@ import { WholesaleSignupForm } from '../../components/wholesale/WholesaleSignupF
 import { WholesaleLogin } from '../../components/wholesale/WholesaleLogin';
 import { useWholesaleAuth } from '../../contexts/WholesaleAuthContext';
 import { AuthenticationResult } from '../../services/types/entities';
-import { useCollectionsByLevel } from '../../hooks/useCollections';
+import { useCollection } from '../../hooks/useCollections';
 import styles from './page.module.css';
 
 // Import Swiper styles
@@ -26,22 +26,25 @@ export default function WholesaleSignupPage() {
   const { isApprovedWholesaleBuyer, user, isLoading } = useWholesaleAuth();
   const router = useRouter();
 
-  // Fetch level 2 collections for carousel images
-  const { data: level2Collections = [] } = useCollectionsByLevel(2);
+  // Fetch specific collections for hero and parallax sections
+  const { data: heroCollection } = useCollection(5); // Collection ID 5 for hero banner
+  const { data: parallaxCollection } = useCollection(7); // Collection ID 7 for parallax section
 
-  // Get first 8 collection images (using only the first image URL from each collection)
-  const carouselImages = useMemo(() => {
-    return level2Collections
-      .slice(0, 8)
-      .map(collection => {
-        // Use only the first image URL from the images array
-        if (Array.isArray(collection.images) && collection.images.length > 0) {
-          return collection.images[0];
-        }
-        return '/ContactUs.jpg'; // Fallback image
-      })
-      .filter(Boolean); // Remove any undefined/null values
-  }, [level2Collections]);
+  // Get hero image from collection 5
+  const heroImage = useMemo(() => {
+    if (heroCollection?.images && heroCollection.images.length > 0) {
+      return heroCollection.images[0];
+    }
+    return '/ContactUs.jpg'; // Fallback image
+  }, [heroCollection]);
+
+  // Get parallax image from collection 7
+  const parallaxImage = useMemo(() => {
+    if (parallaxCollection?.images && parallaxCollection.images.length > 0) {
+      return parallaxCollection.images[0];
+    }
+    return '/ContactUs.jpg'; // Fallback image
+  }, [parallaxCollection]);
 
   // Redirect if user is already logged in and approved
   useEffect(() => {
@@ -100,8 +103,10 @@ export default function WholesaleSignupPage() {
 
   // Reusable image carousel component
   const renderImageCarousel = () => {
-    // Use carousel images if available, otherwise fallback
-    const images = carouselImages.length > 0 ? carouselImages : ['/ContactUs.jpg'];
+    // Use hero collection images if available, otherwise fallback
+    const images = heroCollection?.images && heroCollection.images.length > 0
+      ? heroCollection.images
+      : ['/ContactUs.jpg'];
 
     return (
       <div className={styles.signupRight}>
@@ -138,61 +143,134 @@ export default function WholesaleSignupPage() {
   };
 
   const renderLandingPage = () => {
-    // Use carousel images if available, otherwise fallback
-    const images = carouselImages.length > 0 ? carouselImages : ['/ContactUs.jpg'];
-
     return (
-      <div className={styles.landingPage}>
-        <div className={styles.landingBackground}>
-          <Swiper
-            modules={[Autoplay, EffectFade]}
-            effect="fade"
-            autoplay={{
-              delay: 4000,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-            speed={1500}
-            className={styles.landingCarousel}
-          >
-            {images.map((imageSrc, index) => (
-              <SwiperSlide key={index}>
-                <Image
-                  src={imageSrc}
-                  alt={`Wholesale ${index + 1}`}
-                  fill
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center'
-                  }}
-                  priority={index === 0}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <div className={styles.landingOverlay} />
+      <>
+        {/* Section 1: Hero Banner */}
+        <div className={styles.landingPage}>
+          <div className={styles.landingBackground}>
+            <Image
+              src={heroImage}
+              alt="Wholesale Hero"
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }}
+              priority
+            />
+            <div className={styles.landingOverlay} />
+          </div>
+
+          <div className={styles.landingContent}>
+            <h1 className={styles.landingTitle}>WHOLESALE TRADE INFO</h1>
+            <p className={styles.landingSubtitle}>CREATED BY CAST STONE, FOR OUR PARTNERS</p>
+
+            <div className={styles.landingButtons}>
+              <button
+                onClick={() => setCurrentView('signup')}
+                className={styles.landingButton}
+              >
+                SIGN UP NOW
+              </button>
+              <button
+                onClick={() => setCurrentView('login')}
+                className={styles.landingButton}
+              >
+                LOGIN
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className={styles.landingContent}>
-          <h1 className={styles.landingTitle}>WHOLESALE TRADE INFO</h1>
-          <p className={styles.landingSubtitle}>CREATED BY CAST STONE, FOR OUR PARTNERS</p>
-
-          <div className={styles.landingButtons}>
+        {/* Section 2: Registration CTA */}
+        <div className={styles.registrationSection}>
+          <h2 className={styles.registrationTitle}>WHOLESALE TRADE REGISTRATION</h2>
+          <p className={styles.registrationText}>
+            Apply online to receive your wholesale trade account, or log in to start shopping now.
+          </p>
+          <p className={styles.registrationSubtext}>
+            Let us be your partner in creating exceptional lighting designs.
+          </p>
+          <div className={styles.registrationButtons}>
             <button
               onClick={() => setCurrentView('signup')}
-              className={styles.landingButton}
+              className={styles.registrationButtonPrimary}
             >
               SIGN UP NOW
             </button>
             <button
               onClick={() => setCurrentView('login')}
-              className={styles.landingButton}
+              className={styles.registrationButtonSecondary}
             >
               LOGIN
             </button>
           </div>
         </div>
-      </div>
+
+        {/* Section 4: Parallax Banner */}
+        <div
+          className={styles.parallaxSection}
+          style={{
+            backgroundImage: `url(${parallaxImage})`,
+          }}
+        >
+          <div className={styles.parallaxOverlay} />
+        </div>
+        {/* Section 3: Member Benefits */}
+        <div className={styles.memberBenefitsSection}>
+          <div className={styles.benefitsHeader}>
+            <p className={styles.benefitsSubtitle}>CAST STONE INTERNATIONAL WHOLESALE</p>
+            <h2 className={styles.benefitsTitle}>Member Benefits</h2>
+            <p className={styles.benefitsDescription}>
+              As a designer wholesale trade member, we aim to provide you with a unique opportunity to bring your creative vision to life. We understand
+              that lighting plays a significant role in interior design, and our aim is to make your job easier by providing you with the best lighting products
+              at an exclusive discount.
+            </p>
+          </div>
+
+          <div className={styles.benefitsGrid}>
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitNumber}>1</div>
+              <h3 className={styles.benefitTitle}>EXCLUSIVE SAVINGS</h3>
+              <p className={styles.benefitDescription}>
+                Exclusive discounts on all our products that are applied during checkout.
+              </p>
+            </div>
+
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitNumber}>2</div>
+              <h3 className={styles.benefitTitle}>EARLY ACCESS</h3>
+              <p className={styles.benefitDescription}>
+                Early access to our latest lighting products and discounts applied at checkout.
+              </p>
+            </div>
+
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitNumber}>3</div>
+              <h3 className={styles.benefitTitle}>DESIGN ASSISTANCE</h3>
+              <p className={styles.benefitDescription}>
+                Our specialized team provides complementary services to help your vision come to light.
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.howToJoinSection}>
+            <h2 className={styles.howToJoinTitle}>How To Join</h2>
+            <p className={styles.howToJoinDescription}>
+              To become a wholesale trade member with Cast Stone International, all you need to do is fill out our online application form. We will review your application and get back to
+              you within 5 business days. Once your application is approved, we will send you an email alerting you that your account is active.
+            </p>
+            <button
+              onClick={() => setCurrentView('signup')}
+              className={styles.signUpNowButton}
+            >
+              SIGN UP NOW
+            </button>
+          </div>
+        </div>
+
+
+      </>
     );
   };
 

@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { MagazineProductGrid } from '@/components/products';
@@ -294,11 +294,7 @@ export default function CollectionPage() {
     }
   }, [products, collection]);
 
-  useEffect(() => {
-    applyFilters();
-  }, [products, filters]);
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...products];
 
     // Search filter
@@ -339,7 +335,11 @@ export default function CollectionPage() {
     });
 
     setFilteredProducts(filtered);
-  };
+  }, [products, filters.search, filters.priceRange.min, filters.priceRange.max, filters.inStockOnly, filters.sortBy, filters.sortDirection]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));

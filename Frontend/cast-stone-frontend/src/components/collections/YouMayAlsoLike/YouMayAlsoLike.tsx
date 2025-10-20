@@ -104,7 +104,7 @@ const YouMayAlsoLike: React.FC<YouMayAlsoLikeProps> = ({
                 {currentCollections.map((collection) => {
                   const imageSrc = collection.images && collection.images.length > 0
                     ? collection.images[0]
-                    : "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop&crop=center";
+                    : "https://res.cloudinary.com/damyvovze/image/upload/v1758467859/cast-stone-images/IMG_5537.jpg";
 
                   const optimizedImageSrc = getOptimizedImageUrl(imageSrc, 'card');
 

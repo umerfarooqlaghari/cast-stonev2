@@ -107,6 +107,236 @@
   transform: translateY(-2px);
 }
 
+/* Registration Section Styles */
+.registrationSection {
+  background: #f5f5f5;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.registrationTitle {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 6px;
+  margin: 0 0 1.5rem;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.registrationText {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 auto 0.5rem;
+  max-width: 700px;
+  color: #666;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.registrationSubtext {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 auto 2.5rem;
+  max-width: 700px;
+  color: #666;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.registrationButtons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.registrationButtonPrimary {
+  background: #e7c58bff;
+  color: #333;
+  border: 2px solid #e7c58bff;
+  padding: 15px 40px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-width: 180px;
+}
+
+.registrationButtonPrimary:hover {
+  background: #d4b378;
+  border-color: #d4b378;
+  transform: translateY(-2px);
+}
+
+.registrationButtonSecondary {
+  background: transparent;
+  color: #333;
+  border: 2px solid #333;
+  padding: 15px 40px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-width: 180px;
+}
+
+.registrationButtonSecondary:hover {
+  background: #333;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Member Benefits Section Styles */
+.memberBenefitsSection {
+  background: #f5f5f5;
+  padding: 80px 40px;
+}
+
+.benefitsHeader {
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.benefitsSubtitle {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  margin: 0 0 0.5rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.benefitsTitle {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0 0 1.5rem;
+  font-family: 'Georgia', serif;
+  color: #333;
+}
+
+.benefitsDescription {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #666;
+  max-width: 800px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 80px;
+}
+
+.benefitCard {
+  text-align: left;
+}
+
+.benefitNumber {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #999;
+  margin: 0 0 1rem;
+  font-family: 'Georgia', serif;
+}
+
+.benefitTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #333;
+  margin: 0 0 1rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.benefitDescription {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #666;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+
+.howToJoinSection {
+  background: white;
+  padding: 60px 40px;
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.howToJoinTitle {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0 0 1.5rem;
+  font-family: 'Georgia', serif;
+  color: #333;
+}
+
+.howToJoinDescription {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #666;
+  max-width: 800px;
+  margin: 0 0 2rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.signUpNowButton {
+  background: #e7c58bff;
+  color: #333;
+  border: none;
+  padding: 15px 40px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.signUpNowButton:hover {
+  background: #d4b378;
+  transform: translateY(-2px);
+}
+
+/* Parallax Section Styles */
+.parallaxSection {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover !important;
+  /* Background image covers the entire screen */
+  /* As you scroll, the fixed background creates the reveal effect */
+}
+
+.parallaxOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
 /* Login Page Styles */
 .loginPage {
   min-height: calc(100vh - 80px);
@@ -733,6 +963,53 @@
     font-size: 1.5rem;
     letter-spacing: 3px;
   }
+
+  .registrationSection {
+    padding: 60px 30px;
+  }
+
+  .registrationTitle {
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+  }
+
+  .registrationText,
+  .registrationSubtext {
+    font-size: 0.95rem;
+  }
+
+  .memberBenefitsSection {
+    padding: 60px 30px;
+  }
+
+  .benefitsHeader {
+    margin-bottom: 40px;
+  }
+
+  .benefitsTitle {
+    font-size: 2rem;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .howToJoinSection {
+    padding: 40px 30px;
+  }
+
+  .howToJoinTitle {
+    font-size: 1.5rem;
+  }
+
+  .parallaxSection {
+    height: 40vh;
+    background-size: cover !important;
+    background-attachment: scroll;
+    /* On mobile, use scroll instead of fixed for better performance */
+  }
 }
 
 @media (max-width: 480px) {
@@ -802,5 +1079,86 @@
     font-size: 1.25rem;
     letter-spacing: 2px;
     margin-bottom: 2rem;
+  }
+
+  .registrationSection {
+    padding: 40px 20px;
+  }
+
+  .registrationTitle {
+    font-size: 1.25rem;
+    letter-spacing: 3px;
+  }
+
+  .registrationText,
+  .registrationSubtext {
+    font-size: 0.9rem;
+  }
+
+  .registrationButtons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .registrationButtonPrimary,
+  .registrationButtonSecondary {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .memberBenefitsSection {
+    padding: 40px 20px;
+  }
+
+  .benefitsHeader {
+    margin-bottom: 30px;
+  }
+
+  .benefitsTitle {
+    font-size: 1.5rem;
+  }
+
+  .benefitsDescription {
+    font-size: 0.9rem;
+  }
+
+  .benefitsGrid {
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+
+  .benefitNumber {
+    font-size: 2.5rem;
+  }
+
+  .benefitTitle {
+    font-size: 0.85rem;
+  }
+
+  .benefitDescription {
+    font-size: 0.85rem;
+  }
+
+  .howToJoinSection {
+    padding: 30px 20px;
+  }
+
+  .howToJoinTitle {
+    font-size: 1.25rem;
+  }
+
+  .howToJoinDescription {
+    font-size: 0.9rem;
+  }
+
+  .signUpNowButton {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .parallaxSection {
+    height: 35vh;
+    background-size: cover !important;
+    background-attachment: scroll;
   }
 }
