@@ -27,6 +27,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Status> Statuses { get; set; }
     public DbSet<WholesaleBuyer> WholesaleBuyers { get; set; }
     public DbSet<WholesaleBuyerLocation> WholesaleBuyerLocations { get; set; }
+    public DbSet<MailingList> MailingLists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -185,6 +186,10 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Subscription>()
             .HasIndex(s => s.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<MailingList>()
+            .HasIndex(m => m.Email)
             .IsUnique();
 
         // Cart indexes for performance

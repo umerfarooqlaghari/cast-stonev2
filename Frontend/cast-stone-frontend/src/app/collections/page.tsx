@@ -60,7 +60,7 @@ export default function CollectionsPage() {
         title="Our Collections"
         subtitle="Curated Cast Stone Collections"
         description="Discover our thoughtfully curated collections of cast stone products. Each collection tells a unique story, bringing together pieces that complement each other in style, texture, and purpose."
-        imageSrc="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=600&fit=crop&crop=center"
+        imageSrc="/heroSection/BANNER IMAGES/IMG_8272.jpg"
         imageAlt="Beautiful cast stone collection showcase"
         imagePosition="left"
         badge={`${collections.length} Collections`}

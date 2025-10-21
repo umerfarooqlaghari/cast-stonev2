@@ -1,30 +1,28 @@
 .collectionsCarousel {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: white;
-  /* background: linear-gradient(135deg, #b4b5bbff, #9a98a4ff, #535359ff);  overflow: hidden; */
-  /* background: url('/images/CollectionBackground3.jpg') center center/cover no-repeat; */
   padding: 4rem 0;
 }
 
-
 .container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   z-index: 10;
   position: relative;
+  padding: 0 2rem;
 }
 
 .title {
@@ -46,110 +44,67 @@
 }
 
 .swiperContainer {
-  width: 80vw; /* Full viewport width */
-  max-width: 80vw;
+  width: 100%;
   position: relative;
-  /* overflow: visible;  */
-  margin: 0 calc(-40vw + 50%); /* Negative margin to break out of parent container */
+  overflow: hidden;
 }
 
 .swiper {
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  height: 650px;
 }
 
 /* Navigation Arrows */
 .swiper :global(.swiper-button-next),
 .swiper :global(.swiper-button-prev) {
-  color: #333 !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  width: 60px !important;
-  height: 60px !important;
+  color: #000 !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  width: 50px !important;
+  height: 50px !important;
   border-radius: 50% !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
   transition: all 0.3s ease !important;
-  margin-top: -30px !important;
-  border: 2px solid #e0e0e0 !important;
   z-index: 20 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
 .swiper :global(.swiper-button-next) {
-  right: 10px !important; /* Adjust value (10px, 0px) as needed */
+  right: 20px !important;
 }
 
-/* Move Prev Button Close to Left Edge */
 .swiper :global(.swiper-button-prev) {
-  left: 10px !important;  /* Adjust value (10px, 0px) as needed */
+  left: 20px !important;
 }
 
 .swiper :global(.swiper-button-next):hover,
 .swiper :global(.swiper-button-prev):hover {
   background: rgba(255, 255, 255, 1) !important;
-  transform: scale(1.1) !important;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25) !important;
-  border-color: #333 !important;
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
 }
 
 .swiper :global(.swiper-button-next):after,
 .swiper :global(.swiper-button-prev):after {
-  font-size: 20px !important;
+  font-size: 18px !important;
   font-weight: bold !important;
-  color: #333 !important;
+  color: #000 !important;
 }
 
 .swiper :global(.swiper-button-disabled) {
   opacity: 0.3 !important;
   pointer-events: none !important;
   cursor: not-allowed !important;
-  background: rgba(255, 255, 255, 0.5) !important;
-}
-
-/* Pagination */
-.swiper :global(.swiper-pagination) {
-  bottom: 20px !important;
-  position: relative !important;
-  margin-top: 30px !important;
-}
-
-.swiper :global(.swiper-pagination-bullet) {
-  background: #ccc !important;
-  opacity: 1 !important;
-  width: 14px !important;
-  height: 14px !important;
-  margin: 0 8px !important;
-  transition: all 0.3s ease !important;
-  border: 2px solid #fff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-.swiper :global(.swiper-pagination-bullet-active) {
-  background: white !important;
-  transform: scale(1.1) !important;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 .swiperSlide {
-  width: 390px;
-  height: 480px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
+  width: 100%;
+  height: 650px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  align-items: self-start;
-  transition: all 0.4s ease;
-  transform: scale(0.85);
-  opacity: 1;
-  background: none;
-    margin-bottom: 4rem;
-
-}
-
-.swiperSlide.swiper-slide-active {
-  transform: scale(1);
-  opacity: 1;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
 .slideLink {
@@ -158,104 +113,101 @@
   height: 100%;
   text-decoration: none;
   color: inherit;
+  position: relative;
 }
 
 .slideBackground {
   width: 100%;
   height: 100%;
-  background: none; /* Light background for professional look */
-  background-size: cover; /* Show full image proportionally without cropping */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
 }
 
-.categoryTag {
-  text-transform: uppercase;
-  color: #fff;
-  background: #1b7402;
-  padding: 7px 18px 7px 25px;
-  display: inline-block;
-  border-radius: 0 20px 20px 0px;
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 600;
-  align-self: flex-start;
+/* Overlay that appears on hover */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  padding: 2rem;
 }
 
-.category-0 {
-  background: #62667f;
+.slideLink:hover .overlay {
+  opacity: 1;
 }
 
-.category-1 {
-  background: #087ac4;
+.overlayContent {
+  text-align: center;
+  color: white;
+  max-width: 80%;
 }
 
-.category-2 {
-  background: #b45205;
-}
-
-.category-3 {
-  background: #1b7402;
-}
-
-.category-4 {
-  background: #8b5cf6;
-}
-
-.slideContent {
-  padding: 25px;
-  z-index: 2;
-  position: relative;
-  /* background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%); */
-  border-radius: 0 0 15px 15px;
-  background: transparent;
+.divider {
+  width: 60px;
+  height: 2px;
+  background: white;
+  margin: 0 auto 1.5rem;
 }
 
 .collectionTitle {
-  color: #fff;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.collectionDescription {
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1rem;
+  color: white;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.875rem;
   font-weight: 600;
-  font-size: 1.3rem;
-  line-height: 1.4;
-  margin-bottom: 15px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.collectionLocation {
-  color: #fff;
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
-}
-
-.locationIcon {
-  color: #fff;
-  width: 22px;
-  height: 22px;
-  margin-right: 7px;
-  flex-shrink: 0;
+.ctaButton:hover {
+  background: white;
+  color: black;
 }
 
 .emptyState {
   text-align: center;
   padding: 4rem 2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #666;
   font-size: 1.125rem;
 }
-
-/* Swiper Pagination - handled via global CSS */
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -267,19 +219,30 @@
     font-size: 2.5rem;
   }
 
+  .swiper {
+    height: 550px;
+  }
+
   .swiperSlide {
-    width: 300px;
-    height: 400px;
+    height: 550px;
+  }
+
+  .collectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .collectionDescription {
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 768px) {
   .collectionsCarousel {
     padding: 2rem 0;
-    min-height: 80vh;
+    min-height: 50vh;
   }
 
-  .container {
+  .header {
     padding: 0 1rem;
   }
 
@@ -292,27 +255,47 @@
   }
 
   .header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .swiper {
+    height: 450px;
   }
 
   .swiperSlide {
-    width: 280px;
-    height: 380px;
+    height: 450px;
   }
 
   .collectionTitle {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
   }
 
-  .collectionLocation {
-    font-size: 0.8rem;
+  .collectionDescription {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ctaButton {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  .swiper :global(.swiper-button-next),
+  .swiper :global(.swiper-button-prev) {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .swiper :global(.swiper-button-next):after,
+  .swiper :global(.swiper-button-prev):after {
+    font-size: 14px !important;
   }
 }
 
 @media (max-width: 480px) {
   .collectionsCarousel {
     padding: 1.5rem 0;
-    min-height: 70vh;
+    min-height: 40vh;
   }
 
   .title {
@@ -320,35 +303,42 @@
   }
 
   .header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .swiper {
+    height: 400px;
   }
 
   .swiperSlide {
-    width: 260px;
-    height: 360px;
-  }
-
-  .slideContent {
-    padding: 20px;
+    height: 400px;
   }
 
   .collectionTitle {
-    font-size: 1rem;
-    margin-bottom: 10px;
+    font-size: 1.1rem;
   }
 
-  .collectionLocation {
-    font-size: 0.75rem;
+  .collectionDescription {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
 
-  .categoryTag {
+  .ctaButton {
+    padding: 0.5rem 1.25rem;
     font-size: 0.7rem;
-    padding: 5px 15px 5px 20px;
   }
 
-  .locationIcon {
-    width: 18px;
-    height: 18px;
+  .divider {
+    width: 40px;
+    margin-bottom: 1rem;
+  }
+
+  .swiper :global(.swiper-button-next) {
+    right: 10px !important;
+  }
+
+  .swiper :global(.swiper-button-prev) {
+    left: 10px !important;
   }
 }
 

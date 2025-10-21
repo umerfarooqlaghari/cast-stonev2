@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Playfair_Display, Montserrat, Lora } from "next/font
 import "./globals.css";
 import Header from "@/components/shared/Header/Header";
 import Footer from "@/components/shared/Footer/Footer";
+import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
 import { CartProvider } from "@/contexts/CartContext";
 import { WholesaleAuthProvider } from "@/contexts/WholesaleAuthContext";
 import QueryProvider from "@/providers/QueryProvider";
@@ -57,6 +58,7 @@ export default function RootLayout({
               <main className="min-h-screen">
                 {children}
               </main>
+              <NewsletterSection />
               <Footer />
             </CartProvider>
           </WholesaleAuthProvider>
