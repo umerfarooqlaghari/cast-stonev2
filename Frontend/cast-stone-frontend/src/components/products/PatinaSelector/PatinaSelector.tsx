@@ -55,10 +55,10 @@ const PatinaSelector: React.FC<PatinaSelectorProps> = ({
           >
             <div className={styles.patinaLogoContainer}>
               <Image
-                src="/PatinaLogo.jpg"
+                src="/PatinaLogo.png"
                 alt={option.name}
-                width={50}
-                height={50}
+                width={140}
+                height={140}
                 className={styles.medusaLogo}
               />
               <div
