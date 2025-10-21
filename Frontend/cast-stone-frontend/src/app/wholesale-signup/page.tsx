@@ -35,7 +35,7 @@ export default function WholesaleSignupPage() {
     if (heroCollection?.images && heroCollection.images.length > 0) {
       return heroCollection.images[0];
     }
-    return '/ContactUs.jpg'; // Fallback image
+    return '/IMG_1213.jpg'; // Fallback image
   }, [heroCollection]);
 
   // Get parallax image from collection 7
@@ -43,7 +43,7 @@ export default function WholesaleSignupPage() {
     if (parallaxCollection?.images && parallaxCollection.images.length > 0) {
       return parallaxCollection.images[0];
     }
-    return '/ContactUs.jpg'; // Fallback image
+    return '/IMG_1206.jpg'; // Fallback image
   }, [parallaxCollection]);
 
   // Redirect if user is already logged in and approved
