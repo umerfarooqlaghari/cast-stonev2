@@ -13,6 +13,7 @@ import ProductSpecifications from '@/components/products/ProductSpecifications/P
 import PatinaSelector from '@/components/products/PatinaSelector/PatinaSelector';
 import VariantSelector from '@/components/products/VariantSelector/VariantSelector';
 import RelatedProducts from '@/components/products/RelatedProducts/RelatedProducts';
+import { getPatinaColor } from '@/utils/patinaOptions';
 import styles from './productPage.module.css';
 
 export default function ProductPage() {
@@ -143,6 +144,8 @@ export default function ProductPage() {
                 ? selectedVariant.variantImages
                 : product.images}
               productName={selectedVariant?.variantName || product.name}
+              selectedPatina={selectedPatina}
+              patinaColor={getPatinaColor(selectedPatina)}
             />
           </div>
 

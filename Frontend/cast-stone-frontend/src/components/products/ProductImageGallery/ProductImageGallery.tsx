@@ -2,17 +2,22 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { getOptimizedImageUrl, getFallbackImageUrl } from '@/utils/cloudinaryUtils';
 import styles from './productImageGallery.module.css';
 
 interface ProductImageGalleryProps {
   images: string[];
   productName: string;
+  selectedPatina?: string;
+  patinaColor?: string;
 }
 
-const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ 
-  images, 
-  productName 
+const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
+  images,
+  productName,
+  selectedPatina,
+  patinaColor
 }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -64,7 +69,27 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             target.src = getFallbackImageUrl('product');
           }}
         />
-        
+
+        {/* Patina Badge */}
+        {selectedPatina && patinaColor && (
+          <div className={styles.patinaBadge}>
+            <div className={styles.patinaLogoContainer}>
+              <Image
+                src="/PatinaLogo.png"
+                alt={selectedPatina}
+                width={60}
+                height={60}
+                className={styles.patinaLogo}
+              />
+              <div
+                className={styles.patinaColorOverlay}
+                style={{ backgroundColor: patinaColor }}
+              />
+            </div>
+            <span className={styles.patinaBadgeName}>{selectedPatina}</span>
+          </div>
+        )}
+
         {/* Navigation Arrows */}
         {galleryImages.length > 1 && (
           <>
