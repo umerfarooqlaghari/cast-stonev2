@@ -87,6 +87,22 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 10;
   min-width: 100px;
+  animation: patinaPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom right;
+}
+
+@keyframes patinaPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .patinaLogoContainer {

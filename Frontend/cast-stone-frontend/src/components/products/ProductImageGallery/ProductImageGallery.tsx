@@ -72,13 +72,16 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
 
         {/* Patina Badge */}
         {selectedPatina && patinaColor && (
-          <div className={styles.patinaBadge}>
+          <div
+            key={selectedPatina}
+            className={styles.patinaBadge}
+          >
             <div className={styles.patinaLogoContainer}>
               <Image
                 src="/PatinaLogo.png"
                 alt={selectedPatina}
-                width={60}
-                height={60}
+                width={100}
+                height={100}
                 className={styles.patinaLogo}
               />
               <div
