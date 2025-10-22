@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +12,12 @@ interface NewsletterFormData {
 
 const NewsletterSection: React.FC = () => {
   const pathname = usePathname();
+  const [formData, setFormData] = useState<NewsletterFormData>({
+    fullName: '',
+    email: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isAdminPage, setIsAdminPage] = useState(false);
 
   // Check if current page is admin page
@@ -24,13 +29,6 @@ const NewsletterSection: React.FC = () => {
   if (isAdminPage) {
     return null;
   }
-
-  const [formData, setFormData] = useState<NewsletterFormData>({
-    fullName: '',
-    email: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

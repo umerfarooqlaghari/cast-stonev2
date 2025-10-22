@@ -158,6 +158,37 @@ export default function WorkerMessagesPage() {
     );
   };
 
+  const selectAllCollections = () => {
+    const availableCollections = collections
+      .filter(col => !isCollectionAssignedToOtherMessage(col.id))
+      .map(col => col.id);
+    setFormData(prev => ({
+      ...prev,
+      collectionIds: [...new Set([...prev.collectionIds, ...availableCollections])]
+    }));
+  };
+
+  const deselectAllCollections = () => {
+    setFormData(prev => ({
+      ...prev,
+      collectionIds: []
+    }));
+  };
+
+  const selectAllChildrenOfParent = (parentId: number) => {
+    const childCollections = collections
+      .filter(col => col.parentCollectionId === parentId && !isCollectionAssignedToOtherMessage(col.id))
+      .map(col => col.id);
+    setFormData(prev => ({
+      ...prev,
+      collectionIds: [...new Set([...prev.collectionIds, ...childCollections])]
+    }));
+  };
+
+  const getParentCollections = () => {
+    return collections.filter(col => !col.parentCollectionId);
+  };
+
   return (
     <ProtectedRoute>
       <AdminLayout>
@@ -277,6 +308,35 @@ export default function WorkerMessagesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-black mb-2">Collections (Multi-Select)</label>
+
+                    {/* Quick Select Buttons */}
+                    <div className="flex gap-2 mb-3 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={selectAllCollections}
+                        className="px-3 py-1 text-xs font-medium bg-black text-white rounded hover:bg-gray-800 transition-colors"
+                      >
+                        Select All
+                      </button>
+                      <button
+                        type="button"
+                        onClick={deselectAllCollections}
+                        className="px-3 py-1 text-xs font-medium bg-gray-300 text-black rounded hover:bg-gray-400 transition-colors"
+                      >
+                        Deselect All
+                      </button>
+                      {getParentCollections().map(parent => (
+                        <button
+                          key={parent.id}
+                          type="button"
+                          onClick={() => selectAllChildrenOfParent(parent.id)}
+                          className="px-3 py-1 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                        >
+                          Select {parent.name}
+                        </button>
+                      ))}
+                    </div>
+
                     <div className="relative">
                       <button
                         type="button"

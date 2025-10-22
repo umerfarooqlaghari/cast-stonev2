@@ -6,14 +6,14 @@ export class WorkerMessagePostService extends BaseService {
    * Create a new worker message
    */
   async create(data: CreateWorkerMessageRequest): Promise<WorkerMessage> {
-    this.logApiCall('POST', '/api/workermessages', data);
+    this.logApiCall('POST', '/workermessages', data);
     
     if (!data.heading || !data.description || !data.imageUrl || !data.createdBy) {
       throw new Error('Missing required fields: heading, description, imageUrl, createdBy');
     }
     
     return this.handleResponse(
-      this.client.post<WorkerMessage>('/api/workermessages', data)
+      this.client.post<WorkerMessage>('/workermessages', data)
     );
   }
 }

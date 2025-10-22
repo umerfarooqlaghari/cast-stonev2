@@ -5,10 +5,10 @@ export class WorkerMessageDeleteService extends BaseService {
    * Delete a worker message by ID
    */
   async delete(id: number): Promise<boolean> {
-    this.logApiCall('DELETE', `/api/workermessages/${id}`);
+    this.logApiCall('DELETE', `/workermessages/${id}`);
     
     return this.handleVoidResponse(
-      this.client.delete(`/api/workermessages/${id}`)
+      this.client.delete(`/workermessages/${id}`)
     );
   }
 }

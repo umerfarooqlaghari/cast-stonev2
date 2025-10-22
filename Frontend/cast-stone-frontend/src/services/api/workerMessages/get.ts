@@ -8,9 +8,9 @@ export class WorkerMessageGetService extends BaseService {
    * Get all worker messages
    */
   async getAll(): Promise<WorkerMessage[]> {
-    this.logApiCall('GET', '/api/workermessages');
+    this.logApiCall('GET', '/workermessages');
     return this.handleResponse(
-      this.client.get<WorkerMessage[]>('/api/workermessages')
+      this.client.get<WorkerMessage[]>('/workermessages')
     );
   }
 
@@ -18,9 +18,9 @@ export class WorkerMessageGetService extends BaseService {
    * Get worker message by ID
    */
   async getById(id: number): Promise<WorkerMessage> {
-    this.logApiCall('GET', `/api/workermessages/${id}`);
+    this.logApiCall('GET', `/workermessages/${id}`);
     return this.handleResponse(
-      this.client.get<WorkerMessage>(`/api/workermessages/${id}`)
+      this.client.get<WorkerMessage>(`/workermessages/${id}`)
     );
   }
 
@@ -28,9 +28,9 @@ export class WorkerMessageGetService extends BaseService {
    * Get worker message by collection ID
    */
   async getByCollectionId(collectionId: number): Promise<WorkerMessage> {
-    this.logApiCall('GET', `/api/workermessages/collection/${collectionId}`);
+    this.logApiCall('GET', `/workermessages/collection/${collectionId}`);
     return this.handleResponse(
-      this.client.get<WorkerMessage>(`/api/workermessages/collection/${collectionId}`)
+      this.client.get<WorkerMessage>(`/workermessages/collection/${collectionId}`)
     );
   }
 
@@ -38,9 +38,9 @@ export class WorkerMessageGetService extends BaseService {
    * Get all active worker messages
    */
   async getActive(): Promise<WorkerMessage[]> {
-    this.logApiCall('GET', '/api/workermessages/active/all');
+    this.logApiCall('GET', '/workermessages/active/all');
     return this.handleResponse(
-      this.client.get<WorkerMessage[]>('/api/workermessages/active/all')
+      this.client.get<WorkerMessage[]>('/workermessages/active/all')
     );
   }
 }

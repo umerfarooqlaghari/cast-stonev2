@@ -35,10 +35,12 @@ public class WorkerMessageService : IWorkerMessageService
         // Validate that collections aren't already assigned to other messages
         if (request.CollectionIds != null && request.CollectionIds.Any())
         {
-            var conflictingMessages = await _repository.FindAsync(wm =>
-                wm.CollectionIds != null &&
-                wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid))
-            );
+            // Fetch all messages and check in memory
+            var allMessages = await _repository.GetAllAsync();
+            var conflictingMessages = allMessages
+                .Where(wm => wm.CollectionIds != null &&
+                       wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid)))
+                .ToList();
 
             if (conflictingMessages.Any())
             {
@@ -72,11 +74,13 @@ public class WorkerMessageService : IWorkerMessageService
         // Validate that new collections aren't already assigned to other messages
         if (request.CollectionIds != null && request.CollectionIds.Any())
         {
-            var conflictingMessages = await _repository.FindAsync(wm =>
-                wm.Id != id && // Exclude current message
-                wm.CollectionIds != null &&
-                wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid))
-            );
+            // Fetch all messages and check in memory
+            var allMessages = await _repository.GetAllAsync();
+            var conflictingMessages = allMessages
+                .Where(wm => wm.Id != id && // Exclude current message
+                       wm.CollectionIds != null &&
+                       wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid)))
+                .ToList();
 
             if (conflictingMessages.Any())
             {
