@@ -1,0 +1,44 @@
+### WorkerMessage API Tests
+
+@baseUrl = http://localhost:5000/api
+
+### Create a new Worker Message
+POST {{baseUrl}}/workermessages
+Content-Type: application/json
+
+{
+  "heading": "Expert Craftsmanship",
+  "description": "Our team of skilled artisans brings decades of experience to every project, ensuring premium quality cast stone products that exceed expectations.",
+  "imageUrl": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=600&fit=crop",
+  "collectionId": 1,
+  "createdBy": "admin@example.com"
+}
+
+### Get all Worker Messages
+GET {{baseUrl}}/workermessages
+
+### Get Worker Message by ID
+GET {{baseUrl}}/workermessages/1
+
+### Get Worker Message by Collection ID
+GET {{baseUrl}}/workermessages/collection/1
+
+### Get all Active Worker Messages
+GET {{baseUrl}}/workermessages/active/all
+
+### Update Worker Message
+PUT {{baseUrl}}/workermessages/1
+Content-Type: application/json
+
+{
+  "heading": "Premium Quality Assurance",
+  "description": "Every cast stone piece undergoes rigorous quality checks to ensure it meets our exacting standards for durability and beauty.",
+  "imageUrl": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=600&fit=crop",
+  "collectionId": 1,
+  "isActive": true,
+  "updatedBy": "admin@example.com"
+}
+
+### Delete Worker Message
+DELETE {{baseUrl}}/workermessages/1
+

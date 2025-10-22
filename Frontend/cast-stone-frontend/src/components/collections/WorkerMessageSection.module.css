@@ -1,0 +1,125 @@
+/* Worker Message Section with Parallax Effect */
+
+.parallaxSection {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover !important;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 60px 40px;
+}
+
+.parallaxOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contentBox {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  max-width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.heading {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #333;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #666;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .parallaxSection {
+    height: 60vh;
+    padding: 50px 30px;
+  }
+
+  .contentBox {
+    max-width: 450px;
+    padding: 35px;
+  }
+
+  .heading {
+    font-size: 1.75rem;
+    letter-spacing: 1.5px;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .parallaxSection {
+    height: 50vh;
+    padding: 40px 25px;
+    background-attachment: scroll;
+    /* On mobile, use scroll instead of fixed for better performance */
+  }
+
+  .contentBox {
+    max-width: 100%;
+    padding: 30px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  .description {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .parallaxSection {
+    height: 40vh;
+    padding: 30px 20px;
+  }
+
+  .contentBox {
+    max-width: 100%;
+    padding: 25px;
+  }
+
+  .heading {
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+}
+

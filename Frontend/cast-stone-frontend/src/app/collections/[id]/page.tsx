@@ -4,16 +4,18 @@
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams } from 'next/navigation';
-import { Product, Collection } from '@/services/types/entities';
+import { Product, Collection, WorkerMessage } from '@/services/types/entities';
 import { MagazineProductGrid } from '@/components/products';
 import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid, Section3, Section4 } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
 import YouMayAlsoLike from '@/components/collections/YouMayAlsoLike';
+import WorkerMessageSection from '@/components/collections/WorkerMessageSection';
 import { isArchitecturalDesignHierarchySync } from '@/utils/collectionUtils';
 import { useCollection, useCollectionChildren, useCollectionsByLevel } from '@/hooks/useCollections';
 import { useProductsByCollection } from '@/hooks/useProducts';
+import { workerMessageService } from '@/services';
 import styles from './collectionPage.module.css';
 import { motion, cubicBezier } from 'framer-motion';
 import Image from 'next/image';
@@ -43,10 +45,29 @@ export default function CollectionPage() {
   const { data: siblingCollections = [] } = useCollectionsByLevel(collection?.level || 0);
 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [workerMessage, setWorkerMessage] = useState<WorkerMessage | null>(null);
 
   const isLoading = isLoadingCollection;
   const error = collectionError ? 'Failed to load collection' : null;
+
+  // Fetch worker message for this collection
+  useEffect(() => {
+    const fetchWorkerMessage = async () => {
+      try {
+        const message = await workerMessageService.get.getByCollectionId(collectionId);
+        if (message && message.isActive) {
+          setWorkerMessage(message);
+        }
+      } catch (err) {
+        // Worker message not found or error - that's okay, just don't display it
+        setWorkerMessage(null);
+      }
+    };
+
+    if (collectionId) {
+      fetchWorkerMessage();
+    }
+  }, [collectionId]);
 
   // Hover and motion preferences
   const [section3Hovered, setSection3Hovered] = useState(false);
@@ -547,6 +568,11 @@ export default function CollectionPage() {
               </div>
             </section>
 
+            {/* Section: Worker Message - Above You May Also Like */}
+            {workerMessage && (
+              <WorkerMessageSection message={workerMessage} />
+            )}
+
             {/* Section: You May Also Like - New Component (All levels) */}
             {siblingCollections.length > 0 && (
               <YouMayAlsoLike
@@ -635,6 +661,11 @@ export default function CollectionPage() {
                 : undefined)
           }
         />
+      )}
+
+      {/* Section: Worker Message - Above You May Also Like */}
+      {workerMessage && (
+        <WorkerMessageSection message={workerMessage} />
       )}
 
       {/* Section: You May Also Like - For all levels in standard layout */}

@@ -28,6 +28,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<WholesaleBuyer> WholesaleBuyers { get; set; }
     public DbSet<WholesaleBuyerLocation> WholesaleBuyerLocations { get; set; }
     public DbSet<MailingList> MailingLists { get; set; }
+    public DbSet<WorkerMessage> WorkerMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -283,6 +284,20 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<ProductVariant>()
             .HasIndex(pv => pv.VariantName);
+
+        // Configure WorkerMessage relationships
+        modelBuilder.Entity<WorkerMessage>()
+            .HasOne(wm => wm.Collection)
+            .WithMany()
+            .HasForeignKey(wm => wm.CollectionId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // Configure WorkerMessage indexes
+        modelBuilder.Entity<WorkerMessage>()
+            .HasIndex(wm => wm.CollectionId);
+
+        modelBuilder.Entity<WorkerMessage>()
+            .HasIndex(wm => wm.IsActive);
 
         // Seed comprehensive Status data for eCommerce
         modelBuilder.Entity<Status>().HasData(

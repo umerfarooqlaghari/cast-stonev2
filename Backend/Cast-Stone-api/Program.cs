@@ -53,6 +53,7 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IContactFormSubmissionRepository, ContactFormSubmissionRepository>();
 builder.Services.AddScoped<IWholesaleBuyerRepository, WholesaleBuyerRepository>();
 builder.Services.AddScoped<IWholesaleBuyerLocationRepository, WholesaleBuyerLocationRepository>();
+builder.Services.AddScoped<IBaseRepository<Cast_Stone_api.Domain.Models.WorkerMessage>, BaseRepository<Cast_Stone_api.Domain.Models.WorkerMessage>>();
 
 // Register Services
 builder.Services.AddScoped<ICollectionService, CollectionService>();
@@ -67,6 +68,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IContactFormSubmissionService, ContactFormSubmissionService>();
 builder.Services.AddScoped<IWholesaleBuyerService, WholesaleBuyerService>();
 builder.Services.AddScoped<IWholesaleBuyerLocationService, WholesaleBuyerLocationService>();
+builder.Services.AddScoped<IWorkerMessageService, WorkerMessageService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<StripeService>();

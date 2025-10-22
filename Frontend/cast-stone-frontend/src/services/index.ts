@@ -21,6 +21,7 @@ export * from './api/seed';
 export * from './api/contactForm';
 export * from './api/wholesaleBuyers';
 export * from './api/wholesaleBuyerLocations';
+export * from './api/workerMessages';
 export * from './api/auth';
 
 // Combined API Service
@@ -38,6 +39,7 @@ import { seedService } from './api/seed';
 import { contactFormService } from './api/contactForm';
 import { wholesaleBuyerService } from './api/wholesaleBuyers';
 import { wholesaleBuyerLocationService } from './api/wholesaleBuyerLocations';
+import { workerMessageService } from './api/workerMessages';
 import { authService } from './api/auth';
 
 export class ApiService {
@@ -55,6 +57,7 @@ export class ApiService {
   contactForm = contactFormService;
   wholesaleBuyers = wholesaleBuyerService;
   wholesaleBuyerLocations = wholesaleBuyerLocationService;
+  workerMessages = workerMessageService;
   auth = authService;
 }
 
@@ -77,6 +80,7 @@ export {
   contactFormService,
   wholesaleBuyerService,
   wholesaleBuyerLocationService,
+  workerMessageService,
   authService
 };
 

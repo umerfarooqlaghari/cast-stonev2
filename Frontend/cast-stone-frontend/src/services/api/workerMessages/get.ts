@@ -1,0 +1,48 @@
+import { BaseService } from '../../config/baseService';
+import { ApiEndpoints } from '../../config/apiConfig';
+import { WorkerMessage } from '../../types/entities';
+
+export class WorkerMessageGetService extends BaseService {
+  /**
+   * Get all worker messages
+   */
+  async getAll(): Promise<WorkerMessage[]> {
+    this.logApiCall('GET', '/api/workermessages');
+    return this.handleResponse(
+      this.client.get<WorkerMessage[]>('/api/workermessages')
+    );
+  }
+
+  /**
+   * Get worker message by ID
+   */
+  async getById(id: number): Promise<WorkerMessage> {
+    this.logApiCall('GET', `/api/workermessages/${id}`);
+    return this.handleResponse(
+      this.client.get<WorkerMessage>(`/api/workermessages/${id}`)
+    );
+  }
+
+  /**
+   * Get worker message by collection ID
+   */
+  async getByCollectionId(collectionId: number): Promise<WorkerMessage> {
+    this.logApiCall('GET', `/api/workermessages/collection/${collectionId}`);
+    return this.handleResponse(
+      this.client.get<WorkerMessage>(`/api/workermessages/collection/${collectionId}`)
+    );
+  }
+
+  /**
+   * Get all active worker messages
+   */
+  async getActive(): Promise<WorkerMessage[]> {
+    this.logApiCall('GET', '/api/workermessages/active/all');
+    return this.handleResponse(
+      this.client.get<WorkerMessage[]>('/api/workermessages/active/all')
+    );
+  }
+}
+
+export const workerMessageGetService = new WorkerMessageGetService();
+

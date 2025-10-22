@@ -706,3 +706,34 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
+
+// WorkerMessage Types
+export interface WorkerMessage {
+  id: number;
+  heading: string;
+  description: string;
+  imageUrl: string;
+  collectionId?: number;
+  createdBy: string;
+  createdAt: string;
+  updatedBy?: string;
+  updatedAt?: string;
+  isActive: boolean;
+}
+
+export interface CreateWorkerMessageRequest {
+  heading: string;
+  description: string;
+  imageUrl: string;
+  collectionId?: number;
+  createdBy: string;
+}
+
+export interface UpdateWorkerMessageRequest {
+  heading: string;
+  description: string;
+  imageUrl: string;
+  collectionId?: number;
+  isActive: boolean;
+  updatedBy: string;
+}
