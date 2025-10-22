@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useParams } from 'next/navigation';
 import { Product, Collection } from '@/services/types/entities';
 import { MagazineProductGrid } from '@/components/products';
-import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid } from '@/components/collections';
+import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid, Section3, Section4 } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
@@ -74,11 +74,6 @@ export default function CollectionPage() {
   const openFromClick = (src: string) => { setActiveModalSrc(src); setModalOpenReason('click'); };
   const closeModal = () => { setActiveModalSrc(null); setModalOpenReason(null); };
 
-  // Dynamic section images for level 3 collections (kept as fallback only)
-  const [section3ImgSrc, setSection3ImgSrc] = useState<string>('');
-  const [section4ImgSrc, setSection4ImgSrc] = useState<string>('');
-
-
   // Refs for horizontal scroller
   const recsScrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -134,13 +129,7 @@ export default function CollectionPage() {
     return () => document.removeEventListener('keydown', onKey);
   }, [activeModalSrc]);
 
-  // Precompute dynamic image paths for level-3 sections
-  useEffect(() => {
-    if (!Number.isNaN(collectionId)) {
-      setSection3ImgSrc(`/images/Collection${collectionId}.jpg`);
-      setSection4ImgSrc(`/images/Collection4Section${collectionId}.jpg`);
-    }
-  }, [collectionId]);
+
 
   // Zigzag content now supports up to 3+ subsections per item. Empty contents are hidden.
   const zigzagContentData: ZigzagContentItem[] = [
@@ -396,97 +385,26 @@ export default function CollectionPage() {
           description={collection.elegantDescription || collection.description || ''}
         />
 
-        {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) */}
-        <section className={styles.dynamicSection}>
-          <div className={styles.container}>
-            <div className={styles.section3Hero}>
-              <div className={`${styles.twoCol} ${styles.twoColAreasRight}`}>
-                {/* Content */}
-                <div className={`${styles.section3ContentCol} ${styles.colContent}`}>
-                  <span className={styles.section3Badge}>About {collection.name}</span>
-                  <h3 className={styles.section3Title}>{collection.section3Header || collection.name}</h3>
-                  {collection.section3Content && (
-                    <p className={styles.section3Description}>{collection.section3Content}</p>
-                  )}
+        {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) - Only show if content and image exist */}
+        {collection.section3Header && collection.section3Content && collection.section3Image && (
+          <Section3
+            header={collection.section3Header}
+            content={collection.section3Content}
+            imageSrc={collection.section3Image}
+            collectionId={collectionId}
+            collectionName={collection.name}
+          />
+        )}
 
-
-                  {/* Stats row */}
-                  <div className={styles.section3Stats}>
-                    <div className={styles.section3StatCard}>
-                      <strong>{filteredProducts.length}+</strong>
-                      <span>Styles</span>
-                    </div>
-                    <div className={styles.section3StatCard}>
-                      <strong>Premium</strong>
-                      <span>Craftsmanship</span>
-                    </div>
-                    <div className={styles.section3StatCard}>
-                      <strong>Custom</strong>
-                      <span>Options</span>
-                    </div>
-                  </div>
-
-                  {/* CTAs */}
-                  <div className={styles.section3Ctas}>
-                    <Link href="/contact" className={styles.section3PrimaryCta}>
-                      Get in touch
-                      <span aria-hidden> →</span>
-                    </Link>
-                    <Link href={`/products?collectionId=${collectionId}`} className={styles.section3GhostCta}>
-                      Choose your style
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <div className={`${styles.section3ImageCol} ${styles.colImage}`}>
-                  <div className={styles.section3ImageWrap}>
-                    <Image
-                      src={collection.section3Image || section3ImgSrc || `/images/Collection${collectionId}.jpg`}
-                      alt={`${collection.name} showcase`}
-                      fill
-                      className={styles.section3Image}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      onError={() => setSection3ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) */}
-        <section className={styles.dynamicSection}>
-          <div className={styles.container}>
-            <div className={styles.section3Hero}>
-              <div className={`${styles.twoCol} ${styles.twoColAreasLeft}`}>
-                {/* Image */}
-                <div className={`${styles.section3ImageCol} ${styles.colImage}`}>
-                  <div className={styles.section3ImageWrap}>
-                    <Image
-                      src={collection.section4Image || section4ImgSrc || `/images/CollectionSection4${collectionId}.jpg`}
-                      alt={`${collection.name} additional showcase`}
-                      fill
-                      className={styles.section3Image}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      onError={() => setSection4ImgSrc('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&crop=center')}
-                    />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className={`${styles.section3ContentCol} ${styles.colContent}`}>
-                  <span className={styles.section3Badge}>About {collection.name}</span>
-                  <h3 className={styles.section3Title}>{collection.section4Header || collection.name}</h3>
-                  {collection.section4Content && (
-                    <p className={styles.section3Description}>{collection.section4Content}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) - Only show if content and image exist */}
+        {collection.section4Header && collection.section4Content && collection.section4Image && (
+          <Section4
+            header={collection.section4Header}
+            content={collection.section4Content}
+            imageSrc={collection.section4Image}
+            collectionName={collection.name}
+          />
+        )}
 
         {/* Section 5: Collage images for Level 3 (if provided) */}
         {Array.isArray(collection.collageImageSection) && collection.collageImageSection.length > 0 && (

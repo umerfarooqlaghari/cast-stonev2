@@ -7,3 +7,5 @@ export { default as CompletedProjectsCarousel } from './CompletedProjectsCarouse
 export { default as StaticCompletedProjects } from './StaticCompletedProjects/StaticCompletedProjects';
 export { default as ElegantDescriptionSection } from './ElegantDescriptionSection/ElegantDescriptionSection';
 export { default as ArchitecturalSixGrid } from './ArchitecturalSixGrid/ArchitecturalSixGrid';
+export { default as Section3 } from './Section3/Section3';
+export { default as Section4 } from './Section4/Section4';
