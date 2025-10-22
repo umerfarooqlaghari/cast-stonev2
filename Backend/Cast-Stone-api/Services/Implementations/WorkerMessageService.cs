@@ -121,11 +121,10 @@ public class WorkerMessageService : IWorkerMessageService
 
     public async Task<WorkerMessageResponse?> GetByCollectionIdAsync(int collectionId)
     {
-        var workerMessage = await _repository.FirstOrDefaultAsync(wm =>
-            wm.CollectionIds != null &&
-            wm.CollectionIds.Contains(collectionId) &&
-            wm.IsActive
-        );
+        // Fetch all active messages and check in memory
+        var allMessages = await _repository.FindAsync(wm => wm.IsActive);
+        var workerMessage = allMessages
+            .FirstOrDefault(wm => wm.CollectionIds != null && wm.CollectionIds.Contains(collectionId));
         return workerMessage != null ? _mapper.Map<WorkerMessageResponse>(workerMessage) : null;
     }
 
@@ -137,10 +136,11 @@ public class WorkerMessageService : IWorkerMessageService
 
     public async Task<IEnumerable<WorkerMessageResponse>> GetByCollectionIdAllAsync(int collectionId)
     {
-        var workerMessages = await _repository.FindAsync(wm =>
-            wm.CollectionIds != null &&
-            wm.CollectionIds.Contains(collectionId)
-        );
+        // Fetch all messages and check in memory
+        var allMessages = await _repository.GetAllAsync();
+        var workerMessages = allMessages
+            .Where(wm => wm.CollectionIds != null && wm.CollectionIds.Contains(collectionId))
+            .ToList();
         return _mapper.Map<IEnumerable<WorkerMessageResponse>>(workerMessages);
     }
 }
