@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './newsletterSection.module.css';
 
@@ -10,6 +12,19 @@ interface NewsletterFormData {
 }
 
 const NewsletterSection: React.FC = () => {
+  const pathname = usePathname();
+  const [isAdminPage, setIsAdminPage] = useState(false);
+
+  // Check if current page is admin page
+  useEffect(() => {
+    setIsAdminPage(pathname?.startsWith('/admin') || false);
+  }, [pathname]);
+
+  // Don't render on admin pages
+  if (isAdminPage) {
+    return null;
+  }
+
   const [formData, setFormData] = useState<NewsletterFormData>({
     fullName: '',
     email: ''
