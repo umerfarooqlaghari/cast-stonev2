@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -18,11 +19,12 @@ export default function WorkerMessagesPage() {
     heading: '',
     description: '',
     imageUrl: '',
-    collectionId: '',
+    collectionIds: [] as number[],
     isActive: true,
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showCollectionDropdown, setShowCollectionDropdown] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -51,7 +53,7 @@ export default function WorkerMessagesPage() {
       heading: '',
       description: '',
       imageUrl: '',
-      collectionId: '',
+      collectionIds: [],
       isActive: true,
     });
     setIsModalOpen(true);
@@ -63,7 +65,7 @@ export default function WorkerMessagesPage() {
       heading: message.heading,
       description: message.description,
       imageUrl: message.imageUrl,
-      collectionId: message.collectionId?.toString() || '',
+      collectionIds: message.collectionIds || [],
       isActive: message.isActive,
     });
     setIsModalOpen(true);
@@ -84,7 +86,7 @@ export default function WorkerMessagesPage() {
           heading: formData.heading,
           description: formData.description,
           imageUrl: formData.imageUrl,
-          collectionId: formData.collectionId ? parseInt(formData.collectionId) : undefined,
+          collectionIds: formData.collectionIds.length > 0 ? formData.collectionIds : undefined,
           isActive: formData.isActive,
           updatedBy: admin?.email || 'admin',
         });
@@ -94,7 +96,7 @@ export default function WorkerMessagesPage() {
           heading: formData.heading,
           description: formData.description,
           imageUrl: formData.imageUrl,
-          collectionId: formData.collectionId ? parseInt(formData.collectionId) : undefined,
+          collectionIds: formData.collectionIds.length > 0 ? formData.collectionIds : undefined,
           createdBy: admin?.email || 'admin',
         });
         setSuccess('Worker message created successfully');
@@ -103,7 +105,8 @@ export default function WorkerMessagesPage() {
       setIsModalOpen(false);
       await fetchData();
     } catch (err) {
-      setError('Failed to save worker message');
+      const errorMessage = (err instanceof Error) ? err.message : 'Failed to save worker message';
+      setError(errorMessage);
       console.error(err);
     }
   };
@@ -121,10 +124,38 @@ export default function WorkerMessagesPage() {
     }
   };
 
-  const getCollectionName = (collectionId?: number) => {
-    if (!collectionId) return 'None';
+  const getCollectionName = (collectionIds?: number[]) => {
+    if (!collectionIds || collectionIds.length === 0) return 'None';
+    const names = collectionIds.map(id => {
+      const collection = collections.find(c => c.id === id);
+      return collection?.name || 'Unknown';
+    });
+    return names.join(', ');
+  };
+
+  const getCollectionDisplayInfo = (collectionId: number) => {
     const collection = collections.find(c => c.id === collectionId);
-    return collection?.name || 'Unknown';
+    if (!collection) return '';
+    const parentName = collection.parentCollectionId
+      ? collections.find(c => c.id === collection.parentCollectionId)?.name
+      : null;
+    return `${collection.name}${parentName ? ` (${parentName})` : ''}`;
+  };
+
+  const toggleCollectionSelection = (collectionId: number) => {
+    setFormData(prev => ({
+      ...prev,
+      collectionIds: prev.collectionIds.includes(collectionId)
+        ? prev.collectionIds.filter(id => id !== collectionId)
+        : [...prev.collectionIds, collectionId]
+    }));
+  };
+
+  const isCollectionAssignedToOtherMessage = (collectionId: number): boolean => {
+    return workerMessages.some(msg =>
+      msg.id !== editingMessage?.id &&
+      msg.collectionIds?.includes(collectionId)
+    );
   };
 
   return (
@@ -175,7 +206,7 @@ export default function WorkerMessagesPage() {
                     {workerMessages.map((message) => (
                       <tr key={message.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-black">{message.heading}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{getCollectionName(message.collectionId)}</td>
+                        <td className="px-6 py-4 text-sm text-black">{getCollectionName(message.collectionIds)}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${message.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                             {message.isActive ? 'Active' : 'Inactive'}
@@ -245,17 +276,86 @@ export default function WorkerMessagesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-black mb-2">Collection</label>
-                    <select
-                      value={formData.collectionId}
-                      onChange={(e) => setFormData({ ...formData, collectionId: e.target.value })}
-                      className="w-full px-4 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                    >
-                      <option value="">None</option>
-                      {collections.map((col) => (
-                        <option key={col.id} value={col.id}>{col.name}</option>
-                      ))}
-                    </select>
+                    <label className="block text-sm font-medium text-black mb-2">Collections (Multi-Select)</label>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowCollectionDropdown(!showCollectionDropdown)}
+                        className="w-full px-4 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-left bg-white flex justify-between items-center"
+                      >
+                        <span>
+                          {formData.collectionIds.length === 0
+                            ? 'Select collections...'
+                            : `${formData.collectionIds.length} collection(s) selected`}
+                        </span>
+                        <svg className={`w-5 h-5 transition-transform ${showCollectionDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </button>
+
+                      {showCollectionDropdown && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+                          {collections.length === 0 ? (
+                            <div className="p-4 text-center text-gray-500">No collections available</div>
+                          ) : (
+                            collections.map((col) => {
+                              const isAssignedToOther = isCollectionAssignedToOtherMessage(col.id);
+                              const isSelected = formData.collectionIds.includes(col.id);
+                              const parentName = col.parentCollectionId
+                                ? collections.find(c => c.id === col.parentCollectionId)?.name
+                                : null;
+
+                              return (
+                                <label
+                                  key={col.id}
+                                  className={`flex items-center px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
+                                    isAssignedToOther && !isSelected ? 'opacity-50 cursor-not-allowed' : ''
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isSelected}
+                                    onChange={() => toggleCollectionSelection(col.id)}
+                                    disabled={isAssignedToOther && !isSelected}
+                                    className="w-4 h-4 border border-black rounded"
+                                  />
+                                  <div className="ml-3 flex-1">
+                                    <div className="text-sm font-medium text-black">
+                                      {col.name}
+                                      {parentName && <span className="text-gray-500 ml-2">({parentName})</span>}
+                                    </div>
+                                    {isAssignedToOther && !isSelected && (
+                                      <div className="text-xs text-red-600 mt-1">Already assigned to another message</div>
+                                    )}
+                                  </div>
+                                </label>
+                              );
+                            })
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Selected Collections Display */}
+                    {formData.collectionIds.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {formData.collectionIds.map(collectionId => {
+                          const col = collections.find(c => c.id === collectionId);
+                          return (
+                            <div key={collectionId} className="bg-black text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
+                              {col?.name}
+                              <button
+                                type="button"
+                                onClick={() => toggleCollectionSelection(collectionId)}
+                                className="hover:text-gray-300"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                   {editingMessage && (

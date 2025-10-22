@@ -21,11 +21,9 @@ namespace Cast_Stone_api.Domain.Models
         [MaxLength(500)]
         public string ImageUrl { get; set; } = string.Empty;
 
-        // Foreign Key to Collection (nullable - can be assigned to multiple collections or none)
-        public int? CollectionId { get; set; }
-
-        [ForeignKey(nameof(CollectionId))]
-        public virtual Collection? Collection { get; set; }
+        // Store multiple collection IDs as JSONB array
+        [Column(TypeName = "jsonb")]
+        public List<int>? CollectionIds { get; set; }
 
         [Required]
         [MaxLength(100)]

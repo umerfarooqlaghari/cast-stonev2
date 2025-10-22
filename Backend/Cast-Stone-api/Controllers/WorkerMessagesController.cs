@@ -107,6 +107,10 @@ public class WorkerMessagesController : ControllerBase
             var workerMessage = await _workerMessageService.CreateAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = workerMessage.Id }, ApiResponse<WorkerMessageResponse>.SuccessResponse(workerMessage, "Worker message created successfully"));
         }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ApiResponse<WorkerMessageResponse>.ErrorResponse("Validation error", new List<string> { ex.Message }));
+        }
         catch (Exception ex)
         {
             return StatusCode(500, ApiResponse<WorkerMessageResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
@@ -132,6 +136,10 @@ public class WorkerMessagesController : ControllerBase
                 return NotFound(ApiResponse<WorkerMessageResponse>.ErrorResponse("Worker message not found"));
 
             return Ok(ApiResponse<WorkerMessageResponse>.SuccessResponse(workerMessage, "Worker message updated successfully"));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ApiResponse<WorkerMessageResponse>.ErrorResponse("Validation error", new List<string> { ex.Message }));
         }
         catch (Exception ex)
         {

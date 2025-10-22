@@ -32,6 +32,29 @@ public class WorkerMessageService : IWorkerMessageService
 
     public async Task<WorkerMessageResponse> CreateAsync(CreateWorkerMessageRequest request)
     {
+        // Validate that collections aren't already assigned to other messages
+        if (request.CollectionIds != null && request.CollectionIds.Any())
+        {
+            var conflictingMessages = await _repository.FindAsync(wm =>
+                wm.CollectionIds != null &&
+                wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid))
+            );
+
+            if (conflictingMessages.Any())
+            {
+                var conflictingCollectionIds = conflictingMessages
+                    .SelectMany(m => m.CollectionIds ?? new List<int>())
+                    .Intersect(request.CollectionIds)
+                    .Distinct()
+                    .ToList();
+
+                throw new InvalidOperationException(
+                    $"Collections {string.Join(", ", conflictingCollectionIds)} are already assigned to other worker messages. " +
+                    $"Please remove them from those messages first."
+                );
+            }
+        }
+
         var workerMessage = _mapper.Map<WorkerMessage>(request);
         workerMessage.CreatedAt = DateTime.UtcNow;
         workerMessage.IsActive = true;
@@ -45,6 +68,30 @@ public class WorkerMessageService : IWorkerMessageService
         var workerMessage = await _repository.GetByIdAsync(id);
         if (workerMessage == null)
             return null;
+
+        // Validate that new collections aren't already assigned to other messages
+        if (request.CollectionIds != null && request.CollectionIds.Any())
+        {
+            var conflictingMessages = await _repository.FindAsync(wm =>
+                wm.Id != id && // Exclude current message
+                wm.CollectionIds != null &&
+                wm.CollectionIds.Any(cid => request.CollectionIds.Contains(cid))
+            );
+
+            if (conflictingMessages.Any())
+            {
+                var conflictingCollectionIds = conflictingMessages
+                    .SelectMany(m => m.CollectionIds ?? new List<int>())
+                    .Intersect(request.CollectionIds)
+                    .Distinct()
+                    .ToList();
+
+                throw new InvalidOperationException(
+                    $"Collections {string.Join(", ", conflictingCollectionIds)} are already assigned to other worker messages. " +
+                    $"Please remove them from those messages first."
+                );
+            }
+        }
 
         _mapper.Map(request, workerMessage);
         workerMessage.UpdatedAt = DateTime.UtcNow;
@@ -70,7 +117,11 @@ public class WorkerMessageService : IWorkerMessageService
 
     public async Task<WorkerMessageResponse?> GetByCollectionIdAsync(int collectionId)
     {
-        var workerMessage = await _repository.FirstOrDefaultAsync(wm => wm.CollectionId == collectionId && wm.IsActive);
+        var workerMessage = await _repository.FirstOrDefaultAsync(wm =>
+            wm.CollectionIds != null &&
+            wm.CollectionIds.Contains(collectionId) &&
+            wm.IsActive
+        );
         return workerMessage != null ? _mapper.Map<WorkerMessageResponse>(workerMessage) : null;
     }
 
@@ -82,7 +133,10 @@ public class WorkerMessageService : IWorkerMessageService
 
     public async Task<IEnumerable<WorkerMessageResponse>> GetByCollectionIdAllAsync(int collectionId)
     {
-        var workerMessages = await _repository.FindAsync(wm => wm.CollectionId == collectionId);
+        var workerMessages = await _repository.FindAsync(wm =>
+            wm.CollectionIds != null &&
+            wm.CollectionIds.Contains(collectionId)
+        );
         return _mapper.Map<IEnumerable<WorkerMessageResponse>>(workerMessages);
     }
 }

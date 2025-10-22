@@ -16,7 +16,8 @@ public class CreateWorkerMessageRequest
     [MaxLength(500)]
     public string ImageUrl { get; set; } = string.Empty;
 
-    public int? CollectionId { get; set; }
+    // Multiple collection IDs
+    public List<int>? CollectionIds { get; set; }
 
     [Required]
     [MaxLength(100)]

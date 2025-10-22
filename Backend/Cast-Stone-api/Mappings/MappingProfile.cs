@@ -216,14 +216,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
-            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
-            .ForMember(dest => dest.Collection, opt => opt.Ignore());
+            .ForMember(dest => dest.IsActive, opt => opt.Ignore());
 
         CreateMap<UpdateWorkerMessageRequest, WorkerMessage>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-            .ForMember(dest => dest.Collection, opt => opt.Ignore());
+            .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
     }
 
     private static string GetInquiryDisplayName(InquiryType inquiry)

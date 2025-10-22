@@ -713,7 +713,7 @@ export interface WorkerMessage {
   heading: string;
   description: string;
   imageUrl: string;
-  collectionId?: number;
+  collectionIds?: number[];
   createdBy: string;
   createdAt: string;
   updatedBy?: string;
@@ -725,7 +725,7 @@ export interface CreateWorkerMessageRequest {
   heading: string;
   description: string;
   imageUrl: string;
-  collectionId?: number;
+  collectionIds?: number[];
   createdBy: string;
 }
 
@@ -733,7 +733,7 @@ export interface UpdateWorkerMessageRequest {
   heading: string;
   description: string;
   imageUrl: string;
-  collectionId?: number;
+  collectionIds?: number[];
   isActive: boolean;
   updatedBy: string;
 }

@@ -77,6 +77,15 @@ public class ApplicationDbContext : DbContext
               v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
         );
 
+        // Configure WorkerMessage CollectionIds as JSONB
+        modelBuilder.Entity<WorkerMessage>()
+           .Property(wm => wm.CollectionIds)
+           .HasColumnType("jsonb")
+           .HasConversion(
+              v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : null,
+              v => string.IsNullOrEmpty(v) ? null : JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions)null)
+        );
+
         modelBuilder.Entity<Product>()
        .Property(c => c.Tags)
        .HasColumnType("jsonb")
@@ -285,17 +294,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<ProductVariant>()
             .HasIndex(pv => pv.VariantName);
 
-        // Configure WorkerMessage relationships
-        modelBuilder.Entity<WorkerMessage>()
-            .HasOne(wm => wm.Collection)
-            .WithMany()
-            .HasForeignKey(wm => wm.CollectionId)
-            .OnDelete(DeleteBehavior.SetNull);
-
         // Configure WorkerMessage indexes
-        modelBuilder.Entity<WorkerMessage>()
-            .HasIndex(wm => wm.CollectionId);
-
         modelBuilder.Entity<WorkerMessage>()
             .HasIndex(wm => wm.IsActive);
 

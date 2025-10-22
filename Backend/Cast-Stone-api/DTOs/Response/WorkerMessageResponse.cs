@@ -6,7 +6,7 @@ public class WorkerMessageResponse
     public string Heading { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
-    public int? CollectionId { get; set; }
+    public List<int>? CollectionIds { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public string? UpdatedBy { get; set; }
