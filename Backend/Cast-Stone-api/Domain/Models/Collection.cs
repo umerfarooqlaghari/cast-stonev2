@@ -59,6 +59,23 @@ public class Collection
     public string? Section6Content { get; set; }
     public string? Section6Image { get; set; }
 
+    // Level 3 - Section 7 (image + content, same as Section 5)
+    public string? Section7Header { get; set; }
+    public string? Section7Content { get; set; }
+    public string? Section7Image { get; set; }
+
+    // CTA Button fields for Sections 3-7
+    public string? Section3CtaButtonText { get; set; }
+    public string? Section3CtaButtonLink { get; set; }
+    public string? Section4CtaButtonText { get; set; }
+    public string? Section4CtaButtonLink { get; set; }
+    public string? Section5CtaButtonText { get; set; }
+    public string? Section5CtaButtonLink { get; set; }
+    public string? Section6CtaButtonText { get; set; }
+    public string? Section6CtaButtonLink { get; set; }
+    public string? Section7CtaButtonText { get; set; }
+    public string? Section7CtaButtonLink { get; set; }
+
     // Level 3 - Collage images
     [Column(TypeName = "jsonb")]
     public List<string>? CollageImageSection { get; set; }
@@ -76,6 +93,7 @@ public class Collection
     public bool ShowSection4 { get; set; } = true;
     public bool ShowSection5 { get; set; } = true;
     public bool ShowSection6 { get; set; } = true;
+    public bool ShowSection7 { get; set; } = true;
     public bool ShowCollage { get; set; } = true;
     public bool ShowCtaSection { get; set; } = true;
     public bool ShowWorkerMessage { get; set; } = true;
