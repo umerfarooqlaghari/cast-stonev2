@@ -32,6 +32,12 @@ public class UpdateCollectionRequest
 	    public string? Section4Header { get; set; }
 	    public string? Section4Content { get; set; }
 	    public string? Section4Image { get; set; }
+	    public string? Section5Header { get; set; }
+	    public string? Section5Content { get; set; }
+	    public string? Section5Image { get; set; }
+	    public string? Section6Header { get; set; }
+	    public string? Section6Content { get; set; }
+	    public string? Section6Image { get; set; }
 	    public List<string>? CollageImageSection { get; set; }
 	    public string? StaticContentHeader { get; set; }
 	    public string? StaticContentParagraph1 { get; set; }
@@ -39,6 +45,15 @@ public class UpdateCollectionRequest
 	    public string? StaticContentParagraph3 { get; set; }
 	    public string? StaticContentBackgroundImage { get; set; }
 
+    // Section Visibility Toggles
+    public bool ShowElegantDescription { get; set; } = true;
+    public bool ShowSection3 { get; set; } = true;
+    public bool ShowSection4 { get; set; } = true;
+    public bool ShowSection5 { get; set; } = true;
+    public bool ShowSection6 { get; set; } = true;
+    public bool ShowCollage { get; set; } = true;
+    public bool ShowCtaSection { get; set; } = true;
+    public bool ShowWorkerMessage { get; set; } = true;
 
     public List<int>? ProductIds { get; set; }
 

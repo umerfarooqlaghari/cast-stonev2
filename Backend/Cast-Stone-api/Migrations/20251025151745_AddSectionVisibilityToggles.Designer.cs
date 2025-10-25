@@ -3,6 +3,7 @@ using System;
 using Cast_Stone_api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cast_Stone_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251025151745_AddSectionVisibilityToggles")]
+    partial class AddSectionVisibilityToggles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,24 +163,6 @@ namespace Cast_Stone_api.Migrations
                     b.Property<string>("Section4Image")
                         .HasColumnType("text");
 
-                    b.Property<string>("Section5Content")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Section5Header")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Section5Image")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Section6Content")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Section6Header")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Section6Image")
-                        .HasColumnType("text");
-
                     b.Property<bool>("ShowCollage")
                         .HasColumnType("boolean");
 
@@ -191,12 +176,6 @@ namespace Cast_Stone_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<bool>("ShowSection4")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("ShowSection5")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("ShowSection6")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("ShowWorkerMessage")

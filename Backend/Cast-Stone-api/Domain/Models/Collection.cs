@@ -49,6 +49,16 @@ public class Collection
     public string? Section4Content { get; set; }
     public string? Section4Image { get; set; }
 
+    // Level 3 - Section 5 (image + content, same as Section 3)
+    public string? Section5Header { get; set; }
+    public string? Section5Content { get; set; }
+    public string? Section5Image { get; set; }
+
+    // Level 3 - Section 6 (image + content, same as Section 4)
+    public string? Section6Header { get; set; }
+    public string? Section6Content { get; set; }
+    public string? Section6Image { get; set; }
+
     // Level 3 - Collage images
     [Column(TypeName = "jsonb")]
     public List<string>? CollageImageSection { get; set; }
@@ -60,6 +70,15 @@ public class Collection
     public string? StaticContentParagraph3 { get; set; }
     public string? StaticContentBackgroundImage { get; set; }
 
+    // ===== Section Visibility Toggles =====
+    public bool ShowElegantDescription { get; set; } = true;
+    public bool ShowSection3 { get; set; } = true;
+    public bool ShowSection4 { get; set; } = true;
+    public bool ShowSection5 { get; set; } = true;
+    public bool ShowSection6 { get; set; } = true;
+    public bool ShowCollage { get; set; } = true;
+    public bool ShowCtaSection { get; set; } = true;
+    public bool ShowWorkerMessage { get; set; } = true;
 
     public bool Published { get; set; } = false;
 
