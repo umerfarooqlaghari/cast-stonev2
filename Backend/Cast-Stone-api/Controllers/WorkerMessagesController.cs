@@ -17,6 +17,43 @@ public class WorkerMessagesController : ControllerBase
     }
 
     /// <summary>
+    /// Get worker message by collection ID (must come before {id} route)
+    /// </summary>
+    [HttpGet("collection/{collectionId}")]
+    public async Task<ActionResult<ApiResponse<WorkerMessageResponse>>> GetByCollectionId(int collectionId)
+    {
+        try
+        {
+            var workerMessage = await _workerMessageService.GetByCollectionIdAsync(collectionId);
+            if (workerMessage == null)
+                return NotFound(ApiResponse<WorkerMessageResponse>.ErrorResponse("Worker message not found for this collection"));
+
+            return Ok(ApiResponse<WorkerMessageResponse>.SuccessResponse(workerMessage));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse<WorkerMessageResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
+        }
+    }
+
+    /// <summary>
+    /// Get all active worker messages (must come before {id} route)
+    /// </summary>
+    [HttpGet("active/all")]
+    public async Task<ActionResult<ApiResponse<IEnumerable<WorkerMessageResponse>>>> GetActive()
+    {
+        try
+        {
+            var workerMessages = await _workerMessageService.GetActiveAsync();
+            return Ok(ApiResponse<IEnumerable<WorkerMessageResponse>>.SuccessResponse(workerMessages));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse<IEnumerable<WorkerMessageResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
+        }
+    }
+
+    /// <summary>
     /// Get all worker messages
     /// </summary>
     [HttpGet]
@@ -50,43 +87,6 @@ public class WorkerMessagesController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, ApiResponse<WorkerMessageResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
-        }
-    }
-
-    /// <summary>
-    /// Get worker message by collection ID
-    /// </summary>
-    [HttpGet("collection/{collectionId}")]
-    public async Task<ActionResult<ApiResponse<WorkerMessageResponse>>> GetByCollectionId(int collectionId)
-    {
-        try
-        {
-            var workerMessage = await _workerMessageService.GetByCollectionIdAsync(collectionId);
-            if (workerMessage == null)
-                return NotFound(ApiResponse<WorkerMessageResponse>.ErrorResponse("Worker message not found for this collection"));
-
-            return Ok(ApiResponse<WorkerMessageResponse>.SuccessResponse(workerMessage));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResponse<WorkerMessageResponse>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
-        }
-    }
-
-    /// <summary>
-    /// Get all active worker messages
-    /// </summary>
-    [HttpGet("active/all")]
-    public async Task<ActionResult<ApiResponse<IEnumerable<WorkerMessageResponse>>>> GetActive()
-    {
-        try
-        {
-            var workerMessages = await _workerMessageService.GetActiveAsync();
-            return Ok(ApiResponse<IEnumerable<WorkerMessageResponse>>.SuccessResponse(workerMessages));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResponse<IEnumerable<WorkerMessageResponse>>.ErrorResponse("Internal server error", new List<string> { ex.ToString() }));
         }
     }
 
