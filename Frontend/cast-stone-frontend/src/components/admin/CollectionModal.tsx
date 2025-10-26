@@ -23,6 +23,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   const [isLoadingImages, setIsLoadingImages] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'basic' | 'media' | 'elegant' | 'section3' | 'section4' | 'section5' | 'section6' | 'section7' | 'collage' | 'static' | 'cta' | 'worker' | 'settings'>('basic');
 
 
 
@@ -44,12 +45,45 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     section4Header: '' as string | null,
     section4Content: '' as string | null,
     section4Image: '' as string | null,
+    section5Header: '' as string | null,
+    section5Content: '' as string | null,
+    section5Image: '' as string | null,
+    section6Header: '' as string | null,
+    section6Content: '' as string | null,
+    section6Image: '' as string | null,
+    section7Header: '' as string | null,
+    section7Content: '' as string | null,
+    section7Image: '' as string | null,
+
+    // CTA Button fields for Sections 3-7
+    section3CtaButtonText: '' as string | null,
+    section3CtaButtonLink: '' as string | null,
+    section4CtaButtonText: '' as string | null,
+    section4CtaButtonLink: '' as string | null,
+    section5CtaButtonText: '' as string | null,
+    section5CtaButtonLink: '' as string | null,
+    section6CtaButtonText: '' as string | null,
+    section6CtaButtonLink: '' as string | null,
+    section7CtaButtonText: '' as string | null,
+    section7CtaButtonLink: '' as string | null,
+
     collageImageSection: [] as string[] | null,
     staticContentHeader: '' as string | null,
     staticContentParagraph1: '' as string | null,
     staticContentParagraph2: '' as string | null,
     staticContentParagraph3: '' as string | null,
     staticContentBackgroundImage: '' as string | null,
+
+    // Section Visibility Toggles
+    showElegantDescription: true,
+    showSection3: true,
+    showSection4: true,
+    showSection5: true,
+    showSection6: true,
+    showSection7: true,
+    showCollage: true,
+    showCtaSection: true,
+    showWorkerMessage: true,
 
     published: false,
   });
@@ -79,12 +113,40 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
         section4Header: c.section4Header || '',
         section4Content: c.section4Content || '',
         section4Image: c.section4Image || '',
+        section5Header: c.section5Header || '',
+        section5Content: c.section5Content || '',
+        section5Image: c.section5Image || '',
+        section6Header: c.section6Header || '',
+        section6Content: c.section6Content || '',
+        section6Image: c.section6Image || '',
+        section7Header: c.section7Header || '',
+        section7Content: c.section7Content || '',
+        section7Image: c.section7Image || '',
+        section3CtaButtonText: c.section3CtaButtonText || '',
+        section3CtaButtonLink: c.section3CtaButtonLink || '',
+        section4CtaButtonText: c.section4CtaButtonText || '',
+        section4CtaButtonLink: c.section4CtaButtonLink || '',
+        section5CtaButtonText: c.section5CtaButtonText || '',
+        section5CtaButtonLink: c.section5CtaButtonLink || '',
+        section6CtaButtonText: c.section6CtaButtonText || '',
+        section6CtaButtonLink: c.section6CtaButtonLink || '',
+        section7CtaButtonText: c.section7CtaButtonText || '',
+        section7CtaButtonLink: c.section7CtaButtonLink || '',
         collageImageSection: c.collageImageSection || [],
         staticContentHeader: c.staticContentHeader || '',
         staticContentParagraph1: c.staticContentParagraph1 || '',
         staticContentParagraph2: c.staticContentParagraph2 || '',
         staticContentParagraph3: c.staticContentParagraph3 || '',
         staticContentBackgroundImage: c.staticContentBackgroundImage || '',
+        showElegantDescription: c.showElegantDescription ?? true,
+        showSection3: c.showSection3 ?? true,
+        showSection4: c.showSection4 ?? true,
+        showSection5: c.showSection5 ?? true,
+        showSection6: c.showSection6 ?? true,
+        showSection7: c.showSection7 ?? true,
+        showCollage: c.showCollage ?? true,
+        showCtaSection: c.showCtaSection ?? true,
+        showWorkerMessage: c.showWorkerMessage ?? true,
         published: c.published,
       });
     };
@@ -333,6 +395,26 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
     }));
   };
 
+  // Disable background scroll while this modal is mounted
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const originalOverflow = document.body.style.overflow;
+    // Prevent background scrolling
+    document.body.style.overflow = 'hidden';
+    return () => {
+      // Restore previous overflow value
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+  // Disable background scroll while modal is open
+  useEffect(() => {
+    // Save original overflow to restore later
+    const originalOverflow = typeof document !== 'undefined' ? document.body.style.overflow : '';
+    if (typeof document !== 'undefined') document.body.style.overflow = 'hidden';
+    return () => {
+      if (typeof document !== 'undefined') document.body.style.overflow = originalOverflow;
+    };
+  }, []);
   const handleStaticBackgroundUpload = async (file: File | null) => {
     if (!file) return;
 
@@ -386,7 +468,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
   };
 
   const uploadDynamicImage = async (
-    key: 'section3Image' | 'section4Image',
+    key: 'section3Image' | 'section4Image' | 'section5Image' | 'section6Image' | 'section7Image',
     files: FileList | null
   ) => {
     if (!files || files.length === 0) return;
@@ -490,7 +572,7 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div className="fixed inset-0 bg-transparent backdrop-blur-sm h-full w-full z-50 overflow-y-auto">
       <div className="relative top-20 mx-auto p-6 border border-black w-full max-w-3xl shadow-xl rounded-lg bg-white">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-black">
@@ -506,7 +588,39 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
           </button>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="flex border-b border-gray-300 mb-6 gap-1 overflow-x-auto">
+          {(['basic', 'media', 'elegant', 'section3', 'section4', 'section5', 'section6', 'section7', 'collage', 'static', 'cta', 'worker', 'settings'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-3 font-medium text-sm transition-colors whitespace-nowrap ${
+                activeTab === tab
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              {tab === 'basic' && 'Basic Info'}
+              {tab === 'media' && 'Media'}
+              {tab === 'elegant' && 'Elegant'}
+              {tab === 'section3' && 'Section 3'}
+              {tab === 'section4' && 'Section 4'}
+              {tab === 'section5' && 'Section 5'}
+              {tab === 'section6' && 'Section 6'}
+              {tab === 'section7' && 'Section 7'}
+              {tab === 'collage' && 'Collage'}
+              {tab === 'static' && 'Static'}
+              {tab === 'cta' && 'CTA'}
+              {tab === 'worker' && 'Worker'}
+              {tab === 'settings' && 'Settings'}
+            </button>
+          ))}
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* TAB: Basic Info */}
+          {activeTab === 'basic' && (
+          <>
           {/* Name */}
           <div>
             <label htmlFor="name" className="block text-sm font-semibold text-black mb-2">
@@ -693,8 +807,12 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               Add tags to help categorize and search for this collection
             </p>
           </div>
+          </>
+          )}
 
-          {/* Images */}
+          {/* TAB: Media - Images */}
+          {activeTab === 'media' && (
+          <>
           <div>
             <label className="block text-sm font-semibold text-black mb-2">
               Images
@@ -833,16 +951,12 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               </div>
             </div>
           </div>
+          </>
+          )}
 
-            {/* Direct Image Upload */}
-
-
-
-	          {/* Dynamic Content Fields */}
-	          <div className="border-t pt-6 space-y-6">
-	            <h4 className="text-lg font-semibold text-black">Dynamic Content</h4>
-
-	            {/* Elegant Section (always visible) */}
+          {/* TAB: Elegant */}
+          {activeTab === 'elegant' && (
+          <>
 	            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 	              <div>
 	                <label className="block text-sm font-semibold text-black mb-2">Elegant Header</label>
@@ -855,9 +969,12 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 	                  className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
 	              </div>
 	            </div>
+          </>
+          )}
 
-	            {/* Section 3 (Level 3 only) */}
-	            {formData.level === 3 && (
+          {/* TAB: Section 3 */}
+          {activeTab === 'section3' && (
+          <>
 	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 	                <div>
 	                  <label className="block text-sm font-semibold text-black mb-2">Choose Your Style Header</label>
@@ -906,11 +1023,25 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 	                  )}
 
 	                </div>
-	              </div>
-	            )}
 
-	            {/* Section 4 (Level 3 only) */}
-	            {formData.level === 3 && (
+	                {/* CTA Button Fields */}
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Text</label>
+	                  <input type="text" value={formData.section3CtaButtonText || ''} onChange={(e)=>setFormData(p=>({...p,section3CtaButtonText:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., Learn More" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Link</label>
+	                  <input type="url" value={formData.section3CtaButtonLink || ''} onChange={(e)=>setFormData(p=>({...p,section3CtaButtonLink:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., https://example.com" />
+	                </div>
+	              </div>
+          </>
+          )}
+
+          {/* TAB: Section 4 */}
+          {activeTab === 'section4' && (
+          <>
 	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 	                <div>
 	                  <label className="block text-sm font-semibold text-black mb-2">Excellence Header</label>
@@ -961,11 +1092,92 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 	                  )}
 
 	                </div>
-	              </div>
-	            )}
 
-	            {/* Collage Images (Level 3 only) */}
-	            {formData.level === 3 && (
+	                {/* CTA Button Fields */}
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Text</label>
+	                  <input type="text" value={formData.section4CtaButtonText || ''} onChange={(e)=>setFormData(p=>({...p,section4CtaButtonText:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., Discover More" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Link</label>
+	                  <input type="url" value={formData.section4CtaButtonLink || ''} onChange={(e)=>setFormData(p=>({...p,section4CtaButtonLink:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., https://example.com" />
+	                </div>
+	              </div>
+          </>
+          )}
+          {/* TAB: Section 7 */}
+          {activeTab === 'section7' && (
+          <>
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 7 Header</label>
+	                  <input type="text" value={formData.section7Header || ''} onChange={(e)=>setFormData(p=>({...p,section7Header:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 7 Content</label>
+	                  <textarea value={formData.section7Content || ''} onChange={(e)=>setFormData(p=>({...p,section7Content:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 7 Image URL</label>
+	                  <input type="url" value={formData.section7Image || ''} onChange={(e)=>setFormData(p=>({...p,section7Image:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="mt-2 md:col-span-2">
+	                  <label className="block text-sm font-medium text-gray-600 mb-1">Choose from uploaded images:</label>
+	                  <select
+	                    onChange={(e)=> e.target.value && setFormData(p=>({...p, section7Image: e.target.value}))}
+	                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+	                    value=""
+	                  >
+	                    <option value="">Select an uploaded image</option>
+	                    {uploadedImages.map(img => (
+	                      <option key={img.publicId} value={img.secureUrl}>{img.fileName}</option>
+	                    ))}
+	                  </select>
+
+	                  <div className="mt-3">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Or upload a new Section 7 image:</label>
+	                    <input type="file" accept="image/*" onChange={(e)=> uploadDynamicImage('section7Image', e.target.files)} disabled={isUploading}
+	                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+	                    {errors.section7Image && <p className="text-sm text-red-600 mt-1">{errors.section7Image}</p>}
+	                  </div>
+	                  {formData.section7Image && (
+	                    <div className="mt-2 flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+	                      <img src={formData.section7Image} alt="Section 7" className="w-16 h-16 object-cover rounded-md border" />
+	                      <div className="flex-1 min-w-0">
+	                        <p className="text-sm text-gray-600 truncate">{formData.section7Image}</p>
+	                      </div>
+	                      <button type="button" onClick={() => setFormData(p=>({...p, section7Image: ''}))} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+	                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+	                      </button>
+	                    </div>
+	                  )}
+
+	                </div>
+
+	                {/* CTA Button Fields */}
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Text</label>
+	                  <input type="text" value={formData.section7CtaButtonText || ''} onChange={(e)=>setFormData(p=>({...p,section7CtaButtonText:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., Get Started" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Link</label>
+	                  <input type="url" value={formData.section7CtaButtonLink || ''} onChange={(e)=>setFormData(p=>({...p,section7CtaButtonLink:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., https://example.com" />
+	                </div>
+	              </div>
+          </>
+          )}
+
+          {/* TAB: Collage */}
+          {activeTab === 'collage' && (
+          <>
+            <div>
 	              <div>
 	                <label className="block text-sm font-semibold text-black mb-2">Collage Images (comma separated URLs)</label>
 	                <input type="text" value={(formData.collageImageSection || []).join(', ')} onChange={(e)=>setFormData(p=>({...p,collageImageSection:e.target.value.split(',').map(s=>s.trim()).filter(Boolean)}))}
@@ -991,10 +1203,149 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 					</div>
 
 	              </div>
-	            )}
+            </div>
+          </>
+          )}
 
-	            {/* Level 2+ Static Content (hide for Level 1) */}
-	            {formData.level >= 2 && (
+          {/* TAB: Section 5 */}
+          {activeTab === 'section5' && (
+          <>
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 5 Header</label>
+	                  <input type="text" value={formData.section5Header || ''} onChange={(e)=>setFormData(p=>({...p,section5Header:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 5 Content</label>
+	                  <textarea value={formData.section5Content || ''} onChange={(e)=>setFormData(p=>({...p,section5Content:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 5 Image URL</label>
+	                  <input type="url" value={formData.section5Image || ''} onChange={(e)=>setFormData(p=>({...p,section5Image:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="mt-2 md:col-span-2">
+	                  <label className="block text-sm font-medium text-gray-600 mb-1">Choose from uploaded images:</label>
+	                  <select
+	                    onChange={(e)=> e.target.value && setFormData(p=>({...p, section5Image: e.target.value}))}
+	                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+	                    value=""
+	                  >
+	                    <option value="">Select an uploaded image</option>
+	                    {uploadedImages.map(img => (
+	                      <option key={img.publicId} value={img.secureUrl}>{img.fileName}</option>
+	                    ))}
+	                  </select>
+
+	                  <div className="mt-3">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Or upload a new Section 5 image:</label>
+	                    <input type="file" accept="image/*" onChange={(e)=> uploadDynamicImage('section5Image', e.target.files)} disabled={isUploading}
+	                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+	                    {errors.section5Image && <p className="text-sm text-red-600 mt-1">{errors.section5Image}</p>}
+	                  </div>
+	                  {formData.section5Image && (
+	                    <div className="mt-2 flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+	                      <img src={formData.section5Image} alt="Section 5" className="w-16 h-16 object-cover rounded-md border" />
+	                      <div className="flex-1 min-w-0">
+	                        <p className="text-sm text-gray-600 truncate">{formData.section5Image}</p>
+	                      </div>
+	                      <button type="button" onClick={() => setFormData(p=>({...p, section5Image: ''}))} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+	                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+	                      </button>
+	                    </div>
+	                  )}
+
+	                </div>
+
+	                {/* CTA Button Fields */}
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Text</label>
+	                  <input type="text" value={formData.section5CtaButtonText || ''} onChange={(e)=>setFormData(p=>({...p,section5CtaButtonText:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., Explore" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Link</label>
+	                  <input type="url" value={formData.section5CtaButtonLink || ''} onChange={(e)=>setFormData(p=>({...p,section5CtaButtonLink:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., https://example.com" />
+	                </div>
+	              </div>
+          </>
+          )}
+
+          {/* TAB: Section 6 */}
+          {activeTab === 'section6' && (
+          <>
+	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 6 Header</label>
+	                  <input type="text" value={formData.section6Header || ''} onChange={(e)=>setFormData(p=>({...p,section6Header:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 6 Content</label>
+	                  <textarea value={formData.section6Content || ''} onChange={(e)=>setFormData(p=>({...p,section6Content:e.target.value}))} rows={3}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <label className="block text-sm font-semibold text-black mb-2">Section 6 Image URL</label>
+	                  <input type="url" value={formData.section6Image || ''} onChange={(e)=>setFormData(p=>({...p,section6Image:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" />
+	                </div>
+	                <div className="md:col-span-2">
+	                  <div className="mt-2">
+	                    <label className="block text-sm font-medium text-gray-600 mb-1">Choose from uploaded images:</label>
+	                    <select
+	                      onChange={(e)=> e.target.value && setFormData(p=>({...p, section6Image: e.target.value}))}
+	                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+	                      value=""
+	                    >
+	                      <option value="">Select an uploaded image</option>
+	                      {uploadedImages.map(img => (
+	                        <option key={img.publicId} value={img.secureUrl}>{img.fileName}</option>
+	                      ))}
+	                    </select>
+
+	                    <div className="mt-3">
+	                      <label className="block text-sm font-medium text-gray-600 mb-1">Or upload a new Section 6 image:</label>
+	                      <input type="file" accept="image/*" onChange={(e)=> uploadDynamicImage('section6Image', e.target.files)} disabled={isUploading}
+	                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50" />
+	                      {errors.section6Image && <p className="text-sm text-red-600 mt-1">{errors.section6Image}</p>}
+	                    </div>
+	                    {formData.section6Image && (
+	                      <div className="mt-2 flex items-center space-x-3 bg-gray-50 p-3 rounded-lg border">
+	                        <img src={formData.section6Image} alt="Section 6" className="w-16 h-16 object-cover rounded-md border" />
+	                        <div className="flex-1 min-w-0">
+	                          <p className="text-sm text-gray-600 truncate">{formData.section6Image}</p>
+	                        </div>
+	                        <button type="button" onClick={() => setFormData(p=>({...p, section6Image: ''}))} className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded" title="Remove">
+	                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+	                        </button>
+	                      </div>
+	                    )}
+
+	                  </div>
+	                </div>
+
+	                {/* CTA Button Fields */}
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Text</label>
+	                  <input type="text" value={formData.section6CtaButtonText || ''} onChange={(e)=>setFormData(p=>({...p,section6CtaButtonText:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., View Collection" />
+	                </div>
+	                <div>
+	                  <label className="block text-sm font-semibold text-black mb-2">CTA Button Link</label>
+	                  <input type="url" value={formData.section6CtaButtonLink || ''} onChange={(e)=>setFormData(p=>({...p,section6CtaButtonLink:e.target.value}))}
+	                    className="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black" placeholder="e.g., https://example.com" />
+	                </div>
+	              </div>
+          </>
+          )}
+
+          {/* TAB: Static Content */}
+          {activeTab === 'static' && (
+          <>
 	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 	                <div>
 	                  <label className="block text-sm font-semibold text-black mb-2">Static Content Header</label>
@@ -1120,43 +1471,160 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
 	                  </div>
 	                </div>
 	              </div>
-	            )}
-	          </div>
+          </>
+          )}
 
-          {/* {formData.level >= 2 && (
-            <div className="mt-4">
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">Upload Main Images (Level 2+ only)</label>
+          {/* TAB: CTA */}
+          {activeTab === 'cta' && (
+          <>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-gray-600">CTA Section configuration will be added here</p>
+          </div>
+          </>
+          )}
+
+          {/* TAB: Worker Message */}
+          {activeTab === 'worker' && (
+          <>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-gray-600">Worker Message Section configuration will be added here</p>
+          </div>
+          </>
+          )}
+
+          {/* TAB: Settings - Section Visibility Toggles */}
+          {activeTab === 'settings' && (
+          <>
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-black mb-4">Section Visibility Toggles</h3>
+            <div className="space-y-3">
+              {/* Elegant Description Toggle */}
+              <div className="flex items-center">
                 <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => handleDirectImageUpload(e.target.files)}
-                  disabled={isUploading}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
+                  type="checkbox"
+                  id="showElegantDescription"
+                  checked={formData.showElegantDescription}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showElegantDescription: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
                 />
+                <label htmlFor="showElegantDescription" className="ml-3 block text-sm font-medium text-black">
+                  Show Elegant Description Section
+                </label>
+              </div>
 
-                {isUploading && (
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    <span className="text-sm text-gray-600">{uploadProgress}</span>
-                  </div>
-                )}
+              {/* Section 3 Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showSection3"
+                  checked={formData.showSection3}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showSection3: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showSection3" className="ml-3 block text-sm font-medium text-black">
+                  Show Section 3 (Image Right, Content Left)
+                </label>
+              </div>
 
-                {uploadProgress && !isUploading && (
-                  <p className="text-sm text-green-600">{uploadProgress}</p>
-                )}
+              {/* Section 4 Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showSection4"
+                  checked={formData.showSection4}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showSection4: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showSection4" className="ml-3 block text-sm font-medium text-black">
+                  Show Section 4 (Image Left, Content Right)
+                </label>
+              </div>
 
-                {errors.directUpload && (
-                  <p className="text-sm text-red-600">{errors.directUpload}</p>
-                )}
+              {/* Section 5 Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showSection5"
+                  checked={formData.showSection5}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showSection5: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showSection5" className="ml-3 block text-sm font-medium text-black">
+                  Show Section 5 (Image Right, Content Left)
+                </label>
+              </div>
 
-                <p className="text-xs text-gray-500">
-                  Select multiple images to upload them directly to this collection. Supported formats: JPEG, PNG, GIF, WebP (max 10MB each)
-                </p>
+              {/* Section 6 Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showSection6"
+                  checked={formData.showSection6}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showSection6: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showSection6" className="ml-3 block text-sm font-medium text-black">
+                  Show Section 6 (Image Left, Content Right)
+                </label>
+              </div>
+
+              {/* Section 7 Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showSection7"
+                  checked={formData.showSection7}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showSection7: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showSection7" className="ml-3 block text-sm font-medium text-black">
+                  Show Section 7 (Image Right, Content Left)
+                </label>
+              </div>
+
+              {/* Collage Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showCollage"
+                  checked={formData.showCollage}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showCollage: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showCollage" className="ml-3 block text-sm font-medium text-black">
+                  Show Collage Section
+                </label>
+              </div>
+
+              {/* CTA Section Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showCtaSection"
+                  checked={formData.showCtaSection}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showCtaSection: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showCtaSection" className="ml-3 block text-sm font-medium text-black">
+                  Show CTA Section
+                </label>
+              </div>
+
+              {/* Worker Message Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="showWorkerMessage"
+                  checked={formData.showWorkerMessage}
+                  onChange={(e) => setFormData(prev => ({ ...prev, showWorkerMessage: e.target.checked }))}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-purple-300 rounded"
+                />
+                <label htmlFor="showWorkerMessage" className="ml-3 block text-sm font-medium text-black">
+                  Show Worker Message Section
+                </label>
               </div>
             </div>
-          )} */}
+          </div>
 
           {/* Published */}
           <div className="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -1171,6 +1639,8 @@ export default function CollectionModal({ collection, onClose, onSuccess }: Coll
               Published (visible to customers)
             </label>
           </div>
+          </>
+          )}
 
           {/* Submit Error */}
           {errors.submit && (

@@ -19,12 +19,45 @@ export interface Collection {
   section4Header?: string | null;
   section4Content?: string | null;
   section4Image?: string | null;
+  section5Header?: string | null;
+  section5Content?: string | null;
+  section5Image?: string | null;
+  section6Header?: string | null;
+  section6Content?: string | null;
+  section6Image?: string | null;
+  section7Header?: string | null;
+  section7Content?: string | null;
+  section7Image?: string | null;
+
+  // CTA Button fields for Sections 3-7
+  section3CtaButtonText?: string | null;
+  section3CtaButtonLink?: string | null;
+  section4CtaButtonText?: string | null;
+  section4CtaButtonLink?: string | null;
+  section5CtaButtonText?: string | null;
+  section5CtaButtonLink?: string | null;
+  section6CtaButtonText?: string | null;
+  section6CtaButtonLink?: string | null;
+  section7CtaButtonText?: string | null;
+  section7CtaButtonLink?: string | null;
+
   collageImageSection?: string[] | null;
   staticContentHeader?: string | null;
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
   staticContentBackgroundImage?: string | null;
+
+  // Section Visibility Toggles
+  showElegantDescription: boolean;
+  showSection3: boolean;
+  showSection4: boolean;
+  showSection5: boolean;
+  showSection6: boolean;
+  showSection7: boolean;
+  showCollage: boolean;
+  showCtaSection: boolean;
+  showWorkerMessage: boolean;
 
   published: boolean;
   createdBy: string;
@@ -59,12 +92,45 @@ export interface CreateCollectionRequest {
   section4Header?: string | null;
   section4Content?: string | null;
   section4Image?: string | null;
+  section5Header?: string | null;
+  section5Content?: string | null;
+  section5Image?: string | null;
+  section6Header?: string | null;
+  section6Content?: string | null;
+  section6Image?: string | null;
+  section7Header?: string | null;
+  section7Content?: string | null;
+  section7Image?: string | null;
+
+  // CTA Button fields for Sections 3-7
+  section3CtaButtonText?: string | null;
+  section3CtaButtonLink?: string | null;
+  section4CtaButtonText?: string | null;
+  section4CtaButtonLink?: string | null;
+  section5CtaButtonText?: string | null;
+  section5CtaButtonLink?: string | null;
+  section6CtaButtonText?: string | null;
+  section6CtaButtonLink?: string | null;
+  section7CtaButtonText?: string | null;
+  section7CtaButtonLink?: string | null;
+
   collageImageSection?: string[] | null;
   staticContentHeader?: string | null;
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
   staticContentBackgroundImage?: string | null;
+
+  // Section Visibility Toggles
+  showElegantDescription?: boolean;
+  showSection3?: boolean;
+  showSection4?: boolean;
+  showSection5?: boolean;
+  showSection6?: boolean;
+  showSection7?: boolean;
+  showCollage?: boolean;
+  showCtaSection?: boolean;
+  showWorkerMessage?: boolean;
 
   // Existing fields
   name: string;
@@ -89,12 +155,45 @@ export interface UpdateCollectionRequest {
   section4Header?: string | null;
   section4Content?: string | null;
   section4Image?: string | null;
+  section5Header?: string | null;
+  section5Content?: string | null;
+  section5Image?: string | null;
+  section6Header?: string | null;
+  section6Content?: string | null;
+  section6Image?: string | null;
+  section7Header?: string | null;
+  section7Content?: string | null;
+  section7Image?: string | null;
+
+  // CTA Button fields for Sections 3-7
+  section3CtaButtonText?: string | null;
+  section3CtaButtonLink?: string | null;
+  section4CtaButtonText?: string | null;
+  section4CtaButtonLink?: string | null;
+  section5CtaButtonText?: string | null;
+  section5CtaButtonLink?: string | null;
+  section6CtaButtonText?: string | null;
+  section6CtaButtonLink?: string | null;
+  section7CtaButtonText?: string | null;
+  section7CtaButtonLink?: string | null;
+
   collageImageSection?: string[] | null;
   staticContentHeader?: string | null;
   staticContentParagraph1?: string | null;
   staticContentParagraph2?: string | null;
   staticContentParagraph3?: string | null;
   staticContentBackgroundImage?: string | null;
+
+  // Section Visibility Toggles
+  showElegantDescription?: boolean;
+  showSection3?: boolean;
+  showSection4?: boolean;
+  showSection5?: boolean;
+  showSection6?: boolean;
+  showSection7?: boolean;
+  showCollage?: boolean;
+  showCtaSection?: boolean;
+  showWorkerMessage?: boolean;
 
   // Existing fields
   name: string;

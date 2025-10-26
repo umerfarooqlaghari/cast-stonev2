@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useParams } from 'next/navigation';
 import { Product, Collection, WorkerMessage } from '@/services/types/entities';
 import { MagazineProductGrid } from '@/components/products';
-import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid, Section3, Section4 } from '@/components/collections';
+import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid, Section3, Section4, Section5, Section6 } from '@/components/collections';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
@@ -54,12 +54,13 @@ export default function CollectionPage() {
   useEffect(() => {
     const fetchWorkerMessage = async () => {
       try {
+        console.log('🔍 Fetching worker message for collection:', collectionId);
         const message = await workerMessageService.get.getByCollectionId(collectionId);
-        if (message && message.isActive) {
-          setWorkerMessage(message);
-        }
+        console.log('✅ Worker message fetched:', message);
+        setWorkerMessage(message);
       } catch (err) {
         // Worker message not found or error - that's okay, just don't display it
+        console.log('❌ Worker message not found or error:', err);
         setWorkerMessage(null);
       }
     };
@@ -401,13 +402,15 @@ export default function CollectionPage() {
         />
 
         {/* Section 2: Elegant Description Section (from collection fields) */}
-        <ElegantDescriptionSection
-          title={collection.elegantHeader || collection.name}
-          description={collection.elegantDescription || collection.description || ''}
-        />
+        {collection.showElegantDescription && (
+          <ElegantDescriptionSection
+            title={collection.elegantHeader || collection.name}
+            description={collection.elegantDescription || collection.description || ''}
+          />
+        )}
 
         {/* Section 3: Feature Hero (Image RIGHT, Content LEFT) - Only show if content and image exist */}
-        {collection.section3Header && collection.section3Content && collection.section3Image && (
+        {collection.showSection3 && collection.section3Header && collection.section3Content && collection.section3Image && (
           <Section3
             header={collection.section3Header}
             content={collection.section3Content}
@@ -418,7 +421,7 @@ export default function CollectionPage() {
         )}
 
         {/* Section 4: Feature Hero (Image LEFT, Content RIGHT) - Only show if content and image exist */}
-        {collection.section4Header && collection.section4Content && collection.section4Image && (
+        {collection.showSection4 && collection.section4Header && collection.section4Content && collection.section4Image && (
           <Section4
             header={collection.section4Header}
             content={collection.section4Content}
@@ -428,7 +431,7 @@ export default function CollectionPage() {
         )}
 
         {/* Section 5: Collage images for Level 3 (if provided) */}
-        {Array.isArray(collection.collageImageSection) && collection.collageImageSection.length > 0 && (
+        {collection.showCollage && Array.isArray(collection.collageImageSection) && collection.collageImageSection.length > 0 && (
           <section className={styles.dynamicSection}>
             <div className={styles.container}>
               <div className={styles.collageGrid}>
@@ -468,9 +471,33 @@ export default function CollectionPage() {
           </section>
         )}
 
+        {/* Section 5: Feature Hero (Image RIGHT, Content LEFT) - Only show if content and image exist */}
+        {collection.showSection5 && collection.section5Header && collection.section5Content && collection.section5Image && (
+          <Section5
+            header={collection.section5Header}
+            content={collection.section5Content}
+            imageSrc={collection.section5Image}
+            collectionId={collectionId}
+            collectionName={collection.name}
+          />
+        )}
 
+        {/* Section 6: Feature Hero (Image LEFT, Content RIGHT) - Only show if content and image exist */}
+        {collection.showSection6 && collection.section6Header && collection.section6Content && collection.section6Image && (
+          <Section6
+            header={collection.section6Header}
+            content={collection.section6Content}
+            imageSrc={collection.section6Image}
+            collectionName={collection.name}
+          />
+        )}
 
         {/* Collage full-size modal overlay (Level 3) via portal to escape any stacking contexts */}
+
+        {/* Section: Worker Message - For Level 3 collections */}
+        {workerMessage && (
+          <WorkerMessageSection message={workerMessage} />
+        )}
 
         {/* Section: You May Also Like - For Level 3 collections */}
         {siblingCollections.length > 0 && (
@@ -505,10 +532,12 @@ export default function CollectionPage() {
 
 
         {/* Section 2: NEW - Elegant Description Section */}
-        <ElegantDescriptionSection
-          title={collection.elegantHeader || collection.name}
-          description={collection.elegantDescription || collection.description || ''}
-        />
+        {collection.showElegantDescription && (
+          <ElegantDescriptionSection
+            title={collection.elegantHeader || collection.name}
+            description={collection.elegantDescription || collection.description || ''}
+          />
+        )}
 
  {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
         {collection.id === 1 && (
@@ -568,11 +597,6 @@ export default function CollectionPage() {
               </div>
             </section>
 
-            {/* Section: Worker Message - Above You May Also Like */}
-            {workerMessage && (
-              <WorkerMessageSection message={workerMessage} />
-            )}
-
             {/* Section: You May Also Like - New Component (All levels) */}
             {siblingCollections.length > 0 && (
               <YouMayAlsoLike
@@ -584,7 +608,6 @@ export default function CollectionPage() {
           </>
         )}
 
-        {/* Section: Static Content (from collection fields) - Level 2 and 3 */}
         {(collection.level === 2 || collection.level === 3) && (
           <StaticContentSection
             header={collection.staticContentHeader}
@@ -610,6 +633,11 @@ export default function CollectionPage() {
             title="You May Also Like"
           />
         )} */}
+
+        {/* Section: Worker Message - For Architectural Design collections */}
+        {workerMessage && (
+          <WorkerMessageSection message={workerMessage} />
+        )}
 
         {/* Section 4: Zigzag Content Section - only on collection ID 1 */}
         {collection.id === 1 && (
@@ -645,7 +673,6 @@ export default function CollectionPage() {
         subtitle={`Explore the ${collection.level === 1 ? 'categories' : 'subcategories'} within this collection`}
       />
 
-      {/* Section: Static Content (from collection fields) - Level 2 and 3 */}
       {(collection.level === 2 || collection.level === 3) && (
         <StaticContentSection
           header={collection.staticContentHeader}

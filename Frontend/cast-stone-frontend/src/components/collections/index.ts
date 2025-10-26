@@ -9,3 +9,5 @@ export { default as ElegantDescriptionSection } from './ElegantDescriptionSectio
 export { default as ArchitecturalSixGrid } from './ArchitecturalSixGrid/ArchitecturalSixGrid';
 export { default as Section3 } from './Section3/Section3';
 export { default as Section4 } from './Section4/Section4';
+export { default as Section5 } from './Section5/Section5';
+export { default as Section6 } from './Section6/Section6';
