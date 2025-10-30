@@ -11,6 +11,8 @@ interface Section3Props {
   imageSrc: string;
   collectionId: number;
   collectionName: string;
+  ctaButtonText?: string | null;
+  ctaButtonLink?: string | null;
 }
 
 const Section3: React.FC<Section3Props> = ({
@@ -18,7 +20,7 @@ const Section3: React.FC<Section3Props> = ({
   content,
   imageSrc,
   collectionId,
-  collectionName
+  collectionName,
 }) => {
   // Parse content into paragraphs (split by double newlines or periods followed by capital letters)
   const paragraphs = content
@@ -48,12 +50,12 @@ const Section3: React.FC<Section3Props> = ({
             </div>
 
             {/* Choose Your Style Link */}
-            <Link 
-              href={`/products?collectionId=${collectionId}`}
-              className={styles.chooseStyleLink}
-            >
-              Choose Your Style →
-            </Link>
+              <Link
+                href={`/products?collectionId=${collectionId}`}
+                className={styles.chooseStyleLink}
+              >
+                Choose Your Style →
+              </Link>
           </div>
 
           {/* Right: Image */}

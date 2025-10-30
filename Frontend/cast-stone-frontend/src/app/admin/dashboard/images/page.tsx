@@ -14,6 +14,7 @@ export default function ImagesPage() {
   const [uploadProgress, setUploadProgress] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -257,29 +258,46 @@ export default function ImagesPage() {
                 <p>No images uploaded yet. Upload your first image above!</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-blue-200">
-                  <thead className="bg-blue-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                        Image
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                        File Name
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                        URL
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                        Uploaded
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-blue-200">
-                    {images.map((image) => (
+              <>
+                {/* Search Bar */}
+                <div className="mb-6">
+                  <input
+                    type="text"
+                    placeholder="Search images by filename or ID..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-black"
+                  />
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-blue-200">
+                    <thead className="bg-blue-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                          Image
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                          File Name
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                          URL
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                          Uploaded
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-blue-200">
+                      {images
+                        .filter((image) =>
+                          image.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          image.publicId.toLowerCase().includes(searchQuery.toLowerCase())
+                        )
+                        .map((image) => (
                       <tr key={image.publicId} className="hover:bg-blue-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <img
@@ -318,9 +336,10 @@ export default function ImagesPage() {
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </div>

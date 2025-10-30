@@ -11,13 +11,17 @@ interface Section6Props {
   content: string;
   imageSrc: string;
   collectionName: string;
+  ctaButtonText?: string | null;
+  ctaButtonLink?: string | null;
 }
 
 const Section6: React.FC<Section6Props> = ({
   header,
   content,
   imageSrc,
-  collectionName
+  collectionName,
+  ctaButtonText,
+  ctaButtonLink
 }) => {
   // Parse content into paragraphs or bullet points
   const lines = content.split('\n').filter(line => line.trim().length > 0);
@@ -133,13 +137,22 @@ const Section6: React.FC<Section6Props> = ({
               </div>
             )}
 
-            {/* Contact Us Button */}
-            <Link 
-              href="/contact"
-              className={styles.contactButton}
-            >
-              Contact Us
-            </Link>
+            {/* Dynamic CTA Button or Default */}
+            {ctaButtonText && ctaButtonLink ? (
+              <Link
+                href={ctaButtonLink}
+                className={styles.contactButton}
+              >
+                {ctaButtonText}
+              </Link>
+            ) : (
+              <Link
+                href="/contact"
+                className={styles.contactButton}
+              >
+                Contact Us
+              </Link>
+            )}
           </div>
         </div>
       </div>

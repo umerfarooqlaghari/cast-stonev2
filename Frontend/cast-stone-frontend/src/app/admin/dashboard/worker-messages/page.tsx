@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { workerMessageService, collectionService } from '@/services';
+import { cloudinaryService, CloudinaryImageInfo } from '@/services/api/cloudinary/cloudinaryService';
 import { WorkerMessage, Collection } from '@/services/types/entities';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 
@@ -25,6 +26,9 @@ export default function WorkerMessagesPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showCollectionDropdown, setShowCollectionDropdown] = useState(false);
+  const [collectionSearchQuery, setCollectionSearchQuery] = useState('');
+  const [uploadedImages, setUploadedImages] = useState<CloudinaryImageInfo[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -47,6 +51,18 @@ export default function WorkerMessagesPage() {
     }
   };
 
+  const fetchUploadedImages = async () => {
+    try {
+      setIsLoadingImages(true);
+      const images = await cloudinaryService.getAllImages();
+      setUploadedImages(images);
+    } catch (error) {
+      console.error('Error fetching uploaded images:', error);
+    } finally {
+      setIsLoadingImages(false);
+    }
+  };
+
   const handleAddMessage = () => {
     setEditingMessage(null);
     setFormData({
@@ -57,6 +73,7 @@ export default function WorkerMessagesPage() {
       isActive: true,
     });
     setIsModalOpen(true);
+    fetchUploadedImages();
   };
 
   const handleEditMessage = (message: WorkerMessage) => {
@@ -69,6 +86,7 @@ export default function WorkerMessagesPage() {
       isActive: message.isActive,
     });
     setIsModalOpen(true);
+    fetchUploadedImages();
   };
 
   const handleSave = async () => {
@@ -268,8 +286,8 @@ export default function WorkerMessagesPage() {
 
           {/* Modal */}
           {isModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-              <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 my-8">
+            <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50 overflow-y-auto border-2 border-black rounded-lg">
+              <div className="bg-white  border-2 border-black rounded-lg p-8 max-w-2xl w-full mx-4 my-8">
                 <h2 className="text-2xl font-bold text-black mb-6">{editingMessage ? 'Edit Message' : 'Add Message'}</h2>
 
                 <div className="space-y-4">
@@ -304,6 +322,37 @@ export default function WorkerMessagesPage() {
                       className="w-full px-4 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                       placeholder="Enter image URL"
                     />
+
+                    {/* Choose from uploaded images dropdown */}
+                    <div className="mt-3">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Or choose from uploaded images:
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            setFormData({ ...formData, imageUrl: e.target.value });
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
+                        disabled={isLoadingImages}
+                        value=""
+                      >
+                        <option value="">
+                          {isLoadingImages ? 'Loading images...' : 'Select an uploaded image'}
+                        </option>
+                        {uploadedImages.map((image) => (
+                          <option key={image.publicId} value={image.secureUrl}>
+                            {image.fileName}
+                          </option>
+                        ))}
+                      </select>
+                      {uploadedImages.length === 0 && !isLoadingImages && (
+                        <p className="text-sm text-gray-500 mt-1">
+                          No uploaded images found. <a href="/admin/dashboard/images" target="_blank" className="text-blue-600 hover:text-blue-800">Upload images here</a>
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   <div>
@@ -340,7 +389,12 @@ export default function WorkerMessagesPage() {
                     <div className="relative">
                       <button
                         type="button"
-                        onClick={() => setShowCollectionDropdown(!showCollectionDropdown)}
+                        onClick={() => {
+                          setShowCollectionDropdown(!showCollectionDropdown);
+                          if (showCollectionDropdown) {
+                            setCollectionSearchQuery('');
+                          }
+                        }}
                         className="w-full px-4 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-left bg-white flex justify-between items-center"
                       >
                         <span>
@@ -354,11 +408,30 @@ export default function WorkerMessagesPage() {
                       </button>
 
                       {showCollectionDropdown && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
-                          {collections.length === 0 ? (
-                            <div className="p-4 text-center text-gray-500">No collections available</div>
-                          ) : (
-                            collections.map((col) => {
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black rounded-lg shadow-lg z-10 max-h-96 overflow-hidden flex flex-col">
+                          {/* Search Bar */}
+                          <div className="p-3 border-b border-gray-200 sticky top-0 bg-white">
+                            <input
+                              type="text"
+                              placeholder="Search collections..."
+                              value={collectionSearchQuery}
+                              onChange={(e) => setCollectionSearchQuery(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black text-sm"
+                            />
+                          </div>
+
+                          {/* Collections List */}
+                          <div className="overflow-y-auto">
+                            {collections.length === 0 ? (
+                              <div className="p-4 text-center text-gray-500">No collections available</div>
+                            ) : (
+                              collections
+                                .filter((col) =>
+                                  col.name.toLowerCase().includes(collectionSearchQuery.toLowerCase()) ||
+                                  (col.parentCollectionId &&
+                                    collections.find(c => c.id === col.parentCollectionId)?.name.toLowerCase().includes(collectionSearchQuery.toLowerCase()))
+                                )
+                                .map((col) => {
                               const isAssignedToOther = isCollectionAssignedToOtherMessage(col.id);
                               const isSelected = formData.collectionIds.includes(col.id);
                               const parentName = col.parentCollectionId
@@ -390,8 +463,9 @@ export default function WorkerMessagesPage() {
                                   </div>
                                 </label>
                               );
-                            })
-                          )}
+                                })
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>

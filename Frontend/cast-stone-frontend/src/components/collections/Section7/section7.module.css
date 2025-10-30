@@ -1,0 +1,169 @@
+/* Section 7 - Image Right, Content Left (Same as Section 5) */
+.section7 {
+  padding: 4rem 0;
+  background: #ffffff;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Content Column (Left) */
+.contentColumn {
+  padding: 2rem 0;
+}
+
+.header {
+  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1a1a1a;
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.01em;
+}
+
+.paragraphs {
+  margin-bottom: 2rem;
+}
+
+.paragraph {
+  font-family: var(--font-lora), 'Lora', Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #4a5568;
+  margin: 0 0 1.5rem 0;
+  max-width: 600px;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Dynamic CTA Link */
+.ctaLink {
+  display: inline-block;
+  font-family: var(--font-lora), 'Lora', Georgia, serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #14204a;
+  text-decoration: none;
+  padding: 0.75rem 0;
+  border-bottom: 2px solid #14204a;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.ctaLink:hover {
+  color: #0f1736;
+  border-bottom-color: #0f1736;
+  transform: translateX(5px);
+}
+
+/* Image Column (Right) */
+.imageColumn {
+  position: relative;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.imageWrapper:hover .image {
+  transform: scale(1.03);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .grid {
+    gap: 3rem;
+  }
+
+  .header {
+    font-size: 2.25rem;
+  }
+
+  .paragraph {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section7 {
+    padding: 3rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* On mobile, image comes first */
+  .imageColumn {
+    order: 1;
+  }
+
+  .contentColumn {
+    order: 2;
+    padding: 1rem 0;
+  }
+
+  .header {
+    font-size: 2rem;
+  }
+
+  .paragraph {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .section7 {
+    padding: 2rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .header {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .paragraph {
+    font-size: 0.9375rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ctaLink {
+    font-size: 1rem;
+  }
+}
+

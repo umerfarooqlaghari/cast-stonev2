@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { Product, Collection, WorkerMessage } from '@/services/types/entities';
 import { MagazineProductGrid } from '@/components/products';
 import { FullScreenBanner, MasonryCollage, ArchitecturalSixGrid, Section3, Section4, Section5, Section6 } from '@/components/collections';
+import Section7 from '@/components/collections/Section7/Section7';
 import ZigzagContentSection, { ZigzagContentItem } from '@/components/collections/ZigzagContentSection/ZigzagContentSection';
 import StaticCompletedProjects, { StaticCompletedProject } from '@/components/collections/StaticCompletedProjects/StaticCompletedProjects';
 import ElegantDescriptionSection from '@/components/collections/ElegantDescriptionSection/ElegantDescriptionSection';
@@ -417,6 +418,8 @@ export default function CollectionPage() {
             imageSrc={collection.section3Image}
             collectionId={collectionId}
             collectionName={collection.name}
+            ctaButtonText={collection.section3CtaButtonText}
+            ctaButtonLink={collection.section3CtaButtonLink}
           />
         )}
 
@@ -427,6 +430,8 @@ export default function CollectionPage() {
             content={collection.section4Content}
             imageSrc={collection.section4Image}
             collectionName={collection.name}
+            ctaButtonText={collection.section4CtaButtonText}
+            ctaButtonLink={collection.section4CtaButtonLink}
           />
         )}
 
@@ -479,6 +484,8 @@ export default function CollectionPage() {
             imageSrc={collection.section5Image}
             collectionId={collectionId}
             collectionName={collection.name}
+            ctaButtonText={collection.section5CtaButtonText}
+            ctaButtonLink={collection.section5CtaButtonLink}
           />
         )}
 
@@ -489,6 +496,20 @@ export default function CollectionPage() {
             content={collection.section6Content}
             imageSrc={collection.section6Image}
             collectionName={collection.name}
+            ctaButtonText={collection.section6CtaButtonText}
+            ctaButtonLink={collection.section6CtaButtonLink}
+          />
+        )}
+
+        {/* Section 7: Feature Hero (Image RIGHT, Content LEFT) - Only show if content and image exist */}
+        {collection.showSection7 && collection.section7Header && collection.section7Content && collection.section7Image && (
+          <Section7
+            header={collection.section7Header}
+            content={collection.section7Content}
+            imageSrc={collection.section7Image}
+            collectionName={collection.name}
+            ctaButtonText={collection.section7CtaButtonText}
+            ctaButtonLink={collection.section7CtaButtonLink}
           />
         )}
 

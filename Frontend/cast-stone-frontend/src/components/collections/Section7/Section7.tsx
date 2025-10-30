@@ -3,23 +3,21 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './section5.module.css';
+import styles from './section7.module.css';
 
-interface Section5Props {
+interface Section7Props {
   header: string;
   content: string;
   imageSrc: string;
-  collectionId: number;
   collectionName: string;
   ctaButtonText?: string | null;
   ctaButtonLink?: string | null;
 }
 
-const Section5: React.FC<Section5Props> = ({
+const Section7: React.FC<Section7Props> = ({
   header,
   content,
   imageSrc,
-  collectionId,
   collectionName,
   ctaButtonText,
   ctaButtonLink
@@ -36,7 +34,7 @@ const Section5: React.FC<Section5Props> = ({
     : content.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(p => p.trim().length > 0);
 
   return (
-    <section className={styles.section5}>
+    <section className={styles.section7}>
       <div className={styles.container}>
         <div className={styles.grid}>
           {/* Left: Content */}
@@ -51,20 +49,13 @@ const Section5: React.FC<Section5Props> = ({
               ))}
             </div>
 
-            {/* Dynamic CTA Button or Default */}
-            {ctaButtonText && ctaButtonLink ? (
-              <Link
+            {/* Dynamic CTA Button */}
+            {ctaButtonText && ctaButtonLink && (
+              <Link 
                 href={ctaButtonLink}
-                className={styles.chooseStyleLink}
+                className={styles.ctaLink}
               >
                 {ctaButtonText} →
-              </Link>
-            ) : (
-              <Link
-                href={`/products?collectionId=${collectionId}`}
-                className={styles.chooseStyleLink}
-              >
-                Choose Your Style →
               </Link>
             )}
           </div>
@@ -88,5 +79,5 @@ const Section5: React.FC<Section5Props> = ({
   );
 };
 
-export default Section5;
+export default Section7;
 
