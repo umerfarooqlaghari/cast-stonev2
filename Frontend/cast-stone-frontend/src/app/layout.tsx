@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display, Montserrat, Lora } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header/Header";
-import Footer from "@/components/shared/Footer/Footer";
+// import Footer from "@/components/shared/Footer/Footer"; // Footer is now integrated into NewsletterSection
 import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
 import { CartProvider } from "@/contexts/CartContext";
 import { WholesaleAuthProvider } from "@/contexts/WholesaleAuthContext";
@@ -59,7 +59,7 @@ export default function RootLayout({
                 {children}
               </main>
               <NewsletterSection />
-              <Footer />
+              {/* <Footer /> Footer is now integrated into NewsletterSection component */}
             </CartProvider>
           </WholesaleAuthProvider>
         </QueryProvider>
