@@ -6,7 +6,7 @@ import CategoriesSection from './CategoriesSection/CategoriesSection';
 import CatalogBanner from './CatalogBanner/CatalogBanner';
 import CollectionsCarousel from './CollectionsCarousel/CollectionsCarousel';
 import TestimonialsSection from './TestimonialsSection/TestimonialsSection';
-import TradeCustomerSection from './TradeCustomerSection/TradeCustomerSection';
+// import TradeCustomerSection from './TradeCustomerSection/TradeCustomerSection';
 import styles from './homeComponent.module.css';
 
 interface HomeComponentProps {
@@ -36,7 +36,7 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
       <CollectionsCarousel />
 
       {/* Trade Customer Section */}
-      <TradeCustomerSection />
+      {/* <TradeCustomerSection /> */}
 
       {/* Testimonials Section */}
       <TestimonialsSection />
