@@ -269,22 +269,22 @@ export default function CollectionPage() {
           content:
             "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
         },
-                {
+        {
           subtitle: 'Virtual 3D Renderings',
           content:
             "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
         },
-                {
+        {
           subtitle: 'Frequent Buyer Rewards',
           content:
             "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
         },
-                {
+        {
           subtitle: 'Project Management Support',
           content:
             "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
         },
-                {
+        {
           subtitle: 'Flexible Payment Plans',
           content:
             "We are dedicated to making our clients’ visions a reality through unwavering dedication and superior customer service."
@@ -515,6 +515,16 @@ export default function CollectionPage() {
 
         {/* Collage full-size modal overlay (Level 3) via portal to escape any stacking contexts */}
 
+        {/* Products Section (with anchor) */}
+        <section id="products" className={styles.productSection}>
+          <div className={styles.container}>
+            <MagazineProductGrid
+              products={filteredProducts}
+              isLoading={isLoading}
+            />
+          </div>
+        </section>
+
         {/* Section: Worker Message - For Level 3 collections */}
         {workerMessage && (
           <WorkerMessageSection message={workerMessage} />
@@ -528,8 +538,6 @@ export default function CollectionPage() {
             title="You May Also Like"
           />
         )}
-
-        {/* Products Section (with anchor) */}
 
       </div>
     );
@@ -560,7 +568,7 @@ export default function CollectionPage() {
           />
         )}
 
- {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
+        {/* Section 3: Child Collections - Custom 6-grid only for collection ID 1 */}
         {collection.id === 1 && (
           <ArchitecturalSixGrid collections={childCollections} />
         )
@@ -603,9 +611,9 @@ export default function CollectionPage() {
                               <Image src={imageSrc} alt={c.name} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, 50vw" />
                               <div className={styles.cardOverlay}>
                                 <h3 className={styles.cardTitle}>{c.name}</h3>
-                                 <p className={styles.cardDescription}>
-                                   {c.description || "Explore our collection of premium cast stone designs."}
-                                     </p>
+                                <p className={styles.cardDescription}>
+                                  {c.description || "Explore our collection of premium cast stone designs."}
+                                </p>
 
                               </div>
                             </div>
